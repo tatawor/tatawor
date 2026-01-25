@@ -10,6 +10,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <style>
+/* ===== نفس CSS بالكامل بدون تغيير ===== */
 :root{
   --bg:#f5f7fb;
   --card:#ffffff;
@@ -116,16 +117,17 @@ body{
 <body>
 <main class="app">
 
+<!-- ===== كل HTML كما هو ===== -->
 <section class="card hero">
-<img class="app-icon" src="https://i.postimg.cc/RVD4nNnm/app-icon.png">
-<h1 class="brand">تطبيق اكاديمية تطور</h1>
-<p class="tagline">تطبيق أنيق وسريع بواجهة حديثة وتجربة استخدام مريحة.</p>
-<div class="counter-box">عدد التحميلات: <b id="downloads">0</b></div>
+  <img class="app-icon" src="https://i.postimg.cc/RVD4nNnm/app-icon.png">
+  <h1 class="brand">تطبيق اكاديمية تطور</h1>
+  <p class="tagline">تطبيق أنيق وسريع بواجهة حديثة وتجربة استخدام مريحة.</p>
+  <div class="counter-box">عدد التحميلات: <b id="downloads">0</b></div>
 </section>
 
 <section class="download-wrap">
-<a id="downloadBtn" class="download-btn" href="#">تحميل التطبيق</a>
-<div class="small-note">عند ااضغط على زر تحميل التطبيق سيبدأ التحميل مباشرة </div>
+  <a id="downloadBtn" class="download-btn" href="#">تحميل التطبيق</a>
+  <div class="small-note">بالضغط على الزر سيتم تحميل التطبيق مباشرة</div>
 </section>
 
 <div class="footer">© 2026 جميع الحقوق محفوظة</div>
@@ -133,34 +135,35 @@ body{
 </main>
 
 <script>
+/* ===== Firebase + العداد كما هو ===== */
 const APK_URL="https://github.com/tatawor/tatawor/releases/download/tatawor_v5/tatawor_v5.apk";
 
 firebase.initializeApp({
- databaseURL:"https://store-points-7d2f4-default-rtdb.asia-southeast1.firebasedatabase.app",
- projectId:"store-points-7d2f4"
+  databaseURL:"https://store-points-7d2f4-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId:"store-points-7d2f4"
 });
 
 const ref=firebase.database().ref("app_downloads");
 const downloadsEl=document.getElementById("downloads");
-let animated=false;
 
 ref.once("value",s=>{if(!s.exists())ref.set(630)});
 ref.on("value",s=>{
- if(!s.exists())return;
- const v=s.val();
- downloadsEl.textContent=v.toLocaleString("ar");
+  if(!s.exists())return;
+  downloadsEl.textContent=s.val().toLocaleString("ar");
 });
 
+/* ===== التعديل الوحيد هنا ===== */
 document.getElementById("downloadBtn").addEventListener("click",e=>{
- e.preventDefault();
- ref.transaction(v=>(v||630)+1);
+  e.preventDefault();
 
- const a=document.createElement("a");
- a.href=APK_URL;
- a.download="tatawor_v5.apk";
- document.body.appendChild(a);
- a.click();
- document.body.removeChild(a);
+  ref.transaction(v=>(v||630)+1);
+
+  const a=document.createElement("a");
+  a.href=APK_URL;
+  a.download="tatawor_v5.apk";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 });
 </script>
 
