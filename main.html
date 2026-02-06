@@ -459,9 +459,20 @@
 
     </div>
 <script>
-const params = new URLSearchParams(window.location.search);
-const code = params.get("code");
+let code = null;
 
+// 1️⃣ من التطبيق (WebView)
+if (window.AndroidSession && typeof AndroidSession.getCode === "function") {
+    code = AndroidSession.getCode();
+}
+
+// 2️⃣ fallback للمتصفح (اختياري)
+if (!code) {
+    const params = new URLSearchParams(window.location.search);
+    code = params.get("code");
+}
+
+// 3️⃣ حماية
 if (!code) {
     document.body.innerHTML = `
         <div style="
@@ -483,7 +494,7 @@ if (!code) {
     throw new Error("NO_CODE");
 }
 
-// نستخدمه كمستخدم حالي
+// ✅ المستخدم الحالي
 window.CURRENT_USER_CODE = code;
 </script>
     <script>
