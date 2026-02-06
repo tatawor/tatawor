@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0f172a">
     <title>الواجهة</title>
     
-    <!-- Firebase SDK - فقط للـ Database -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     
@@ -33,67 +33,18 @@
     </script>
 
     <style>
-        * {
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-        }
-        
-        body {
-            font-family: 'Cairo', sans-serif;
-            background: #020617;
-            overflow-x: hidden;
-        }
-
-        .glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        
-        .glass-strong {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .gradient-text {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .gradient-text-gold {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
+        * { -webkit-tap-highlight-color: transparent; user-select: none; }
+        body { font-family: 'Cairo', sans-serif; background: #020617; overflow-x: hidden; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-strong { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .gradient-text { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .gradient-text-gold { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        @keyframes bounce-slight {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
-        }
+        @keyframes bounce-slight { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+        .badge-bounce { animation: bounce-slight 2s infinite; }
         
-        .badge-bounce {
-            animation: bounce-slight 2s infinite;
-        }
-
-        /* Status Badge Styles */
-        .status-badge {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            border: 2px solid;
-            display: inline-block;
-        }
-
+        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; border: 2px solid; display: inline-block; }
         .status-0 { background-color: #f8d7da; border-color: #f5c2c7; color: #a71d2a; }
         .status-10 { background-color: #fff0d6; border-color: #ffe4b3; color: #b36b00; }
         .status-20 { background-color: #fff7cc; border-color: #ffed99; color: #a67c00; }
@@ -105,19 +56,12 @@
         .status-80 { background-color: #d4edda; border-color: #c3e6cb; color: #155724; }
         .status-90 { background-color: #f3e2f3; border-color: #e0c7e0; color: #6f42c1; }
 
-        #particles-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .progress-bar {
-            transition: width 0.5s ease;
-        }
+        #particles-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .progress-bar { transition: width 0.5s ease; }
+        
+        /* Loading shimmer */
+        .shimmer { background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
     </style>
 </head>
 <body class="bg-darker text-white antialiased">
@@ -133,12 +77,10 @@
                 <button onclick="toggleMenu()" class="w-10 h-10 rounded-xl glass flex items-center justify-center active:scale-95 transition-transform">
                     <i class="fas fa-bars text-lg"></i>
                 </button>
-                
                 <div class="flex items-center gap-2">
                     <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                     <span class="text-sm font-medium text-gray-300">متصل</span>
                 </div>
-
                 <button onclick="showNotifications()" class="relative w-10 h-10 rounded-xl glass flex items-center justify-center active:scale-95 transition-transform">
                     <i class="fas fa-bell text-lg"></i>
                     <span id="notification-badge" class="absolute -top-2 -right-2 min-w-[20px] h-5 bg-red-500 rounded-full text-xs flex items-center justify-center px-1 font-bold badge-bounce shadow-lg shadow-red-500/30 border-2 border-darker hidden">0</span>
@@ -154,7 +96,6 @@
                 <div class="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-3xl blur-xl opacity-30"></div>
                 <div class="relative glass rounded-3xl p-6 overflow-hidden">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -mr-10 -mt-10"></div>
-                    
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex items-center gap-4">
                             <div class="relative">
@@ -215,9 +156,7 @@
                         <i class="fas fa-microphone text-xl"></i>
                     </button>
                     <div class="flex-1">
-                        <input type="text" id="search-input" placeholder="ابحث بصوتك أو اكتب..." 
-                               class="w-full bg-transparent border-none outline-none text-right placeholder-gray-500"
-                               onkeypress="handleSearch(event)">
+                        <input type="text" id="search-input" placeholder="ابحث بصوتك أو اكتب..." class="w-full bg-transparent border-none outline-none text-right placeholder-gray-500" onkeypress="handleSearch(event)">
                     </div>
                     <div id="voice-wave" class="hidden flex items-center gap-1 h-8">
                         <span class="w-1 h-4 bg-primary rounded-full animate-[bounce_1s_infinite]"></span>
@@ -242,34 +181,12 @@
                     </button>
                 </div>
                 
-                <div class="grid grid-cols-4 gap-3">
-                    <button onclick="openTool('maintenance')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-white/10 transition-all active:scale-95">
-                        <div class="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl">
-                            <i class="fas fa-wrench"></i>
-                        </div>
-                        <span class="text-xs font-medium">صيانة</span>
-                    </button>
-                    
-                    <button onclick="openTool('ai')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-white/10 transition-all active:scale-95">
-                        <div class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl">
-                            <i class="fas fa-robot"></i>
-                        </div>
-                        <span class="text-xs font-medium">AI</span>
-                    </button>
-                    
-                    <button onclick="openTool('calendar')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-white/10 transition-all active:scale-95">
-                        <div class="w-12 h-12 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center text-xl">
-                            <i class="fas fa-calendar"></i>
-                        </div>
-                        <span class="text-xs font-medium">المواعيد</span>
-                    </button>
-                    
-                    <button onclick="openTool('store')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-white/10 transition-all active:scale-95">
-                        <div class="w-12 h-12 rounded-xl bg-green-500/20 text-green-400 flex items-center justify-center text-xl">
-                            <i class="fas fa-store"></i>
-                        </div>
-                        <span class="text-xs font-medium">المتجر</span>
-                    </button>
+                <div class="grid grid-cols-4 gap-3" id="quick-actions-container">
+                    <!-- سيتم ملؤها ديناميكياً -->
+                    <div class="shimmer h-24 rounded-2xl"></div>
+                    <div class="shimmer h-24 rounded-2xl"></div>
+                    <div class="shimmer h-24 rounded-2xl"></div>
+                    <div class="shimmer h-24 rounded-2xl"></div>
                 </div>
             </div>
 
@@ -277,7 +194,6 @@
             <div onclick="openAIChat()" class="relative overflow-hidden rounded-3xl glass p-6 cursor-pointer group">
                 <div class="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <div class="absolute -right-10 -top-10 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
-                
                 <div class="relative flex items-center justify-between">
                     <div class="flex-1">
                         <div class="flex items-center gap-2 mb-2">
@@ -308,7 +224,11 @@
                 </div>
 
                 <div id="services-container" class="grid grid-cols-2 gap-3 transition-all duration-300">
-                    <!-- Services will be loaded dynamically -->
+                    <!-- Loading placeholders -->
+                    <div class="shimmer h-32 rounded-2xl"></div>
+                    <div class="shimmer h-32 rounded-2xl"></div>
+                    <div class="shimmer h-32 rounded-2xl"></div>
+                    <div class="shimmer h-32 rounded-2xl"></div>
                 </div>
             </div>
 
@@ -322,22 +242,18 @@
                     <i class="fas fa-home text-xl"></i>
                     <span class="text-[10px] font-medium">الرئيسية</span>
                 </button>
-                
                 <button onclick="setActiveTab(this, 'services')" class="nav-item flex flex-col items-center gap-1 text-gray-400 hover:text-white transition-all" data-tab="services">
                     <i class="fas fa-th-large text-xl"></i>
                     <span class="text-[10px] font-medium">الخدمات</span>
                 </button>
-
                 <button onclick="openQuickAction()" class="relative -mt-8 w-14 h-14 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white shadow-lg shadow-primary/40 hover:scale-110 transition-transform active:scale-95">
                     <i class="fas fa-plus text-2xl"></i>
                 </button>
-
                 <button onclick="setActiveTab(this, 'chat')" class="nav-item flex flex-col items-center gap-1 text-gray-400 hover:text-white transition-all relative" data-tab="chat">
                     <i class="fas fa-comment-dots text-xl"></i>
                     <span class="text-[10px] font-medium">الدردشة</span>
                     <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[8px] flex items-center justify-center">2</span>
                 </button>
-
                 <button onclick="setActiveTab(this, 'profile')" class="nav-item flex flex-col items-center gap-1 text-gray-400 hover:text-white transition-all" data-tab="profile">
                     <i class="fas fa-user text-xl"></i>
                     <span class="text-[10px] font-medium">حسابي</span>
@@ -356,7 +272,6 @@
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
-                    
                     <div class="space-y-2 flex-1">
                         <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors text-right">
                             <div class="w-10 h-10 rounded-lg bg-primary/20 text-primary flex items-center justify-center">
@@ -367,7 +282,6 @@
                                 <div class="text-xs text-gray-400">إدارة الحساب</div>
                             </div>
                         </button>
-                        
                         <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors text-right">
                             <div class="w-10 h-10 rounded-lg bg-secondary/20 text-secondary flex items-center justify-center">
                                 <i class="fas fa-wallet"></i>
@@ -377,7 +291,6 @@
                                 <div class="text-xs text-gray-400" id="wallet-balance">رصيد: 0 ريال</div>
                             </div>
                         </button>
-                        
                         <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors text-right">
                             <div class="w-10 h-10 rounded-lg bg-accent/20 text-accent flex items-center justify-center">
                                 <i class="fas fa-crown"></i>
@@ -388,7 +301,6 @@
                             </div>
                         </button>
                     </div>
-                    
                     <button onclick="logout()" class="w-full py-3 rounded-xl bg-red-500/20 text-red-400 font-bold hover:bg-red-500/30 transition-colors">
                         تسجيل الخروج
                     </button>
@@ -413,9 +325,17 @@
                         <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                     </div>
                 </div>
-                
                 <div class="flex-1 overflow-y-auto p-4 space-y-4" id="all-services-list">
-                    <!-- Services loaded dynamically -->
+                    <!-- Loading -->
+                    <div class="space-y-3">
+                        <div class="shimmer h-4 w-24 rounded"></div>
+                        <div class="grid grid-cols-4 gap-3">
+                            <div class="shimmer h-20 rounded-xl"></div>
+                            <div class="shimmer h-20 rounded-xl"></div>
+                            <div class="shimmer h-20 rounded-xl"></div>
+                            <div class="shimmer h-20 rounded-xl"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -456,67 +376,53 @@
 
         <!-- Toast -->
         <div id="toast-container" class="fixed top-20 left-1/2 -translate-x-1/2 z-[80] space-y-2 pointer-events-none"></div>
-
     </div>
-<script>
-let code = null;
 
-// 1️⃣ من التطبيق (WebView)
-if (window.AndroidSession && typeof AndroidSession.getCode === "function") {
-    code = AndroidSession.getCode();
-}
-
-// 2️⃣ fallback للمتصفح (اختياري)
-if (!code) {
-    const params = new URLSearchParams(window.location.search);
-    code = params.get("code");
-}
-
-// 3️⃣ حماية
-if (!code) {
-    document.body.innerHTML = `
-        <div style="
-            height:100vh;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            background:#020617;
-            color:white;
-            font-family:Cairo;
-            text-align:center;
-        ">
-            <div>
-                <h2>🚫 غير مصرح بالدخول</h2>
-                <p>يرجى فتح الصفحة من داخل التطبيق</p>
-            </div>
-        </div>
-    `;
-    throw new Error("NO_CODE");
-}
-
-// ✅ المستخدم الحالي
-window.CURRENT_USER_CODE = code;
-</script>
+    <!-- Authentication Check -->
     <script>
-        // Firebase Configuration - استبدل ببياناتك
+        let code = null;
+        if (window.AndroidSession && typeof AndroidSession.getCode === "function") {
+            code = AndroidSession.getCode();
+        }
+        if (!code) {
+            const params = new URLSearchParams(window.location.search);
+            code = params.get("code");
+        }
+        if (!code) {
+            document.body.innerHTML = `
+                <div style="height:100vh;display:flex;align-items:center;justify-content:center;background:#020617;color:white;font-family:Cairo;text-align:center;">
+                    <div>
+                        <h2>🚫 غير مصرح بالدخول</h2>
+                        <p>يرجى فتح الصفحة من داخل التطبيق</p>
+                    </div>
+                </div>
+            `;
+            throw new Error("NO_CODE");
+        }
+        window.CURRENT_USER_CODE = code;
+    </script>
+
+    <script>
+        // Firebase Configuration - استبدل ببياناتك الفعلية
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT.firebaseapp.com",
-            databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-            projectId: "YOUR_PROJECT",
-            storageBucket: "YOUR_PROJECT.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyAEXAMPLEnY", 
+            authDomain: "store-points-7d2f4.firebaseapp.com",
+            databaseURL: "https://store-points-7d2f4-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "store-points-7d2f4",
+            storageBucket: "store-points-7d2f4.appspot.com",
+            messagingSenderId: "105011111111",
+            appId: "1:105011111111:web:abc123example"
         };
 
-        // Initialize Firebase (Database فقط)
+        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // متغيرات عامة
+        // Global Variables
         let currentUserId = window.CURRENT_USER_CODE;
         let userData = null;
         let servicesData = [];
+        let quickActionsData = [];
 
         // Level Configuration
         const levels = [
@@ -532,59 +438,54 @@ window.CURRENT_USER_CODE = code;
             { threshold: 90, name: 'امتياز', class: 'status-90' }
         ];
 
-        // Initialize
+        // Default Data
+        const defaultServices = [
+            { id: 'maintenance', title: 'الصيانة', desc: 'كهرباء، سباكة، تكييف', price: 'يبدأ من 50 ريال', icon: 'fa-tools', color: 'from-cyan-400 to-blue-600', discount: '-20%' },
+            { id: 'ai', title: 'البوت الذكي', desc: 'محادثة ذكية', price: 'مجاني', icon: 'fa-brain', color: 'from-purple-400 to-pink-600', badge: 'مجاني' },
+            { id: 'calendar', title: 'الجدول الشهري', desc: 'تنظيم ومواعيد ذكية', price: 'اشتراك شهري', icon: 'fa-calendar-alt', color: 'from-orange-400 to-red-600' },
+            { id: 'store', title: 'المتجر', desc: 'تسوق ذكي وسريع', price: 'تبدأ من 29 ريال', icon: 'fa-shopping-bag', color: 'from-green-400 to-emerald-600', badge: 'جديد' }
+        ];
+
+        const defaultQuickActions = [
+            { id: 'maintenance', title: 'صيانة', icon: 'fa-wrench', color: 'blue' },
+            { id: 'ai', title: 'AI', icon: 'fa-robot', color: 'purple' },
+            { id: 'calendar', title: 'المواعيد', icon: 'fa-calendar', color: 'orange' },
+            { id: 'store', title: 'المتجر', icon: 'fa-store', color: 'green' }
+        ];
+
+        const defaultAdditionalServices = [
+            { title: 'المحفظة', desc: 'إدارة الرصيد والدفع', icon: 'fa-wallet', color: 'yellow' },
+            { title: 'الخريطة', desc: 'تحديد المواقع والفنيين', icon: 'fa-map-marker-alt', color: 'red' },
+            { title: 'خدمات السيارات', desc: 'صيانة وغسيل السيارات', icon: 'fa-car', color: 'cyan' },
+            { title: 'التنظيف المنزلي', desc: 'خدمات التنظيف الشاملة', icon: 'fa-home', color: 'pink' }
+        ];
+
+        // Initialize App
         document.addEventListener('DOMContentLoaded', () => {
-    initParticles();
-    loadUserDataFromFirebase(currentUserId);
-    loadServices();
-});
+            initParticles();
+            
+            // Load all data from Firebase
+            loadUserData();
+            loadServices();
+            loadQuickActions();
+        });
 
-        // طلب بيانات المستخدم من التطبيق الأصلي
-        function requestUserData() {
-            try {
-                if (window.AndroidInterface) {
-                    // Android
-                    window.AndroidInterface.requestUserData();
-                } else if (window.webkit && window.webkit.messageHandlers) {
-                    // iOS
-                    window.webkit.messageHandlers.requestUserData.postMessage({});
-                }
-            } catch (e) {
-                console.log('Native interface not available');
-                loadDemoData();
-                loadServices();
-            }
-        }
-
-        // استقبال بيانات المستخدم من التطبيق الأصلي (يتم استدعاؤها من Native Code)
-        window.receiveUserData = function(userId, userDataJson) {
-            currentUserId = userId;
-            if (userDataJson) {
-                userData = JSON.parse(userDataJson);
-                updateUI();
-                loadServices();
-            } else {
-                // جلب من Firebase إذا لم يتم تمرير البيانات
-                loadUserDataFromFirebase(userId);
-            }
-        };
-
-        // جلب بيانات المستخدم من Firebase
-        function loadUserDataFromFirebase(userId) {
-            db.ref('users/' + userId).on('value', (snapshot) => {
+        // Load User Data
+        function loadUserData() {
+            db.ref('users/' + currentUserId).on('value', (snapshot) => {
                 userData = snapshot.val();
                 if (userData) {
-                    updateUI();
-                    loadServices();
+                    updateUserUI();
                 } else {
-                    // إنشاء بيانات افتراضية إذا لم يوجد المستخدم
-                    createDefaultUserData(userId);
+                    createDefaultUserData();
                 }
+            }, (error) => {
+                console.error('Error loading user:', error);
+                showToast('خطأ في تحميل البيانات', 'error');
             });
         }
 
-        // إنشاء بيانات افتراضية للمستخدم الجديد
-        function createDefaultUserData(userId) {
+        function createDefaultUserData() {
             const defaultData = {
                 name: 'مستخدم جديد',
                 location: 'غير محدد',
@@ -594,55 +495,33 @@ window.CURRENT_USER_CODE = code;
                 balance: 0,
                 avatar: 'https://i.pravatar.cc/150?img=11'
             };
-            
-            db.ref('users/' + userId).set(defaultData);
-            userData = defaultData;
-            updateUI();
-            loadServices();
+            db.ref('users/' + currentUserId).set(defaultData);
         }
 
-        // Demo Data للاختبار
-        function loadDemoData() {
-            userData = {
-                name: 'أحمد محمد',
-                location: 'المدينة المنورة',
-                points: 2450,
-                orders: 28,
-                level: 75,
-                balance: 2450,
-                avatar: 'https://i.pravatar.cc/150?img=11'
-            };
-            updateUI();
-        }
-
-        // Update UI
-        function updateUI() {
+        function updateUserUI() {
             if (!userData) return;
 
             document.getElementById('user-name').textContent = userData.name || 'مستخدم';
             document.getElementById('user-location').textContent = userData.location || '---';
             document.getElementById('user-avatar').src = userData.avatar || 'https://i.pravatar.cc/150?img=11';
             
-            animateValue('points-count', 0, userData.points || 0, 1500);
-            animateValue('orders-count', 0, userData.orders || 0, 1500);
+            animateValue('points-count', parseInt(document.getElementById('points-count').textContent.replace(/,/g, '')) || 0, userData.points || 0, 1000);
+            animateValue('orders-count', parseInt(document.getElementById('orders-count').textContent.replace(/,/g, '')) || 0, userData.orders || 0, 1000);
+            
             document.getElementById('wallet-balance').textContent = `رصيد: ${(userData.balance || 0).toLocaleString()} ريال`;
 
-            const levelPercent = userData.level || 0;
+            const levelPercent = Math.min(100, Math.max(0, userData.level || 0));
             const currentLevel = getLevelInfo(levelPercent);
             
             const levelDisplay = document.getElementById('level-display');
             levelDisplay.textContent = currentLevel.name;
-            levelDisplay.className = `text-2xl font-bold ${currentLevel.class.replace('status-', 'text-')}`;
-
+            
             const statusBadge = document.getElementById('user-status');
             statusBadge.textContent = currentLevel.name;
             statusBadge.className = `status-badge ${currentLevel.class}`;
 
-            const progressBar = document.getElementById('progress-bar');
-            const progressText = document.getElementById('progress-text');
-            
-            progressBar.style.width = `${levelPercent}%`;
-            progressText.textContent = `${levelPercent}%`;
+            document.getElementById('progress-bar').style.width = `${levelPercent}%`;
+            document.getElementById('progress-text').textContent = `${levelPercent}%`;
         }
 
         function getLevelInfo(percent) {
@@ -654,30 +533,74 @@ window.CURRENT_USER_CODE = code;
             return levels[0];
         }
 
-        // Load Services
+        // Load Services from Firebase
         function loadServices() {
             db.ref('services').on('value', (snapshot) => {
-                servicesData = snapshot.val() || getDefaultServices();
+                const data = snapshot.val();
+                if (data && Object.keys(data).length > 0) {
+                    servicesData = Object.values(data);
+                } else {
+                    // Initialize default services if empty
+                    initializeDefaultServices();
+                    servicesData = defaultServices;
+                }
                 renderServices();
+                renderAllServicesModal();
+            }, (error) => {
+                console.error('Error loading services:', error);
+                servicesData = defaultServices;
+                renderServices();
+                renderAllServicesModal();
             });
         }
 
-        function getDefaultServices() {
-            return [
-                { id: 'maintenance', title: 'الصيانة', desc: 'كهرباء، سباكة، تكييف', price: 'يبدأ من 50 ريال', icon: 'fa-tools', color: 'from-cyan-400 to-blue-600', discount: '-20%' },
-                { id: 'ai', title: 'البوت الذكي', desc: 'محادثة ذكية', price: 'مجاني', icon: 'fa-brain', color: 'from-purple-400 to-pink-600', badge: 'مجاني' },
-                { id: 'calendar', title: 'الجدول الشهري', desc: 'تنظيم ومواعيد ذكية', price: 'اشتراك شهري', icon: 'fa-calendar-alt', color: 'from-orange-400 to-red-600' },
-                { id: 'store', title: 'المتجر', desc: 'تسوق ذكي وسريع', price: 'تبدأ من 29 ريال', icon: 'fa-shopping-bag', color: 'from-green-400 to-emerald-600', badge: 'جديد' }
-            ];
+        function initializeDefaultServices() {
+            defaultServices.forEach(service => {
+                db.ref('services/' + service.id).set(service);
+            });
+        }
+
+        // Load Quick Actions from Firebase
+        function loadQuickActions() {
+            db.ref('quickActions').on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data && Object.keys(data).length > 0) {
+                    quickActionsData = Object.values(data);
+                } else {
+                    initializeDefaultQuickActions();
+                    quickActionsData = defaultQuickActions;
+                }
+                renderQuickActions();
+            }, (error) => {
+                console.error('Error loading quick actions:', error);
+                quickActionsData = defaultQuickActions;
+                renderQuickActions();
+            });
+        }
+
+        function initializeDefaultQuickActions() {
+            defaultQuickActions.forEach((action, index) => {
+                db.ref('quickActions/' + index).set(action);
+            });
+        }
+
+        // Render Functions
+        function renderQuickActions() {
+            const container = document.getElementById('quick-actions-container');
+            container.innerHTML = quickActionsData.map(action => `
+                <button onclick="openTool('${action.id}')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-white/10 transition-all active:scale-95">
+                    <div class="w-12 h-12 rounded-xl bg-${action.color}-500/20 text-${action.color}-400 flex items-center justify-center text-xl">
+                        <i class="fas ${action.icon}"></i>
+                    </div>
+                    <span class="text-xs font-medium">${action.title}</span>
+                </button>
+            `).join('');
         }
 
         function renderServices() {
             const container = document.getElementById('services-container');
-            const allServicesList = document.getElementById('all-services-list');
-            
             container.innerHTML = servicesData.map(service => `
-                <div class="service-card glass rounded-2xl p-4 relative group cursor-pointer" 
-                     onclick="openService('${service.id}', '${service.title}', '${service.desc}', '${service.price}')">
+                <div class="service-card glass rounded-2xl p-4 relative group cursor-pointer" onclick="openService('${service.id}')">
                     ${service.discount ? `<div class="absolute top-3 left-3"><span class="px-2 py-1 rounded-full bg-red-500/20 text-red-400 text-xs">${service.discount}</span></div>` : ''}
                     ${service.badge ? `<div class="absolute top-3 left-3"><span class="px-2 py-1 rounded-full bg-${service.badge === 'مجاني' ? 'green' : 'blue'}-500/20 text-${service.badge === 'مجاني' ? 'green' : 'blue'}-400 text-xs">${service.badge}</span></div>` : ''}
                     <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${service.color} flex items-center justify-center text-2xl mb-3 shadow-lg group-hover:scale-110 transition-transform">
@@ -687,43 +610,58 @@ window.CURRENT_USER_CODE = code;
                     <p class="text-xs text-gray-400">${service.desc}</p>
                 </div>
             `).join('');
+        }
 
-            const categories = [
-                { name: 'الخدمات الرئيسية', items: servicesData },
-                { name: 'خدمات إضافية', items: [
-                    { title: 'المحفظة', desc: 'إدارة الرصيد والدفع', icon: 'fa-wallet', color: 'yellow' },
-                    { title: 'الخريطة', desc: 'تحديد المواقع والفنيين', icon: 'fa-map-marker-alt', color: 'red' },
-                    { title: 'خدمات السيارات', desc: 'صيانة وغسيل السيارات', icon: 'fa-car', color: 'cyan' },
-                    { title: 'التنظيف المنزلي', desc: 'خدمات التنظيف الشاملة', icon: 'fa-home', color: 'pink' }
-                ]}
-            ];
+        function renderAllServicesModal() {
+            const container = document.getElementById('all-services-list');
+            
+            // Get additional services from Firebase or use defaults
+            db.ref('additionalServices').once('value', (snapshot) => {
+                let additionalServices = snapshot.val();
+                if (!additionalServices) {
+                    additionalServices = defaultAdditionalServices;
+                    // Save to Firebase
+                    defaultAdditionalServices.forEach((svc, idx) => {
+                        db.ref('additionalServices/' + idx).set(svc);
+                    });
+                }
 
-            allServicesList.innerHTML = categories.map(cat => `
-                <div>
-                    <h4 class="text-sm font-bold text-gray-400 mb-3">${cat.name}</h4>
-                    <div class="${cat.name === 'الخدمات الرئيسية' ? 'grid grid-cols-4 gap-3' : 'space-y-2'}">
-                        ${cat.items.map(item => cat.name === 'الخدمات الرئيسية' ? `
-                            <div class="flex flex-col items-center gap-2 p-3 rounded-xl bg-white/5 cursor-pointer hover:bg-white/10 transition-colors" onclick="openTool('${item.id}')">
-                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center text-xl text-white">
-                                    <i class="fas ${item.icon}"></i>
+                container.innerHTML = `
+                    <!-- Main Services -->
+                    <div>
+                        <h4 class="text-sm font-bold text-gray-400 mb-3">الخدمات الرئيسية</h4>
+                        <div class="grid grid-cols-4 gap-3">
+                            ${servicesData.map(service => `
+                                <div class="flex flex-col items-center gap-2 p-3 rounded-xl bg-white/5 cursor-pointer hover:bg-white/10 transition-colors" onclick="openTool('${service.id}')">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center text-xl text-white">
+                                        <i class="fas ${service.icon}"></i>
+                                    </div>
+                                    <span class="text-xs text-center">${service.title}</span>
                                 </div>
-                                <span class="text-xs">${item.title}</span>
-                            </div>
-                        ` : `
-                            <div class="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors cursor-pointer" onclick="showToast('قريباً', 'info')">
-                                <div class="w-12 h-12 rounded-xl bg-${item.color}-500/20 text-${item.color}-400 flex items-center justify-center text-xl">
-                                    <i class="fas ${item.icon}"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <div class="font-bold">${item.title}</div>
-                                    <div class="text-xs text-gray-400">${item.desc}</div>
-                                </div>
-                                <i class="fas fa-chevron-left text-gray-400"></i>
-                            </div>
-                        `).join('')}
+                            `).join('')}
+                        </div>
                     </div>
-                </div>
-            `).join('');
+
+                    <!-- Additional Services -->
+                    <div>
+                        <h4 class="text-sm font-bold text-gray-400 mb-3">خدمات إضافية</h4>
+                        <div class="space-y-2">
+                            ${Array.isArray(additionalServices) ? additionalServices.map(item => `
+                                <div class="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors cursor-pointer" onclick="showToast('قريباً', 'info')">
+                                    <div class="w-12 h-12 rounded-xl bg-${item.color}-500/20 text-${item.color}-400 flex items-center justify-center text-xl">
+                                        <i class="fas ${item.icon}"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="font-bold">${item.title}</div>
+                                        <div class="text-xs text-gray-400">${item.desc}</div>
+                                    </div>
+                                    <i class="fas fa-chevron-left text-gray-400"></i>
+                                </div>
+                            `).join('') : ''}
+                        </div>
+                    </div>
+                `;
+            });
         }
 
         // Particles
@@ -763,6 +701,7 @@ window.CURRENT_USER_CODE = code;
         }
 
         function animateValue(id, start, end, duration) {
+            if (start === end) return;
             const obj = document.getElementById(id);
             const range = end - start;
             const increment = range / (duration / 16);
@@ -770,7 +709,7 @@ window.CURRENT_USER_CODE = code;
             
             const timer = setInterval(() => {
                 current += increment;
-                if (current >= end) {
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
                     current = end;
                     clearInterval(timer);
                 }
@@ -788,7 +727,6 @@ window.CURRENT_USER_CODE = code;
                 btn.innerHTML = '<i class="fas fa-stop text-xl"></i>';
                 wave.classList.remove('hidden');
                 input.placeholder = 'جاري الاستماع...';
-                
                 setTimeout(() => {
                     toggleVoiceSearch();
                     input.value = 'صيانة تكييف';
@@ -817,7 +755,7 @@ window.CURRENT_USER_CODE = code;
             document.getElementById('clear-search').classList.add('hidden');
         }
 
-        // Menu
+        // Menu & Modals
         function toggleMenu() {
             const menu = document.getElementById('side-menu');
             const overlay = document.getElementById('menu-overlay');
@@ -834,7 +772,6 @@ window.CURRENT_USER_CODE = code;
             }
         }
 
-        // Modals
         function showAllServices() {
             const modal = document.getElementById('all-services-modal');
             const panel = modal.querySelector('div[class*="translate-y-full"]');
@@ -850,17 +787,19 @@ window.CURRENT_USER_CODE = code;
             setTimeout(() => modal.classList.add('pointer-events-none'), 300);
         }
 
-        function openService(id, title, desc, price) {
-            const service = servicesData.find(s => s.id === id) || {};
+        function openService(id) {
+            const service = servicesData.find(s => s.id === id);
+            if (!service) return;
+
             const content = `
                 <div class="text-center mb-6">
-                    <div class="w-20 h-20 rounded-3xl bg-gradient-to-br ${service.color || 'from-primary to-secondary'} flex items-center justify-center text-4xl mx-auto mb-4 shadow-lg shadow-primary/30">
-                        <i class="fas ${service.icon || 'fa-tools'} text-white"></i>
+                    <div class="w-20 h-20 rounded-3xl bg-gradient-to-br ${service.color} flex items-center justify-center text-4xl mx-auto mb-4 shadow-lg shadow-primary/30">
+                        <i class="fas ${service.icon} text-white"></i>
                     </div>
-                    <h3 class="text-2xl font-bold mb-2">${title}</h3>
-                    <p class="text-gray-400">${desc}</p>
+                    <h3 class="text-2xl font-bold mb-2">${service.title}</h3>
+                    <p class="text-gray-400">${service.desc}</p>
                     <div class="mt-4 inline-block px-4 py-2 rounded-full bg-primary/20 text-primary font-bold">
-                        ${price}
+                        ${service.price}
                     </div>
                 </div>
                 <div class="space-y-3 mb-6">
@@ -873,13 +812,12 @@ window.CURRENT_USER_CODE = code;
                         <span class="text-sm">استجابة فورية</span>
                     </div>
                 </div>
-                <button onclick="bookService('${id}')" class="w-full py-4 rounded-2xl bg-gradient-to-r from-primary to-secondary text-white font-bold text-lg shadow-lg shadow-primary/30 active:scale-95 transform transition-transform">
+                <button onclick="bookService('${service.id}')" class="w-full py-4 rounded-2xl bg-gradient-to-r from-primary to-secondary text-white font-bold text-lg shadow-lg shadow-primary/30 active:scale-95 transform transition-transform">
                     طلب الخدمة الآن
                 </button>
             `;
             
             document.getElementById('service-detail-content').innerHTML = content;
-            
             const modal = document.getElementById('service-modal');
             const panel = modal.querySelector('div[class*="translate-y-full"]');
             modal.classList.remove('pointer-events-none', 'opacity-0');
@@ -898,15 +836,13 @@ window.CURRENT_USER_CODE = code;
             closeService();
             showToast('تم إرسال طلبك بنجاح!', 'success');
             
-            if (currentUserId) {
-                const orderRef = db.ref('orders').push();
-                orderRef.set({
-                    userId: currentUserId,
-                    serviceId: serviceId,
-                    status: 'pending',
-                    timestamp: Date.now()
-                });
-            }
+            const orderRef = db.ref('orders').push();
+            orderRef.set({
+                userId: currentUserId,
+                serviceId: serviceId,
+                status: 'pending',
+                timestamp: Date.now()
+            });
         }
 
         function switchView(view) {
@@ -953,29 +889,15 @@ window.CURRENT_USER_CODE = code;
 
         function quickAction(type) {
             closeQuickAction();
-            const actions = { 
-                scan: 'جاري فتح الماسح...', 
-                voice: 'جاري تفعيل البحث الصوتي...', 
-                location: 'جاري تحديد الموقع...' 
-            };
+            const actions = { scan: 'جاري فتح الماسح...', voice: 'جاري تفعيل البحث الصوتي...', location: 'جاري تحديد الموقع...' };
             showToast(actions[type], 'info');
         }
 
         function showToast(message, type = 'info') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            const colors = { 
-                success: 'bg-green-500', 
-                error: 'bg-red-500', 
-                info: 'bg-primary', 
-                warning: 'bg-yellow-500' 
-            };
-            const icons = { 
-                success: 'fa-check-circle', 
-                error: 'fa-exclamation-circle', 
-                info: 'fa-info-circle', 
-                warning: 'fa-exclamation-triangle' 
-            };
+            const colors = { success: 'bg-green-500', error: 'bg-red-500', info: 'bg-primary', warning: 'bg-yellow-500' };
+            const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle', warning: 'fa-exclamation-triangle' };
             
             toast.className = `flex items-center gap-3 px-6 py-4 rounded-2xl ${colors[type]} text-white shadow-2xl min-w-[300px] transform translate-x-full transition-transform duration-300`;
             toast.innerHTML = `<i class="fas ${icons[type]} text-xl"></i><span class="font-bold">${message}</span>`;
@@ -990,8 +912,7 @@ window.CURRENT_USER_CODE = code;
 
         function openProfile() { showToast('فتح الملف الشخصي', 'info'); }
         function showNotifications() { 
-            const badge = document.getElementById('notification-badge');
-            badge.classList.remove('hidden');
+            document.getElementById('notification-badge').classList.remove('hidden');
             showToast('لديك إشعارات جديدة', 'info'); 
         }
         function openTool(tool) {
@@ -1001,7 +922,6 @@ window.CURRENT_USER_CODE = code;
         function openAIChat() { showToast('جاري فتح المحادثة الذكية...', 'info'); }
         
         function logout() {
-            // إرسال أمر للتطبيق الأصلي بتسجيل الخروج
             try {
                 if (window.AndroidInterface) {
                     window.AndroidInterface.logout();
@@ -1014,14 +934,9 @@ window.CURRENT_USER_CODE = code;
             }
         }
 
-        // تحديث المستوى (للاختبار)
+        // Expose for testing
         window.updateLevel = function(newLevel) {
-            if (currentUserId) {
-                db.ref('users/' + currentUserId).update({ level: newLevel });
-            } else {
-                userData.level = newLevel;
-                updateUI();
-            }
+            db.ref('users/' + currentUserId).update({ level: newLevel });
         };
     </script>
 </body>
