@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#0f172a">
-    <title>بروفايل المتخصص</title>
+    <title>منصة المتخصصين</title>
     
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script>
@@ -19,20 +19,14 @@
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: { tajawal: ['Tajawal', 'sans-serif'] },
+                    fontFamily: { cairo: ['Cairo', 'sans-serif'] },
                     colors: {
-                        brand: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            900: '#0c4a6e',
-                        },
-                        dark: {
-                            bg: '#0a0f1c',
-                            card: '#151b2e',
-                            border: '#1e293b'
-                        }
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#f59e0b',
+                        dark: '#0f172a',
+                        darker: '#020617',
+                        surface: '#1e293b',
                     }
                 }
             }
@@ -40,558 +34,128 @@
     </script>
 
     <style>
-        * { -webkit-tap-highlight-color: transparent; user-select: none; font-family: 'Tajawal', sans-serif; }
+        * { -webkit-tap-highlight-color: transparent; user-select: none; }
+        body { font-family: 'Cairo', sans-serif; background: #020617; color: white; overflow-x: hidden; }
         
-        body {
-            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
-            color: #1e293b;
-            overflow-x: hidden;
+        .glass { 
+            background: rgba(30, 41, 59, 0.9); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
         }
         
-        body.dark {
-            background: #0a0f1c;
-            color: #f8fafc;
+        .gradient-text { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
         }
         
-        /* Glass Card Effect */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        body.dark .glass-card {
-            background: rgba(21, 27, 46, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-        
-        /* Neumorphic Effect */
-        .neu-light {
-            background: #f1f5f9;
-            box-shadow: 8px 8px 16px #d1d5db, -8px -8px 16px #ffffff;
-        }
-        
-        body.dark .neu-light {
-            background: #151b2e;
-            box-shadow: 8px 8px 16px #0a0f1c, -8px -8px 16px #1e293b;
-        }
-        
-        /* Circular Progress */
-        .circular-progress {
-            position: relative;
-            width: 140px;
-            height: 140px;
-        }
-        
-        .circular-progress svg {
-            transform: rotate(-90deg);
-        }
-        
-        .circular-progress circle {
-            fill: none;
-            stroke-width: 10;
-            stroke-linecap: round;
-        }
-        
-        .circular-progress .bg {
-            stroke: #e2e8f0;
-        }
-        
-        body.dark .circular-progress .bg {
-            stroke: #1e293b;
-        }
-        
-        .circular-progress .progress {
-            stroke: url(#gradient);
-            stroke-dasharray: 377;
-            stroke-dashoffset: 377;
-            transition: stroke-dashoffset 1.5s ease-in-out;
-        }
-        
-        /* Level Badge */
-        .level-badge {
+        .status-badge { 
+            padding: 6px 16px; 
+            border-radius: 20px; 
+            font-size: 13px; 
+            font-weight: 700; 
+            border: 2px solid;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
         
-        .level-weak { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); color: #991b1b; border: 2px solid #f87171; }
-        .level-beginner { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); color: #92400e; border: 2px solid #fbbf24; }
-        .level-average { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); color: #1e40af; border: 2px solid #60a5fa; }
-        .level-good { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); color: #065f46; border: 2px solid #34d399; }
-        .level-excellent { background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); color: #3730a3; border: 2px solid #818cf8; }
+        /* Level Colors */
+        .level-0 { background: rgba(239, 68, 68, 0.2); color: #f87171; border-color: #ef4444; }
+        .level-10 { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border-color: #f59e0b; }
+        .level-20 { background: rgba(251, 191, 36, 0.2); color: #fcd34d; border-color: #fbbf24; }
+        .level-30 { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border-color: #3b82f6; }
+        .level-40 { background: rgba(34, 197, 94, 0.2); color: #4ade80; border-color: #22c55e; }
+        .level-50 { background: rgba(16, 185, 129, 0.2); color: #34d399; border-color: #10b981; }
+        .level-60 { background: rgba(20, 184, 166, 0.2); color: #2dd4bf; border-color: #14b8a6; }
+        .level-70 { background: rgba(6, 182, 212, 0.2); color: #22d3ee; border-color: #06b6d4; }
+        .level-80 { background: rgba(99, 102, 241, 0.2); color: #818cf8; border-color: #6366f1; }
+        .level-90 { background: rgba(139, 92, 246, 0.2); color: #a78bfa; border-color: #8b5cf6; }
+        .level-100 { background: rgba(236, 72, 153, 0.2); color: #f472b6; border-color: #ec4899; }
         
-        body.dark .level-weak { background: rgba(248, 113, 113, 0.15); color: #fca5a5; }
-        body.dark .level-beginner { background: rgba(251, 191, 36, 0.15); color: #fcd34d; }
-        body.dark .level-average { background: rgba(96, 165, 250, 0.15); color: #93c5fd; }
-        body.dark .level-good { background: rgba(52, 211, 153, 0.15); color: #6ee7b7; }
-        body.dark .level-excellent { background: rgba(129, 140, 248, 0.15); color: #a5b4fc; }
+        .progress-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+            overflow: hidden;
+            height: 16px;
+            position: relative;
+        }
         
-        /* Wallet Card */
-        .wallet-glass {
-            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 50%, #0369a1 100%);
+        .progress-fill {
+            height: 100%;
+            border-radius: 9999px;
+            background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
         
-        .wallet-glass::before {
+        .progress-fill::after {
             content: '';
             position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
-            animation: pulse 4s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-        }
-        
-        /* Navigation */
-        .nav-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(226, 232, 240, 0.5);
-        }
-        
-        body.dark .nav-container {
-            background: rgba(10, 15, 28, 0.95);
-            border-top: 1px solid rgba(30, 41, 59, 0.5);
-        }
-        
-        .nav-item {
-            position: relative;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .nav-item.active {
-            color: #0ea5e9;
-            transform: translateY(-8px);
-        }
-        
-        .nav-item.active::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 4px;
-            background: #0ea5e9;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #0ea5e9;
-        }
-        
-        /* Search */
-        .search-input {
-            background: rgba(241, 245, 249, 0.8);
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-        
-        .search-input:focus {
-            background: white;
-            border-color: #0ea5e9;
-            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
-        }
-        
-        body.dark .search-input {
-            background: rgba(21, 27, 46, 0.8);
-            color: white;
-        }
-        
-        body.dark .search-input:focus {
-            background: #151b2e;
-            border-color: #0ea5e9;
-        }
-        
-        /* Menu */
-        .menu-overlay {
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-        }
-        
-        .menu-panel {
-            background: rgba(255, 255, 255, 0.98);
-            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.1);
-        }
-        
-        body.dark .menu-panel {
-            background: rgba(10, 15, 28, 0.98);
-            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
-        }
-        
-        /* Hide scrollbar */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Float animation */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        .float-anim { animation: float 4s ease-in-out infinite; }
-        
-        /* Shimmer */
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-        .shimmer {
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            background-size: 200% 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
             animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        
+        .modal.active { display: flex; }
+        
+        .modal-content {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            width: 95%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .activity-item {
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .menu-overlay {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
         }
     </style>
 </head>
-<body class="antialiased pb-24">
+<body class="antialiased pb-6">
 
-    <!-- SVG Gradients -->
-    <svg width="0" height="0" class="absolute">
-        <defs>
-            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:#0ea5e9;stop-opacity:1" />
-                <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
-            </linearGradient>
-        </defs>
-    </svg>
-
-    <!-- Header -->
-    <header class="fixed top-0 left-0 right-0 z-50 glass-card px-6 py-4">
-        <div class="flex items-center justify-between max-w-lg mx-auto">
-            <button onclick="toggleMenu()" class="w-12 h-12 rounded-2xl neu-light flex items-center justify-center text-slate-600 dark:text-slate-300 hover:scale-105 transition-transform">
-                <i class="fas fa-bars text-lg"></i>
-            </button>
-            
-            <div class="flex items-center gap-2">
-                <div class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
-                <span class="text-sm font-bold text-slate-600 dark:text-slate-300">متصل</span>
-            </div>
-            
-            <button onclick="showNotifications()" class="relative w-12 h-12 rounded-2xl neu-light flex items-center justify-center text-slate-600 dark:text-slate-300 hover:scale-105 transition-transform">
-                <i class="fas fa-bell text-lg"></i>
-                <span class="absolute top-2 right-2 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white dark:border-dark-bg"></span>
-            </button>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="pt-24 px-5 max-w-lg mx-auto space-y-6">
-
-        <!-- Profile Hero Section -->
-        <section class="glass-card rounded-3xl p-6 relative overflow-hidden">
-            <!-- Decorative Elements -->
-            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-brand-500/20 to-purple-500/20 rounded-full blur-2xl -mr-10 -mt-10"></div>
-            <div class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-emerald-500/20 to-brand-500/20 rounded-full blur-2xl -ml-5 -mb-5"></div>
-            
-            <div class="relative z-10 flex flex-col items-center text-center">
-                <!-- Avatar with Progress Ring -->
-                <div class="circular-progress mb-4 float-anim">
-                    <svg width="140" height="140">
-                        <circle class="bg" cx="70" cy="70" r="60"></circle>
-                        <circle class="progress" id="progress-circle" cx="70" cy="70" r="60"></circle>
-                    </svg>
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-white dark:border-dark-card shadow-xl">
-                            <img id="user-avatar" src="https://i.pravatar.cc/150?img=11" alt="Profile" class="w-full h-full object-cover">
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- User Info -->
-                <h1 id="user-name" class="text-2xl font-black text-slate-800 dark:text-white mb-1">جاري التحميل...</h1>
-                <p id="user-major" class="text-brand-600 dark:text-brand-400 font-bold text-lg mb-4">---</p>
-                
-                <!-- Level Badge -->
-                <div id="level-badge" class="level-badge level-weak">
-                    <i class="fas fa-chart-line"></i>
-                    <span id="level-text">---</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Stats Cards -->
-        <section class="grid grid-cols-2 gap-4">
-            <!-- Grade Card -->
-            <div class="glass-card rounded-2xl p-5 text-center relative overflow-hidden group">
-                <div class="absolute inset-0 bg-gradient-to-br from-brand-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <div class="relative z-10">
-                    <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br from-brand-500 to-brand-600 flex items-center justify-center text-white text-xl shadow-lg shadow-brand-500/30">
-                        <i class="fas fa-percentage"></i>
-                    </div>
-                    <div class="text-3xl font-black text-slate-800 dark:text-white mb-1" id="grade-display">0%</div>
-                    <div class="text-sm font-bold text-slate-500 dark:text-slate-400">النسبة المئوية</div>
-                </div>
-            </div>
-            
-            <!-- Progress Card -->
-            <div class="glass-card rounded-2xl p-5 text-center relative overflow-hidden group">
-                <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-brand-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <div class="relative z-10">
-                    <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xl shadow-lg shadow-emerald-500/30">
-                        <i class="fas fa-chart-pie"></i>
-                    </div>
-                    <div class="text-3xl font-black text-slate-800 dark:text-white mb-1" id="progress-text">0%</div>
-                    <div class="text-sm font-bold text-slate-500 dark:text-slate-400">التقدم للتالي</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Linear Progress -->
-        <section class="glass-card rounded-2xl p-5">
-            <div class="flex justify-between items-center mb-3">
-                <span class="text-sm font-bold text-slate-600 dark:text-slate-300">التقدم نحو المستوى التالي</span>
-                <span id="points-needed" class="text-xs font-bold bg-brand-100 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 px-3 py-1 rounded-full">100 نقطة للترقية</span>
-            </div>
-            <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden relative">
-                <div id="linear-progress" class="h-full bg-gradient-to-r from-brand-500 via-purple-500 to-pink-500 rounded-full transition-all duration-1000 relative" style="width: 0%">
-                    <div class="absolute inset-0 shimmer"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Wallet Section (Collapsible) -->
-        <section class="wallet-glass rounded-3xl p-6 text-white shadow-2xl shadow-brand-500/30 relative overflow-hidden">
-            <div class="relative z-10">
-                <div class="flex justify-between items-start mb-6">
-                    <div>
-                        <p class="text-brand-100 text-sm font-bold mb-1">رصيد المحفظة</p>
-                        <h2 class="text-4xl font-black tracking-tight" id="wallet-balance">0</h2>
-                        <p class="text-brand-200 text-xs mt-1">نقطة = ريال سعودي</p>
-                    </div>
-                    <div class="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center">
-                        <i class="fas fa-wallet text-2xl"></i>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-3 gap-3">
-                    <button onclick="openRecharge()" class="py-3 px-2 rounded-xl bg-white text-brand-600 font-bold text-sm hover:bg-brand-50 transition-colors flex flex-col items-center gap-1">
-                        <i class="fas fa-plus-circle"></i>
-                        <span>شحن</span>
-                    </button>
-                    <button onclick="openTransfer()" class="py-3 px-2 rounded-xl bg-white/20 backdrop-blur text-white font-bold text-sm hover:bg-white/30 transition-colors flex flex-col items-center gap-1">
-                        <i class="fas fa-exchange-alt"></i>
-                        <span>تحويل</span>
-                    </button>
-                    <button onclick="openHistory()" class="py-3 px-2 rounded-xl bg-white/20 backdrop-blur text-white font-bold text-sm hover:bg-white/30 transition-colors flex flex-col items-center gap-1">
-                        <i class="fas fa-history"></i>
-                        <span>السجل</span>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Search -->
-        <section>
-            <div class="search-input rounded-2xl p-4 flex items-center gap-4">
-                <i class="fas fa-search text-slate-400 text-xl"></i>
-                <input type="text" id="search-input" placeholder="ابحث عن خدمة أو متخصص..." 
-                    class="flex-1 bg-transparent border-none outline-none text-right text-slate-700 dark:text-slate-200 placeholder-slate-400 font-medium"
-                    onkeyup="handleSearch(event)">
-                <button onclick="clearSearch()" id="clear-btn" class="hidden text-slate-400 hover:text-rose-500 transition-colors">
-                    <i class="fas fa-times-circle text-xl"></i>
-                </button>
-            </div>
-        </section>
-
-        <!-- Categories Grid -->
-        <section>
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-black text-slate-800 dark:text-white">الأقسام</h2>
-                <button class="text-brand-600 dark:text-brand-400 font-bold text-sm hover:underline">الكل</button>
-            </div>
-            
-            <div class="grid grid-cols-2 gap-4">
-                <div class="glass-card rounded-2xl p-5 cursor-pointer hover:scale-[1.02] transition-transform group" onclick="openCategory('tech')">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white text-2xl mb-4 shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-microchip"></i>
-                    </div>
-                    <h3 class="font-bold text-slate-800 dark:text-white mb-1">تقنية</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">برمجة، شبكات، أمن سيبراني</p>
-                </div>
-                
-                <div class="glass-card rounded-2xl p-5 cursor-pointer hover:scale-[1.02] transition-transform group" onclick="openCategory('design')">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-2xl mb-4 shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-palette"></i>
-                    </div>
-                    <h3 class="font-bold text-slate-800 dark:text-white mb-1">تصميم</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">جرافيك، موشن، UI/UX</p>
-                </div>
-                
-                <div class="glass-card rounded-2xl p-5 cursor-pointer hover:scale-[1.02] transition-transform group" onclick="openCategory('marketing')">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white text-2xl mb-4 shadow-lg shadow-orange-500/30 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-bullseye"></i>
-                    </div>
-                    <h3 class="font-bold text-slate-800 dark:text-white mb-1">تسويق</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">إعلانات، SEO، محتوى</p>
-                </div>
-                
-                <div class="glass-card rounded-2xl p-5 cursor-pointer hover:scale-[1.02] transition-transform group" onclick="openCategory('business')">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white text-2xl mb-4 shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-briefcase"></i>
-                    </div>
-                    <h3 class="font-bold text-slate-800 dark:text-white mb-1">أعمال</h3>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">استشارات، إدارة، مالية</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Recent Activity -->
-        <section class="glass-card rounded-3xl p-6">
-            <h2 class="text-lg font-black text-slate-800 dark:text-white mb-4 flex items-center gap-2">
-                <i class="fas fa-clock-rotate-left text-brand-500"></i>
-                آخر النشاطات
-            </h2>
-            <div class="space-y-4">
-                <div class="flex items-center gap-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 text-lg">
-                        <i class="fas fa-arrow-down"></i>
-                    </div>
-                    <div class="flex-1">
-                        <p class="font-bold text-slate-800 dark:text-white text-sm">استلام نقاط</p>
-                        <p class="text-xs text-slate-500">من إكمال مهمة التقييم</p>
-                    </div>
-                    <span class="font-black text-emerald-600 dark:text-emerald-400">+250</span>
-                </div>
-                
-                <div class="flex items-center gap-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50">
-                    <div class="w-12 h-12 rounded-xl bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center text-rose-600 dark:text-rose-400 text-lg">
-                        <i class="fas fa-arrow-up"></i>
-                    </div>
-                    <div class="flex-1">
-                        <p class="font-bold text-slate-800 dark:text-white text-sm">شراء خدمة</p>
-                        <p class="text-xs text-slate-500">تصميم شعار احترافي</p>
-                    </div>
-                    <span class="font-black text-rose-600 dark:text-rose-400">-150</span>
-                </div>
-            </div>
-        </section>
-
-        <div class="h-8"></div>
-    </main>
-
-    <!-- Bottom Navigation -->
-    <nav class="fixed bottom-0 left-0 right-0 nav-container px-6 py-4 z-50">
-        <div class="flex items-center justify-around max-w-lg mx-auto">
-            <button onclick="setActiveTab(this, 'home')" class="nav-item active flex flex-col items-center gap-1 text-brand-500" data-tab="home">
-                <i class="fas fa-home text-2xl"></i>
-                <span class="text-[10px] font-bold">الرئيسية</span>
-            </button>
-            
-            <button onclick="setActiveTab(this, 'explore')" class="nav-item flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300" data-tab="explore">
-                <i class="fas fa-compass text-2xl"></i>
-                <span class="text-[10px] font-bold">استكشف</span>
-            </button>
-            
-            <button onclick="setActiveTab(this, 'wallet')" class="nav-item flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300" data-tab="wallet">
-                <i class="fas fa-wallet text-2xl"></i>
-                <span class="text-[10px] font-bold">المحفظة</span>
-            </button>
-            
-            <button onclick="setActiveTab(this, 'chat')" class="nav-item flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 relative" data-tab="chat">
-                <i class="fas fa-comment-dots text-2xl"></i>
-                <span class="absolute -top-1 right-1 w-5 h-5 bg-rose-500 rounded-full text-[9px] flex items-center justify-center text-white font-bold">3</span>
-                <span class="text-[10px] font-bold">الدردشة</span>
-            </button>
-            
-            <button onclick="setActiveTab(this, 'profile')" class="nav-item flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300" data-tab="profile">
-                <i class="fas fa-user text-2xl"></i>
-                <span class="text-[10px] font-bold">حسابي</span>
-            </button>
-        </div>
-    </nav>
-
-    <!-- Side Menu -->
-    <div id="side-menu" class="fixed inset-0 z-[60] pointer-events-none">
-        <div class="menu-overlay absolute inset-0 opacity-0 transition-opacity duration-300" onclick="toggleMenu()"></div>
-        <div class="menu-panel absolute top-0 right-0 h-full w-80 transform translate-x-full transition-transform duration-300 pointer-events-auto">
-            <div class="p-6 h-full flex flex-col">
-                <div class="flex items-center justify-between mb-8">
-                    <h2 class="text-2xl font-black text-slate-800 dark:text-white">القائمة</h2>
-                    <button onclick="toggleMenu()" class="w-12 h-12 rounded-2xl neu-light flex items-center justify-center text-slate-600 dark:text-slate-300">
-                        <i class="fas fa-times text-lg"></i>
-                    </button>
-                </div>
-                
-                <div class="space-y-3 flex-1 overflow-y-auto no-scrollbar">
-                    <button class="w-full flex items-center gap-4 p-4 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-right group">
-                        <div class="w-12 h-12 rounded-xl bg-brand-100 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
-                            <i class="fas fa-user-circle"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="font-bold text-slate-800 dark:text-white">الملف الشخصي</div>
-                            <div class="text-xs text-slate-500">إدارة البيانات</div>
-                        </div>
-                    </button>
-                    
-                    <button class="w-full flex items-center gap-4 p-4 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-right group">
-                        <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
-                            <i class="fas fa-crown"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="font-bold text-slate-800 dark:text-white">العضوية المميزة</div>
-                            <div class="text-xs text-slate-500">VIP - مميزات حصرية</div>
-                        </div>
-                    </button>
-                    
-                    <button class="w-full flex items-center gap-4 p-4 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-right group">
-                        <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
-                            <i class="fas fa-chart-simple"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="font-bold text-slate-800 dark:text-white">التقدم والإنجازات</div>
-                            <div class="text-xs text-slate-500">شاهد تطورك</div>
-                        </div>
-                    </button>
-                    
-                    <button onclick="toggleDarkMode()" class="w-full flex items-center gap-4 p-4 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-right group">
-                        <div class="w-12 h-12 rounded-xl bg-slate-800 dark:bg-slate-700 text-slate-400 dark:text-yellow-400 flex items-center justify-center text-lg transition-colors">
-                            <i class="fas fa-moon dark:hidden"></i>
-                            <i class="fas fa-sun hidden dark:block"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="font-bold text-slate-800 dark:text-white">الوضع الليلي</div>
-                            <div class="text-xs text-slate-500" id="theme-status">الوضع الفاتح</div>
-                        </div>
-                        <div class="w-12 h-6 bg-slate-200 dark:bg-brand-600 rounded-full relative transition-colors">
-                            <div class="absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform dark:translate-x-6"></div>
-                        </div>
-                    </button>
-                    
-                    <button class="w-full flex items-center gap-4 p-4 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-right group">
-                        <div class="w-12 h-12 rounded-xl bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
-                            <i class="fas fa-circle-question"></i>
-                        </div>
-                        <div class="flex-1">
-                            <div class="font-bold text-slate-800 dark:text-white">المساعدة</div>
-                            <div class="text-xs text-slate-500">الدعم الفني</div>
-                        </div>
-                    </button>
-                </div>
-                
-                <button onclick="logout()" class="w-full py-4 rounded-2xl bg-gradient-to-r from-rose-500 to-rose-600 text-white font-bold shadow-lg shadow-rose-500/30 hover:shadow-rose-500/50 transition-all flex items-center justify-center gap-2">
-                    <i class="fas fa-sign-out-alt"></i>
-                    تسجيل الخروج
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast -->
-    <div id="toast-container" class="fixed top-28 left-1/2 -translate-x-1/2 z-[70] space-y-2 pointer-events-none w-full max-w-sm px-4"></div>
-
-    <!-- Auth Check -->
+    <!-- Authentication Check -->
     <script>
         let code = null;
         if (window.AndroidSession && typeof AndroidSession.getCode === "function") {
@@ -603,13 +167,10 @@
         }
         if (!code) {
             document.body.innerHTML = `
-                <div class="h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white font-cairo text-center p-4">
-                    <div class="glass-card p-8 rounded-3xl max-w-sm">
-                        <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center text-rose-500 text-3xl">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <h2 class="text-xl font-black mb-2">غير مصرح بالدخول</h2>
-                        <p class="text-slate-500 text-sm">يرجى فتح الصفحة من داخل التطبيق</p>
+                <div style="height:100vh;display:flex;align-items:center;justify-content:center;background:#020617;color:white;font-family:Cairo;text-align:center;">
+                    <div>
+                        <h2>🚫 غير مصرح بالدخول</h2>
+                        <p>يرجى فتح الصفحة من داخل التطبيق</p>
                     </div>
                 </div>
             `;
@@ -617,6 +178,315 @@
         }
         window.CURRENT_USER_CODE = code;
     </script>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-40 glass px-4 py-3">
+        <div class="flex items-center justify-between max-w-lg mx-auto">
+            <button onclick="toggleMenu()" class="w-10 h-10 rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors">
+                <i class="fas fa-bars text-lg"></i>
+            </button>
+            
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span class="text-sm font-medium text-gray-300">متصل</span>
+            </div>
+            
+            <button onclick="showNotifications()" class="relative w-10 h-10 rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors">
+                <i class="fas fa-bell text-lg"></i>
+                <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-[10px] flex items-center justify-center font-bold border-2 border-darker">3</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-lg mx-auto px-4 space-y-6 pt-4">
+        
+        <!-- Profile Card -->
+        <div class="glass rounded-3xl p-6 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-3xl -mr-10 -mt-10"></div>
+            
+            <div class="relative z-10 flex flex-col items-center text-center">
+                <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-white/20 shadow-xl mb-4">
+                    <img id="user-avatar" src="https://i.pravatar.cc/150?img=11" alt="Profile" class="w-full h-full object-cover">
+                </div>
+                
+                <h1 id="user-name" class="text-2xl font-bold mb-1">جاري التحميل...</h1>
+                <p id="user-major" class="text-primary font-medium mb-3">---</p>
+                
+                <div id="level-badge" class="status-badge level-0">
+                    <i class="fas fa-chart-line"></i>
+                    <span id="level-text">---</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-2 gap-4">
+            <div class="glass rounded-2xl p-5 text-center">
+                <div class="text-3xl font-bold gradient-text mb-1" id="grade-display">0%</div>
+                <div class="text-xs text-gray-400">النسبة المئوية</div>
+            </div>
+            
+            <div class="glass rounded-2xl p-5 text-center cursor-pointer hover:bg-white/5 transition-colors" onclick="openWalletModal()">
+                <div class="text-3xl font-bold text-emerald-400 mb-1" id="wallet-balance">0</div>
+                <div class="text-xs text-gray-400">الرصيد (نقطة)</div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="glass rounded-2xl p-5">
+            <div class="flex justify-between items-center mb-3">
+                <span class="text-sm font-bold text-gray-300">مستوى التقدم</span>
+                <span id="progress-percentage" class="text-sm font-bold text-primary">0%</span>
+            </div>
+            <div class="progress-container">
+                <div id="progress-bar" class="progress-fill" style="width: 0%"></div>
+            </div>
+            <p class="text-xs text-gray-400 mt-2 text-center" id="level-description">
+                ابدأ رحلتك للوصول إلى الامتياز
+            </p>
+        </div>
+
+        <!-- Search -->
+        <div class="glass rounded-2xl p-4 flex items-center gap-4">
+            <i class="fas fa-search text-gray-400 text-xl"></i>
+            <input type="text" id="search-input" placeholder="ابحث..." 
+                class="flex-1 bg-transparent border-none outline-none text-right text-white placeholder-gray-500"
+                onkeyup="handleSearch(event)">
+            <button onclick="clearSearch()" id="clear-btn" class="hidden text-gray-400 hover:text-white">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Quick Actions -->
+        <div>
+            <h3 class="font-bold text-lg mb-3">الوصول السريع</h3>
+            <div class="grid grid-cols-4 gap-3">
+                <button onclick="openTool('maintenance')" class="flex flex-col items-center gap-2 p-3 rounded-2xl glass hover:bg-white/5 transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl">
+                        <i class="fas fa-wrench"></i>
+                    </div>
+                    <span class="text-xs">صيانة</span>
+                </button>
+                
+                <button onclick="openTool('store')" class="flex flex-col items-center gap-2 p-3 rounded-2xl glass hover:bg-white/5 transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <span class="text-xs">متجر</span>
+                </button>
+                
+                <button onclick="openTool('ai')" class="flex flex-col items-center gap-2 p-3 rounded-2xl glass hover:bg-white/5 transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <span class="text-xs">AI</span>
+                </button>
+                
+                <button onclick="openTool('calendar')" class="flex flex-col items-center gap-2 p-3 rounded-2xl glass hover:bg-white/5 transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center text-xl">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <span class="text-xs">مواعيد</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Recent Activities -->
+        <div class="glass rounded-3xl p-5">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg">آخر النشاطات</h3>
+                <button onclick="openHistoryModal()" class="text-sm text-primary hover:underline">الكل</button>
+            </div>
+            <div id="activities-list" class="space-y-3 max-h-64 overflow-y-auto hide-scrollbar">
+                <div class="text-center text-gray-500 py-4">جاري التحميل...</div>
+            </div>
+        </div>
+
+        <div class="h-6"></div>
+    </main>
+
+    <!-- Wallet Modal -->
+    <div id="wallet-modal" class="modal">
+        <div class="modal-content p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">المحفظة</h2>
+                <button onclick="closeModal('wallet-modal')" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="bg-gradient-to-br from-primary to-secondary rounded-2xl p-6 mb-6 text-center relative overflow-hidden">
+                <div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiNmZmYiLz48L3N2Zz4=')]"></div>
+                <p class="text-white/70 text-sm mb-1">الرصيد المتاح</p>
+                <h3 class="text-4xl font-black text-white mb-1" id="modal-wallet-balance">0</h3>
+                <p class="text-white/50 text-xs">نقطة</p>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="openTransferModal()" class="py-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors font-bold flex items-center justify-center gap-2">
+                    <i class="fas fa-exchange-alt text-primary"></i>
+                    تحويل
+                </button>
+                <button onclick="openHistoryModal()" class="py-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors font-bold flex items-center justify-center gap-2">
+                    <i class="fas fa-history text-primary"></i>
+                    السجل
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transfer Modal -->
+    <div id="transfer-modal" class="modal">
+        <div class="modal-content p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">تحويل النقاط</h2>
+                <button onclick="closeModal('transfer-modal')" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">رقم المستلم</label>
+                    <input type="text" id="transfer-to" placeholder="أدخل كود المستخدم" 
+                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-right focus:border-primary focus:outline-none">
+                </div>
+                
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">المبلغ</label>
+                    <input type="number" id="transfer-amount" placeholder="0" 
+                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-right focus:border-primary focus:outline-none">
+                </div>
+                
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">ملاحظة</label>
+                    <input type="text" id="transfer-note" placeholder="اختياري" 
+                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-right focus:border-primary focus:outline-none">
+                </div>
+                
+                <button onclick="executeTransfer()" class="w-full py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-bold shadow-lg shadow-primary/30">
+                    تنفيذ التحويل
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div id="history-modal" class="modal">
+        <div class="modal-content p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">سجل المعاملات</h2>
+                <button onclick="closeModal('history-modal')" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div id="history-list" class="space-y-3 max-h-96 overflow-y-auto hide-scrollbar">
+                <div class="text-center text-gray-500 py-4">جاري التحميل...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Assistant Modal -->
+    <div id="ai-modal" class="modal">
+        <div class="modal-content p-6 h-[80vh] flex flex-col">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold flex items-center gap-2">
+                    <i class="fas fa-robot text-primary"></i>
+                    المساعد الذكي
+                </h2>
+                <button onclick="closeModal('ai-modal')" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div id="chat-messages" class="flex-1 overflow-y-auto space-y-4 mb-4 p-4 bg-white/5 rounded-2xl hide-scrollbar">
+                <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="bg-white/10 rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]">
+                        <p class="text-sm">مرحباً! كيف يمكنني مساعدتك؟</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex gap-2">
+                <input type="text" id="ai-input" placeholder="اكتب رسالتك..." 
+                    class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary focus:outline-none"
+                    onkeypress="if(event.key==='Enter') sendAIMessage()">
+                <button onclick="sendAIMessage()" class="w-12 h-12 rounded-xl bg-primary flex items-center justify-center hover:bg-primary/80">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Side Menu -->
+    <div id="side-menu" class="fixed inset-0 z-50 pointer-events-none">
+        <div class="menu-overlay absolute inset-0 opacity-0 transition-opacity duration-300" onclick="toggleMenu()"></div>
+        <div class="absolute top-0 right-0 h-full w-80 glass border-l border-white/10 transform translate-x-full transition-transform duration-300 pointer-events-auto" id="menu-panel">
+            <div class="p-6 h-full flex flex-col">
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="text-2xl font-bold gradient-text">القائمة</h2>
+                    <button onclick="toggleMenu()" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="space-y-2 flex-1 overflow-y-auto hide-scrollbar">
+                    <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors text-right">
+                        <div class="w-12 h-12 rounded-xl bg-primary/20 text-primary flex items-center justify-center text-lg">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-bold">الملف الشخصي</div>
+                            <div class="text-xs text-gray-400">إدارة البيانات</div>
+                        </div>
+                    </button>
+                    
+                    <button onclick="openWalletModal(); toggleMenu();" class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors text-right">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-bold">المحفظة</div>
+                            <div class="text-xs text-gray-400" id="menu-balance">الرصيد: 0</div>
+                        </div>
+                    </button>
+                    
+                    <button onclick="openAIAssistant(); toggleMenu();" class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors text-right">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-bold">المساعد الذكي</div>
+                            <div class="text-xs text-gray-400">AI</div>
+                        </div>
+                    </button>
+                    
+                    <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors text-right">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-bold">العضوية المميزة</div>
+                            <div class="text-xs text-gray-400">VIP</div>
+                        </div>
+                    </button>
+                </div>
+                
+                <button onclick="logout()" class="w-full py-4 rounded-xl bg-red-500/20 text-red-400 font-bold hover:bg-red-500/30 transition-colors flex items-center justify-center gap-2">
+                    <i class="fas fa-sign-out-alt"></i>
+                    تسجيل الخروج
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast-container" class="fixed top-24 left-1/2 -translate-x-1/2 z-[60] space-y-2 pointer-events-none w-full max-w-sm px-4"></div>
 
     <script>
         // Firebase Config
@@ -636,60 +506,34 @@
         let currentUserId = window.CURRENT_USER_CODE;
         let userData = null;
         
-        // Level definitions based on grade percentage
+        // Level definitions - exactly as requested
         const levels = [
-            { min: 0, max: 20, name: 'ضعيف', class: 'level-weak', next: 20 },
-            { min: 21, max: 40, name: 'مبتدئ', class: 'level-beginner', next: 40 },
-            { min: 41, max: 60, name: 'متوسط', class: 'level-average', next: 60 },
-            { min: 61, max: 80, name: 'جيد', class: 'level-good', next: 80 },
-            { min: 81, max: 100, name: 'ممتاز', class: 'level-excellent', next: 100 }
+            { threshold: 0, name: 'ضعيف', class: 'level-0' },
+            { threshold: 10, name: 'مبتدئ', class: 'level-10' },
+            { threshold: 20, name: 'مقبول', class: 'level-20' },
+            { threshold: 30, name: 'تحت المتوسط', class: 'level-30' },
+            { threshold: 40, name: 'جيد', class: 'level-40' },
+            { threshold: 50, name: 'جيد جداً', class: 'level-50' },
+            { threshold: 60, name: 'مجتهد', class: 'level-60' },
+            { threshold: 70, name: 'مثابر', class: 'level-70' },
+            { threshold: 80, name: 'متألق', class: 'level-80' },
+            { threshold: 90, name: 'متفوق', class: 'level-90' },
+            { threshold: 100, name: 'امتياز', class: 'level-100' }
         ];
-        
-        function initTheme() {
-            const saved = localStorage.getItem('theme');
-            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const isDark = saved === 'dark' || (!saved && systemDark);
-            
-            if (isDark) {
-                document.documentElement.classList.add('dark');
-                document.body.classList.add('dark');
-                updateThemeUI(true);
-            }
-        }
-        
-        function toggleDarkMode() {
-            const isDark = document.documentElement.classList.contains('dark');
-            if (isDark) {
-                document.documentElement.classList.remove('dark');
-                document.body.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-                updateThemeUI(false);
-                showToast('تم تفعيل الوضع الفاتح', 'success');
-            } else {
-                document.documentElement.classList.add('dark');
-                document.body.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-                updateThemeUI(true);
-                showToast('تم تفعيل الوضع الليلي', 'success');
-            }
-        }
-        
-        function updateThemeUI(isDark) {
-            const status = document.getElementById('theme-status');
-            if (status) status.textContent = isDark ? 'الوضع الليلي' : 'الوضع الفاتح';
-        }
-        
+
         function loadUserData() {
             db.ref('users/' + currentUserId).on('value', (snapshot) => {
                 userData = snapshot.val();
                 if (userData) {
                     updateUI();
+                    loadActivities();
+                    loadHistory();
                 } else {
                     createDefaultUser();
                 }
             });
         }
-        
+
         function createDefaultUser() {
             const defaultData = {
                 name: 'مستخدم جديد',
@@ -700,53 +544,257 @@
             };
             db.ref('users/' + currentUserId).set(defaultData);
         }
-        
+
         function updateUI() {
             if (!userData) return;
             
-            // Basic info
             document.getElementById('user-name').textContent = userData.name || 'مستخدم';
             document.getElementById('user-major').textContent = userData.major || 'غير محدد';
             document.getElementById('user-avatar').src = userData.avatar || 'https://i.pravatar.cc/150?img=11';
             
-            // Parse grade
+            // Parse grade percentage
             const gradeStr = userData.grade || '0%';
             const gradeNum = parseInt(gradeStr.replace('%', '')) || 0;
             
-            // Update grade display
             document.getElementById('grade-display').textContent = gradeNum + '%';
             
-            // Determine level
-            const currentLevel = levels.find(l => gradeNum >= l.min && gradeNum <= l.max) || levels[0];
-            const nextThreshold = currentLevel.next;
-            const progressPercent = Math.min(100, (gradeNum / nextThreshold) * 100);
-            const pointsNeeded = Math.max(0, (nextThreshold - gradeNum) * 10);
+            // Find current level based on grade
+            let currentLevel = levels[0];
+            for (let i = levels.length - 1; i >= 0; i--) {
+                if (gradeNum >= levels[i].threshold) {
+                    currentLevel = levels[i];
+                    break;
+                }
+            }
             
             // Update level badge
             const badge = document.getElementById('level-badge');
-            badge.className = `level-badge ${currentLevel.class}`;
+            badge.className = `status-badge ${currentLevel.class}`;
             document.getElementById('level-text').textContent = currentLevel.name;
             
-            // Update circular progress
-            const circle = document.getElementById('progress-circle');
-            const circumference = 2 * Math.PI * 60; // 377
-            const offset = circumference - (progressPercent / 100) * circumference;
-            circle.style.strokeDashoffset = offset;
+            // Update progress bar - directly represents the grade percentage
+            document.getElementById('progress-bar').style.width = gradeNum + '%';
+            document.getElementById('progress-percentage').textContent = gradeNum + '%';
             
-            // Update linear progress
-            document.getElementById('linear-progress').style.width = progressPercent + '%';
-            document.getElementById('progress-text').textContent = Math.round(progressPercent) + '%';
-            document.getElementById('points-needed').textContent = pointsNeeded + ' نقطة للترقية';
+            // Update description
+            const nextLevel = levels.find(l => l.threshold > gradeNum);
+            if (nextLevel) {
+                document.getElementById('level-description').textContent = 
+                    `أنت حالياً ${currentLevel.name} - التالي: ${nextLevel.name} (${nextLevel.threshold}%)`;
+            } else {
+                document.getElementById('level-description').textContent = 
+                    'مبروك! لقد وصلت إلى أعلى مستوى 🎉';
+            }
             
-            // Update wallet (points as balance)
+            // Update wallet
             const points = userData.points || 0;
             document.getElementById('wallet-balance').textContent = points.toLocaleString();
+            document.getElementById('modal-wallet-balance').textContent = points.toLocaleString();
+            document.getElementById('menu-balance').textContent = `الرصيد: ${points.toLocaleString()}`;
         }
-        
+
+        function loadActivities() {
+            const activitiesRef = db.ref('activities/' + currentUserId).limitToLast(5);
+            activitiesRef.on('value', (snapshot) => {
+                const activities = snapshot.val();
+                const container = document.getElementById('activities-list');
+                
+                if (!activities) {
+                    container.innerHTML = '<div class="text-center text-gray-500 py-4">لا توجد نشاطات</div>';
+                    return;
+                }
+                
+                const sorted = Object.entries(activities).sort((a, b) => b[1].timestamp - a[1].timestamp);
+                
+                container.innerHTML = sorted.map(([key, activity]) => {
+                    const isPositive = activity.type === 'earn' || activity.type === 'transfer_in' || activity.type === 'level_up';
+                    const icon = isPositive ? 'fa-arrow-up' : 'fa-arrow-down';
+                    const color = isPositive ? 'text-emerald-400' : 'text-rose-400';
+                    const bg = isPositive ? 'bg-emerald-500/20' : 'bg-rose-500/20';
+                    
+                    return `
+                        <div class="activity-item flex items-center gap-3 p-3 rounded-xl bg-white/5">
+                            <div class="w-10 h-10 rounded-lg ${bg} ${color} flex items-center justify-center">
+                                <i class="fas ${icon}"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-bold text-sm">${activity.title}</p>
+                                <p class="text-xs text-gray-400">${new Date(activity.timestamp).toLocaleDateString('ar-SA')}</p>
+                            </div>
+                            <span class="${color} font-bold">${isPositive ? '+' : '-'}${activity.amount}</span>
+                        </div>
+                    `;
+                }).join('');
+            });
+        }
+
+        function loadHistory() {
+            const historyRef = db.ref('transactions/' + currentUserId).limitToLast(20);
+            historyRef.on('value', (snapshot) => {
+                const transactions = snapshot.val();
+                const container = document.getElementById('history-list');
+                
+                if (!transactions) {
+                    container.innerHTML = '<div class="text-center text-gray-500 py-4">لا توجد معاملات</div>';
+                    return;
+                }
+                
+                const sorted = Object.entries(transactions).sort((a, b) => b[1].timestamp - a[1].timestamp);
+                
+                container.innerHTML = sorted.map(([key, tx]) => {
+                    const icons = {
+                        transfer: 'fa-exchange-alt',
+                        purchase: 'fa-shopping-cart',
+                        received: 'fa-arrow-down',
+                        level_up: 'fa-trophy'
+                    };
+                    const icon = icons[tx.type] || 'fa-history';
+                    
+                    let color = 'text-blue-400';
+                    let bg = 'bg-blue-500/20';
+                    if (tx.type === 'purchase') { color = 'text-rose-400'; bg = 'bg-rose-500/20'; }
+                    else if (tx.type === 'received' || tx.type === 'level_up') { color = 'text-emerald-400'; bg = 'bg-emerald-500/20'; }
+                    
+                    return `
+                        <div class="activity-item flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/5">
+                            <div class="w-12 h-12 rounded-xl ${bg} ${color} flex items-center justify-center text-lg">
+                                <i class="fas ${icon}"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-bold">${tx.title}</p>
+                                <p class="text-xs text-gray-400">${tx.description || ''}</p>
+                                <p class="text-xs text-gray-500 mt-1">${new Date(tx.timestamp).toLocaleString('ar-SA')}</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="${color} font-bold block">${tx.amount > 0 ? '+' : ''}${tx.amount}</span>
+                                <span class="text-xs text-gray-500">${tx.status || 'مكتمل'}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            });
+        }
+
+        function executeTransfer() {
+            const toUser = document.getElementById('transfer-to').value;
+            const amount = parseInt(document.getElementById('transfer-amount').value);
+            const note = document.getElementById('transfer-note').value;
+            
+            if (!toUser || !amount || amount <= 0) {
+                showToast('يرجى إدخال جميع البيانات', 'error');
+                return;
+            }
+            
+            if (toUser === currentUserId) {
+                showToast('لا يمكن التحويل لنفسك', 'error');
+                return;
+            }
+            
+            const currentPoints = userData.points || 0;
+            if (amount > currentPoints) {
+                showToast('رصيد غير كافي', 'error');
+                return;
+            }
+            
+            const updates = {};
+            const txId = Date.now();
+            
+            updates['users/' + currentUserId + '/points'] = currentPoints - amount;
+            updates['users/' + toUser + '/points'] = firebase.database.ServerValue.increment(amount);
+            
+            updates['transactions/' + currentUserId + '/' + txId] = {
+                type: 'transfer',
+                title: 'تحويل إلى ' + toUser,
+                description: note || 'تحويل نقاط',
+                amount: -amount,
+                to: toUser,
+                timestamp: Date.now(),
+                status: 'مكتمل'
+            };
+            
+            updates['transactions/' + toUser + '/' + txId] = {
+                type: 'received',
+                title: 'استلام من ' + currentUserId,
+                description: note || 'استلام نقاط',
+                amount: amount,
+                from: currentUserId,
+                timestamp: Date.now(),
+                status: 'مكتمل'
+            };
+            
+            updates['activities/' + currentUserId + '/' + txId] = {
+                type: 'transfer_out',
+                title: 'تحويل نقاط',
+                amount: amount,
+                timestamp: Date.now()
+            };
+            
+            updates['activities/' + toUser + '/' + txId] = {
+                type: 'transfer_in',
+                title: 'استلام نقاط',
+                amount: amount,
+                timestamp: Date.now()
+            };
+            
+            db.ref().update(updates).then(() => {
+                showToast('تم التحويل بنجاح', 'success');
+                closeModal('transfer-modal');
+                document.getElementById('transfer-to').value = '';
+                document.getElementById('transfer-amount').value = '';
+                document.getElementById('transfer-note').value = '';
+            }).catch(err => {
+                showToast('حدث خطأ: ' + err.message, 'error');
+            });
+        }
+
+        function sendAIMessage() {
+            const input = document.getElementById('ai-input');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            addMessageToChat(message, 'user');
+            input.value = '';
+            
+            setTimeout(() => {
+                const responses = [
+                    'أفهم ما تقصد. كيف يمكنني مساعدتك أكثر؟',
+                    'يمكنك التحقق من رصيدك في قسم المحفظة.',
+                    'للتحويل، استخدم زر التحويل في المحفظة.',
+                    'مستواك الحالي يظهر في شريط التقدم.'
+                ];
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                addMessageToChat(randomResponse, 'ai');
+            }, 1000);
+        }
+
+        function addMessageToChat(text, sender) {
+            const container = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            div.className = 'flex items-start gap-3 ' + (sender === 'user' ? 'flex-row-reverse' : '');
+            
+            const avatar = sender === 'ai' 
+                ? '<div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center"><i class="fas fa-robot"></i></div>'
+                : '<div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"><i class="fas fa-user"></i></div>';
+            
+            const bubble = sender === 'ai' 
+                ? 'bg-white/10 rounded-2xl rounded-tr-sm' 
+                : 'bg-primary rounded-2xl rounded-tl-sm';
+            
+            div.innerHTML = `
+                ${avatar}
+                <div class="${bubble} px-4 py-3 max-w-[80%]">
+                    <p class="text-sm">${text}</p>
+                </div>
+            `;
+            
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
         function toggleMenu() {
             const menu = document.getElementById('side-menu');
-            const overlay = menu.querySelector('.menu-overlay');
-            const panel = menu.querySelector('.menu-panel');
+            const overlay = document.getElementById('menu-overlay');
+            const panel = document.getElementById('menu-panel');
             
             if (menu.classList.contains('pointer-events-none')) {
                 menu.classList.remove('pointer-events-none');
@@ -758,35 +806,38 @@
                 panel.style.transform = 'translateX(100%)';
             }
         }
+
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
         
-        function setActiveTab(el, tab) {
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active', 'text-brand-500');
-                item.classList.add('text-slate-400');
-            });
-            el.classList.add('active', 'text-brand-500');
-            el.classList.remove('text-slate-400');
+        function openWalletModal() { openModal('wallet-modal'); }
+        function openTransferModal() { closeModal('wallet-modal'); openModal('transfer-modal'); }
+        function openHistoryModal() { openModal('history-modal'); }
+        function openAIAssistant() { openModal('ai-modal'); }
+        
+        function openTool(tool) {
+            const names = { maintenance: 'الصيانة', store: 'المتجر', ai: 'المساعد الذكي', calendar: 'المواعيد' };
+            showToast(names[tool] || tool, 'info');
         }
-        
+
         function handleSearch(e) {
             const val = document.getElementById('search-input').value;
-            const clearBtn = document.getElementById('clear-btn');
-            
-            if (val) {
-                clearBtn.classList.remove('hidden');
-                if (e.key === 'Enter') {
-                    showToast('جاري البحث عن: ' + val, 'info');
-                }
-            } else {
-                clearBtn.classList.add('hidden');
-            }
+            document.getElementById('clear-btn').classList.toggle('hidden', !val);
+            if (e.key === 'Enter' && val) showToast('بحث: ' + val, 'info');
         }
-        
+
         function clearSearch() {
             document.getElementById('search-input').value = '';
             document.getElementById('clear-btn').classList.add('hidden');
         }
-        
+
+        function showNotifications() { showToast('لديك 3 إشعارات جديدة', 'info'); }
+
+        function logout() {
+            showToast('تم تسجيل الخروج', 'success');
+            setTimeout(() => location.reload(), 1000);
+        }
+
         function showToast(message, type = 'info') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -794,7 +845,7 @@
             const colors = {
                 success: 'bg-emerald-500',
                 error: 'bg-rose-500',
-                info: 'bg-brand-500',
+                info: 'bg-primary',
                 warning: 'bg-amber-500'
             };
             
@@ -809,26 +860,38 @@
             
             setTimeout(() => {
                 toast.style.opacity = '0';
-                toast.style.transform = 'translateY(-10px)';
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
-        
-        function openCategory(cat) { showToast('فتح: ' + cat, 'info'); }
-        function openRecharge() { showToast('فتح شحن الرصيد', 'info'); }
-        function openTransfer() { showToast('فتح تحويل الرصيد', 'info'); }
-        function openHistory() { showToast('فتح السجل', 'info'); }
-        function showNotifications() { showToast('لديك 3 إشعارات', 'info'); }
-        function logout() { showToast('تم تسجيل الخروج', 'success'); setTimeout(() => location.reload(), 1000); }
-        
-        // Init
+
+        // LocalStorage for theme and cache
+        function initLocalStorage() {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
-            initTheme();
+            initLocalStorage();
             loadUserData();
         });
-        
+
         // Test functions
-        window.updateGrade = (g) => db.ref('users/' + currentUserId).update({ grade: g + '%' });
+        window.updateGrade = (g) => {
+            db.ref('users/' + currentUserId).update({ grade: g + '%' });
+            // Add level up activity if significant change
+            if (g % 10 === 0) {
+                const id = Date.now();
+                db.ref('activities/' + currentUserId + '/' + id).set({
+                    type: 'level_up',
+                    title: 'ترقية مستوى!',
+                    amount: 0,
+                    timestamp: Date.now()
+                });
+            }
+        };
+        
         window.updatePoints = (p) => db.ref('users/' + currentUserId).update({ points: p });
     </script>
 </body>
