@@ -21,12 +21,14 @@
                 extend: {
                     fontFamily: { cairo: ['Cairo', 'sans-serif'] },
                     colors: {
-                        primary: '#3b82f6',
+                        primary: '#6366f1',
                         secondary: '#8b5cf6',
                         accent: '#f59e0b',
                         light: '#f8fafc',
                         lighter: '#ffffff',
                         surface: '#f1f5f9',
+                        dark: '#0f172a',
+                        darker: '#020617',
                         darkSurface: '#1e293b',
                     }
                 }
@@ -39,29 +41,33 @@
         body { font-family: 'Cairo', sans-serif; background: #f8fafc; overflow-x: hidden; transition: background-color 0.3s, color 0.3s; }
         body.dark { background: #020617; color: white; }
         
+        /* Light Mode Glass Effects */
         .glass { 
             background: rgba(255, 255, 255, 0.7); 
             backdrop-filter: blur(20px); 
             border: 1px solid rgba(255, 255, 255, 0.5); 
             transition: all 0.3s;
         }
-        body.dark .glass { 
-            background: rgba(255, 255, 255, 0.03); 
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-        }
-        
         .glass-strong { 
             background: rgba(255, 255, 255, 0.9); 
             backdrop-filter: blur(30px); 
             border: 1px solid rgba(255, 255, 255, 0.6); 
             transition: all 0.3s;
         }
-        body.dark .glass-strong { 
-            background: rgba(30, 41, 59, 0.7); 
+        
+        /* Dark Mode - Solid Dark Colors (Old Style) */
+        body.dark .glass { 
+            background: #1e293b; 
             border: 1px solid rgba(255, 255, 255, 0.1); 
+            backdrop-filter: none;
+        }
+        body.dark .glass-strong { 
+            background: #0f172a; 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            backdrop-filter: none;
         }
         
-        .gradient-text { background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .gradient-text { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .gradient-text-gold { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
         .hide-scrollbar::-webkit-scrollbar { display: none; }
@@ -71,38 +77,31 @@
         .badge-bounce { animation: bounce-slight 2s infinite; }
         
         .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; border: 2px solid; display: inline-block; }
-        .status-0 { background-color: #fee2e2; border-color: #fecaca; color: #991b1b; }
-        .status-10 { background-color: #ffedd5; border-color: #fed7aa; color: #9a3412; }
-        .status-20 { background-color: #fef3c7; border-color: #fde68a; color: #92400e; }
-        .status-30 { background-color: #fef9c3; border-color: #fef08a; color: #854d0e; }
-        .status-40 { background-color: #dcfce7; border-color: #bbf7d0; color: #166534; }
-        .status-50 { background-color: #cffafe; border-color: #a5f3fc; color: #155e75; }
-        .status-60 { background-color: #dbeafe; border-color: #bfdbfe; color: #1e40af; }
-        .status-70 { background-color: #e0e7ff; border-color: #c7d2fe; color: #3730a3; }
-        .status-80 { background-color: #d1fae5; border-color: #a7f3d0; color: #065f46; }
-        .status-90 { background-color: #f3e8ff; border-color: #e9d5ff; color: #6b21a8; }
+        .status-0 { background-color: #f8d7da; border-color: #f5c2c7; color: #a71d2a; }
+        .status-10 { background-color: #fff0d6; border-color: #ffe4b3; color: #b36b00; }
+        .status-20 { background-color: #fff7cc; border-color: #ffed99; color: #a67c00; }
+        .status-30 { background-color: #fff9e6; border-color: #fff0b3; color: #9a8c00; }
+        .status-40 { background-color: #e2f0d9; border-color: #c6e0ad; color: #4d7c19; }
+        .status-50 { background-color: #d1ecf1; border-color: #bee5eb; color: #0c5460; }
+        .status-60 { background-color: #cce5ff; border-color: #99ccff; color: #004085; }
+        .status-70 { background-color: #e2e3f5; border-color: #c6c8f0; color: #383d9e; }
+        .status-80 { background-color: #d4edda; border-color: #c3e6cb; color: #155724; }
+        .status-90 { background-color: #f3e2f3; border-color: #e0c7e0; color: #6f42c1; }
 
         #particles-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .progress-bar { transition: width 0.5s ease; }
         
+        /* Light Mode Shimmer */
         .shimmer { 
             background: linear-gradient(90deg, rgba(0,0,0,0.05) 25%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.05) 75%); 
             background-size: 200% 100%; 
             animation: shimmer 1.5s infinite; 
         }
+        /* Dark Mode Shimmer - Original Style */
         body.dark .shimmer { 
             background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%); 
         }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-        
-        /* Dark mode toggle switch */
-        .toggle-checkbox:checked {
-            right: 0;
-            border-color: #68D391;
-        }
-        .toggle-checkbox:checked + .toggle-label {
-            background-color: #68D391;
-        }
         
         /* Text colors for light mode */
         body { color: #1e293b; }
@@ -114,6 +113,7 @@
         .text-gray-300 { color: #475569; }
         body.dark .text-gray-300 { color: #cbd5e1; }
         
+        /* Background utilities for light mode */
         .bg-white\/5 { background-color: rgba(0,0,0,0.05); }
         body.dark .bg-white\/5 { background-color: rgba(255,255,255,0.05); }
         
@@ -122,6 +122,13 @@
         
         .border-white\/10 { border-color: rgba(0,0,0,0.1); }
         body.dark .border-white\/10 { border-color: rgba(255,255,255,0.1); }
+        
+        /* Dark mode specific backgrounds */
+        body.dark .bg-slate-50 { background-color: #1e293b; }
+        body.dark .bg-slate-100 { background-color: #0f172a; }
+        body.dark .bg-slate-200 { background-color: #1e293b; }
+        body.dark .hover\:bg-slate-100:hover { background-color: #334155; }
+        body.dark .hover\:bg-slate-200:hover { background-color: #475569; }
     </style>
 </head>
 <body class="bg-light text-slate-800 antialiased">
@@ -180,15 +187,15 @@
 
                     <!-- Stats -->
                     <div class="grid grid-cols-3 gap-3 mt-6">
-                        <div class="text-center p-3 rounded-2xl bg-white dark:bg-white/5 shadow-sm border border-slate-100 dark:border-white/10">
+                        <div class="text-center p-3 rounded-2xl bg-white dark:bg-[#1e293b] shadow-sm border border-slate-100 dark:border-white/10">
                             <div class="text-2xl font-bold gradient-text-gold" id="points-count">0</div>
                             <div class="text-xs text-slate-500 dark:text-gray-400 mt-1">نقطة</div>
                         </div>
-                        <div class="text-center p-3 rounded-2xl bg-white dark:bg-white/5 shadow-sm border border-slate-100 dark:border-white/10">
+                        <div class="text-center p-3 rounded-2xl bg-white dark:bg-[#1e293b] shadow-sm border border-slate-100 dark:border-white/10">
                             <div class="text-2xl font-bold text-primary" id="major-percentage">0%</div>
                             <div class="text-xs text-slate-500 dark:text-gray-400 mt-1">النسبة</div>
                         </div>
-                        <div class="text-center p-3 rounded-2xl bg-white dark:bg-white/5 shadow-sm border border-slate-100 dark:border-white/10">
+                        <div class="text-center p-3 rounded-2xl bg-white dark:bg-[#1e293b] shadow-sm border border-slate-100 dark:border-white/10">
                             <div class="text-2xl font-bold text-secondary" id="level-display">0</div>
                             <div class="text-xs text-slate-500 dark:text-gray-400 mt-1">المستوى</div>
                         </div>
@@ -324,7 +331,7 @@
         <!-- Side Menu -->
         <div id="side-menu" class="fixed inset-0 z-[60] pointer-events-none">
             <div class="absolute inset-0 bg-slate-900/20 dark:bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300" onclick="toggleMenu()" id="menu-overlay"></div>
-            <div class="absolute top-0 right-0 h-full w-80 bg-white dark:bg-surface border-l border-slate-200 dark:border-white/10 transform translate-x-full transition-transform duration-300 pointer-events-auto shadow-2xl" id="menu-panel">
+            <div class="absolute top-0 right-0 h-full w-80 bg-white dark:bg-[#0f172a] border-l border-slate-200 dark:border-white/10 transform translate-x-full transition-transform duration-300 pointer-events-auto shadow-2xl" id="menu-panel">
                 <div class="p-6 h-full flex flex-col">
                     <div class="flex items-center justify-between mb-8">
                         <h2 class="text-xl font-bold text-slate-800 dark:text-white">القائمة</h2>
@@ -333,7 +340,7 @@
                         </button>
                     </div>
                     <div class="space-y-2 flex-1">
-                        <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-right">
+                        <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-slate-100 dark:hover:bg-[#1e293b] transition-colors text-right">
                             <div class="w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary flex items-center justify-center">
                                 <i class="fas fa-user"></i>
                             </div>
@@ -342,7 +349,7 @@
                                 <div class="text-xs text-slate-500 dark:text-gray-400">إدارة الحساب</div>
                             </div>
                         </button>
-                        <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-right">
+                        <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-slate-100 dark:hover:bg-[#1e293b] transition-colors text-right">
                             <div class="w-10 h-10 rounded-lg bg-secondary/10 dark:bg-secondary/20 text-secondary flex items-center justify-center">
                                 <i class="fas fa-wallet"></i>
                             </div>
@@ -353,8 +360,8 @@
                         </button>
                         
                         <!-- Dark Mode Toggle -->
-                        <button onclick="toggleDarkMode()" class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-right group">
-                            <div class="w-10 h-10 rounded-lg bg-slate-800 dark:bg-yellow-500/20 text-slate-600 dark:text-yellow-400 flex items-center justify-center transition-colors">
+                        <button onclick="toggleDarkMode()" class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-slate-100 dark:hover:bg-[#1e293b] transition-colors text-right group">
+                            <div class="w-10 h-10 rounded-lg bg-slate-800 dark:bg-[#1e293b] text-slate-600 dark:text-yellow-400 flex items-center justify-center transition-colors border border-slate-200 dark:border-white/10">
                                 <i class="fas fa-moon dark:hidden"></i>
                                 <i class="fas fa-sun hidden dark:block"></i>
                             </div>
@@ -368,7 +375,7 @@
                             </div>
                         </button>
 
-                        <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-right">
+                        <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-slate-100 dark:hover:bg-[#1e293b] transition-colors text-right">
                             <div class="w-10 h-10 rounded-lg bg-accent/10 dark:bg-accent/20 text-accent flex items-center justify-center">
                                 <i class="fas fa-crown"></i>
                             </div>
@@ -388,7 +395,7 @@
         <!-- All Services Modal -->
         <div id="all-services-modal" class="fixed inset-0 z-[70] pointer-events-none opacity-0 transition-opacity duration-300">
             <div class="absolute inset-0 bg-slate-900/40 dark:bg-black/80 backdrop-blur-sm" onclick="closeAllServices()"></div>
-            <div class="absolute bottom-0 left-0 right-0 bg-white dark:bg-surface rounded-t-3xl h-[85vh] transform translate-y-full transition-transform duration-300 pointer-events-auto max-w-lg mx-auto flex flex-col shadow-2xl">
+            <div class="absolute bottom-0 left-0 right-0 bg-white dark:bg-[#0f172a] rounded-t-3xl h-[85vh] transform translate-y-full transition-transform duration-300 pointer-events-auto max-w-lg mx-auto flex flex-col shadow-2xl">
                 <div class="p-4 border-b border-slate-100 dark:border-white/10">
                     <div class="w-12 h-1 bg-slate-300 dark:bg-white/20 rounded-full mx-auto mb-4"></div>
                     <div class="flex items-center justify-between">
@@ -398,7 +405,7 @@
                         </button>
                     </div>
                     <div class="mt-4 relative">
-                        <input type="text" placeholder="البحث في الخدمات..." class="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-right outline-none focus:border-primary transition-colors text-slate-700 dark:text-white placeholder-slate-400 dark:placeholder-gray-500">
+                        <input type="text" placeholder="البحث في الخدمات..." class="w-full bg-slate-50 dark:bg-[#1e293b] border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-right outline-none focus:border-primary transition-colors text-slate-700 dark:text-white placeholder-slate-400 dark:placeholder-gray-500">
                         <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
                     </div>
                 </div>
@@ -420,7 +427,7 @@
         <!-- Service Detail Modal -->
         <div id="service-modal" class="fixed inset-0 z-[70] pointer-events-none opacity-0 transition-opacity duration-300">
             <div class="absolute inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-sm" onclick="closeService()"></div>
-            <div class="absolute bottom-0 left-0 right-0 bg-white dark:bg-surface rounded-t-3xl transform translate-y-full transition-transform duration-300 pointer-events-auto max-w-lg mx-auto p-6 shadow-2xl">
+            <div class="absolute bottom-0 left-0 right-0 bg-white dark:bg-[#0f172a] rounded-t-3xl transform translate-y-full transition-transform duration-300 pointer-events-auto max-w-lg mx-auto p-6 shadow-2xl">
                 <div class="w-12 h-1 bg-slate-300 dark:bg-white/20 rounded-full mx-auto mb-6"></div>
                 <div id="service-detail-content"></div>
             </div>
@@ -429,23 +436,23 @@
         <!-- Quick Action Modal -->
         <div id="quick-modal" class="fixed inset-0 z-[90] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
             <div class="absolute inset-0 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm" onclick="closeQuickAction()"></div>
-            <div class="relative bg-white dark:bg-surface rounded-3xl p-6 w-[90%] max-w-sm transform scale-95 transition-transform duration-300 shadow-2xl" id="quick-modal-content">
+            <div class="relative bg-white dark:bg-[#0f172a] rounded-3xl p-6 w-[90%] max-w-sm transform scale-95 transition-transform duration-300 shadow-2xl" id="quick-modal-content">
                 <h3 class="text-xl font-bold text-center mb-6 text-slate-800 dark:text-white">إجراء سريع</h3>
                 <div class="grid grid-cols-3 gap-4">
-                    <button onclick="quickAction('scan')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
+                    <button onclick="quickAction('scan')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-slate-100 dark:hover:bg-[#1e293b] transition-colors">
                         <i class="fas fa-qrcode text-2xl text-primary"></i>
                         <span class="text-xs text-slate-600 dark:text-gray-300">مسح</span>
                     </button>
-                    <button onclick="quickAction('voice')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
+                    <button onclick="quickAction('voice')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-slate-100 dark:hover:bg-[#1e293b] transition-colors">
                         <i class="fas fa-microphone text-2xl text-secondary"></i>
                         <span class="text-xs text-slate-600 dark:text-gray-300">صوتي</span>
                     </button>
-                    <button onclick="quickAction('location')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
+                    <button onclick="quickAction('location')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-slate-100 dark:hover:bg-[#1e293b] transition-colors">
                         <i class="fas fa-map-marker-alt text-2xl text-accent"></i>
                         <span class="text-xs text-slate-600 dark:text-gray-300">موقع</span>
                     </button>
                 </div>
-                <button onclick="closeQuickAction()" class="w-full mt-6 py-3 rounded-xl bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-gray-400 hover:bg-slate-200 dark:hover:text-white transition-colors">
+                <button onclick="closeQuickAction()" class="w-full mt-6 py-3 rounded-xl bg-slate-100 dark:bg-[#1e293b] text-slate-600 dark:text-gray-400 hover:bg-slate-200 dark:hover:text-white transition-colors">
                     إلغاء
                 </button>
             </div>
@@ -545,9 +552,11 @@
             
             if (isDark) {
                 document.documentElement.classList.add('dark');
+                document.body.classList.add('dark');
                 updateThemeUI(true);
             } else {
                 document.documentElement.classList.remove('dark');
+                document.body.classList.remove('dark');
                 updateThemeUI(false);
             }
         }
@@ -556,15 +565,19 @@
             const isDark = document.documentElement.classList.contains('dark');
             if (isDark) {
                 document.documentElement.classList.remove('dark');
+                document.body.classList.remove('dark');
                 localStorage.setItem('theme', 'light');
                 updateThemeUI(false);
                 showToast('تم تفعيل الوضع الفاتح', 'success');
             } else {
                 document.documentElement.classList.add('dark');
+                document.body.classList.add('dark');
                 localStorage.setItem('theme', 'dark');
                 updateThemeUI(true);
                 showToast('تم تفعيل الوضع الليلي', 'success');
             }
+            // Re-render particles with correct color
+            initParticles();
         }
 
         function updateThemeUI(isDark) {
@@ -607,9 +620,9 @@
         function createDefaultUserData() {
             const defaultData = {
                 name: 'مستخدم جديد',
-                specialty: 'غير محدد', // Changed from location to specialty
+                specialty: 'غير محدد',
                 points: 0,
-                majorPercentage: 0, // Changed from orders to majorPercentage
+                majorPercentage: 0,
                 level: 0,
                 balance: 0,
                 avatar: 'https://i.pravatar.cc/150?img=11'
@@ -621,11 +634,11 @@
             if (!userData) return;
 
             document.getElementById('user-name').textContent = userData.name || 'مستخدم';
-            document.getElementById('user-specialty').textContent = userData.specialty || '---'; // Changed from location to specialty
+            document.getElementById('user-specialty').textContent = userData.specialty || '---';
             document.getElementById('user-avatar').src = userData.avatar || 'https://i.pravatar.cc/150?img=11';
             
             animateValue('points-count', parseInt(document.getElementById('points-count').textContent.replace(/,/g, '')) || 0, userData.points || 0, 1000);
-            animateValue('major-percentage', parseInt(document.getElementById('major-percentage').textContent.replace('%','')) || 0, userData.majorPercentage || 0, 1000); // Changed from orders-count to major-percentage
+            animateValue('major-percentage', parseInt(document.getElementById('major-percentage').textContent.replace('%','')) || 0, userData.majorPercentage || 0, 1000);
             
             document.getElementById('wallet-balance').textContent = `رصيد: ${(userData.balance || 0).toLocaleString()} ريال`;
 
@@ -706,7 +719,7 @@
         function renderQuickActions() {
             const container = document.getElementById('quick-actions-container');
             container.innerHTML = quickActionsData.map(action => `
-                <button onclick="openTool('${action.id}')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-white/50 dark:hover:bg-white/10 transition-all active:scale-95 shadow-sm">
+                <button onclick="openTool('${action.id}')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-white/50 dark:hover:bg-[#334155] transition-all active:scale-95 shadow-sm">
                     <div class="w-12 h-12 rounded-xl bg-${action.color}-100 dark:bg-${action.color}-500/20 text-${action.color}-600 dark:text-${action.color}-400 flex items-center justify-center text-xl">
                         <i class="fas ${action.icon}"></i>
                     </div>
@@ -748,7 +761,7 @@
                         <h4 class="text-sm font-bold text-slate-500 dark:text-gray-400 mb-3">الخدمات الرئيسية</h4>
                         <div class="grid grid-cols-4 gap-3">
                             ${servicesData.map(service => `
-                                <div class="flex flex-col items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-white/5 cursor-pointer hover:bg-slate-100 dark:hover:bg-white/10 transition-colors" onclick="openTool('${service.id}')">
+                                <div class="flex flex-col items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-[#1e293b] cursor-pointer hover:bg-slate-100 dark:hover:bg-[#334155] transition-colors" onclick="openTool('${service.id}')">
                                     <div class="w-12 h-12 rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center text-xl text-white shadow-md">
                                         <i class="fas ${service.icon}"></i>
                                     </div>
@@ -763,7 +776,7 @@
                         <h4 class="text-sm font-bold text-slate-500 dark:text-gray-400 mb-3">خدمات إضافية</h4>
                         <div class="space-y-2">
                             ${Array.isArray(additionalServices) ? additionalServices.map(item => `
-                                <div class="flex items-center gap-4 p-4 rounded-xl bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-pointer" onclick="showToast('قريباً', 'info')">
+                                <div class="flex items-center gap-4 p-4 rounded-xl bg-slate-50 dark:bg-[#1e293b] hover:bg-slate-100 dark:hover:bg-[#334155] transition-colors cursor-pointer" onclick="showToast('قريباً', 'info')">
                                     <div class="w-12 h-12 rounded-xl bg-${item.color}-100 dark:bg-${item.color}-500/20 text-${item.color}-600 dark:text-${item.color}-400 flex items-center justify-center text-xl">
                                         <i class="fas ${item.icon}"></i>
                                     </div>
@@ -926,11 +939,11 @@
                     </div>
                 </div>
                 <div class="space-y-3 mb-6">
-                    <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-white/5">
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-[#1e293b]">
                         <i class="fas fa-check-circle text-green-500"></i>
                         <span class="text-sm text-slate-700 dark:text-gray-300">خدمة مضمونة 100%</span>
                     </div>
-                    <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-white/5">
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-[#1e293b]">
                         <i class="fas fa-clock text-blue-500"></i>
                         <span class="text-sm text-slate-700 dark:text-gray-300">استجابة فورية</span>
                     </div>
