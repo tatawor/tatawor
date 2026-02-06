@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#0f172a">
-    <title> واجهة تطبيق</title>
+    <title>الواجهة</title>
     
     <!-- Firebase SDK - فقط للـ Database -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
@@ -458,7 +458,34 @@
         <div id="toast-container" class="fixed top-20 left-1/2 -translate-x-1/2 z-[80] space-y-2 pointer-events-none"></div>
 
     </div>
+<script>
+const params = new URLSearchParams(window.location.search);
+const code = params.get("code");
 
+if (!code) {
+    document.body.innerHTML = `
+        <div style="
+            height:100vh;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:#020617;
+            color:white;
+            font-family:Cairo;
+            text-align:center;
+        ">
+            <div>
+                <h2>🚫 غير مصرح بالدخول</h2>
+                <p>يرجى فتح الصفحة من داخل التطبيق</p>
+            </div>
+        </div>
+    `;
+    throw new Error("NO_CODE");
+}
+
+// نستخدمه كمستخدم حالي
+window.CURRENT_USER_CODE = code;
+</script>
     <script>
         // Firebase Configuration - استبدل ببياناتك
         const firebaseConfig = {
@@ -476,7 +503,7 @@
         const db = firebase.database();
 
         // متغيرات عامة
-        let currentUserId = null;
+        let currentUserId = window.CURRENT_USER_CODE;
         let userData = null;
         let servicesData = [];
 
@@ -496,18 +523,10 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            initParticles();
-            
-            // انتظار استلام بيانات المستخدم من التطبيق الأصلي
-            if (window.AndroidInterface || window.webkit) {
-                // طلب بيانات المستخدم من التطبيق الأصلي
-                requestUserData();
-            } else {
-                // وضع التجربة
-                loadDemoData();
-                loadServices();
-            }
-        });
+    initParticles();
+    loadUserDataFromFirebase(currentUserId);
+    loadServices();
+});
 
         // طلب بيانات المستخدم من التطبيق الأصلي
         function requestUserData() {
