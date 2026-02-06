@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0f172a">
+    <title> واجهة تطبيق</title>
+    
+    <!-- Firebase SDK - فقط للـ Database -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { cairo: ['Cairo', 'sans-serif'] },
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#f59e0b',
+                        dark: '#0f172a',
+                        darker: '#020617',
+                        surface: '#1e293b',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #020617;
+            overflow-x: hidden;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .glass-strong {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-text-gold {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        @keyframes bounce-slight {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+        
+        .badge-bounce {
+            animation: bounce-slight 2s infinite;
+        }
+
+        /* Status Badge Styles */
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 2px solid;
+            display: inline-block;
+        }
+
+        .status-0 { background-color: #f8d7da; border-color: #f5c2c7; color: #a71d2a; }
+        .status-10 { background-color: #fff0d6; border-color: #ffe4b3; color: #b36b00; }
+        .status-20 { background-color: #fff7cc; border-color: #ffed99; color: #a67c00; }
+        .status-30 { background-color: #fff9e6; border-color: #fff0b3; color: #9a8c00; }
+        .status-40 { background-color: #e2f0d9; border-color: #c6e0ad; color: #4d7c19; }
+        .status-50 { background-color: #d1ecf1; border-color: #bee5eb; color: #0c5460; }
+        .status-60 { background-color: #cce5ff; border-color: #99ccff; color: #004085; }
+        .status-70 { background-color: #e2e3f5; border-color: #c6c8f0; color: #383d9e; }
+        .status-80 { background-color: #d4edda; border-color: #c3e6cb; color: #155724; }
+        .status-90 { background-color: #f3e2f3; border-color: #e0c7e0; color: #6f42c1; }
+
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .progress-bar {
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body class="bg-darker text-white antialiased">
+
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Main App -->
+    <div id="app" class="min-h-screen pb-24">
+        
+        <!-- Header -->
+        <header class="sticky top-0 z-40 glass-strong px-4 py-3">
+            <div class="flex items-center justify-between max-w-lg mx-auto">
+                <button onclick="toggleMenu()" class="w-10 h-10 rounded-xl glass flex items-center justify-center active:scale-95 transition-transform">
+                    <i class="fas fa-bars text-lg"></i>
+                </button>
+                
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="text-sm font-medium text-gray-300">متصل</span>
+                </div>
+
+                <button onclick="showNotifications()" class="relative w-10 h-10 rounded-xl glass flex items-center justify-center active:scale-95 transition-transform">
+                    <i class="fas fa-bell text-lg"></i>
+                    <span id="notification-badge" class="absolute -top-2 -right-2 min-w-[20px] h-5 bg-red-500 rounded-full text-xs flex items-center justify-center px-1 font-bold badge-bounce shadow-lg shadow-red-500/30 border-2 border-darker hidden">0</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-lg mx-auto px-4 space-y-6 overflow-y-auto hide-scrollbar" id="main-content" style="height: calc(100vh - 140px);">
+            
+            <!-- Profile Card -->
+            <div class="relative mt-4">
+                <div class="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-3xl blur-xl opacity-30"></div>
+                <div class="relative glass rounded-3xl p-6 overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -mr-10 -mt-10"></div>
+                    
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-4">
+                            <div class="relative">
+                                <img id="user-avatar" src="https://i.pravatar.cc/150?img=11" alt="User" class="w-16 h-16 rounded-2xl object-cover border-2 border-white/20">
+                                <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-darker flex items-center justify-center">
+                                    <i class="fas fa-check text-xs"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h1 id="user-name" class="text-xl font-bold">جاري التحميل...</h1>
+                                <p id="user-location" class="text-sm text-gray-400">---</p>
+                                <div class="flex items-center gap-1 mt-1">
+                                    <i class="fas fa-crown text-yellow-500 text-xs"></i>
+                                    <span id="user-status" class="text-xs font-bold">---</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="openProfile()" class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                    </div>
+
+                    <!-- Stats -->
+                    <div class="grid grid-cols-3 gap-3 mt-6">
+                        <div class="text-center p-3 rounded-2xl bg-white/5 backdrop-blur-sm">
+                            <div class="text-2xl font-bold gradient-text-gold" id="points-count">0</div>
+                            <div class="text-xs text-gray-400 mt-1">نقطة</div>
+                        </div>
+                        <div class="text-center p-3 rounded-2xl bg-white/5 backdrop-blur-sm">
+                            <div class="text-2xl font-bold text-primary" id="orders-count">0</div>
+                            <div class="text-xs text-gray-400 mt-1">طلب</div>
+                        </div>
+                        <div class="text-center p-3 rounded-2xl bg-white/5 backdrop-blur-sm">
+                            <div class="text-2xl font-bold text-secondary" id="level-display">0</div>
+                            <div class="text-xs text-gray-400 mt-1">المستوى</div>
+                        </div>
+                    </div>
+
+                    <!-- Progress -->
+                    <div class="mt-4">
+                        <div class="flex justify-between text-xs mb-2">
+                            <span class="text-gray-400">التقدم للمستوى التالي</span>
+                            <span id="progress-text" class="text-primary font-bold">0%</span>
+                        </div>
+                        <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div id="progress-bar" class="h-full bg-gradient-to-r from-primary to-secondary rounded-full relative overflow-hidden progress-bar" style="width: 0%">
+                                <div class="absolute inset-0 bg-white/30 animate-[shimmer_2s_infinite]"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Voice Search -->
+            <div class="relative">
+                <div class="glass rounded-2xl p-4 flex items-center gap-4">
+                    <button onclick="toggleVoiceSearch()" id="voice-btn" class="w-12 h-12 rounded-xl bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white shadow-lg shadow-primary/30 transition-all active:scale-95">
+                        <i class="fas fa-microphone text-xl"></i>
+                    </button>
+                    <div class="flex-1">
+                        <input type="text" id="search-input" placeholder="ابحث بصوتك أو اكتب..." 
+                               class="w-full bg-transparent border-none outline-none text-right placeholder-gray-500"
+                               onkeypress="handleSearch(event)">
+                    </div>
+                    <div id="voice-wave" class="hidden flex items-center gap-1 h-8">
+                        <span class="w-1 h-4 bg-primary rounded-full animate-[bounce_1s_infinite]"></span>
+                        <span class="w-1 h-6 bg-primary rounded-full animate-[bounce_1s_infinite_0.1s]"></span>
+                        <span class="w-1 h-8 bg-primary rounded-full animate-[bounce_1s_infinite_0.2s]"></span>
+                        <span class="w-1 h-6 bg-primary rounded-full animate-[bounce_1s_infinite_0.3s]"></span>
+                        <span class="w-1 h-4 bg-primary rounded-full animate-[bounce_1s_infinite_0.4s]"></span>
+                    </div>
+                    <button onclick="clearSearch()" id="clear-search" class="hidden text-gray-400 hover:text-white">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div>
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-lg">الوصول السريع</h3>
+                    <button onclick="showAllServices()" class="text-sm text-primary flex items-center gap-1 hover:gap-2 transition-all">
+                        إظهار الكل
+                        <i class="fas fa-chevron-left text-xs"></i>
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-4 gap-3">
+                    <button onclick="openTool('maintenance')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-white/10 transition-all active:scale-95">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl">
+                            <i class="fas fa-wrench"></i>
+                        </div>
+                        <span class="text-xs font-medium">صيانة</span>
+                    </button>
+                    
+                    <button onclick="openTool('ai')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-white/10 transition-all active:scale-95">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <span class="text-xs font-medium">AI</span>
+                    </button>
+                    
+                    <button onclick="openTool('calendar')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-white/10 transition-all active:scale-95">
+                        <div class="w-12 h-12 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center text-xl">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <span class="text-xs font-medium">المواعيد</span>
+                    </button>
+                    
+                    <button onclick="openTool('store')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-white/10 transition-all active:scale-95">
+                        <div class="w-12 h-12 rounded-xl bg-green-500/20 text-green-400 flex items-center justify-center text-xl">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <span class="text-xs font-medium">المتجر</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- AI Assistant Banner -->
+            <div onclick="openAIChat()" class="relative overflow-hidden rounded-3xl glass p-6 cursor-pointer group">
+                <div class="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+                
+                <div class="relative flex items-center justify-between">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="px-2 py-1 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold">جديد</span>
+                            <span class="text-xs text-gray-400">متوفر 24/7</span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-1">المساعد الذكي</h3>
+                        <p class="text-sm text-gray-400">اسألني عن أي شيء، أنا هنا للمساعدة!</p>
+                    </div>
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-3xl shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-robot text-white"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Services Grid -->
+            <div>
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg">الخدمات المتاحة</h3>
+                    <div class="flex gap-2">
+                        <button onclick="switchView('grid')" class="view-btn active w-8 h-8 rounded-lg glass flex items-center justify-center text-sm text-primary" data-view="grid">
+                            <i class="fas fa-th-large"></i>
+                        </button>
+                        <button onclick="switchView('list')" class="view-btn w-8 h-8 rounded-lg glass flex items-center justify-center text-sm opacity-50" data-view="list">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="services-container" class="grid grid-cols-2 gap-3 transition-all duration-300">
+                    <!-- Services will be loaded dynamically -->
+                </div>
+            </div>
+
+            <div class="h-20"></div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md z-50">
+            <div class="glass-strong rounded-3xl px-6 py-3 flex items-center justify-between shadow-2xl shadow-black/50">
+                <button onclick="setActiveTab(this, 'home')" class="nav-item active flex flex-col items-center gap-1 text-primary transition-all" data-tab="home">
+                    <i class="fas fa-home text-xl"></i>
+                    <span class="text-[10px] font-medium">الرئيسية</span>
+                </button>
+                
+                <button onclick="setActiveTab(this, 'services')" class="nav-item flex flex-col items-center gap-1 text-gray-400 hover:text-white transition-all" data-tab="services">
+                    <i class="fas fa-th-large text-xl"></i>
+                    <span class="text-[10px] font-medium">الخدمات</span>
+                </button>
+
+                <button onclick="openQuickAction()" class="relative -mt-8 w-14 h-14 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white shadow-lg shadow-primary/40 hover:scale-110 transition-transform active:scale-95">
+                    <i class="fas fa-plus text-2xl"></i>
+                </button>
+
+                <button onclick="setActiveTab(this, 'chat')" class="nav-item flex flex-col items-center gap-1 text-gray-400 hover:text-white transition-all relative" data-tab="chat">
+                    <i class="fas fa-comment-dots text-xl"></i>
+                    <span class="text-[10px] font-medium">الدردشة</span>
+                    <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[8px] flex items-center justify-center">2</span>
+                </button>
+
+                <button onclick="setActiveTab(this, 'profile')" class="nav-item flex flex-col items-center gap-1 text-gray-400 hover:text-white transition-all" data-tab="profile">
+                    <i class="fas fa-user text-xl"></i>
+                    <span class="text-[10px] font-medium">حسابي</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Side Menu -->
+        <div id="side-menu" class="fixed inset-0 z-[60] pointer-events-none">
+            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300" onclick="toggleMenu()" id="menu-overlay"></div>
+            <div class="absolute top-0 right-0 h-full w-80 bg-surface border-l border-white/10 transform translate-x-full transition-transform duration-300 pointer-events-auto" id="menu-panel">
+                <div class="p-6 h-full flex flex-col">
+                    <div class="flex items-center justify-between mb-8">
+                        <h2 class="text-xl font-bold">القائمة</h2>
+                        <button onclick="toggleMenu()" class="w-10 h-10 rounded-xl glass flex items-center justify-center">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-2 flex-1">
+                        <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors text-right">
+                            <div class="w-10 h-10 rounded-lg bg-primary/20 text-primary flex items-center justify-center">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-bold">الملف الشخصي</div>
+                                <div class="text-xs text-gray-400">إدارة الحساب</div>
+                            </div>
+                        </button>
+                        
+                        <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors text-right">
+                            <div class="w-10 h-10 rounded-lg bg-secondary/20 text-secondary flex items-center justify-center">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-bold">المحفظة</div>
+                                <div class="text-xs text-gray-400" id="wallet-balance">رصيد: 0 ريال</div>
+                            </div>
+                        </button>
+                        
+                        <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors text-right">
+                            <div class="w-10 h-10 rounded-lg bg-accent/20 text-accent flex items-center justify-center">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-bold">العضوية VIP</div>
+                                <div class="text-xs text-gray-400">ترقية الحساب</div>
+                            </div>
+                        </button>
+                    </div>
+                    
+                    <button onclick="logout()" class="w-full py-3 rounded-xl bg-red-500/20 text-red-400 font-bold hover:bg-red-500/30 transition-colors">
+                        تسجيل الخروج
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- All Services Modal -->
+        <div id="all-services-modal" class="fixed inset-0 z-[70] pointer-events-none opacity-0 transition-opacity duration-300">
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeAllServices()"></div>
+            <div class="absolute bottom-0 left-0 right-0 bg-surface rounded-t-3xl h-[85vh] transform translate-y-full transition-transform duration-300 pointer-events-auto max-w-lg mx-auto flex flex-col">
+                <div class="p-4 border-b border-white/10">
+                    <div class="w-12 h-1 bg-white/20 rounded-full mx-auto mb-4"></div>
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-bold">جميع الخدمات</h3>
+                        <button onclick="closeAllServices()" class="w-10 h-10 rounded-xl glass flex items-center justify-center">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="mt-4 relative">
+                        <input type="text" placeholder="البحث في الخدمات..." class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-right outline-none focus:border-primary transition-colors">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <div class="flex-1 overflow-y-auto p-4 space-y-4" id="all-services-list">
+                    <!-- Services loaded dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Service Detail Modal -->
+        <div id="service-modal" class="fixed inset-0 z-[70] pointer-events-none opacity-0 transition-opacity duration-300">
+            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeService()"></div>
+            <div class="absolute bottom-0 left-0 right-0 bg-surface rounded-t-3xl transform translate-y-full transition-transform duration-300 pointer-events-auto max-w-lg mx-auto p-6">
+                <div class="w-12 h-1 bg-white/20 rounded-full mx-auto mb-6"></div>
+                <div id="service-detail-content"></div>
+            </div>
+        </div>
+
+        <!-- Quick Action Modal -->
+        <div id="quick-modal" class="fixed inset-0 z-[90] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeQuickAction()"></div>
+            <div class="relative bg-surface rounded-3xl p-6 w-[90%] max-w-sm transform scale-95 transition-transform duration-300" id="quick-modal-content">
+                <h3 class="text-xl font-bold text-center mb-6">إجراء سريع</h3>
+                <div class="grid grid-cols-3 gap-4">
+                    <button onclick="quickAction('scan')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-white/10 transition-colors">
+                        <i class="fas fa-qrcode text-2xl text-primary"></i>
+                        <span class="text-xs">مسح</span>
+                    </button>
+                    <button onclick="quickAction('voice')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-white/10 transition-colors">
+                        <i class="fas fa-microphone text-2xl text-secondary"></i>
+                        <span class="text-xs">صوتي</span>
+                    </button>
+                    <button onclick="quickAction('location')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-white/10 transition-colors">
+                        <i class="fas fa-map-marker-alt text-2xl text-accent"></i>
+                        <span class="text-xs">موقع</span>
+                    </button>
+                </div>
+                <button onclick="closeQuickAction()" class="w-full mt-6 py-3 rounded-xl bg-white/10 text-gray-400 hover:text-white transition-colors">
+                    إلغاء
+                </button>
+            </div>
+        </div>
+
+        <!-- Toast -->
+        <div id="toast-container" class="fixed top-20 left-1/2 -translate-x-1/2 z-[80] space-y-2 pointer-events-none"></div>
+
+    </div>
+
+    <script>
+        // Firebase Configuration - استبدل ببياناتك
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase (Database فقط)
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // متغيرات عامة
+        let currentUserId = null;
+        let userData = null;
+        let servicesData = [];
+
+        // Level Configuration
+        const levels = [
+            { threshold: 0, name: 'ضعيف', class: 'status-0' },
+            { threshold: 10, name: 'مبتدئ', class: 'status-10' },
+            { threshold: 20, name: 'مقبول', class: 'status-20' },
+            { threshold: 30, name: 'تحت المتوسط', class: 'status-30' },
+            { threshold: 40, name: 'متوسط', class: 'status-40' },
+            { threshold: 50, name: 'جيد', class: 'status-50' },
+            { threshold: 60, name: 'جيد جداً', class: 'status-60' },
+            { threshold: 70, name: 'متألق', class: 'status-70' },
+            { threshold: 80, name: 'متفوق', class: 'status-80' },
+            { threshold: 90, name: 'امتياز', class: 'status-90' }
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initParticles();
+            
+            // انتظار استلام بيانات المستخدم من التطبيق الأصلي
+            if (window.AndroidInterface || window.webkit) {
+                // طلب بيانات المستخدم من التطبيق الأصلي
+                requestUserData();
+            } else {
+                // وضع التجربة
+                loadDemoData();
+                loadServices();
+            }
+        });
+
+        // طلب بيانات المستخدم من التطبيق الأصلي
+        function requestUserData() {
+            try {
+                if (window.AndroidInterface) {
+                    // Android
+                    window.AndroidInterface.requestUserData();
+                } else if (window.webkit && window.webkit.messageHandlers) {
+                    // iOS
+                    window.webkit.messageHandlers.requestUserData.postMessage({});
+                }
+            } catch (e) {
+                console.log('Native interface not available');
+                loadDemoData();
+                loadServices();
+            }
+        }
+
+        // استقبال بيانات المستخدم من التطبيق الأصلي (يتم استدعاؤها من Native Code)
+        window.receiveUserData = function(userId, userDataJson) {
+            currentUserId = userId;
+            if (userDataJson) {
+                userData = JSON.parse(userDataJson);
+                updateUI();
+                loadServices();
+            } else {
+                // جلب من Firebase إذا لم يتم تمرير البيانات
+                loadUserDataFromFirebase(userId);
+            }
+        };
+
+        // جلب بيانات المستخدم من Firebase
+        function loadUserDataFromFirebase(userId) {
+            db.ref('users/' + userId).on('value', (snapshot) => {
+                userData = snapshot.val();
+                if (userData) {
+                    updateUI();
+                    loadServices();
+                } else {
+                    // إنشاء بيانات افتراضية إذا لم يوجد المستخدم
+                    createDefaultUserData(userId);
+                }
+            });
+        }
+
+        // إنشاء بيانات افتراضية للمستخدم الجديد
+        function createDefaultUserData(userId) {
+            const defaultData = {
+                name: 'مستخدم جديد',
+                location: 'غير محدد',
+                points: 0,
+                orders: 0,
+                level: 0,
+                balance: 0,
+                avatar: 'https://i.pravatar.cc/150?img=11'
+            };
+            
+            db.ref('users/' + userId).set(defaultData);
+            userData = defaultData;
+            updateUI();
+            loadServices();
+        }
+
+        // Demo Data للاختبار
+        function loadDemoData() {
+            userData = {
+                name: 'أحمد محمد',
+                location: 'المدينة المنورة',
+                points: 2450,
+                orders: 28,
+                level: 75,
+                balance: 2450,
+                avatar: 'https://i.pravatar.cc/150?img=11'
+            };
+            updateUI();
+        }
+
+        // Update UI
+        function updateUI() {
+            if (!userData) return;
+
+            document.getElementById('user-name').textContent = userData.name || 'مستخدم';
+            document.getElementById('user-location').textContent = userData.location || '---';
+            document.getElementById('user-avatar').src = userData.avatar || 'https://i.pravatar.cc/150?img=11';
+            
+            animateValue('points-count', 0, userData.points || 0, 1500);
+            animateValue('orders-count', 0, userData.orders || 0, 1500);
+            document.getElementById('wallet-balance').textContent = `رصيد: ${(userData.balance || 0).toLocaleString()} ريال`;
+
+            const levelPercent = userData.level || 0;
+            const currentLevel = getLevelInfo(levelPercent);
+            
+            const levelDisplay = document.getElementById('level-display');
+            levelDisplay.textContent = currentLevel.name;
+            levelDisplay.className = `text-2xl font-bold ${currentLevel.class.replace('status-', 'text-')}`;
+
+            const statusBadge = document.getElementById('user-status');
+            statusBadge.textContent = currentLevel.name;
+            statusBadge.className = `status-badge ${currentLevel.class}`;
+
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            
+            progressBar.style.width = `${levelPercent}%`;
+            progressText.textContent = `${levelPercent}%`;
+        }
+
+        function getLevelInfo(percent) {
+            for (let i = levels.length - 1; i >= 0; i--) {
+                if (percent >= levels[i].threshold) {
+                    return levels[i];
+                }
+            }
+            return levels[0];
+        }
+
+        // Load Services
+        function loadServices() {
+            db.ref('services').on('value', (snapshot) => {
+                servicesData = snapshot.val() || getDefaultServices();
+                renderServices();
+            });
+        }
+
+        function getDefaultServices() {
+            return [
+                { id: 'maintenance', title: 'الصيانة', desc: 'كهرباء، سباكة، تكييف', price: 'يبدأ من 50 ريال', icon: 'fa-tools', color: 'from-cyan-400 to-blue-600', discount: '-20%' },
+                { id: 'ai', title: 'البوت الذكي', desc: 'محادثة ذكية', price: 'مجاني', icon: 'fa-brain', color: 'from-purple-400 to-pink-600', badge: 'مجاني' },
+                { id: 'calendar', title: 'الجدول الشهري', desc: 'تنظيم ومواعيد ذكية', price: 'اشتراك شهري', icon: 'fa-calendar-alt', color: 'from-orange-400 to-red-600' },
+                { id: 'store', title: 'المتجر', desc: 'تسوق ذكي وسريع', price: 'تبدأ من 29 ريال', icon: 'fa-shopping-bag', color: 'from-green-400 to-emerald-600', badge: 'جديد' }
+            ];
+        }
+
+        function renderServices() {
+            const container = document.getElementById('services-container');
+            const allServicesList = document.getElementById('all-services-list');
+            
+            container.innerHTML = servicesData.map(service => `
+                <div class="service-card glass rounded-2xl p-4 relative group cursor-pointer" 
+                     onclick="openService('${service.id}', '${service.title}', '${service.desc}', '${service.price}')">
+                    ${service.discount ? `<div class="absolute top-3 left-3"><span class="px-2 py-1 rounded-full bg-red-500/20 text-red-400 text-xs">${service.discount}</span></div>` : ''}
+                    ${service.badge ? `<div class="absolute top-3 left-3"><span class="px-2 py-1 rounded-full bg-${service.badge === 'مجاني' ? 'green' : 'blue'}-500/20 text-${service.badge === 'مجاني' ? 'green' : 'blue'}-400 text-xs">${service.badge}</span></div>` : ''}
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${service.color} flex items-center justify-center text-2xl mb-3 shadow-lg group-hover:scale-110 transition-transform">
+                        <i class="fas ${service.icon} text-white"></i>
+                    </div>
+                    <h4 class="font-bold mb-1">${service.title}</h4>
+                    <p class="text-xs text-gray-400">${service.desc}</p>
+                </div>
+            `).join('');
+
+            const categories = [
+                { name: 'الخدمات الرئيسية', items: servicesData },
+                { name: 'خدمات إضافية', items: [
+                    { title: 'المحفظة', desc: 'إدارة الرصيد والدفع', icon: 'fa-wallet', color: 'yellow' },
+                    { title: 'الخريطة', desc: 'تحديد المواقع والفنيين', icon: 'fa-map-marker-alt', color: 'red' },
+                    { title: 'خدمات السيارات', desc: 'صيانة وغسيل السيارات', icon: 'fa-car', color: 'cyan' },
+                    { title: 'التنظيف المنزلي', desc: 'خدمات التنظيف الشاملة', icon: 'fa-home', color: 'pink' }
+                ]}
+            ];
+
+            allServicesList.innerHTML = categories.map(cat => `
+                <div>
+                    <h4 class="text-sm font-bold text-gray-400 mb-3">${cat.name}</h4>
+                    <div class="${cat.name === 'الخدمات الرئيسية' ? 'grid grid-cols-4 gap-3' : 'space-y-2'}">
+                        ${cat.items.map(item => cat.name === 'الخدمات الرئيسية' ? `
+                            <div class="flex flex-col items-center gap-2 p-3 rounded-xl bg-white/5 cursor-pointer hover:bg-white/10 transition-colors" onclick="openTool('${item.id}')">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center text-xl text-white">
+                                    <i class="fas ${item.icon}"></i>
+                                </div>
+                                <span class="text-xs">${item.title}</span>
+                            </div>
+                        ` : `
+                            <div class="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors cursor-pointer" onclick="showToast('قريباً', 'info')">
+                                <div class="w-12 h-12 rounded-xl bg-${item.color}-500/20 text-${item.color}-400 flex items-center justify-center text-xl">
+                                    <i class="fas ${item.icon}"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="font-bold">${item.title}</div>
+                                    <div class="text-xs text-gray-400">${item.desc}</div>
+                                </div>
+                                <i class="fas fa-chevron-left text-gray-400"></i>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Particles
+        function initParticles() {
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            for (let i = 0; i < 30; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 2 + 1,
+                    speedX: (Math.random() - 0.5) * 0.5,
+                    speedY: (Math.random() - 0.5) * 0.5,
+                    opacity: Math.random() * 0.5 + 0.1
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(99, 102, 241, ${p.opacity})`;
+                    ctx.fill();
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+                    if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            const range = end - start;
+            const increment = range / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= end) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                obj.textContent = Math.floor(current).toLocaleString();
+            }, 16);
+        }
+
+        // Voice Search
+        function toggleVoiceSearch() {
+            const btn = document.getElementById('voice-btn');
+            const wave = document.getElementById('voice-wave');
+            const input = document.getElementById('search-input');
+
+            if (wave.classList.contains('hidden')) {
+                btn.innerHTML = '<i class="fas fa-stop text-xl"></i>';
+                wave.classList.remove('hidden');
+                input.placeholder = 'جاري الاستماع...';
+                
+                setTimeout(() => {
+                    toggleVoiceSearch();
+                    input.value = 'صيانة تكييف';
+                    document.getElementById('clear-search').classList.remove('hidden');
+                    handleSearch({ key: 'Enter' });
+                }, 3000);
+            } else {
+                btn.innerHTML = '<i class="fas fa-microphone text-xl"></i>';
+                wave.classList.add('hidden');
+                input.placeholder = 'ابحث بصوتك أو اكتب...';
+            }
+        }
+
+        function handleSearch(e) {
+            if (e.key === 'Enter') {
+                const value = document.getElementById('search-input').value;
+                if (value) {
+                    showToast(`جاري البحث عن: ${value}`, 'info');
+                    document.getElementById('clear-search').classList.remove('hidden');
+                }
+            }
+        }
+
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('clear-search').classList.add('hidden');
+        }
+
+        // Menu
+        function toggleMenu() {
+            const menu = document.getElementById('side-menu');
+            const overlay = document.getElementById('menu-overlay');
+            const panel = document.getElementById('menu-panel');
+            
+            if (menu.classList.contains('pointer-events-none')) {
+                menu.classList.remove('pointer-events-none');
+                overlay.style.opacity = '1';
+                panel.style.transform = 'translateX(0)';
+            } else {
+                menu.classList.add('pointer-events-none');
+                overlay.style.opacity = '0';
+                panel.style.transform = 'translateX(100%)';
+            }
+        }
+
+        // Modals
+        function showAllServices() {
+            const modal = document.getElementById('all-services-modal');
+            const panel = modal.querySelector('div[class*="translate-y-full"]');
+            modal.classList.remove('pointer-events-none', 'opacity-0');
+            panel.style.transform = 'translateY(0)';
+        }
+
+        function closeAllServices() {
+            const modal = document.getElementById('all-services-modal');
+            const panel = modal.querySelector('div[class*="translate-y-full"]');
+            modal.classList.add('opacity-0');
+            panel.style.transform = 'translateY(100%)';
+            setTimeout(() => modal.classList.add('pointer-events-none'), 300);
+        }
+
+        function openService(id, title, desc, price) {
+            const service = servicesData.find(s => s.id === id) || {};
+            const content = `
+                <div class="text-center mb-6">
+                    <div class="w-20 h-20 rounded-3xl bg-gradient-to-br ${service.color || 'from-primary to-secondary'} flex items-center justify-center text-4xl mx-auto mb-4 shadow-lg shadow-primary/30">
+                        <i class="fas ${service.icon || 'fa-tools'} text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">${title}</h3>
+                    <p class="text-gray-400">${desc}</p>
+                    <div class="mt-4 inline-block px-4 py-2 rounded-full bg-primary/20 text-primary font-bold">
+                        ${price}
+                    </div>
+                </div>
+                <div class="space-y-3 mb-6">
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5">
+                        <i class="fas fa-check-circle text-green-400"></i>
+                        <span class="text-sm">خدمة مضمونة 100%</span>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5">
+                        <i class="fas fa-clock text-blue-400"></i>
+                        <span class="text-sm">استجابة فورية</span>
+                    </div>
+                </div>
+                <button onclick="bookService('${id}')" class="w-full py-4 rounded-2xl bg-gradient-to-r from-primary to-secondary text-white font-bold text-lg shadow-lg shadow-primary/30 active:scale-95 transform transition-transform">
+                    طلب الخدمة الآن
+                </button>
+            `;
+            
+            document.getElementById('service-detail-content').innerHTML = content;
+            
+            const modal = document.getElementById('service-modal');
+            const panel = modal.querySelector('div[class*="translate-y-full"]');
+            modal.classList.remove('pointer-events-none', 'opacity-0');
+            panel.style.transform = 'translateY(0)';
+        }
+
+        function closeService() {
+            const modal = document.getElementById('service-modal');
+            const panel = modal.querySelector('div[class*="translate-y-full"]');
+            modal.classList.add('opacity-0');
+            panel.style.transform = 'translateY(100%)';
+            setTimeout(() => modal.classList.add('pointer-events-none'), 300);
+        }
+
+        function bookService(serviceId) {
+            closeService();
+            showToast('تم إرسال طلبك بنجاح!', 'success');
+            
+            if (currentUserId) {
+                const orderRef = db.ref('orders').push();
+                orderRef.set({
+                    userId: currentUserId,
+                    serviceId: serviceId,
+                    status: 'pending',
+                    timestamp: Date.now()
+                });
+            }
+        }
+
+        function switchView(view) {
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.remove('active', 'text-primary');
+                btn.style.opacity = '0.5';
+            });
+            event.currentTarget.classList.add('active', 'text-primary');
+            event.currentTarget.style.opacity = '1';
+            
+            const container = document.getElementById('services-container');
+            if (view === 'list') {
+                container.classList.remove('grid-cols-2');
+                container.classList.add('grid-cols-1');
+            } else {
+                container.classList.remove('grid-cols-1');
+                container.classList.add('grid-cols-2');
+            }
+        }
+
+        function setActiveTab(element, tab) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active', 'text-primary');
+                item.classList.add('text-gray-400');
+            });
+            element.classList.add('active', 'text-primary');
+            element.classList.remove('text-gray-400');
+        }
+
+        function openQuickAction() {
+            const modal = document.getElementById('quick-modal');
+            const content = document.getElementById('quick-modal-content');
+            modal.classList.remove('pointer-events-none', 'opacity-0');
+            content.style.transform = 'scale(1)';
+        }
+
+        function closeQuickAction() {
+            const modal = document.getElementById('quick-modal');
+            const content = document.getElementById('quick-modal-content');
+            modal.classList.add('opacity-0');
+            content.style.transform = 'scale(0.95)';
+            setTimeout(() => modal.classList.add('pointer-events-none'), 300);
+        }
+
+        function quickAction(type) {
+            closeQuickAction();
+            const actions = { 
+                scan: 'جاري فتح الماسح...', 
+                voice: 'جاري تفعيل البحث الصوتي...', 
+                location: 'جاري تحديد الموقع...' 
+            };
+            showToast(actions[type], 'info');
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const colors = { 
+                success: 'bg-green-500', 
+                error: 'bg-red-500', 
+                info: 'bg-primary', 
+                warning: 'bg-yellow-500' 
+            };
+            const icons = { 
+                success: 'fa-check-circle', 
+                error: 'fa-exclamation-circle', 
+                info: 'fa-info-circle', 
+                warning: 'fa-exclamation-triangle' 
+            };
+            
+            toast.className = `flex items-center gap-3 px-6 py-4 rounded-2xl ${colors[type]} text-white shadow-2xl min-w-[300px] transform translate-x-full transition-transform duration-300`;
+            toast.innerHTML = `<i class="fas ${icons[type]} text-xl"></i><span class="font-bold">${message}</span>`;
+            
+            container.appendChild(toast);
+            setTimeout(() => toast.style.transform = 'translateX(0)', 100);
+            setTimeout(() => {
+                toast.style.transform = 'translateX(150%)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function openProfile() { showToast('فتح الملف الشخصي', 'info'); }
+        function showNotifications() { 
+            const badge = document.getElementById('notification-badge');
+            badge.classList.remove('hidden');
+            showToast('لديك إشعارات جديدة', 'info'); 
+        }
+        function openTool(tool) {
+            const names = { maintenance: 'الصيانة', ai: 'البوت الذكي', calendar: 'الجدول', store: 'المتجر' };
+            showToast(`فتح ${names[tool] || 'الخدمة'}`, 'info');
+        }
+        function openAIChat() { showToast('جاري فتح المحادثة الذكية...', 'info'); }
+        
+        function logout() {
+            // إرسال أمر للتطبيق الأصلي بتسجيل الخروج
+            try {
+                if (window.AndroidInterface) {
+                    window.AndroidInterface.logout();
+                } else if (window.webkit && window.webkit.messageHandlers) {
+                    window.webkit.messageHandlers.logout.postMessage({});
+                }
+            } catch (e) {
+                showToast('تم تسجيل الخروج', 'success');
+                location.reload();
+            }
+        }
+
+        // تحديث المستوى (للاختبار)
+        window.updateLevel = function(newLevel) {
+            if (currentUserId) {
+                db.ref('users/' + currentUserId).update({ level: newLevel });
+            } else {
+                userData.level = newLevel;
+                updateUI();
+            }
+        };
+    </script>
+</body>
+</html>
