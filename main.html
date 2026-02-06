@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#0f172a">
+    <meta name="theme-color" content="#f8fafc">
     <title>منصة المتخصصين</title>
     
     <!-- Firebase SDK -->
@@ -35,53 +35,89 @@
 
     <style>
         * { -webkit-tap-highlight-color: transparent; user-select: none; }
-        body { font-family: 'Cairo', sans-serif; background: #020617; color: white; overflow-x: hidden; }
         
-        .glass { 
-            background: rgba(30, 41, 59, 0.9); 
-            backdrop-filter: blur(20px); 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
+        /* Light Theme (Default) */
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+            color: #1e293b;
+            overflow-x: hidden;
         }
         
-        .gradient-text { 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
+        /* Dark Theme */
+        body.dark {
+            background: #020617;
+            color: #f8fafc;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        body.dark .glass {
+            background: rgba(30, 41, 59, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        .status-badge { 
-            padding: 6px 16px; 
-            border-radius: 20px; 
-            font-size: 13px; 
-            font-weight: 700; 
+        .status-badge {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
             border: 2px solid;
             display: inline-flex;
             align-items: center;
             gap: 6px;
         }
         
-        /* Level Colors */
-        .level-0 { background: rgba(239, 68, 68, 0.2); color: #f87171; border-color: #ef4444; }
-        .level-10 { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border-color: #f59e0b; }
-        .level-20 { background: rgba(251, 191, 36, 0.2); color: #fcd34d; border-color: #fbbf24; }
-        .level-30 { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border-color: #3b82f6; }
-        .level-40 { background: rgba(34, 197, 94, 0.2); color: #4ade80; border-color: #22c55e; }
-        .level-50 { background: rgba(16, 185, 129, 0.2); color: #34d399; border-color: #10b981; }
-        .level-60 { background: rgba(20, 184, 166, 0.2); color: #2dd4bf; border-color: #14b8a6; }
-        .level-70 { background: rgba(6, 182, 212, 0.2); color: #22d3ee; border-color: #06b6d4; }
-        .level-80 { background: rgba(99, 102, 241, 0.2); color: #818cf8; border-color: #6366f1; }
-        .level-90 { background: rgba(139, 92, 246, 0.2); color: #a78bfa; border-color: #8b5cf6; }
-        .level-100 { background: rgba(236, 72, 153, 0.2); color: #f472b6; border-color: #ec4899; }
+        /* Light mode level colors */
+        .level-0 { background: #fee2e2; color: #991b1b; border-color: #f87171; }
+        .level-10 { background: #fef3c7; color: #92400e; border-color: #fbbf24; }
+        .level-20 { background: #fef9c3; color: #854d0e; border-color: #facc15; }
+        .level-30 { background: #dbeafe; color: #1e40af; border-color: #60a5fa; }
+        .level-40 { background: #dcfce7; color: #166534; border-color: #4ade80; }
+        .level-50 { background: #d1fae5; color: #065f46; border-color: #34d399; }
+        .level-60 { background: #ccfbf1; color: #115e59; border-color: #2dd4bf; }
+        .level-70 { background: #cffafe; color: #155e75; border-color: #22d3ee; }
+        .level-80 { background: #e0e7ff; color: #3730a3; border-color: #818cf8; }
+        .level-90 { background: #f3e8ff; color: #6b21a8; border-color: #c084fc; }
+        .level-100 { background: #fce7f3; color: #9d174d; border-color: #f472b6; }
+        
+        /* Dark mode level colors */
+        body.dark .level-0 { background: rgba(239, 68, 68, 0.2); color: #f87171; border-color: #ef4444; }
+        body.dark .level-10 { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border-color: #f59e0b; }
+        body.dark .level-20 { background: rgba(250, 204, 21, 0.2); color: #fde047; border-color: #facc15; }
+        body.dark .level-30 { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border-color: #3b82f6; }
+        body.dark .level-40 { background: rgba(34, 197, 94, 0.2); color: #4ade80; border-color: #22c55e; }
+        body.dark .level-50 { background: rgba(16, 185, 129, 0.2); color: #34d399; border-color: #10b981; }
+        body.dark .level-60 { background: rgba(20, 184, 166, 0.2); color: #2dd4bf; border-color: #14b8a6; }
+        body.dark .level-70 { background: rgba(6, 182, 212, 0.2); color: #22d3ee; border-color: #06b6d4; }
+        body.dark .level-80 { background: rgba(99, 102, 241, 0.2); color: #818cf8; border-color: #6366f1; }
+        body.dark .level-90 { background: rgba(139, 92, 246, 0.2); color: #a78bfa; border-color: #8b5cf6; }
+        body.dark .level-100 { background: rgba(236, 72, 153, 0.2); color: #f472b6; border-color: #ec4899; }
         
         .progress-container {
-            background: rgba(255, 255, 255, 0.1);
+            background: #e2e8f0;
             border-radius: 9999px;
             overflow: hidden;
             height: 16px;
-            position: relative;
+        }
+        
+        body.dark .progress-container {
+            background: rgba(255, 255, 255, 0.1);
         }
         
         .progress-fill {
@@ -116,21 +152,26 @@
             display: none;
             align-items: center;
             justify-content: center;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px);
         }
         
         .modal.active { display: flex; }
         
         .modal-content {
-            background: #1e293b;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: white;
+            border: 1px solid #e2e8f0;
             border-radius: 24px;
             width: 95%;
             max-width: 500px;
             max-height: 90vh;
             overflow-y: auto;
             animation: slideUp 0.3s ease;
+        }
+        
+        body.dark .modal-content {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         @keyframes slideUp {
@@ -148,8 +189,37 @@
         }
         
         .menu-overlay {
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(4px);
+        }
+        
+        /* Category card styles */
+        .category-card {
+            transition: all 0.3s ease;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        body.dark .category-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* View toggle buttons */
+        .view-btn {
+            transition: all 0.2s;
+        }
+        
+        .view-btn.active {
+            background: #6366f1;
+            color: white;
+        }
+        
+        body.dark .view-btn:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
         }
     </style>
 </head>
@@ -167,7 +237,7 @@
         }
         if (!code) {
             document.body.innerHTML = `
-                <div style="height:100vh;display:flex;align-items:center;justify-content:center;background:#020617;color:white;font-family:Cairo;text-align:center;">
+                <div style="height:100vh;display:flex;align-items:center;justify-content:center;background:#f8fafc;color:#1e293b;font-family:Cairo;text-align:center;">
                     <div>
                         <h2>🚫 غير مصرح بالدخول</h2>
                         <p>يرجى فتح الصفحة من داخل التطبيق</p>
@@ -182,18 +252,18 @@
     <!-- Header -->
     <header class="sticky top-0 z-40 glass px-4 py-3">
         <div class="flex items-center justify-between max-w-lg mx-auto">
-            <button onclick="toggleMenu()" class="w-10 h-10 rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors">
+            <button onclick="toggleMenu()" class="w-10 h-10 rounded-xl flex items-center justify-center hover:bg-slate-100 dark:hover:bg-white/10 transition-colors text-slate-700 dark:text-slate-200">
                 <i class="fas fa-bars text-lg"></i>
             </button>
             
             <div class="flex items-center gap-2">
-                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span class="text-sm font-medium text-gray-300">متصل</span>
+                <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                <span class="text-sm font-medium text-slate-600 dark:text-slate-300">متصل</span>
             </div>
             
-            <button onclick="showNotifications()" class="relative w-10 h-10 rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors">
+            <button onclick="showNotifications()" class="relative w-10 h-10 rounded-xl flex items-center justify-center hover:bg-slate-100 dark:hover:bg-white/10 transition-colors text-slate-700 dark:text-slate-200">
                 <i class="fas fa-bell text-lg"></i>
-                <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-[10px] flex items-center justify-center font-bold border-2 border-darker">3</span>
+                <span class="absolute -top-1 -right-1 w-5 h-5 bg-rose-500 rounded-full text-[10px] flex items-center justify-center font-bold text-white border-2 border-white dark:border-dark">3</span>
             </button>
         </div>
     </header>
@@ -203,14 +273,14 @@
         
         <!-- Profile Card -->
         <div class="glass rounded-3xl p-6 relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-3xl -mr-10 -mt-10"></div>
+            <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-10 -mt-10"></div>
             
             <div class="relative z-10 flex flex-col items-center text-center">
-                <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-white/20 shadow-xl mb-4">
+                <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-white dark:border-slate-700 shadow-xl mb-4">
                     <img id="user-avatar" src="https://i.pravatar.cc/150?img=11" alt="Profile" class="w-full h-full object-cover">
                 </div>
                 
-                <h1 id="user-name" class="text-2xl font-bold mb-1">جاري التحميل...</h1>
+                <h1 id="user-name" class="text-2xl font-bold mb-1 text-slate-800 dark:text-white">جاري التحميل...</h1>
                 <p id="user-major" class="text-primary font-medium mb-3">---</p>
                 
                 <div id="level-badge" class="status-badge level-0">
@@ -224,82 +294,151 @@
         <div class="grid grid-cols-2 gap-4">
             <div class="glass rounded-2xl p-5 text-center">
                 <div class="text-3xl font-bold gradient-text mb-1" id="grade-display">0%</div>
-                <div class="text-xs text-gray-400">النسبة المئوية</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400">النسبة المئوية</div>
             </div>
             
-            <div class="glass rounded-2xl p-5 text-center cursor-pointer hover:bg-white/5 transition-colors" onclick="openWalletModal()">
-                <div class="text-3xl font-bold text-emerald-400 mb-1" id="wallet-balance">0</div>
-                <div class="text-xs text-gray-400">الرصيد (نقطة)</div>
+            <div class="glass rounded-2xl p-5 text-center cursor-pointer hover:bg-slate-50 dark:hover:bg-white/5 transition-colors" onclick="openWalletModal()">
+                <div class="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-1" id="wallet-balance">0</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400">الرصيد (نقطة)</div>
             </div>
         </div>
 
         <!-- Progress Bar -->
         <div class="glass rounded-2xl p-5">
             <div class="flex justify-between items-center mb-3">
-                <span class="text-sm font-bold text-gray-300">مستوى التقدم</span>
+                <span class="text-sm font-bold text-slate-700 dark:text-slate-200">مستوى التقدم</span>
                 <span id="progress-percentage" class="text-sm font-bold text-primary">0%</span>
             </div>
             <div class="progress-container">
                 <div id="progress-bar" class="progress-fill" style="width: 0%"></div>
             </div>
-            <p class="text-xs text-gray-400 mt-2 text-center" id="level-description">
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 text-center" id="level-description">
                 ابدأ رحلتك للوصول إلى الامتياز
             </p>
         </div>
 
         <!-- Search -->
         <div class="glass rounded-2xl p-4 flex items-center gap-4">
-            <i class="fas fa-search text-gray-400 text-xl"></i>
+            <i class="fas fa-search text-slate-400 text-xl"></i>
             <input type="text" id="search-input" placeholder="ابحث..." 
-                class="flex-1 bg-transparent border-none outline-none text-right text-white placeholder-gray-500"
+                class="flex-1 bg-transparent border-none outline-none text-right text-slate-700 dark:text-slate-200 placeholder-slate-400"
                 onkeyup="handleSearch(event)">
-            <button onclick="clearSearch()" id="clear-btn" class="hidden text-gray-400 hover:text-white">
+            <button onclick="clearSearch()" id="clear-btn" class="hidden text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                 <i class="fas fa-times"></i>
             </button>
         </div>
 
         <!-- Quick Actions -->
         <div>
-            <h3 class="font-bold text-lg mb-3">الوصول السريع</h3>
+            <h3 class="font-bold text-lg mb-3 text-slate-800 dark:text-white">الوصول السريع</h3>
             <div class="grid grid-cols-4 gap-3">
-                <button onclick="openTool('maintenance')" class="flex flex-col items-center gap-2 p-3 rounded-2xl glass hover:bg-white/5 transition-all">
-                    <div class="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl">
+                <button onclick="openTool('maintenance')" class="flex flex-col items-center gap-2 p-3 rounded-2xl glass hover:bg-slate-50 dark:hover:bg-white/5 transition-all active:scale-95">
+                    <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl">
                         <i class="fas fa-wrench"></i>
                     </div>
-                    <span class="text-xs">صيانة</span>
+                    <span class="text-xs text-slate-700 dark:text-slate-300">صيانة</span>
                 </button>
                 
-                <button onclick="openTool('store')" class="flex flex-col items-center gap-2 p-3 rounded-2xl glass hover:bg-white/5 transition-all">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl">
+                <button onclick="openTool('store')" class="flex flex-col items-center gap-2 p-3 rounded-2xl glass hover:bg-slate-50 dark:hover:bg-white/5 transition-all active:scale-95">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl">
                         <i class="fas fa-store"></i>
                     </div>
-                    <span class="text-xs">متجر</span>
+                    <span class="text-xs text-slate-700 dark:text-slate-300">متجر</span>
                 </button>
                 
-                <button onclick="openTool('ai')" class="flex flex-col items-center gap-2 p-3 rounded-2xl glass hover:bg-white/5 transition-all">
-                    <div class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl">
+                <button onclick="openTool('ai')" class="flex flex-col items-center gap-2 p-3 rounded-2xl glass hover:bg-slate-50 dark:hover:bg-white/5 transition-all active:scale-95">
+                    <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xl">
                         <i class="fas fa-robot"></i>
                     </div>
-                    <span class="text-xs">AI</span>
+                    <span class="text-xs text-slate-700 dark:text-slate-300">AI</span>
                 </button>
                 
-                <button onclick="openTool('calendar')" class="flex flex-col items-center gap-2 p-3 rounded-2xl glass hover:bg-white/5 transition-all">
-                    <div class="w-12 h-12 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center text-xl">
+                <button onclick="openTool('calendar')" class="flex flex-col items-center gap-2 p-3 rounded-2xl glass hover:bg-slate-50 dark:hover:bg-white/5 transition-all active:scale-95">
+                    <div class="w-12 h-12 rounded-xl bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 flex items-center justify-center text-xl">
                         <i class="fas fa-calendar"></i>
                     </div>
-                    <span class="text-xs">مواعيد</span>
+                    <span class="text-xs text-slate-700 dark:text-slate-300">مواعيد</span>
                 </button>
+            </div>
+        </div>
+
+        <!-- Categories Section with View Toggle -->
+        <div>
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg text-slate-800 dark:text-white">الأقسام</h3>
+                <div class="flex gap-2">
+                    <button onclick="switchView('grid')" class="view-btn active w-10 h-10 rounded-xl glass flex items-center justify-center text-slate-600 dark:text-slate-300" data-view="grid">
+                        <i class="fas fa-th-large"></i>
+                    </button>
+                    <button onclick="switchView('list')" class="view-btn w-10 h-10 rounded-xl glass flex items-center justify-center text-slate-600 dark:text-slate-300" data-view="list">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="categories-container" class="grid grid-cols-2 gap-4 transition-all duration-300">
+                <!-- Category 1 -->
+                <div class="category-card glass rounded-2xl p-5 cursor-pointer" onclick="openCategory('tech')">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white text-2xl mb-4 shadow-lg">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 dark:text-white mb-1">تقنية</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">برمجة، شبكات، أمن</p>
+                    <div class="mt-3 flex items-center gap-1 text-xs text-primary font-bold">
+                        <span>24 خدمة</span>
+                        <i class="fas fa-arrow-left transform rotate-180"></i>
+                    </div>
+                </div>
+                
+                <!-- Category 2 -->
+                <div class="category-card glass rounded-2xl p-5 cursor-pointer" onclick="openCategory('design')">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-2xl mb-4 shadow-lg">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 dark:text-white mb-1">تصميم</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">جرافيك، موشن، UI/UX</p>
+                    <div class="mt-3 flex items-center gap-1 text-xs text-primary font-bold">
+                        <span>18 خدمة</span>
+                        <i class="fas fa-arrow-left transform rotate-180"></i>
+                    </div>
+                </div>
+                
+                <!-- Category 3 -->
+                <div class="category-card glass rounded-2xl p-5 cursor-pointer" onclick="openCategory('marketing')">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white text-2xl mb-4 shadow-lg">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 dark:text-white mb-1">تسويق</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">إعلانات، SEO، محتوى</p>
+                    <div class="mt-3 flex items-center gap-1 text-xs text-primary font-bold">
+                        <span>15 خدمة</span>
+                        <i class="fas fa-arrow-left transform rotate-180"></i>
+                    </div>
+                </div>
+                
+                <!-- Category 4 -->
+                <div class="category-card glass rounded-2xl p-5 cursor-pointer" onclick="openCategory('business')">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white text-2xl mb-4 shadow-lg">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 dark:text-white mb-1">أعمال</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">استشارات، إدارة، مالية</p>
+                    <div class="mt-3 flex items-center gap-1 text-xs text-primary font-bold">
+                        <span>32 خدمة</span>
+                        <i class="fas fa-arrow-left transform rotate-180"></i>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Recent Activities -->
         <div class="glass rounded-3xl p-5">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="font-bold text-lg">آخر النشاطات</h3>
+                <h3 class="font-bold text-lg text-slate-800 dark:text-white">آخر النشاطات</h3>
                 <button onclick="openHistoryModal()" class="text-sm text-primary hover:underline">الكل</button>
             </div>
             <div id="activities-list" class="space-y-3 max-h-64 overflow-y-auto hide-scrollbar">
-                <div class="text-center text-gray-500 py-4">جاري التحميل...</div>
+                <div class="text-center text-slate-500 py-4">جاري التحميل...</div>
             </div>
         </div>
 
@@ -310,8 +449,8 @@
     <div id="wallet-modal" class="modal">
         <div class="modal-content p-6">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold">المحفظة</h2>
-                <button onclick="closeModal('wallet-modal')" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10">
+                <h2 class="text-2xl font-bold text-slate-800 dark:text-white">المحفظة</h2>
+                <button onclick="closeModal('wallet-modal')" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/5 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-white/10 text-slate-600 dark:text-slate-300">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -324,11 +463,11 @@
             </div>
             
             <div class="grid grid-cols-2 gap-4">
-                <button onclick="openTransferModal()" class="py-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors font-bold flex items-center justify-center gap-2">
+                <button onclick="openTransferModal()" class="py-4 rounded-xl bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors font-bold flex items-center justify-center gap-2 text-slate-700 dark:text-slate-200">
                     <i class="fas fa-exchange-alt text-primary"></i>
                     تحويل
                 </button>
-                <button onclick="openHistoryModal()" class="py-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors font-bold flex items-center justify-center gap-2">
+                <button onclick="openHistoryModal()" class="py-4 rounded-xl bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors font-bold flex items-center justify-center gap-2 text-slate-700 dark:text-slate-200">
                     <i class="fas fa-history text-primary"></i>
                     السجل
                 </button>
@@ -340,29 +479,29 @@
     <div id="transfer-modal" class="modal">
         <div class="modal-content p-6">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold">تحويل النقاط</h2>
-                <button onclick="closeModal('transfer-modal')" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10">
+                <h2 class="text-2xl font-bold text-slate-800 dark:text-white">تحويل النقاط</h2>
+                <button onclick="closeModal('transfer-modal')" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/5 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-white/10 text-slate-600 dark:text-slate-300">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             
             <div class="space-y-4">
                 <div>
-                    <label class="block text-sm text-gray-400 mb-2">رقم المستلم</label>
+                    <label class="block text-sm text-slate-500 dark:text-slate-400 mb-2">رقم المستلم</label>
                     <input type="text" id="transfer-to" placeholder="أدخل كود المستخدم" 
-                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-right focus:border-primary focus:outline-none">
+                        class="w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-slate-700 dark:text-white text-right focus:border-primary focus:outline-none">
                 </div>
                 
                 <div>
-                    <label class="block text-sm text-gray-400 mb-2">المبلغ</label>
+                    <label class="block text-sm text-slate-500 dark:text-slate-400 mb-2">المبلغ</label>
                     <input type="number" id="transfer-amount" placeholder="0" 
-                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-right focus:border-primary focus:outline-none">
+                        class="w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-slate-700 dark:text-white text-right focus:border-primary focus:outline-none">
                 </div>
                 
                 <div>
-                    <label class="block text-sm text-gray-400 mb-2">ملاحظة</label>
+                    <label class="block text-sm text-slate-500 dark:text-slate-400 mb-2">ملاحظة</label>
                     <input type="text" id="transfer-note" placeholder="اختياري" 
-                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-right focus:border-primary focus:outline-none">
+                        class="w-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-slate-700 dark:text-white text-right focus:border-primary focus:outline-none">
                 </div>
                 
                 <button onclick="executeTransfer()" class="w-full py-4 rounded-xl bg-gradient-to-r from-primary to-secondary text-white font-bold shadow-lg shadow-primary/30">
@@ -376,14 +515,14 @@
     <div id="history-modal" class="modal">
         <div class="modal-content p-6">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold">سجل المعاملات</h2>
-                <button onclick="closeModal('history-modal')" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10">
+                <h2 class="text-2xl font-bold text-slate-800 dark:text-white">سجل المعاملات</h2>
+                <button onclick="closeModal('history-modal')" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/5 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-white/10 text-slate-600 dark:text-slate-300">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             
             <div id="history-list" class="space-y-3 max-h-96 overflow-y-auto hide-scrollbar">
-                <div class="text-center text-gray-500 py-4">جاري التحميل...</div>
+                <div class="text-center text-slate-500 py-4">جاري التحميل...</div>
             </div>
         </div>
     </div>
@@ -392,31 +531,31 @@
     <div id="ai-modal" class="modal">
         <div class="modal-content p-6 h-[80vh] flex flex-col">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-bold flex items-center gap-2">
+                <h2 class="text-2xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
                     <i class="fas fa-robot text-primary"></i>
                     المساعد الذكي
                 </h2>
-                <button onclick="closeModal('ai-modal')" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10">
+                <button onclick="closeModal('ai-modal')" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/5 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-white/10 text-slate-600 dark:text-slate-300">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             
-            <div id="chat-messages" class="flex-1 overflow-y-auto space-y-4 mb-4 p-4 bg-white/5 rounded-2xl hide-scrollbar">
+            <div id="chat-messages" class="flex-1 overflow-y-auto space-y-4 mb-4 p-4 bg-slate-100 dark:bg-white/5 rounded-2xl hide-scrollbar">
                 <div class="flex items-start gap-3">
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white">
                         <i class="fas fa-robot"></i>
                     </div>
-                    <div class="bg-white/10 rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]">
-                        <p class="text-sm">مرحباً! كيف يمكنني مساعدتك؟</p>
+                    <div class="bg-white dark:bg-white/10 rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%] shadow-sm">
+                        <p class="text-slate-700 dark:text-slate-200 text-sm">مرحباً! كيف يمكنني مساعدتك؟</p>
                     </div>
                 </div>
             </div>
             
             <div class="flex gap-2">
                 <input type="text" id="ai-input" placeholder="اكتب رسالتك..." 
-                    class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-primary focus:outline-none"
+                    class="flex-1 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-slate-700 dark:text-white focus:border-primary focus:outline-none"
                     onkeypress="if(event.key==='Enter') sendAIMessage()">
-                <button onclick="sendAIMessage()" class="w-12 h-12 rounded-xl bg-primary flex items-center justify-center hover:bg-primary/80">
+                <button onclick="sendAIMessage()" class="w-12 h-12 rounded-xl bg-primary flex items-center justify-center hover:bg-primary/80 text-white">
                     <i class="fas fa-paper-plane"></i>
                 </button>
             </div>
@@ -426,58 +565,72 @@
     <!-- Side Menu -->
     <div id="side-menu" class="fixed inset-0 z-50 pointer-events-none">
         <div class="menu-overlay absolute inset-0 opacity-0 transition-opacity duration-300" onclick="toggleMenu()"></div>
-        <div class="absolute top-0 right-0 h-full w-80 glass border-l border-white/10 transform translate-x-full transition-transform duration-300 pointer-events-auto" id="menu-panel">
+        <div class="absolute top-0 right-0 h-full w-80 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-white/10 transform translate-x-full transition-transform duration-300 pointer-events-auto shadow-2xl" id="menu-panel">
             <div class="p-6 h-full flex flex-col">
                 <div class="flex items-center justify-between mb-8">
                     <h2 class="text-2xl font-bold gradient-text">القائمة</h2>
-                    <button onclick="toggleMenu()" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10">
+                    <button onclick="toggleMenu()" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/5 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-white/10 text-slate-600 dark:text-slate-300">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
                 
                 <div class="space-y-2 flex-1 overflow-y-auto hide-scrollbar">
-                    <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors text-right">
-                        <div class="w-12 h-12 rounded-xl bg-primary/20 text-primary flex items-center justify-center text-lg">
+                    <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-right">
+                        <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-lg">
                             <i class="fas fa-user"></i>
                         </div>
                         <div class="flex-1">
-                            <div class="font-bold">الملف الشخصي</div>
-                            <div class="text-xs text-gray-400">إدارة البيانات</div>
+                            <div class="font-bold text-slate-800 dark:text-white">الملف الشخصي</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">إدارة البيانات</div>
                         </div>
                     </button>
                     
-                    <button onclick="openWalletModal(); toggleMenu();" class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors text-right">
-                        <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">
+                    <button onclick="openWalletModal(); toggleMenu();" class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-right">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg">
                             <i class="fas fa-wallet"></i>
                         </div>
                         <div class="flex-1">
-                            <div class="font-bold">المحفظة</div>
-                            <div class="text-xs text-gray-400" id="menu-balance">الرصيد: 0</div>
+                            <div class="font-bold text-slate-800 dark:text-white">المحفظة</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400" id="menu-balance">الرصيد: 0</div>
                         </div>
                     </button>
                     
-                    <button onclick="openAIAssistant(); toggleMenu();" class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors text-right">
-                        <div class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg">
+                    <button onclick="openAIAssistant(); toggleMenu();" class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-right">
+                        <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 flex items-center justify-center text-lg">
                             <i class="fas fa-robot"></i>
                         </div>
                         <div class="flex-1">
-                            <div class="font-bold">المساعد الذكي</div>
-                            <div class="text-xs text-gray-400">AI</div>
+                            <div class="font-bold text-slate-800 dark:text-white">المساعد الذكي</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">AI</div>
                         </div>
                     </button>
                     
-                    <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors text-right">
-                        <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg">
+                    <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-right">
+                        <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center text-lg">
                             <i class="fas fa-crown"></i>
                         </div>
                         <div class="flex-1">
-                            <div class="font-bold">العضوية المميزة</div>
-                            <div class="text-xs text-gray-400">VIP</div>
+                            <div class="font-bold text-slate-800 dark:text-white">العضوية المميزة</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">VIP</div>
+                        </div>
+                    </button>
+                    
+                    <button onclick="toggleDarkMode()" class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-right">
+                        <div class="w-12 h-12 rounded-xl bg-slate-800 dark:bg-slate-700 text-slate-600 dark:text-yellow-400 flex items-center justify-center text-lg transition-colors">
+                            <i class="fas fa-moon dark:hidden"></i>
+                            <i class="fas fa-sun hidden dark:block"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-bold text-slate-800 dark:text-white">الوضع الليلي</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400" id="theme-status">الوضع الفاتح</div>
+                        </div>
+                        <div class="relative inline-block w-12 h-6 bg-slate-200 dark:bg-primary rounded-full">
+                            <div class="absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform dark:translate-x-6"></div>
                         </div>
                     </button>
                 </div>
                 
-                <button onclick="logout()" class="w-full py-4 rounded-xl bg-red-500/20 text-red-400 font-bold hover:bg-red-500/30 transition-colors flex items-center justify-center gap-2">
+                <button onclick="logout()" class="w-full py-4 rounded-xl bg-rose-500 text-white font-bold hover:bg-rose-600 transition-colors flex items-center justify-center gap-2">
                     <i class="fas fa-sign-out-alt"></i>
                     تسجيل الخروج
                 </button>
@@ -505,8 +658,8 @@
         
         let currentUserId = window.CURRENT_USER_CODE;
         let userData = null;
+        let previousData = null;
         
-        // Level definitions - exactly as requested
         const levels = [
             { threshold: 0, name: 'ضعيف', class: 'level-0' },
             { threshold: 10, name: 'مبتدئ', class: 'level-10' },
@@ -521,10 +674,47 @@
             { threshold: 100, name: 'امتياز', class: 'level-100' }
         ];
 
+        function initTheme() {
+            const saved = localStorage.getItem('theme');
+            if (saved === 'dark') {
+                document.documentElement.classList.add('dark');
+                document.body.classList.add('dark');
+                updateThemeUI(true);
+            }
+        }
+
+        function toggleDarkMode() {
+            const isDark = document.documentElement.classList.contains('dark');
+            if (isDark) {
+                document.documentElement.classList.remove('dark');
+                document.body.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                updateThemeUI(false);
+                showToast('تم تفعيل الوضع الفاتح', 'success');
+            } else {
+                document.documentElement.classList.add('dark');
+                document.body.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                updateThemeUI(true);
+                showToast('تم تفعيل الوضع الليلي', 'success');
+            }
+        }
+
+        function updateThemeUI(isDark) {
+            const status = document.getElementById('theme-status');
+            if (status) status.textContent = isDark ? 'الوضع الليلي' : 'الوضع الفاتح';
+        }
+
         function loadUserData() {
             db.ref('users/' + currentUserId).on('value', (snapshot) => {
-                userData = snapshot.val();
-                if (userData) {
+                const newData = snapshot.val();
+                if (newData) {
+                    // Check for changes to log activities
+                    if (previousData) {
+                        checkForChanges(previousData, newData);
+                    }
+                    userData = newData;
+                    previousData = {...newData};
                     updateUI();
                     loadActivities();
                     loadHistory();
@@ -532,6 +722,49 @@
                     createDefaultUser();
                 }
             });
+        }
+
+        function checkForChanges(oldData, newData) {
+            const timestamp = Date.now();
+            const activityId = 'act_' + timestamp;
+            
+            // Check grade change
+            const oldGrade = parseInt((oldData.grade || '0%').replace('%', ''));
+            const newGrade = parseInt((newData.grade || '0%').replace('%', ''));
+            
+            if (newGrade > oldGrade) {
+                // Find new level
+                const newLevel = levels.find(l => newGrade >= l.threshold && newGrade < (l.threshold + 10)) || levels[levels.length - 1];
+                
+                db.ref('activities/' + currentUserId + '/' + activityId).set({
+                    type: 'level_up',
+                    title: `ترقية إلى ${newLevel.name}`,
+                    amount: 0,
+                    timestamp: timestamp
+                });
+            }
+            
+            // Check points change
+            const oldPoints = oldData.points || 0;
+            const newPoints = newData.points || 0;
+            
+            if (newPoints > oldPoints) {
+                const diff = newPoints - oldPoints;
+                db.ref('activities/' + currentUserId + '/' + activityId + '_pts').set({
+                    type: 'earn',
+                    title: 'إضافة نقاط',
+                    amount: diff,
+                    timestamp: timestamp
+                });
+            } else if (newPoints < oldPoints) {
+                const diff = oldPoints - newPoints;
+                db.ref('activities/' + currentUserId + '/' + activityId + '_used').set({
+                    type: 'spend',
+                    title: 'استخدام نقاط',
+                    amount: diff,
+                    timestamp: timestamp
+                });
+            }
         }
 
         function createDefaultUser() {
@@ -552,13 +785,11 @@
             document.getElementById('user-major').textContent = userData.major || 'غير محدد';
             document.getElementById('user-avatar').src = userData.avatar || 'https://i.pravatar.cc/150?img=11';
             
-            // Parse grade percentage
             const gradeStr = userData.grade || '0%';
             const gradeNum = parseInt(gradeStr.replace('%', '')) || 0;
             
             document.getElementById('grade-display').textContent = gradeNum + '%';
             
-            // Find current level based on grade
             let currentLevel = levels[0];
             for (let i = levels.length - 1; i >= 0; i--) {
                 if (gradeNum >= levels[i].threshold) {
@@ -567,26 +798,21 @@
                 }
             }
             
-            // Update level badge
             const badge = document.getElementById('level-badge');
             badge.className = `status-badge ${currentLevel.class}`;
             document.getElementById('level-text').textContent = currentLevel.name;
             
-            // Update progress bar - directly represents the grade percentage
             document.getElementById('progress-bar').style.width = gradeNum + '%';
             document.getElementById('progress-percentage').textContent = gradeNum + '%';
             
-            // Update description
             const nextLevel = levels.find(l => l.threshold > gradeNum);
             if (nextLevel) {
                 document.getElementById('level-description').textContent = 
-                    `أنت حالياً ${currentLevel.name} - التالي: ${nextLevel.name} (${nextLevel.threshold}%)`;
+                    `أنت حالياً ${currentLevel.name} - التالي: ${nextLevel.name}`;
             } else {
-                document.getElementById('level-description').textContent = 
-                    'مبروك! لقد وصلت إلى أعلى مستوى 🎉';
+                document.getElementById('level-description').textContent = 'مبروك! وصلت للامتياز 🎉';
             }
             
-            // Update wallet
             const points = userData.points || 0;
             document.getElementById('wallet-balance').textContent = points.toLocaleString();
             document.getElementById('modal-wallet-balance').textContent = points.toLocaleString();
@@ -600,28 +826,51 @@
                 const container = document.getElementById('activities-list');
                 
                 if (!activities) {
-                    container.innerHTML = '<div class="text-center text-gray-500 py-4">لا توجد نشاطات</div>';
+                    container.innerHTML = '<div class="text-center text-slate-500 py-4">لا توجد نشاطات حديثة</div>';
                     return;
                 }
                 
                 const sorted = Object.entries(activities).sort((a, b) => b[1].timestamp - a[1].timestamp);
                 
                 container.innerHTML = sorted.map(([key, activity]) => {
-                    const isPositive = activity.type === 'earn' || activity.type === 'transfer_in' || activity.type === 'level_up';
-                    const icon = isPositive ? 'fa-arrow-up' : 'fa-arrow-down';
-                    const color = isPositive ? 'text-emerald-400' : 'text-rose-400';
-                    const bg = isPositive ? 'bg-emerald-500/20' : 'bg-rose-500/20';
+                    let icon, color, bg;
+                    
+                    switch(activity.type) {
+                        case 'level_up':
+                            icon = 'fa-trophy';
+                            color = 'text-amber-500';
+                            bg = 'bg-amber-100 dark:bg-amber-500/20';
+                            break;
+                        case 'earn':
+                        case 'transfer_in':
+                            icon = 'fa-arrow-down';
+                            color = 'text-emerald-500';
+                            bg = 'bg-emerald-100 dark:bg-emerald-500/20';
+                            break;
+                        case 'spend':
+                        case 'transfer_out':
+                            icon = 'fa-arrow-up';
+                            color = 'text-rose-500';
+                            bg = 'bg-rose-100 dark:bg-rose-500/20';
+                            break;
+                        default:
+                            icon = 'fa-info';
+                            color = 'text-blue-500';
+                            bg = 'bg-blue-100 dark:bg-blue-500/20';
+                    }
+                    
+                    const amountText = activity.amount ? `<span class="${color} font-bold">${activity.type === 'earn' || activity.type === 'transfer_in' ? '+' : '-'}${activity.amount}</span>` : '';
                     
                     return `
-                        <div class="activity-item flex items-center gap-3 p-3 rounded-xl bg-white/5">
+                        <div class="activity-item flex items-center gap-3 p-3 rounded-xl bg-slate-100 dark:bg-white/5">
                             <div class="w-10 h-10 rounded-lg ${bg} ${color} flex items-center justify-center">
                                 <i class="fas ${icon}"></i>
                             </div>
                             <div class="flex-1">
-                                <p class="font-bold text-sm">${activity.title}</p>
-                                <p class="text-xs text-gray-400">${new Date(activity.timestamp).toLocaleDateString('ar-SA')}</p>
+                                <p class="font-bold text-sm text-slate-800 dark:text-white">${activity.title}</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">${new Date(activity.timestamp).toLocaleDateString('ar-SA')}</p>
                             </div>
-                            <span class="${color} font-bold">${isPositive ? '+' : '-'}${activity.amount}</span>
+                            ${amountText}
                         </div>
                     `;
                 }).join('');
@@ -635,7 +884,7 @@
                 const container = document.getElementById('history-list');
                 
                 if (!transactions) {
-                    container.innerHTML = '<div class="text-center text-gray-500 py-4">لا توجد معاملات</div>';
+                    container.innerHTML = '<div class="text-center text-slate-500 py-4">لا توجد معاملات</div>';
                     return;
                 }
                 
@@ -650,24 +899,24 @@
                     };
                     const icon = icons[tx.type] || 'fa-history';
                     
-                    let color = 'text-blue-400';
-                    let bg = 'bg-blue-500/20';
-                    if (tx.type === 'purchase') { color = 'text-rose-400'; bg = 'bg-rose-500/20'; }
-                    else if (tx.type === 'received' || tx.type === 'level_up') { color = 'text-emerald-400'; bg = 'bg-emerald-500/20'; }
+                    let color = 'text-blue-500';
+                    let bg = 'bg-blue-100 dark:bg-blue-500/20';
+                    if (tx.type === 'purchase') { color = 'text-rose-500'; bg = 'bg-rose-100 dark:bg-rose-500/20'; }
+                    else if (tx.type === 'received') { color = 'text-emerald-500'; bg = 'bg-emerald-100 dark:bg-emerald-500/20'; }
                     
                     return `
-                        <div class="activity-item flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/5">
+                        <div class="activity-item flex items-center gap-3 p-4 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5">
                             <div class="w-12 h-12 rounded-xl ${bg} ${color} flex items-center justify-center text-lg">
                                 <i class="fas ${icon}"></i>
                             </div>
                             <div class="flex-1">
-                                <p class="font-bold">${tx.title}</p>
-                                <p class="text-xs text-gray-400">${tx.description || ''}</p>
-                                <p class="text-xs text-gray-500 mt-1">${new Date(tx.timestamp).toLocaleString('ar-SA')}</p>
+                                <p class="font-bold text-slate-800 dark:text-white">${tx.title}</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">${tx.description || ''}</p>
+                                <p class="text-xs text-slate-400 mt-1">${new Date(tx.timestamp).toLocaleString('ar-SA')}</p>
                             </div>
                             <div class="text-right">
                                 <span class="${color} font-bold block">${tx.amount > 0 ? '+' : ''}${tx.amount}</span>
-                                <span class="text-xs text-gray-500">${tx.status || 'مكتمل'}</span>
+                                <span class="text-xs text-slate-400">${tx.status || 'مكتمل'}</span>
                             </div>
                         </div>
                     `;
@@ -722,20 +971,6 @@
                 status: 'مكتمل'
             };
             
-            updates['activities/' + currentUserId + '/' + txId] = {
-                type: 'transfer_out',
-                title: 'تحويل نقاط',
-                amount: amount,
-                timestamp: Date.now()
-            };
-            
-            updates['activities/' + toUser + '/' + txId] = {
-                type: 'transfer_in',
-                title: 'استلام نقاط',
-                amount: amount,
-                timestamp: Date.now()
-            };
-            
             db.ref().update(updates).then(() => {
                 showToast('تم التحويل بنجاح', 'success');
                 closeModal('transfer-modal');
@@ -757,13 +992,11 @@
             
             setTimeout(() => {
                 const responses = [
-                    'أفهم ما تقصد. كيف يمكنني مساعدتك أكثر؟',
+                    'أفهم ما تقصد. كيف يمكنني مساعدتك؟',
                     'يمكنك التحقق من رصيدك في قسم المحفظة.',
-                    'للتحويل، استخدم زر التحويل في المحفظة.',
-                    'مستواك الحالي يظهر في شريط التقدم.'
+                    'لمزيد من المساعدة، تواصل مع الدعم الفني.'
                 ];
-                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                addMessageToChat(randomResponse, 'ai');
+                addMessageToChat(responses[Math.floor(Math.random() * responses.length)], 'ai');
             }, 1000);
         }
 
@@ -773,17 +1006,19 @@
             div.className = 'flex items-start gap-3 ' + (sender === 'user' ? 'flex-row-reverse' : '');
             
             const avatar = sender === 'ai' 
-                ? '<div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center"><i class="fas fa-robot"></i></div>'
-                : '<div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"><i class="fas fa-user"></i></div>';
+                ? '<div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white"><i class="fas fa-robot"></i></div>'
+                : '<div class="w-10 h-10 rounded-full bg-slate-300 dark:bg-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-200"><i class="fas fa-user"></i></div>';
             
             const bubble = sender === 'ai' 
-                ? 'bg-white/10 rounded-2xl rounded-tr-sm' 
+                ? 'bg-white dark:bg-white/10 rounded-2xl rounded-tr-sm shadow-sm' 
                 : 'bg-primary rounded-2xl rounded-tl-sm';
+            
+            const textColor = sender === 'ai' ? 'text-slate-700 dark:text-slate-200' : 'text-white';
             
             div.innerHTML = `
                 ${avatar}
                 <div class="${bubble} px-4 py-3 max-w-[80%]">
-                    <p class="text-sm">${text}</p>
+                    <p class="${textColor} text-sm">${text}</p>
                 </div>
             `;
             
@@ -793,7 +1028,7 @@
 
         function toggleMenu() {
             const menu = document.getElementById('side-menu');
-            const overlay = document.getElementById('menu-overlay');
+            const overlay = menu.querySelector('.menu-overlay');
             const panel = document.getElementById('menu-panel');
             
             if (menu.classList.contains('pointer-events-none')) {
@@ -804,6 +1039,22 @@
                 menu.classList.add('pointer-events-none');
                 overlay.style.opacity = '0';
                 panel.style.transform = 'translateX(100%)';
+            }
+        }
+
+        function switchView(view) {
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            const container = document.getElementById('categories-container');
+            if (view === 'list') {
+                container.classList.remove('grid-cols-2');
+                container.classList.add('grid-cols-1');
+            } else {
+                container.classList.remove('grid-cols-1');
+                container.classList.add('grid-cols-2');
             }
         }
 
@@ -818,6 +1069,11 @@
         function openTool(tool) {
             const names = { maintenance: 'الصيانة', store: 'المتجر', ai: 'المساعد الذكي', calendar: 'المواعيد' };
             showToast(names[tool] || tool, 'info');
+        }
+
+        function openCategory(cat) {
+            const names = { tech: 'التقنية', design: 'التصميم', marketing: 'التسويق', business: 'الأعمال' };
+            showToast(names[cat] || cat, 'info');
         }
 
         function handleSearch(e) {
@@ -864,35 +1120,18 @@
             }, 3000);
         }
 
-        // LocalStorage for theme and cache
-        function initLocalStorage() {
-            const theme = localStorage.getItem('theme');
-            if (theme === 'dark') {
-                document.documentElement.classList.add('dark');
-            }
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
-            initLocalStorage();
+            initTheme();
             loadUserData();
         });
 
         // Test functions
-        window.updateGrade = (g) => {
-            db.ref('users/' + currentUserId).update({ grade: g + '%' });
-            // Add level up activity if significant change
-            if (g % 10 === 0) {
-                const id = Date.now();
-                db.ref('activities/' + currentUserId + '/' + id).set({
-                    type: 'level_up',
-                    title: 'ترقية مستوى!',
-                    amount: 0,
-                    timestamp: Date.now()
-                });
-            }
-        };
-        
+        window.updateGrade = (g) => db.ref('users/' + currentUserId).update({ grade: g + '%' });
         window.updatePoints = (p) => db.ref('users/' + currentUserId).update({ points: p });
+        window.addPoints = (amount) => {
+            const current = userData.points || 0;
+            db.ref('users/' + currentUserId).update({ points: current + amount });
+        };
     </script>
 </body>
 </html>
