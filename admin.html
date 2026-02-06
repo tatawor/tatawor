@@ -32,6 +32,7 @@
   --success: #059669;
   --danger: #dc2626;
   --warning: #d97706;
+  --info: #0284c7;
 }
 
 html { 
@@ -82,7 +83,30 @@ body {
   margin-top: 2px;
 }
 
-/* التنقل السفلي - 3 أزرار */
+.header-user {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 11px;
+}
+
+.logout-btn {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 10px;
+  font-family: 'Cairo', sans-serif;
+}
+
+/* التنقل السفلي */
 .bottom-nav {
   position: fixed;
   bottom: 0;
@@ -148,6 +172,94 @@ body {
   gap: 6px;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--border-color);
+}
+
+/* صفحة تسجيل الدخول */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(135deg, var(--primary) 0%, #1a237e 100%);
+}
+
+.login-box {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 32px 24px;
+  width: 100%;
+  max-width: 340px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+.login-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.login-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.login-subtitle {
+  color: var(--text-secondary);
+  font-size: 12px;
+  margin-bottom: 24px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login-input {
+  padding: 14px;
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 14px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font-family: 'Cairo', sans-serif;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(44, 62, 148, 0.1);
+}
+
+.login-btn {
+  padding: 14px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: 'Cairo', sans-serif;
+  transition: all 0.3s;
+}
+
+.login-btn:hover {
+  background: var(--primary-light);
+  transform: translateY(-2px);
+}
+
+.login-error {
+  color: var(--danger);
+  font-size: 12px;
+  margin-top: 12px;
+  display: none;
 }
 
 /* النقاط */
@@ -321,6 +433,11 @@ body {
 
 .btn-warning {
   background: var(--warning);
+  color: #fff;
+}
+
+.btn-info {
+  background: var(--info);
   color: #fff;
 }
 
@@ -533,9 +650,10 @@ body {
   opacity: 0.4;
 }
 
-/* الصفحات */
+/* ✅ إصلاح: الصفحات - إخفاء تام للصفحات غير النشطة */
 .page {
   display: none;
+  width: 100%;
 }
 
 .page.active {
@@ -543,9 +661,19 @@ body {
   animation: fadeIn 0.2s ease;
 }
 
+/* ✅ إصلاح: صفحات المدير مخفية دائماً إلا للمدير */
+.page.super-only {
+  display: none !important;
+}
+
+/* ✅ إظهار صفحات المدير فقط للمدير وعندما تكون active */
+body.is-super .page.super-only.active {
+  display: block !important;
+}
+
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* الرسائل */
@@ -666,7 +794,7 @@ body {
   color: #fff;
 }
 
-/* قسم الأكواد - توليد الأكواد */
+/* قسم الأكواد */
 .code-display {
   background: linear-gradient(135deg, var(--primary) 0%, #1a237e 100%);
   color: #fff;
@@ -791,79 +919,140 @@ body {
   background: var(--text-muted);
 }
 
-/* صفحة استلام النقاط */
-.redeem-container {
-  text-align: center;
-  padding: 20px 0;
+/* سجل العمليات - مخفي عن المشرفين العاديين */
+.logs-list {
+  max-height: 500px;
+  overflow-y: auto;
 }
 
-.redeem-icon {
-  font-size: 64px;
-  margin-bottom: 16px;
-}
-
-.redeem-input-group {
-  display: flex;
-  gap: 8px;
-  margin: 20px 0;
-}
-
-.redeem-input {
-  flex: 1;
-  padding: 16px;
-  border: 2px solid var(--border-color);
-  border-radius: 12px;
-  font-size: 18px;
-  text-align: center;
-  font-weight: 800;
-  letter-spacing: 4px;
-  font-family: 'Courier New', monospace;
+.log-item {
   background: var(--bg-input);
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 10px;
+  border-right: 4px solid var(--primary);
+  position: relative;
+}
+
+.log-item.add { border-right-color: var(--success); }
+.log-item.deduct { border-right-color: var(--danger); }
+.log-item.edit { border-right-color: var(--warning); }
+.log-item.delete { border-right-color: #7c3aed; }
+.log-item.add-student { border-right-color: var(--info); }
+.log-item.generate-code { border-right-color: #f59e0b; }
+
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.log-admin {
+  font-weight: 800;
+  color: var(--primary);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.log-time {
+  font-size: 10px;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.log-content {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.log-content strong {
   color: var(--text-primary);
 }
 
-.redeem-input:focus {
-  outline: none;
-  border-color: var(--primary);
+.log-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  margin-right: 6px;
 }
 
-.redeem-btn {
-  width: 100%;
-  padding: 16px;
-  background: var(--success);
-  color: #fff;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
+.log-badge.add { background: #d1fae5; color: var(--success); }
+.log-badge.deduct { background: #fee2e2; color: var(--danger); }
+.log-badge.edit { background: #fef3c7; color: var(--warning); }
+.log-badge.delete { background: #ede9fe; color: #7c3aed; }
+.log-badge.add-student { background: #e0f2fe; color: var(--info); }
+.log-badge.generate-code { background: #fef3c7; color: #d97706; }
+
+/* إدارة المشرفين - مخفية عن المشرفين العاديين */
+.admin-item {
+  background: var(--bg-input);
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--border-color);
+}
+
+.admin-info {
+  flex: 1;
+}
+
+.admin-name {
   font-weight: 800;
+  color: var(--text-primary);
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.admin-role {
+  font-size: 11px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.admin-role.super {
+  color: var(--warning);
+  font-weight: 700;
+}
+
+.admin-role.regular {
+  color: var(--info);
+}
+
+.admin-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.edit-admin-btn, .delete-admin-btn {
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 11px;
   cursor: pointer;
-  margin-top: 12px;
+  font-family: 'Cairo', sans-serif;
 }
 
-.redeem-result {
-  margin-top: 20px;
-  padding: 20px;
-  border-radius: 12px;
-  display: none;
+.edit-admin-btn {
+  background: var(--warning);
+  color: #fff;
 }
 
-.redeem-result.success {
-  display: block;
-  background: #d1fae5;
-  border: 2px solid var(--success);
-}
-
-.redeem-result.error {
-  display: block;
-  background: #fee2e2;
-  border: 2px solid var(--danger);
-}
-
-.redeem-points {
-  font-size: 3rem;
-  font-weight: 900;
-  color: var(--success);
-  margin: 10px 0;
+.delete-admin-btn {
+  background: var(--danger);
+  color: #fff;
 }
 
 /* للشاشات الصغيرة */
@@ -874,16 +1063,39 @@ body {
   .student-item-name { max-width: 60px; }
   .nav-btn { padding: 4px 8px; font-size: 9px; }
   .nav-icon { font-size: 16px; }
+  .login-box { padding: 24px 16px; }
 }
 </style>
 </head>
 <body>
 
-<div class="container">
+<!-- صفحة تسجيل الدخول -->
+<div id="loginPage" class="login-page">
+  <div class="login-box">
+    <div class="login-icon">🔐</div>
+    <div class="login-title">نظام إدارة الطلاب</div>
+    <div class="login-subtitle">تسجيل دخول المشرفين</div>
+    
+    <div class="login-form">
+      <input type="text" id="loginUsername" class="login-input" placeholder="اسم المشرف" />
+      <input type="password" id="loginPassword" class="login-input" placeholder="الرمز السري" />
+      <button class="login-btn" onclick="login()">دخول</button>
+    </div>
+    
+    <div id="loginError" class="login-error">اسم المستخدم أو الرمز غير صحيح</div>
+  </div>
+</div>
+
+<!-- التطبيق الرئيسي -->
+<div id="appContainer" class="container" style="display: none;">
   <!-- الهيدر -->
   <div class="header">
+    <div class="header-user">
+      <span id="currentAdminName">المشرف</span>
+      <button class="logout-btn" onclick="logout()">خروج</button>
+    </div>
     <h1>نظام إدارة الطلاب</h1>
-    <p>إدارة البيانات والنقاط والأكواد</p>
+    <p id="headerSubtitle">إدارة البيانات والنقاط والأكواد</p>
   </div>
 
   <!-- صفحة الإدارة -->
@@ -1001,7 +1213,7 @@ body {
     </div>
   </div>
 
-  <!-- صفحة الأكواد الجديدة -->
+  <!-- صفحة الأكواد -->
   <div id="pageCodes" class="page">
     <div class="content">
       
@@ -1062,36 +1274,93 @@ body {
     </div>
   </div>
 
-  <!-- صفحة استلام النقاط (للطلاب) -->
-  <div id="pageRedeem" class="page">
+  <!-- صفحة السجل - مخفية عن المشرفين العاديين -->
+  <div id="pageLogs" class="page super-only">
     <div class="content">
+      
+      <!-- فلاتر السجل -->
       <div class="card">
-        <div class="redeem-container">
-          <div class="redeem-icon">🎁</div>
-          <h2 style="font-size: 1.2rem; margin-bottom: 8px;">استبدال الكود</h2>
-          <p style="color: var(--text-secondary); font-size: 12px;">أدخل الكود السري لاستلام النقاط</p>
-          
-          <div class="redeem-input-group">
-            <input type="text" id="redeemCodeInput" class="redeem-input" placeholder="XXXXXX" maxlength="10" />
-          </div>
-          
-          <button class="redeem-btn" onclick="redeemCode()">
-            ✨ استبدال الآن
-          </button>
+        <div class="card-title">🔍 فلترة السجل</div>
+        <div class="filter-bar">
+          <select id="filterLogAdmin" class="filter-select" onchange="renderLogs()">
+            <option value="">كل المشرفين</option>
+          </select>
+          <select id="filterLogAction" class="filter-select" onchange="renderLogs()" style="flex: 0.8;">
+            <option value="">كل العمليات</option>
+            <option value="add">إضافة نقاط</option>
+            <option value="deduct">خصم نقاط</option>
+            <option value="add-student">إضافة طالب</option>
+            <option value="edit">تعديل</option>
+            <option value="delete">حذف</option>
+            <option value="generate-code">توليد كود</option>
+          </select>
+        </div>
+      </div>
 
-          <div id="redeemResult" class="redeem-result">
-            <div id="redeemIcon" style="font-size: 48px; margin-bottom: 8px;">🎉</div>
-            <div id="redeemTitle" style="font-weight: 800; margin-bottom: 8px;">تم الاستبدال بنجاح!</div>
-            <div id="redeemMessage" style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">تم إضافة النقاط لحسابك</div>
-            <div class="redeem-points" id="redeemPointsDisplay">+100</div>
+      <!-- السجل -->
+      <div class="card">
+        <div class="card-title">📜 سجل العمليات (<span id="logsCount">0</span>)</div>
+        <div id="logsList" class="logs-list">
+          <div class="empty-list">
+            <div class="empty-list-icon">📋</div>
+            <div>لا توجد عمليات مسجلة</div>
           </div>
         </div>
       </div>
+
+    </div>
+  </div>
+
+  <!-- صفحة إدارة المشرفين - مخفية عن المشرفين العاديين -->
+  <div id="pageAdmins" class="page super-only">
+    <div class="content">
+      
+      <!-- إضافة مشرف جديد -->
+      <div class="card">
+        <div class="card-title">➕ إضافة مشرف جديد</div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>اسم المشرف</label>
+            <input type="text" id="newAdminName" placeholder="الاسم" />
+          </div>
+          <div class="form-group">
+            <label>الرمز</label>
+            <input type="password" id="newAdminPass" placeholder="••••••" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group full">
+            <label>نوع الحساب</label>
+            <select id="newAdminRole">
+              <option value="regular">مشرف عادي</option>
+              <option value="super">مدير نظام</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn btn-success full" onclick="addNewAdmin()" style="width: 100%; margin-top: 8px;">
+          ➕ إضافة مشرف
+        </button>
+      </div>
+
+      <!-- قائمة المشرفين -->
+      <div class="card">
+        <div class="card-title">👥 المشرفون (<span id="adminsCount">0</span>)</div>
+        <div id="adminsList">
+          <div class="empty-list">
+            <div class="empty-list-icon">👤</div>
+            <div>لا يوجد مشرفون</div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
   <!-- التنقل السفلي -->
-  <div class="bottom-nav">
+  <div class="bottom-nav" id="mainNav">
     <button class="nav-btn active" onclick="showPage('pageManage', this)">
       <span class="nav-icon">✏️</span>
       <span>إدارة</span>
@@ -1104,6 +1373,7 @@ body {
       <span class="nav-icon">🎟️</span>
       <span>الأكواد</span>
     </button>
+    <!-- أزرار إضافية تضاف ديناميكياً للمديرين -->
   </div>
 
 </div>
@@ -1137,36 +1407,446 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
+// المشرفون الافتراضيون
+const defaultAdmins = [
+  { name: 'جاسمين', password: '123', role: 'regular', createdAt: new Date().toISOString() },
+  { name: 'مها', password: '123', role: 'regular', createdAt: new Date().toISOString() },
+  { name: 'عبير', password: '123', role: 'regular', createdAt: new Date().toISOString() },
+  { name: 'ايمن', password: '321', role: 'super', createdAt: new Date().toISOString() },
+  { name: 'عبدالرحمن', password: '321', role: 'super', createdAt: new Date().toISOString() }
+];
+
+let currentAdmin = null;
 let allStudents = [];
 let currentStudent = null;
 let availableMajors = [];
 let sortAsc = true;
 let modalCallback = null;
 let currentGeneratedCode = null;
+let allLogs = [];
+let allAdmins = [];
 
-// التنقل بين الصفحات
+// التحقق من وجود المشرفين في Firebase
+async function initializeAdmins() {
+  const snapshot = await db.ref('admins').once('value');
+  if (!snapshot.exists()) {
+    const updates = {};
+    defaultAdmins.forEach(admin => {
+      const key = db.ref('admins').push().key;
+      updates[key] = admin;
+    });
+    await db.ref('admins').update(updates);
+  }
+}
+
+// ==================== تسجيل الدخول ====================
+
+async function login() {
+  const username = document.getElementById('loginUsername').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  
+  if (!username || !password) {
+    showLoginError('الرجاء إدخال الاسم والرمز');
+    return;
+  }
+  
+  const snapshot = await db.ref('admins').once('value');
+  let foundAdmin = null;
+  
+  snapshot.forEach(child => {
+    const admin = child.val();
+    if (admin.name === username && admin.password === password) {
+      foundAdmin = { key: child.key, ...admin };
+    }
+  });
+  
+  if (foundAdmin) {
+    currentAdmin = foundAdmin;
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('appContainer').style.display = 'block';
+    document.getElementById('currentAdminName').textContent = foundAdmin.name;
+    
+    // ✅ إضافة كلاس للـ body للمديرين
+    if (foundAdmin.role === 'super') {
+      document.body.classList.add('is-super');
+    } else {
+      document.body.classList.remove('is-super');
+    }
+    
+    // إعداد الواجهة حسب الصلاحيات - إخفاء/إظهار الأقسام
+    setupInterfaceByRole();
+    
+    loadStudents();
+    loadCodes();
+    
+    // تحميل البيانات الحساسة فقط للمديرين
+    if (currentAdmin.role === 'super') {
+      loadLogs();
+      loadAdminsList();
+    }
+    
+    showMessage(`✅ مرحباً ${foundAdmin.name}!`, 'success');
+  } else {
+    showLoginError('اسم المستخدم أو الرمز غير صحيح');
+  }
+}
+
+function showLoginError(msg) {
+  const errorDiv = document.getElementById('loginError');
+  errorDiv.textContent = msg;
+  errorDiv.style.display = 'block';
+  setTimeout(() => errorDiv.style.display = 'none', 3000);
+}
+
+function logout() {
+  currentAdmin = null;
+  document.getElementById('appContainer').style.display = 'none';
+  document.getElementById('loginPage').style.display = 'flex';
+  document.getElementById('loginUsername').value = '';
+  document.getElementById('loginPassword').value = '';
+  
+  // ✅ إزالة كلاس المدير من body
+  document.body.classList.remove('is-super');
+  
+  // ✅ إعادة تعيين الواجهة - إخفاء جميع الصفحات أولاً
+  document.querySelectorAll('.page').forEach(el => {
+    el.classList.remove('active');
+  });
+  
+  // ✅ إعادة تعيين التنقل
+  document.getElementById('mainNav').innerHTML = `
+    <button class="nav-btn active" onclick="showPage('pageManage', this)">
+      <span class="nav-icon">✏️</span>
+      <span>إدارة</span>
+    </button>
+    <button class="nav-btn" onclick="showPage('pageList', this)">
+      <span class="nav-icon">📋</span>
+      <span>القائمة</span>
+    </button>
+    <button class="nav-btn" onclick="showPage('pageCodes', this)">
+      <span class="nav-icon">🎟️</span>
+      <span>الأكواد</span>
+    </button>
+  `;
+  
+  // ✅ تفعيل الصفحة الأولى فقط
+  document.getElementById('pageManage').classList.add('active');
+}
+
+function setupInterfaceByRole() {
+  const nav = document.getElementById('mainNav');
+  
+  if (currentAdmin.role === 'super') {
+    // إضافة أزرار المدير فقط
+    const logBtn = document.createElement('button');
+    logBtn.className = 'nav-btn';
+    logBtn.onclick = function() { showPage('pageLogs', this); };
+    logBtn.innerHTML = '<span class="nav-icon">📜</span><span>السجل</span>';
+    nav.appendChild(logBtn);
+    
+    const adminBtn = document.createElement('button');
+    adminBtn.className = 'nav-btn';
+    adminBtn.onclick = function() { showPage('pageAdmins', this); };
+    adminBtn.innerHTML = '<span class="nav-icon">👥</span><span>المشرفون</span>';
+    nav.appendChild(adminBtn);
+    
+    document.getElementById('headerSubtitle').textContent = 'مدير النظام';
+  } else {
+    // المشرف العادي - إخفاء الأقسام الحساسة تماماً
+    document.getElementById('headerSubtitle').textContent = 'نظام إدارة الطلاب';
+  }
+}
+
+// ==================== التنقل ====================
+
 function showPage(pageId, btn) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const targetPage = document.getElementById(pageId);
+  if (!targetPage) return;
+  
+  // ✅ منع المشرفين العاديين من الوصول للصفحات المخفية
+  if (targetPage.classList.contains('super-only') && currentAdmin.role !== 'super') {
+    showMessage('⛔ غير مصرح', 'error');
+    return;
+  }
+  
+  // ✅ إخفاء جميع الصفحات تماماً (إزالة active من الكل)
+  document.querySelectorAll('.page').forEach(p => {
+    p.classList.remove('active');
+  });
+  
+  // ✅ إزالة active من جميع أزرار التنقل
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById(pageId).classList.add('active');
+  
+  // ✅ تفعيل الصفحة المطلوبة فقط
+  targetPage.classList.add('active');
+  
+  // ✅ تفعيل الزر المضغوط
   if (btn) btn.classList.add('active');
   
+  // ✅ تحميل البيانات حسب الصفحة
   if (pageId === 'pageList') renderStudentsList();
   if (pageId === 'pageCodes') loadCodes();
+  if (pageId === 'pageLogs' && currentAdmin.role === 'super') renderLogs();
+  if (pageId === 'pageAdmins' && currentAdmin.role === 'super') renderAdminsList();
 }
 
 window.onload = function() {
-  loadStudents();
-  loadCodes();
-  
-  // التحقق من وجود كود في URL للاستلام المباشر
-  const urlParams = new URLSearchParams(window.location.search);
-  const codeParam = urlParams.get('code');
-  if (codeParam) {
-    showPage('pageRedeem', null);
-    document.getElementById('redeemCodeInput').value = codeParam;
-  }
+  initializeAdmins();
 };
+
+// ==================== سجل العمليات (للمديرين فقط) ====================
+
+async function addLog(action, details, studentId = null, studentName = null, pointsChange = null) {
+  if (!currentAdmin) return;
+  
+  const logEntry = {
+    adminName: currentAdmin.name,
+    adminRole: currentAdmin.role,
+    action: action,
+    details: details,
+    studentId: studentId,
+    studentName: studentName,
+    pointsChange: pointsChange,
+    timestamp: new Date().toISOString()
+  };
+  
+  await db.ref('logs').push(logEntry);
+}
+
+function loadLogs() {
+  if (currentAdmin.role !== 'super') return;
+  
+  db.ref('logs').orderByChild('timestamp').limitToLast(100).on('value', (snapshot) => {
+    allLogs = [];
+    snapshot.forEach(child => {
+      allLogs.unshift({ key: child.key, ...child.val() });
+    });
+    renderLogs();
+    updateLogFilter();
+  });
+}
+
+function updateLogFilter() {
+  const select = document.getElementById('filterLogAdmin');
+  if (!select) return;
+  
+  const currentVal = select.value;
+  const admins = [...new Set(allLogs.map(l => l.adminName))].sort();
+  
+  select.innerHTML = '<option value="">كل المشرفين</option>';
+  admins.forEach(name => {
+    const opt = document.createElement('option');
+    opt.value = name;
+    opt.textContent = name;
+    select.appendChild(opt);
+  });
+  select.value = currentVal;
+}
+
+function renderLogs() {
+  if (currentAdmin.role !== 'super') return;
+  
+  const filterAdmin = document.getElementById('filterLogAdmin')?.value || '';
+  const filterAction = document.getElementById('filterLogAction')?.value || '';
+  
+  let filtered = allLogs;
+  
+  if (filterAdmin) {
+    filtered = filtered.filter(l => l.adminName === filterAdmin);
+  }
+  
+  if (filterAction) {
+    filtered = filtered.filter(l => l.action === filterAction);
+  }
+  
+  const container = document.getElementById('logsList');
+  if (!container) return;
+  
+  document.getElementById('logsCount').textContent = filtered.length;
+  
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="empty-list">
+        <div class="empty-list-icon">📋</div>
+        <div>لا توجد عمليات مسجلة</div>
+      </div>
+    `;
+    return;
+  }
+  
+  container.innerHTML = filtered.map(log => `
+    <div class="log-item ${log.action}">
+      <div class="log-header">
+        <div class="log-admin">
+          👤 ${log.adminName}
+          ${log.adminRole === 'super' ? '<span>👑</span>' : ''}
+          <span class="log-badge ${log.action}">${getActionText(log.action)}</span>
+        </div>
+        <div class="log-time">${formatDate(log.timestamp)}</div>
+      </div>
+      <div class="log-content">
+        ${log.details}
+        ${log.pointsChange ? `<br><strong>التغيير:</strong> ${log.pointsChange > 0 ? '+' : ''}${log.pointsChange} نقطة` : ''}
+        ${log.studentName ? `<br><strong>الطالب:</strong> ${log.studentName} (${log.studentId})` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function getActionText(action) {
+  const texts = {
+    'add': 'إضافة نقاط',
+    'deduct': 'خصم نقاط',
+    'add-student': 'إضافة طالب',
+    'edit': 'تعديل',
+    'delete': 'حذف',
+    'generate-code': 'توليد كود',
+    'add-admin': 'إضافة مشرف',
+    'delete-admin': 'حذف مشرف',
+    'edit-admin': 'تعديل مشرف'
+  };
+  return texts[action] || action;
+}
+
+// ==================== إدارة المشرفين (للمديرين فقط) ====================
+
+function loadAdminsList() {
+  if (currentAdmin.role !== 'super') return;
+  
+  db.ref('admins').on('value', (snapshot) => {
+    allAdmins = [];
+    snapshot.forEach(child => {
+      allAdmins.push({ key: child.key, ...child.val() });
+    });
+    renderAdminsList();
+  });
+}
+
+function renderAdminsList() {
+  if (currentAdmin.role !== 'super') return;
+  
+  const container = document.getElementById('adminsList');
+  if (!container) return;
+  
+  document.getElementById('adminsCount').textContent = allAdmins.length;
+  
+  if (allAdmins.length === 0) {
+    container.innerHTML = `
+      <div class="empty-list">
+        <div class="empty-list-icon">👤</div>
+        <div>لا يوجد مشرفون</div>
+      </div>
+    `;
+    return;
+  }
+  
+  container.innerHTML = allAdmins.map(admin => `
+    <div class="admin-item">
+      <div class="admin-info">
+        <div class="admin-name">
+          ${admin.name}
+          ${admin.role === 'super' ? '👑' : ''}
+        </div>
+        <div class="admin-role ${admin.role}">
+          ${admin.role === 'super' ? 'مدير نظام' : 'مشرف عادي'}
+          ${admin.name === currentAdmin.name ? ' (أنت)' : ''}
+        </div>
+      </div>
+      <div class="admin-actions">
+        ${admin.name !== currentAdmin.name ? `
+          <button class="edit-admin-btn" onclick="editAdminPassword('${admin.key}', '${admin.name}')">تغيير الرمز</button>
+          <button class="delete-admin-btn" onclick="deleteAdmin('${admin.key}', '${admin.name}')">حذف</button>
+        ` : '<span style="color: var(--text-muted); font-size: 11px;">حسابك</span>'}
+      </div>
+    </div>
+  `).join('');
+}
+
+async function addNewAdmin() {
+  if (currentAdmin.role !== 'super') {
+    showMessage('⛔ غير مصرح', 'error');
+    return;
+  }
+  
+  const name = document.getElementById('newAdminName').value.trim();
+  const password = document.getElementById('newAdminPass').value.trim();
+  const role = document.getElementById('newAdminRole').value;
+  
+  if (!name || !password) {
+    showMessage('⚠️ الاسم والرمز مطلوبان', 'error');
+    return;
+  }
+  
+  if (allAdmins.some(a => a.name === name)) {
+    showMessage('⚠️ هذا الاسم موجود مسبقاً', 'error');
+    return;
+  }
+  
+  const newAdmin = {
+    name: name,
+    password: password,
+    role: role,
+    createdAt: new Date().toISOString(),
+    createdBy: currentAdmin.name
+  };
+  
+  try {
+    await db.ref('admins').push(newAdmin);
+    await addLog('add-admin', `إضافة ${role === 'super' ? 'مدير نظام' : 'مشرف عادي'}: ${name}`);
+    
+    document.getElementById('newAdminName').value = '';
+    document.getElementById('newAdminPass').value = '';
+    document.getElementById('newAdminRole').value = 'regular';
+    
+    showMessage('✅ تم إضافة المشرف بنجاح', 'success');
+  } catch (error) {
+    showMessage('❌ خطأ: ' + error.message, 'error');
+  }
+}
+
+async function editAdminPassword(adminKey, adminName) {
+  if (currentAdmin.role !== 'super') return;
+  
+  const result = await showModalWithInput('🔑', 'تغيير الرمز', `أدخل الرمز الجديد للمشرف "${adminName}":`);
+  
+  if (result.confirmed && result.value) {
+    const newPassword = result.value.trim();
+    if (newPassword.length < 3) {
+      showMessage('⚠️ الرمز قصير جداً', 'error');
+      return;
+    }
+    
+    try {
+      await db.ref('admins/' + adminKey).update({ 
+        password: newPassword,
+        updatedAt: new Date().toISOString(),
+        updatedBy: currentAdmin.name
+      });
+      
+      await addLog('edit-admin', `تغيير رمز المشرف: ${adminName}`);
+      showMessage('✅ تم تغيير الرمز بنجاح', 'success');
+    } catch (error) {
+      showMessage('❌ خطأ: ' + error.message, 'error');
+    }
+  }
+}
+
+async function deleteAdmin(key, name) {
+  if (currentAdmin.role !== 'super') return;
+  
+  const confirmed = await showModal('🗑️', 'تأكيد الحذف', `حذف المشرف "${name}"؟`);
+  if (!confirmed) return;
+  
+  try {
+    await db.ref('admins/' + key).remove();
+    await addLog('delete-admin', `حذف المشرف: ${name}`);
+    showMessage('🗑️ تم حذف المشرف', 'success');
+  } catch (error) {
+    showMessage('❌ خطأ: ' + error.message, 'error');
+  }
+}
+
+// ==================== الطلاب ====================
 
 function loadStudents() {
   db.ref('users').on('value', (snapshot) => {
@@ -1182,9 +1862,12 @@ function updateMajorsList() {
   
   ['studentMajor', 'filterMajor'].forEach(selectId => {
     const select = document.getElementById(selectId);
+    if (!select) return;
+    
     const currentVal = select.value;
     const defaultOpt = selectId === 'studentMajor' ? '<option value="">اختر</option>' : '<option value="">كل التخصصات</option>';
     select.innerHTML = defaultOpt;
+    
     majors.forEach(m => {
       const opt = document.createElement('option');
       opt.value = m;
@@ -1192,7 +1875,6 @@ function updateMajorsList() {
       select.appendChild(opt);
     });
     
-    // إضافة خيار "جديد" مع استخدام المودال بدلاً من prompt
     if (selectId === 'studentMajor') {
       const newOpt = document.createElement('option');
       newOpt.value = "__new__";
@@ -1205,7 +1887,6 @@ function updateMajorsList() {
           if (result.confirmed && result.value) {
             const newMajor = result.value.trim();
             if (newMajor && !availableMajors.includes(newMajor)) {
-              // إضافة التخصص للقائمة محلياً
               availableMajors.push(newMajor);
               availableMajors.sort();
               updateMajorsList();
@@ -1224,13 +1905,15 @@ function updateMajorsList() {
   });
 }
 
-// البحث والاقتراحات
 function handleSearch(value) {
   const sug = document.getElementById('suggestions');
+  if (!sug) return;
+  
   if (value.length < 2) {
     sug.style.display = 'none';
     return;
   }
+  
   const matches = allStudents.filter(s => 
     (s.name && s.name.includes(value)) || 
     (s.id && s.id.includes(value))
@@ -1251,39 +1934,56 @@ function handleSearch(value) {
 }
 
 function searchStudent() {
-  const val = document.getElementById('searchInput').value;
+  const val = document.getElementById('searchInput')?.value || '';
   const student = allStudents.find(s => s.id === val || (s.name && s.name.includes(val)));
   if (student) selectStudent(student.id);
   else showMessage('❌ لم يتم العثور على الطالب', 'error');
 }
 
 function selectStudent(id) {
-  document.getElementById('suggestions').style.display = 'none';
-  document.getElementById('searchInput').value = '';
+  const sug = document.getElementById('suggestions');
+  if (sug) sug.style.display = 'none';
+  
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) searchInput.value = '';
+  
   const s = allStudents.find(x => x.id === id);
   if (!s) return;
   
   currentStudent = s;
-  document.getElementById('studentId').value = s.id;
-  document.getElementById('studentId').readOnly = true;
-  document.getElementById('studentName').value = s.name || '';
-  document.getElementById('studentGrade').value = s.grade || '';
-  document.getElementById('studentMajor').value = s.major || '';
-  document.getElementById('studentWhatsapp').value = s.whatsappLink || '';
-  document.getElementById('studentPassword').value = s.password || '';
-  document.getElementById('currentPoints').textContent = s.points || 0;
+  
+  const fields = {
+    'studentId': s.id,
+    'studentName': s.name || '',
+    'studentGrade': s.grade || '',
+    'studentMajor': s.major || '',
+    'studentWhatsapp': s.whatsappLink || '',
+    'studentPassword': s.password || ''
+  };
+  
+  Object.entries(fields).forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = val;
+  });
+  
+  const studentIdEl = document.getElementById('studentId');
+  if (studentIdEl) studentIdEl.readOnly = true;
+  
+  const currentPointsEl = document.getElementById('currentPoints');
+  if (currentPointsEl) currentPointsEl.textContent = s.points || 0;
+  
   showMessage(`✅ تم تحميل: ${s.name}`, 'success');
 }
 
-// إدارة الطلاب
-function addStudent() {
-  const id = document.getElementById('studentId').value.trim();
-  const name = document.getElementById('studentName').value.trim();
+async function addStudent() {
+  const id = document.getElementById('studentId')?.value.trim();
+  const name = document.getElementById('studentName')?.value.trim();
   
   if (!id || !name) {
     showMessage('⚠️ الرقم والاسم مطلوبان', 'error');
     return;
   }
+  
   if (allStudents.some(s => s.id === id)) {
     showMessage('⚠️ الرقم موجود مسبقاً', 'error');
     return;
@@ -1291,70 +1991,107 @@ function addStudent() {
   
   const data = {
     name, 
-    grade: document.getElementById('studentGrade').value,
-    major: document.getElementById('studentMajor').value,
-    whatsappLink: document.getElementById('studentWhatsapp').value,
-    password: document.getElementById('studentPassword').value,
-    points: 0, 
+    grade: document.getElementById('studentGrade')?.value || '',
+    major: document.getElementById('studentMajor')?.value || '',
+    whatsappLink: document.getElementById('studentWhatsapp')?.value || '',
+    password: document.getElementById('studentPassword')?.value || '',
+    points: 0,
     createdAt: new Date().toISOString()
   };
   
-  db.ref('users/' + id).set(data)
-    .then(() => {
-      showMessage('✅ تم الإضافة بنجاح', 'success');
-      clearForm();
-    })
-    .catch(e => showMessage('❌ خطأ: ' + e.message, 'error'));
+  try {
+    await db.ref('users/' + id).set(data);
+    
+    // تسجيل فقط للمديرين
+    if (currentAdmin.role === 'super') {
+      await addLog('add-student', `إضافة طالب جديد`, id, name);
+    }
+    
+    showMessage('✅ تم الإضافة بنجاح', 'success');
+    clearForm();
+  } catch (e) {
+    showMessage('❌ خطأ: ' + e.message, 'error');
+  }
 }
 
-function saveStudent() {
-  const id = document.getElementById('studentId').value;
+async function saveStudent() {
+  const id = document.getElementById('studentId')?.value;
   if (!id || !currentStudent) {
     showMessage('⚠️ اختر طالباً للتعديل', 'error');
     return;
   }
   
+  const name = document.getElementById('studentName')?.value || '';
   const updates = {
-    name: document.getElementById('studentName').value,
-    grade: document.getElementById('studentGrade').value,
-    major: document.getElementById('studentMajor').value,
-    whatsappLink: document.getElementById('studentWhatsapp').value,
-    password: document.getElementById('studentPassword').value,
+    name: name,
+    grade: document.getElementById('studentGrade')?.value || '',
+    major: document.getElementById('studentMajor')?.value || '',
+    whatsappLink: document.getElementById('studentWhatsapp')?.value || '',
+    password: document.getElementById('studentPassword')?.value || '',
     updatedAt: new Date().toISOString()
   };
   
-  db.ref('users/' + id).update(updates)
-    .then(() => showMessage('✅ تم الحفظ بنجاح', 'success'))
-    .catch(e => showMessage('❌ خطأ: ' + e.message, 'error'));
+  try {
+    await db.ref('users/' + id).update(updates);
+    
+    if (currentAdmin.role === 'super') {
+      await addLog('edit', `تعديل بيانات الطالب`, id, name);
+    }
+    
+    showMessage('✅ تم الحفظ بنجاح', 'success');
+  } catch (e) {
+    showMessage('❌ خطأ: ' + e.message, 'error');
+  }
 }
 
-function updatePoints() {
-  const id = document.getElementById('studentId').value;
-  const change = parseInt(document.getElementById('pointsChange').value);
+async function updatePoints() {
+  const id = document.getElementById('studentId')?.value;
+  const change = parseInt(document.getElementById('pointsChange')?.value);
   
   if (!id) {
     showMessage('⚠️ اختر طالباً أولاً', 'error');
     return;
   }
-  if (isNaN(change)) {
-    showMessage('⚠️ أدخل رقماً صحيحاً', 'error');
+  
+  if (isNaN(change) || change === 0) {
+    showMessage('⚠️ أدخل رقماً صحيحاً غير صفر', 'error');
     return;
   }
   
-  const current = parseInt(document.getElementById('currentPoints').textContent) || 0;
+  const current = parseInt(document.getElementById('currentPoints')?.textContent) || 0;
   const newPoints = Math.max(0, current + change);
+  const studentName = document.getElementById('studentName')?.value || id;
   
-  db.ref('users/' + id).update({ points: newPoints })
-    .then(() => {
-      document.getElementById('currentPoints').textContent = newPoints;
-      document.getElementById('pointsChange').value = '';
-      showMessage(`✅ تم ${change > 0 ? 'إضافة' : 'خصم'} ${Math.abs(change)} نقطة`, 'success');
-    });
+  try {
+    await db.ref('users/' + id).update({ points: newPoints });
+    
+    // تسجيل فقط للمديرين
+    if (currentAdmin.role === 'super') {
+      await addLog(
+        change > 0 ? 'add' : 'deduct',
+        change > 0 ? `إضافة نقاط للطالب` : `خصم نقاط من الطالب`,
+        id,
+        studentName,
+        change
+      );
+    }
+    
+    const currentPointsEl = document.getElementById('currentPoints');
+    if (currentPointsEl) currentPointsEl.textContent = newPoints;
+    
+    const pointsChangeEl = document.getElementById('pointsChange');
+    if (pointsChangeEl) pointsChangeEl.value = '';
+    
+    showMessage(`✅ تم ${change > 0 ? 'إضافة' : 'خصم'} ${Math.abs(change)} نقطة`, 'success');
+  } catch (error) {
+    showMessage('❌ خطأ: ' + error.message, 'error');
+  }
 }
 
 async function deleteStudent() {
-  const id = document.getElementById('studentId').value;
-  const name = document.getElementById('studentName').value;
+  const id = document.getElementById('studentId')?.value;
+  const name = document.getElementById('studentName')?.value;
+  
   if (!id) {
     showMessage('⚠️ اختر طالباً للحذف', 'error');
     return;
@@ -1363,32 +2100,50 @@ async function deleteStudent() {
   const confirmed = await showModal('🗑️', 'تأكيد الحذف', `حذف "${name}"؟`);
   if (!confirmed) return;
   
-  db.ref('users/' + id).remove()
-    .then(() => {
-      showMessage('🗑️ تم الحذف بنجاح', 'success');
-      clearForm();
-    });
+  try {
+    await db.ref('users/' + id).remove();
+    
+    if (currentAdmin.role === 'super') {
+      await addLog('delete', `حذف الطالب من النظام`, id, name);
+    }
+    
+    showMessage('🗑️ تم الحذف بنجاح', 'success');
+    clearForm();
+  } catch (e) {
+    showMessage('❌ خطأ: ' + e.message, 'error');
+  }
 }
 
 function clearForm() {
   currentStudent = null;
-  ['studentId', 'studentName', 'studentGrade', 'studentWhatsapp', 'studentPassword', 'pointsChange'].forEach(id => {
-    document.getElementById(id).value = '';
+  
+  const fields = ['studentId', 'studentName', 'studentGrade', 'studentWhatsapp', 'studentPassword', 'pointsChange'];
+  fields.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
   });
-  document.getElementById('studentMajor').value = '';
-  document.getElementById('studentId').readOnly = false;
-  document.getElementById('currentPoints').textContent = '0';
-  document.getElementById('suggestions').style.display = 'none';
+  
+  const majorEl = document.getElementById('studentMajor');
+  if (majorEl) majorEl.value = '';
+  
+  const studentIdEl = document.getElementById('studentId');
+  if (studentIdEl) studentIdEl.readOnly = false;
+  
+  const currentPointsEl = document.getElementById('currentPoints');
+  if (currentPointsEl) currentPointsEl.textContent = '0';
+  
+  const sug = document.getElementById('suggestions');
+  if (sug) sug.style.display = 'none';
 }
 
 function formatGrade(input) {
+  if (!input) return;
   let v = input.value.replace('%', '').trim();
   if (v && !v.endsWith('%')) input.value = v + '%';
 }
 
-// قائمة الطلاب
 function renderStudentsList() {
-  const filter = document.getElementById('filterMajor').value;
+  const filter = document.getElementById('filterMajor')?.value || '';
   let list = filter ? allStudents.filter(s => s.major === filter) : [...allStudents];
   
   list.sort((a, b) => {
@@ -1398,7 +2153,10 @@ function renderStudentsList() {
   });
   
   const container = document.getElementById('studentsList');
-  document.getElementById('listCount').textContent = list.length;
+  if (!container) return;
+  
+  const listCountEl = document.getElementById('listCount');
+  if (listCountEl) listCountEl.textContent = list.length;
   
   if (list.length === 0) {
     container.innerHTML = `
@@ -1429,21 +2187,22 @@ function filterStudents() {
 
 function toggleSort() {
   sortAsc = !sortAsc;
-  document.getElementById('sortIcon').textContent = sortAsc ? '🔤' : '🔡';
-  document.getElementById('sortText').textContent = sortAsc ? 'أ-ي' : 'ي-أ';
+  const sortIcon = document.getElementById('sortIcon');
+  const sortText = document.getElementById('sortText');
+  if (sortIcon) sortIcon.textContent = sortAsc ? '🔤' : '🔡';
+  if (sortText) sortText.textContent = sortAsc ? 'أ-ي' : 'ي-أ';
   renderStudentsList();
 }
 
 function selectFromList(id) {
   selectStudent(id);
-  showPage('pageManage', document.querySelectorAll('.nav-btn')[0]);
+  showPage('pageManage', document.querySelector('.nav-btn'));
 }
 
-// ==================== قسم الأكواد ====================
+// ==================== الأكواد ====================
 
-// توليد كود عشوائي
 function generateRandomCode() {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // بدون I,O,0,1 للتجنب الالتباس
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let code = '';
   for (let i = 0; i < 8; i++) {
     code += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -1451,28 +2210,26 @@ function generateRandomCode() {
   return code;
 }
 
-// توليد كود جديد
 async function generateCode() {
-  const studentId = document.getElementById('codeStudentId').value.trim();
-  const points = parseInt(document.getElementById('codePoints').value);
+  const studentId = document.getElementById('codeStudentId')?.value.trim();
+  const points = parseInt(document.getElementById('codePoints')?.value);
   
   if (!studentId) {
     showMessage('⚠️ أدخل الرقم الأكاديمي', 'error');
     return;
   }
+  
   if (!points || points <= 0) {
     showMessage('⚠️ أدخل عدد النقاط الصحيح', 'error');
     return;
   }
   
-  // التحقق من وجود الطالب
   const student = allStudents.find(s => s.id === studentId);
   if (!student) {
-    showMessage('❌ الطالب غير موجود في النظام', 'error');
+    showMessage('❌ الطالب غير موجود', 'error');
     return;
   }
   
-  // توليد كود فريد
   const code = generateRandomCode();
   const codeData = {
     code: code,
@@ -1482,37 +2239,44 @@ async function generateCode() {
     createdAt: new Date().toISOString(),
     used: false,
     usedAt: null,
-    usedBy: null
+    usedBy: null,
+    generatedBy: currentAdmin.name
   };
   
-  // حفظ الكود في Firebase
   try {
     await db.ref('codes/' + code).set(codeData);
     currentGeneratedCode = code;
     
-    // عرض الكود
-    document.getElementById('generatedCodeText').textContent = code;
-    document.getElementById('generatedCodeStudent').textContent = student.name;
-    document.getElementById('generatedCodePoints').textContent = points + ' نقطة';
-    document.getElementById('generatedCodeDisplay').style.display = 'block';
+    if (currentAdmin.role === 'super') {
+      await addLog('generate-code', `توليد كود شحن: ${points} نقطة للطالب ${student.name}`, studentId, student.name);
+    }
     
-    showMessage('✅ تم توليد الكود بنجاح', 'success');
-    loadCodes(); // تحديث السجل
+    const generatedCodeText = document.getElementById('generatedCodeText');
+    const generatedCodeStudent = document.getElementById('generatedCodeStudent');
+    const generatedCodePoints = document.getElementById('generatedCodePoints');
+    const generatedCodeDisplay = document.getElementById('generatedCodeDisplay');
     
-    // مسح الحقول
-    document.getElementById('codeStudentId').value = '';
-    document.getElementById('codePoints').value = '';
+    if (generatedCodeText) generatedCodeText.textContent = code;
+    if (generatedCodeStudent) generatedCodeStudent.textContent = student.name;
+    if (generatedCodePoints) generatedCodePoints.textContent = points + ' نقطة';
+    if (generatedCodeDisplay) generatedCodeDisplay.style.display = 'block';
+    
+    showMessage('✅ تم توليد الكود', 'success');
+    loadCodes();
+    
+    const codeStudentId = document.getElementById('codeStudentId');
+    const codePoints = document.getElementById('codePoints');
+    if (codeStudentId) codeStudentId.value = '';
+    if (codePoints) codePoints.value = '';
     
   } catch (error) {
-    showMessage('❌ خطأ في توليد الكود: ' + error.message, 'error');
+    showMessage('❌ خطأ: ' + error.message, 'error');
   }
 }
 
-// نسخ الكود
 function copyCode() {
   if (!currentGeneratedCode) return;
   
-  // إنشاء عنصر مؤقت للنسخ
   const tempInput = document.createElement('input');
   tempInput.value = currentGeneratedCode;
   document.body.appendChild(tempInput);
@@ -1523,7 +2287,6 @@ function copyCode() {
   showMessage('📋 تم نسخ الكود', 'success');
 }
 
-// تحميل سجل الأكواد
 function loadCodes() {
   db.ref('codes').orderByChild('createdAt').limitToLast(50).on('value', (snapshot) => {
     const codes = [];
@@ -1534,16 +2297,18 @@ function loadCodes() {
   });
 }
 
-// عرض قائمة الأكواد
 function renderCodesList(codes) {
   const container = document.getElementById('codesList');
-  document.getElementById('codesCount').textContent = codes.length;
+  if (!container) return;
+  
+  const codesCountEl = document.getElementById('codesCount');
+  if (codesCountEl) codesCountEl.textContent = codes.length;
   
   if (codes.length === 0) {
     container.innerHTML = `
       <div class="empty-list">
         <div class="empty-list-icon">🎫</div>
-        <div>لا توجد أكواد مُولدة</div>
+        <div>لا توجد أكواد</div>
       </div>
     `;
     return;
@@ -1554,8 +2319,8 @@ function renderCodesList(codes) {
       <div class="code-item-info">
         <div class="code-item-code">${c.code}</div>
         <div class="code-item-details">
-          ${c.studentName} | ${c.points} نقطة | ${formatDate(c.createdAt)}
-          ${c.used ? `<br>✓ تم الاستخدام: ${formatDate(c.usedAt)}` : ''}
+          ${c.studentName} | ${c.points} نقطة | بواسطة: ${c.generatedBy || 'unknown'}
+          ${c.used ? `<br>✓ ${formatDate(c.usedAt)}` : ''}
         </div>
       </div>
       <div class="code-item-status">${c.used ? 'مستخدم' : 'متاح'}</div>
@@ -1563,106 +2328,53 @@ function renderCodesList(codes) {
   `).join('');
 }
 
-function formatDate(isoString) {
-  if (!isoString) return '';
-  const date = new Date(isoString);
-  return date.toLocaleDateString('ar-SA') + ' ' + date.toLocaleTimeString('ar-SA', {hour: '2-digit', minute: '2-digit'});
-}
-
-// ==================== استلام النقاط ====================
-
-async function redeemCode() {
-  const code = document.getElementById('redeemCodeInput').value.trim().toUpperCase();
-  const resultDiv = document.getElementById('redeemResult');
-  
-  if (code.length < 6) {
-    showRedeemResult(false, 'الكود قصير جداً', 'أدخل كود صحيح مكون من 8 أحرف');
-    return;
-  }
-  
-  try {
-    const snapshot = await db.ref('codes/' + code).once('value');
-    const codeData = snapshot.val();
-    
-    if (!codeData) {
-      showRedeemResult(false, 'كود غير صحيح', 'هذا الكود غير موجود في النظام');
-      return;
-    }
-    
-    if (codeData.used) {
-      showRedeemResult(false, 'الكود مستخدم مسبقاً', 'هذا الكود تم استخدامه من قبل');
-      return;
-    }
-    
-    // تحديث الكود كمستخدم
-    const updates = {
-      used: true,
-      usedAt: new Date().toISOString(),
-      usedBy: codeData.studentId // يمكن تغييره ليتم إدخال الرقم الأكاديمي يدوياً
-    };
-    
-    await db.ref('codes/' + code).update(updates);
-    
-    // إضافة النقاط للطالب
-    const studentRef = db.ref('users/' + codeData.studentId);
-    const studentSnap = await studentRef.once('value');
-    const currentPoints = studentSnap.val()?.points || 0;
-    await studentRef.update({ points: currentPoints + codeData.points });
-    
-    showRedeemResult(true, 'تم الاستبدال بنجاح!', `تم إضافة ${codeData.points} نقطة لحساب ${codeData.studentName}`, codeData.points);
-    
-  } catch (error) {
-    showRedeemResult(false, 'خطأ في النظام', error.message);
-  }
-}
-
-function showRedeemResult(success, title, message, points = 0) {
-  const resultDiv = document.getElementById('redeemResult');
-  const icon = document.getElementById('redeemIcon');
-  const titleEl = document.getElementById('redeemTitle');
-  const msgEl = document.getElementById('redeemMessage');
-  const pointsEl = document.getElementById('redeemPointsDisplay');
-  
-  resultDiv.className = 'redeem-result ' + (success ? 'success' : 'error');
-  icon.textContent = success ? '🎉' : '❌';
-  titleEl.textContent = title;
-  msgEl.textContent = message;
-  pointsEl.textContent = success ? '+' + points : '';
-  pointsEl.style.display = success ? 'block' : 'none';
-}
-
 // ==================== المودال ====================
 
-function showModal(icon, title, text, showInput = false) {
+function showModal(icon, title, text) {
   return new Promise(resolve => {
     modalCallback = resolve;
-    document.getElementById('modalIcon').textContent = icon;
-    document.getElementById('modalTitle').textContent = title;
-    document.getElementById('modalText').textContent = text;
-    document.getElementById('modalInputArea').innerHTML = showInput ? '<input type="text" id="modalInput" class="modal-input" />' : '';
-    document.getElementById('modal').classList.add('active');
+    const modalIcon = document.getElementById('modalIcon');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalText = document.getElementById('modalText');
+    const modalInputArea = document.getElementById('modalInputArea');
+    const modal = document.getElementById('modal');
+    
+    if (modalIcon) modalIcon.textContent = icon;
+    if (modalTitle) modalTitle.textContent = title;
+    if (modalText) modalText.textContent = text;
+    if (modalInputArea) modalInputArea.innerHTML = '';
+    if (modal) modal.classList.add('active');
   });
 }
 
-// مودال مع إدخال نص (للتخصص الجديد)
 function showModalWithInput(icon, title, text) {
   return new Promise(resolve => {
     modalCallback = resolve;
-    document.getElementById('modalIcon').textContent = icon;
-    document.getElementById('modalTitle').textContent = title;
-    document.getElementById('modalText').textContent = text;
-    document.getElementById('modalInputArea').innerHTML = '<input type="text" id="modalInput" class="modal-input" placeholder="اكتب هنا..." />';
-    document.getElementById('modal').classList.add('active');
+    const modalIcon = document.getElementById('modalIcon');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalText = document.getElementById('modalText');
+    const modalInputArea = document.getElementById('modalInputArea');
+    const modal = document.getElementById('modal');
     
-    // تركيز تلقائي على الحقل
-    setTimeout(() => document.getElementById('modalInput')?.focus(), 100);
+    if (modalIcon) modalIcon.textContent = icon;
+    if (modalTitle) modalTitle.textContent = title;
+    if (modalText) modalText.textContent = text;
+    if (modalInputArea) modalInputArea.innerHTML = '<input type="text" id="modalInput" class="modal-input" placeholder="اكتب هنا..." />';
+    if (modal) modal.classList.add('active');
+    
+    setTimeout(() => {
+      const modalInput = document.getElementById('modalInput');
+      if (modalInput) modalInput.focus();
+    }, 100);
   });
 }
 
 function closeModal(result = false) {
-  const input = document.getElementById('modalInput');
-  const value = input ? input.value : null;
-  document.getElementById('modal').classList.remove('active');
+  const modalInput = document.getElementById('modalInput');
+  const value = modalInput ? modalInput.value : null;
+  const modal = document.getElementById('modal');
+  if (modal) modal.classList.remove('active');
+  
   if (modalCallback) {
     modalCallback(result && value ? { confirmed: true, value } : result);
     modalCallback = null;
@@ -1671,23 +2383,26 @@ function closeModal(result = false) {
 
 function showMessage(text, type) {
   const msg = document.getElementById('message');
+  if (!msg) return;
+  
   msg.innerHTML = text;
   msg.className = `message ${type} show`;
   setTimeout(() => msg.classList.remove('show'), 3000);
 }
 
-// إغلاق الاقتراحات عند النقر خارجها
+function formatDate(isoString) {
+  if (!isoString) return '';
+  const date = new Date(isoString);
+  return date.toLocaleDateString('ar-SA') + ' ' + date.toLocaleTimeString('ar-SA', {hour: '2-digit', minute: '2-digit'});
+}
+
 document.addEventListener('click', (e) => {
   if (!e.target.closest('.search-box')) {
-    document.getElementById('suggestions').style.display = 'none';
+    const sug = document.getElementById('suggestions');
+    if (sug) sug.style.display = 'none';
   }
-});
-
-// إدخال تلقائي لصفحة الاستلام
-document.getElementById('redeemCodeInput')?.addEventListener('input', function(e) {
-  this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
 });
 </script>
 
 </body>
-  </html>
+</html>
