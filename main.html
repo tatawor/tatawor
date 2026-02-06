@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#0f172a">
+    <meta name="theme-color" content="#f8fafc">
     <title>الواجهة</title>
     
     <!-- Firebase SDK -->
@@ -16,16 +16,18 @@
 
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: { cairo: ['Cairo', 'sans-serif'] },
                     colors: {
-                        primary: '#6366f1',
+                        primary: '#3b82f6',
                         secondary: '#8b5cf6',
                         accent: '#f59e0b',
-                        dark: '#0f172a',
-                        darker: '#020617',
-                        surface: '#1e293b',
+                        light: '#f8fafc',
+                        lighter: '#ffffff',
+                        surface: '#f1f5f9',
+                        darkSurface: '#1e293b',
                     }
                 }
             }
@@ -34,37 +36,95 @@
 
     <style>
         * { -webkit-tap-highlight-color: transparent; user-select: none; }
-        body { font-family: 'Cairo', sans-serif; background: #020617; overflow-x: hidden; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .glass-strong { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .gradient-text { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        body { font-family: 'Cairo', sans-serif; background: #f8fafc; overflow-x: hidden; transition: background-color 0.3s, color 0.3s; }
+        body.dark { background: #020617; color: white; }
+        
+        .glass { 
+            background: rgba(255, 255, 255, 0.7); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255, 255, 255, 0.5); 
+            transition: all 0.3s;
+        }
+        body.dark .glass { 
+            background: rgba(255, 255, 255, 0.03); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+        }
+        
+        .glass-strong { 
+            background: rgba(255, 255, 255, 0.9); 
+            backdrop-filter: blur(30px); 
+            border: 1px solid rgba(255, 255, 255, 0.6); 
+            transition: all 0.3s;
+        }
+        body.dark .glass-strong { 
+            background: rgba(30, 41, 59, 0.7); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+        }
+        
+        .gradient-text { background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .gradient-text-gold { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
         @keyframes bounce-slight { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
         .badge-bounce { animation: bounce-slight 2s infinite; }
         
         .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; border: 2px solid; display: inline-block; }
-        .status-0 { background-color: #f8d7da; border-color: #f5c2c7; color: #a71d2a; }
-        .status-10 { background-color: #fff0d6; border-color: #ffe4b3; color: #b36b00; }
-        .status-20 { background-color: #fff7cc; border-color: #ffed99; color: #a67c00; }
-        .status-30 { background-color: #fff9e6; border-color: #fff0b3; color: #9a8c00; }
-        .status-40 { background-color: #e2f0d9; border-color: #c6e0ad; color: #4d7c19; }
-        .status-50 { background-color: #d1ecf1; border-color: #bee5eb; color: #0c5460; }
-        .status-60 { background-color: #cce5ff; border-color: #99ccff; color: #004085; }
-        .status-70 { background-color: #e2e3f5; border-color: #c6c8f0; color: #383d9e; }
-        .status-80 { background-color: #d4edda; border-color: #c3e6cb; color: #155724; }
-        .status-90 { background-color: #f3e2f3; border-color: #e0c7e0; color: #6f42c1; }
+        .status-0 { background-color: #fee2e2; border-color: #fecaca; color: #991b1b; }
+        .status-10 { background-color: #ffedd5; border-color: #fed7aa; color: #9a3412; }
+        .status-20 { background-color: #fef3c7; border-color: #fde68a; color: #92400e; }
+        .status-30 { background-color: #fef9c3; border-color: #fef08a; color: #854d0e; }
+        .status-40 { background-color: #dcfce7; border-color: #bbf7d0; color: #166534; }
+        .status-50 { background-color: #cffafe; border-color: #a5f3fc; color: #155e75; }
+        .status-60 { background-color: #dbeafe; border-color: #bfdbfe; color: #1e40af; }
+        .status-70 { background-color: #e0e7ff; border-color: #c7d2fe; color: #3730a3; }
+        .status-80 { background-color: #d1fae5; border-color: #a7f3d0; color: #065f46; }
+        .status-90 { background-color: #f3e8ff; border-color: #e9d5ff; color: #6b21a8; }
 
         #particles-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .progress-bar { transition: width 0.5s ease; }
         
-        /* Loading shimmer */
-        .shimmer { background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+        .shimmer { 
+            background: linear-gradient(90deg, rgba(0,0,0,0.05) 25%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.05) 75%); 
+            background-size: 200% 100%; 
+            animation: shimmer 1.5s infinite; 
+        }
+        body.dark .shimmer { 
+            background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%); 
+        }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        
+        /* Dark mode toggle switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #68D391;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #68D391;
+        }
+        
+        /* Text colors for light mode */
+        body { color: #1e293b; }
+        body.dark { color: white; }
+        
+        .text-gray-400 { color: #64748b; }
+        body.dark .text-gray-400 { color: #94a3b8; }
+        
+        .text-gray-300 { color: #475569; }
+        body.dark .text-gray-300 { color: #cbd5e1; }
+        
+        .bg-white\/5 { background-color: rgba(0,0,0,0.05); }
+        body.dark .bg-white\/5 { background-color: rgba(255,255,255,0.05); }
+        
+        .bg-white\/10 { background-color: rgba(0,0,0,0.1); }
+        body.dark .bg-white\/10 { background-color: rgba(255,255,255,0.1); }
+        
+        .border-white\/10 { border-color: rgba(0,0,0,0.1); }
+        body.dark .border-white\/10 { border-color: rgba(255,255,255,0.1); }
     </style>
 </head>
-<body class="bg-darker text-white antialiased">
+<body class="bg-light text-slate-800 antialiased">
 
     <canvas id="particles-canvas"></canvas>
 
@@ -72,18 +132,18 @@
     <div id="app" class="min-h-screen pb-24">
         
         <!-- Header -->
-        <header class="sticky top-0 z-40 glass-strong px-4 py-3">
+        <header class="sticky top-0 z-40 glass-strong px-4 py-3 shadow-sm">
             <div class="flex items-center justify-between max-w-lg mx-auto">
-                <button onclick="toggleMenu()" class="w-10 h-10 rounded-xl glass flex items-center justify-center active:scale-95 transition-transform">
+                <button onclick="toggleMenu()" class="w-10 h-10 rounded-xl glass flex items-center justify-center active:scale-95 transition-transform text-slate-700 dark:text-white">
                     <i class="fas fa-bars text-lg"></i>
                 </button>
                 <div class="flex items-center gap-2">
                     <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <span class="text-sm font-medium text-gray-300">متصل</span>
+                    <span class="text-sm font-medium text-slate-600 dark:text-gray-300">متصل</span>
                 </div>
-                <button onclick="showNotifications()" class="relative w-10 h-10 rounded-xl glass flex items-center justify-center active:scale-95 transition-transform">
+                <button onclick="showNotifications()" class="relative w-10 h-10 rounded-xl glass flex items-center justify-center active:scale-95 transition-transform text-slate-700 dark:text-white">
                     <i class="fas fa-bell text-lg"></i>
-                    <span id="notification-badge" class="absolute -top-2 -right-2 min-w-[20px] h-5 bg-red-500 rounded-full text-xs flex items-center justify-center px-1 font-bold badge-bounce shadow-lg shadow-red-500/30 border-2 border-darker hidden">0</span>
+                    <span id="notification-badge" class="absolute -top-2 -right-2 min-w-[20px] h-5 bg-red-500 rounded-full text-xs flex items-center justify-center px-1 font-bold badge-bounce shadow-lg shadow-red-500/30 border-2 border-white dark:border-darker hidden">0</span>
                 </button>
             </div>
         </header>
@@ -93,54 +153,54 @@
             
             <!-- Profile Card -->
             <div class="relative mt-4">
-                <div class="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-3xl blur-xl opacity-30"></div>
-                <div class="relative glass rounded-3xl p-6 overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -mr-10 -mt-10"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-3xl blur-xl opacity-20 dark:opacity-30"></div>
+                <div class="relative glass rounded-3xl p-6 overflow-hidden shadow-lg">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-primary opacity-5 rounded-full -mr-10 -mt-10"></div>
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex items-center gap-4">
                             <div class="relative">
-                                <img id="user-avatar" src="https://i.pravatar.cc/150?img=11" alt="User" class="w-16 h-16 rounded-2xl object-cover border-2 border-white/20">
-                                <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-darker flex items-center justify-center">
-                                    <i class="fas fa-check text-xs"></i>
+                                <img id="user-avatar" src="https://i.pravatar.cc/150?img=11" alt="User" class="w-16 h-16 rounded-2xl object-cover border-2 border-white dark:border-white/20 shadow-md">
+                                <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white dark:border-darker flex items-center justify-center">
+                                    <i class="fas fa-check text-xs text-white"></i>
                                 </div>
                             </div>
                             <div>
-                                <h1 id="user-name" class="text-xl font-bold">جاري التحميل...</h1>
-                                <p id="user-location" class="text-sm text-gray-400">---</p>
+                                <h1 id="user-name" class="text-xl font-bold text-slate-800 dark:text-white">جاري التحميل...</h1>
+                                <p id="user-specialty" class="text-sm text-slate-500 dark:text-gray-400">---</p>
                                 <div class="flex items-center gap-1 mt-1">
                                     <i class="fas fa-crown text-yellow-500 text-xs"></i>
                                     <span id="user-status" class="text-xs font-bold">---</span>
                                 </div>
                             </div>
                         </div>
-                        <button onclick="openProfile()" class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
+                        <button onclick="openProfile()" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/10 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-white/20 transition-colors text-slate-600 dark:text-white">
                             <i class="fas fa-cog"></i>
                         </button>
                     </div>
 
                     <!-- Stats -->
                     <div class="grid grid-cols-3 gap-3 mt-6">
-                        <div class="text-center p-3 rounded-2xl bg-white/5 backdrop-blur-sm">
+                        <div class="text-center p-3 rounded-2xl bg-white dark:bg-white/5 shadow-sm border border-slate-100 dark:border-white/10">
                             <div class="text-2xl font-bold gradient-text-gold" id="points-count">0</div>
-                            <div class="text-xs text-gray-400 mt-1">نقطة</div>
+                            <div class="text-xs text-slate-500 dark:text-gray-400 mt-1">نقطة</div>
                         </div>
-                        <div class="text-center p-3 rounded-2xl bg-white/5 backdrop-blur-sm">
-                            <div class="text-2xl font-bold text-primary" id="orders-count">0</div>
-                            <div class="text-xs text-gray-400 mt-1">طلب</div>
+                        <div class="text-center p-3 rounded-2xl bg-white dark:bg-white/5 shadow-sm border border-slate-100 dark:border-white/10">
+                            <div class="text-2xl font-bold text-primary" id="major-percentage">0%</div>
+                            <div class="text-xs text-slate-500 dark:text-gray-400 mt-1">النسبة</div>
                         </div>
-                        <div class="text-center p-3 rounded-2xl bg-white/5 backdrop-blur-sm">
+                        <div class="text-center p-3 rounded-2xl bg-white dark:bg-white/5 shadow-sm border border-slate-100 dark:border-white/10">
                             <div class="text-2xl font-bold text-secondary" id="level-display">0</div>
-                            <div class="text-xs text-gray-400 mt-1">المستوى</div>
+                            <div class="text-xs text-slate-500 dark:text-gray-400 mt-1">المستوى</div>
                         </div>
                     </div>
 
                     <!-- Progress -->
                     <div class="mt-4">
                         <div class="flex justify-between text-xs mb-2">
-                            <span class="text-gray-400">التقدم للمستوى التالي</span>
+                            <span class="text-slate-500 dark:text-gray-400">التقدم للمستوى التالي</span>
                             <span id="progress-text" class="text-primary font-bold">0%</span>
                         </div>
-                        <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                        <div class="h-2 bg-slate-200 dark:bg-white/10 rounded-full overflow-hidden">
                             <div id="progress-bar" class="h-full bg-gradient-to-r from-primary to-secondary rounded-full relative overflow-hidden progress-bar" style="width: 0%">
                                 <div class="absolute inset-0 bg-white/30 animate-[shimmer_2s_infinite]"></div>
                             </div>
@@ -151,12 +211,12 @@
 
             <!-- Voice Search -->
             <div class="relative">
-                <div class="glass rounded-2xl p-4 flex items-center gap-4">
+                <div class="glass rounded-2xl p-4 flex items-center gap-4 shadow-sm">
                     <button onclick="toggleVoiceSearch()" id="voice-btn" class="w-12 h-12 rounded-xl bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white shadow-lg shadow-primary/30 transition-all active:scale-95">
                         <i class="fas fa-microphone text-xl"></i>
                     </button>
                     <div class="flex-1">
-                        <input type="text" id="search-input" placeholder="ابحث بصوتك أو اكتب..." class="w-full bg-transparent border-none outline-none text-right placeholder-gray-500" onkeypress="handleSearch(event)">
+                        <input type="text" id="search-input" placeholder="ابحث بصوتك أو اكتب..." class="w-full bg-transparent border-none outline-none text-right placeholder-slate-400 dark:placeholder-gray-500 text-slate-700 dark:text-white" onkeypress="handleSearch(event)">
                     </div>
                     <div id="voice-wave" class="hidden flex items-center gap-1 h-8">
                         <span class="w-1 h-4 bg-primary rounded-full animate-[bounce_1s_infinite]"></span>
@@ -165,7 +225,7 @@
                         <span class="w-1 h-6 bg-primary rounded-full animate-[bounce_1s_infinite_0.3s]"></span>
                         <span class="w-1 h-4 bg-primary rounded-full animate-[bounce_1s_infinite_0.4s]"></span>
                     </div>
-                    <button onclick="clearSearch()" id="clear-search" class="hidden text-gray-400 hover:text-white">
+                    <button onclick="clearSearch()" id="clear-search" class="hidden text-slate-400 hover:text-slate-600 dark:hover:text-white">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -174,7 +234,7 @@
             <!-- Quick Actions -->
             <div>
                 <div class="flex justify-between items-center mb-3">
-                    <h3 class="font-bold text-lg">الوصول السريع</h3>
+                    <h3 class="font-bold text-lg text-slate-800 dark:text-white">الوصول السريع</h3>
                     <button onclick="showAllServices()" class="text-sm text-primary flex items-center gap-1 hover:gap-2 transition-all">
                         إظهار الكل
                         <i class="fas fa-chevron-left text-xs"></i>
@@ -191,17 +251,17 @@
             </div>
 
             <!-- AI Assistant Banner -->
-            <div onclick="openAIChat()" class="relative overflow-hidden rounded-3xl glass p-6 cursor-pointer group">
-                <div class="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <div class="absolute -right-10 -top-10 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+            <div onclick="openAIChat()" class="relative overflow-hidden rounded-3xl glass p-6 cursor-pointer group shadow-sm">
+                <div class="absolute inset-0 bg-gradient-to-r from-purple-600/10 to-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
                 <div class="relative flex items-center justify-between">
                     <div class="flex-1">
                         <div class="flex items-center gap-2 mb-2">
-                            <span class="px-2 py-1 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold">جديد</span>
-                            <span class="text-xs text-gray-400">متوفر 24/7</span>
+                            <span class="px-2 py-1 rounded-full bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 text-xs font-bold">جديد</span>
+                            <span class="text-xs text-slate-500 dark:text-gray-400">متوفر 24/7</span>
                         </div>
-                        <h3 class="text-lg font-bold mb-1">المساعد الذكي</h3>
-                        <p class="text-sm text-gray-400">اسألني عن أي شيء، أنا هنا للمساعدة!</p>
+                        <h3 class="text-lg font-bold mb-1 text-slate-800 dark:text-white">المساعد الذكي</h3>
+                        <p class="text-sm text-slate-500 dark:text-gray-400">اسألني عن أي شيء، أنا هنا للمساعدة!</p>
                     </div>
                     <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-3xl shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform">
                         <i class="fas fa-robot text-white"></i>
@@ -212,7 +272,7 @@
             <!-- Services Grid -->
             <div>
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-bold text-lg">الخدمات المتاحة</h3>
+                    <h3 class="font-bold text-lg text-slate-800 dark:text-white">الخدمات المتاحة</h3>
                     <div class="flex gap-2">
                         <button onclick="switchView('grid')" class="view-btn active w-8 h-8 rounded-lg glass flex items-center justify-center text-sm text-primary" data-view="grid">
                             <i class="fas fa-th-large"></i>
@@ -237,24 +297,24 @@
 
         <!-- Bottom Navigation -->
         <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md z-50">
-            <div class="glass-strong rounded-3xl px-6 py-3 flex items-center justify-between shadow-2xl shadow-black/50">
+            <div class="glass-strong rounded-3xl px-6 py-3 flex items-center justify-between shadow-2xl shadow-slate-200/50 dark:shadow-black/50">
                 <button onclick="setActiveTab(this, 'home')" class="nav-item active flex flex-col items-center gap-1 text-primary transition-all" data-tab="home">
                     <i class="fas fa-home text-xl"></i>
                     <span class="text-[10px] font-medium">الرئيسية</span>
                 </button>
-                <button onclick="setActiveTab(this, 'services')" class="nav-item flex flex-col items-center gap-1 text-gray-400 hover:text-white transition-all" data-tab="services">
+                <button onclick="setActiveTab(this, 'services')" class="nav-item flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-white transition-all" data-tab="services">
                     <i class="fas fa-th-large text-xl"></i>
                     <span class="text-[10px] font-medium">الخدمات</span>
                 </button>
                 <button onclick="openQuickAction()" class="relative -mt-8 w-14 h-14 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white shadow-lg shadow-primary/40 hover:scale-110 transition-transform active:scale-95">
                     <i class="fas fa-plus text-2xl"></i>
                 </button>
-                <button onclick="setActiveTab(this, 'chat')" class="nav-item flex flex-col items-center gap-1 text-gray-400 hover:text-white transition-all relative" data-tab="chat">
+                <button onclick="setActiveTab(this, 'chat')" class="nav-item flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-white transition-all relative" data-tab="chat">
                     <i class="fas fa-comment-dots text-xl"></i>
                     <span class="text-[10px] font-medium">الدردشة</span>
-                    <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[8px] flex items-center justify-center">2</span>
+                    <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[8px] flex items-center justify-center text-white">2</span>
                 </button>
-                <button onclick="setActiveTab(this, 'profile')" class="nav-item flex flex-col items-center gap-1 text-gray-400 hover:text-white transition-all" data-tab="profile">
+                <button onclick="setActiveTab(this, 'profile')" class="nav-item flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-white transition-all" data-tab="profile">
                     <i class="fas fa-user text-xl"></i>
                     <span class="text-[10px] font-medium">حسابي</span>
                 </button>
@@ -263,45 +323,62 @@
 
         <!-- Side Menu -->
         <div id="side-menu" class="fixed inset-0 z-[60] pointer-events-none">
-            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300" onclick="toggleMenu()" id="menu-overlay"></div>
-            <div class="absolute top-0 right-0 h-full w-80 bg-surface border-l border-white/10 transform translate-x-full transition-transform duration-300 pointer-events-auto" id="menu-panel">
+            <div class="absolute inset-0 bg-slate-900/20 dark:bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300" onclick="toggleMenu()" id="menu-overlay"></div>
+            <div class="absolute top-0 right-0 h-full w-80 bg-white dark:bg-surface border-l border-slate-200 dark:border-white/10 transform translate-x-full transition-transform duration-300 pointer-events-auto shadow-2xl" id="menu-panel">
                 <div class="p-6 h-full flex flex-col">
                     <div class="flex items-center justify-between mb-8">
-                        <h2 class="text-xl font-bold">القائمة</h2>
-                        <button onclick="toggleMenu()" class="w-10 h-10 rounded-xl glass flex items-center justify-center">
+                        <h2 class="text-xl font-bold text-slate-800 dark:text-white">القائمة</h2>
+                        <button onclick="toggleMenu()" class="w-10 h-10 rounded-xl glass flex items-center justify-center text-slate-600 dark:text-white">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
                     <div class="space-y-2 flex-1">
-                        <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors text-right">
-                            <div class="w-10 h-10 rounded-lg bg-primary/20 text-primary flex items-center justify-center">
+                        <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-right">
+                            <div class="w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary flex items-center justify-center">
                                 <i class="fas fa-user"></i>
                             </div>
                             <div class="flex-1">
-                                <div class="font-bold">الملف الشخصي</div>
-                                <div class="text-xs text-gray-400">إدارة الحساب</div>
+                                <div class="font-bold text-slate-800 dark:text-white">الملف الشخصي</div>
+                                <div class="text-xs text-slate-500 dark:text-gray-400">إدارة الحساب</div>
                             </div>
                         </button>
-                        <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors text-right">
-                            <div class="w-10 h-10 rounded-lg bg-secondary/20 text-secondary flex items-center justify-center">
+                        <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-right">
+                            <div class="w-10 h-10 rounded-lg bg-secondary/10 dark:bg-secondary/20 text-secondary flex items-center justify-center">
                                 <i class="fas fa-wallet"></i>
                             </div>
                             <div class="flex-1">
-                                <div class="font-bold">المحفظة</div>
-                                <div class="text-xs text-gray-400" id="wallet-balance">رصيد: 0 ريال</div>
+                                <div class="font-bold text-slate-800 dark:text-white">المحفظة</div>
+                                <div class="text-xs text-slate-500 dark:text-gray-400" id="wallet-balance">رصيد: 0 ريال</div>
                             </div>
                         </button>
-                        <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors text-right">
-                            <div class="w-10 h-10 rounded-lg bg-accent/20 text-accent flex items-center justify-center">
+                        
+                        <!-- Dark Mode Toggle -->
+                        <button onclick="toggleDarkMode()" class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-right group">
+                            <div class="w-10 h-10 rounded-lg bg-slate-800 dark:bg-yellow-500/20 text-slate-600 dark:text-yellow-400 flex items-center justify-center transition-colors">
+                                <i class="fas fa-moon dark:hidden"></i>
+                                <i class="fas fa-sun hidden dark:block"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-bold text-slate-800 dark:text-white">الوضع الليلي</div>
+                                <div class="text-xs text-slate-500 dark:text-gray-400" id="theme-status">الوضع الفاتح مفعل</div>
+                            </div>
+                            <div class="relative inline-block w-12 h-6 align-middle select-none">
+                                <input type="checkbox" id="dark-mode-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-slate-200 appearance-none cursor-pointer transition-all duration-300 right-0 dark:right-6 dark:border-primary" style="top: 0;">
+                                <label for="dark-mode-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-200 cursor-pointer transition-colors duration-300 dark:bg-primary"></label>
+                            </div>
+                        </button>
+
+                        <button class="w-full flex items-center gap-4 p-4 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-right">
+                            <div class="w-10 h-10 rounded-lg bg-accent/10 dark:bg-accent/20 text-accent flex items-center justify-center">
                                 <i class="fas fa-crown"></i>
                             </div>
                             <div class="flex-1">
-                                <div class="font-bold">العضوية VIP</div>
-                                <div class="text-xs text-gray-400">ترقية الحساب</div>
+                                <div class="font-bold text-slate-800 dark:text-white">العضوية VIP</div>
+                                <div class="text-xs text-slate-500 dark:text-gray-400">ترقية الحساب</div>
                             </div>
                         </button>
                     </div>
-                    <button onclick="logout()" class="w-full py-3 rounded-xl bg-red-500/20 text-red-400 font-bold hover:bg-red-500/30 transition-colors">
+                    <button onclick="logout()" class="w-full py-3 rounded-xl bg-red-50 dark:bg-red-500/20 text-red-600 dark:text-red-400 font-bold hover:bg-red-100 dark:hover:bg-red-500/30 transition-colors">
                         تسجيل الخروج
                     </button>
                 </div>
@@ -310,19 +387,19 @@
 
         <!-- All Services Modal -->
         <div id="all-services-modal" class="fixed inset-0 z-[70] pointer-events-none opacity-0 transition-opacity duration-300">
-            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeAllServices()"></div>
-            <div class="absolute bottom-0 left-0 right-0 bg-surface rounded-t-3xl h-[85vh] transform translate-y-full transition-transform duration-300 pointer-events-auto max-w-lg mx-auto flex flex-col">
-                <div class="p-4 border-b border-white/10">
-                    <div class="w-12 h-1 bg-white/20 rounded-full mx-auto mb-4"></div>
+            <div class="absolute inset-0 bg-slate-900/40 dark:bg-black/80 backdrop-blur-sm" onclick="closeAllServices()"></div>
+            <div class="absolute bottom-0 left-0 right-0 bg-white dark:bg-surface rounded-t-3xl h-[85vh] transform translate-y-full transition-transform duration-300 pointer-events-auto max-w-lg mx-auto flex flex-col shadow-2xl">
+                <div class="p-4 border-b border-slate-100 dark:border-white/10">
+                    <div class="w-12 h-1 bg-slate-300 dark:bg-white/20 rounded-full mx-auto mb-4"></div>
                     <div class="flex items-center justify-between">
-                        <h3 class="text-xl font-bold">جميع الخدمات</h3>
-                        <button onclick="closeAllServices()" class="w-10 h-10 rounded-xl glass flex items-center justify-center">
+                        <h3 class="text-xl font-bold text-slate-800 dark:text-white">جميع الخدمات</h3>
+                        <button onclick="closeAllServices()" class="w-10 h-10 rounded-xl glass flex items-center justify-center text-slate-600 dark:text-white">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
                     <div class="mt-4 relative">
-                        <input type="text" placeholder="البحث في الخدمات..." class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-right outline-none focus:border-primary transition-colors">
-                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" placeholder="البحث في الخدمات..." class="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-right outline-none focus:border-primary transition-colors text-slate-700 dark:text-white placeholder-slate-400 dark:placeholder-gray-500">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
                     </div>
                 </div>
                 <div class="flex-1 overflow-y-auto p-4 space-y-4" id="all-services-list">
@@ -342,33 +419,33 @@
 
         <!-- Service Detail Modal -->
         <div id="service-modal" class="fixed inset-0 z-[70] pointer-events-none opacity-0 transition-opacity duration-300">
-            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeService()"></div>
-            <div class="absolute bottom-0 left-0 right-0 bg-surface rounded-t-3xl transform translate-y-full transition-transform duration-300 pointer-events-auto max-w-lg mx-auto p-6">
-                <div class="w-12 h-1 bg-white/20 rounded-full mx-auto mb-6"></div>
+            <div class="absolute inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-sm" onclick="closeService()"></div>
+            <div class="absolute bottom-0 left-0 right-0 bg-white dark:bg-surface rounded-t-3xl transform translate-y-full transition-transform duration-300 pointer-events-auto max-w-lg mx-auto p-6 shadow-2xl">
+                <div class="w-12 h-1 bg-slate-300 dark:bg-white/20 rounded-full mx-auto mb-6"></div>
                 <div id="service-detail-content"></div>
             </div>
         </div>
 
         <!-- Quick Action Modal -->
         <div id="quick-modal" class="fixed inset-0 z-[90] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
-            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeQuickAction()"></div>
-            <div class="relative bg-surface rounded-3xl p-6 w-[90%] max-w-sm transform scale-95 transition-transform duration-300" id="quick-modal-content">
-                <h3 class="text-xl font-bold text-center mb-6">إجراء سريع</h3>
+            <div class="absolute inset-0 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm" onclick="closeQuickAction()"></div>
+            <div class="relative bg-white dark:bg-surface rounded-3xl p-6 w-[90%] max-w-sm transform scale-95 transition-transform duration-300 shadow-2xl" id="quick-modal-content">
+                <h3 class="text-xl font-bold text-center mb-6 text-slate-800 dark:text-white">إجراء سريع</h3>
                 <div class="grid grid-cols-3 gap-4">
-                    <button onclick="quickAction('scan')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-white/10 transition-colors">
+                    <button onclick="quickAction('scan')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
                         <i class="fas fa-qrcode text-2xl text-primary"></i>
-                        <span class="text-xs">مسح</span>
+                        <span class="text-xs text-slate-600 dark:text-gray-300">مسح</span>
                     </button>
-                    <button onclick="quickAction('voice')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-white/10 transition-colors">
+                    <button onclick="quickAction('voice')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
                         <i class="fas fa-microphone text-2xl text-secondary"></i>
-                        <span class="text-xs">صوتي</span>
+                        <span class="text-xs text-slate-600 dark:text-gray-300">صوتي</span>
                     </button>
-                    <button onclick="quickAction('location')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-white/10 transition-colors">
+                    <button onclick="quickAction('location')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-slate-100 dark:hover:bg-white/10 transition-colors">
                         <i class="fas fa-map-marker-alt text-2xl text-accent"></i>
-                        <span class="text-xs">موقع</span>
+                        <span class="text-xs text-slate-600 dark:text-gray-300">موقع</span>
                     </button>
                 </div>
-                <button onclick="closeQuickAction()" class="w-full mt-6 py-3 rounded-xl bg-white/10 text-gray-400 hover:text-white transition-colors">
+                <button onclick="closeQuickAction()" class="w-full mt-6 py-3 rounded-xl bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-gray-400 hover:bg-slate-200 dark:hover:text-white transition-colors">
                     إلغاء
                 </button>
             </div>
@@ -390,7 +467,7 @@
         }
         if (!code) {
             document.body.innerHTML = `
-                <div style="height:100vh;display:flex;align-items:center;justify-content:center;background:#020617;color:white;font-family:Cairo;text-align:center;">
+                <div style="height:100vh;display:flex;align-items:center;justify-content:center;background:#f8fafc;color:#1e293b;font-family:Cairo;text-align:center;">
                     <div>
                         <h2>🚫 غير مصرح بالدخول</h2>
                         <p>يرجى فتح الصفحة من داخل التطبيق</p>
@@ -460,9 +537,51 @@
             { title: 'التنظيف المنزلي', desc: 'خدمات التنظيف الشاملة', icon: 'fa-home', color: 'pink' }
         ];
 
+        // Dark Mode Management
+        function initDarkMode() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDark = savedTheme === 'dark' || (savedTheme === 'system' && systemDark);
+            
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                updateThemeUI(true);
+            } else {
+                document.documentElement.classList.remove('dark');
+                updateThemeUI(false);
+            }
+        }
+
+        function toggleDarkMode() {
+            const isDark = document.documentElement.classList.contains('dark');
+            if (isDark) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                updateThemeUI(false);
+                showToast('تم تفعيل الوضع الفاتح', 'success');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                updateThemeUI(true);
+                showToast('تم تفعيل الوضع الليلي', 'success');
+            }
+        }
+
+        function updateThemeUI(isDark) {
+            const statusText = document.getElementById('theme-status');
+            const toggle = document.getElementById('dark-mode-toggle');
+            if (statusText) {
+                statusText.textContent = isDark ? 'الوضع الليلي مفعل' : 'الوضع الفاتح مفعل';
+            }
+            if (toggle) {
+                toggle.checked = isDark;
+            }
+        }
+
         // Initialize App
         document.addEventListener('DOMContentLoaded', () => {
             initParticles();
+            initDarkMode();
             
             // Load all data from Firebase
             loadUserData();
@@ -488,9 +607,9 @@
         function createDefaultUserData() {
             const defaultData = {
                 name: 'مستخدم جديد',
-                location: 'غير محدد',
+                specialty: 'غير محدد', // Changed from location to specialty
                 points: 0,
-                orders: 0,
+                majorPercentage: 0, // Changed from orders to majorPercentage
                 level: 0,
                 balance: 0,
                 avatar: 'https://i.pravatar.cc/150?img=11'
@@ -502,11 +621,11 @@
             if (!userData) return;
 
             document.getElementById('user-name').textContent = userData.name || 'مستخدم';
-            document.getElementById('user-location').textContent = userData.location || '---';
+            document.getElementById('user-specialty').textContent = userData.specialty || '---'; // Changed from location to specialty
             document.getElementById('user-avatar').src = userData.avatar || 'https://i.pravatar.cc/150?img=11';
             
             animateValue('points-count', parseInt(document.getElementById('points-count').textContent.replace(/,/g, '')) || 0, userData.points || 0, 1000);
-            animateValue('orders-count', parseInt(document.getElementById('orders-count').textContent.replace(/,/g, '')) || 0, userData.orders || 0, 1000);
+            animateValue('major-percentage', parseInt(document.getElementById('major-percentage').textContent.replace('%','')) || 0, userData.majorPercentage || 0, 1000); // Changed from orders-count to major-percentage
             
             document.getElementById('wallet-balance').textContent = `رصيد: ${(userData.balance || 0).toLocaleString()} ريال`;
 
@@ -540,7 +659,6 @@
                 if (data && Object.keys(data).length > 0) {
                     servicesData = Object.values(data);
                 } else {
-                    // Initialize default services if empty
                     initializeDefaultServices();
                     servicesData = defaultServices;
                 }
@@ -588,11 +706,11 @@
         function renderQuickActions() {
             const container = document.getElementById('quick-actions-container');
             container.innerHTML = quickActionsData.map(action => `
-                <button onclick="openTool('${action.id}')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-white/10 transition-all active:scale-95">
-                    <div class="w-12 h-12 rounded-xl bg-${action.color}-500/20 text-${action.color}-400 flex items-center justify-center text-xl">
+                <button onclick="openTool('${action.id}')" class="flex flex-col items-center gap-2 p-4 rounded-2xl glass hover:bg-white/50 dark:hover:bg-white/10 transition-all active:scale-95 shadow-sm">
+                    <div class="w-12 h-12 rounded-xl bg-${action.color}-100 dark:bg-${action.color}-500/20 text-${action.color}-600 dark:text-${action.color}-400 flex items-center justify-center text-xl">
                         <i class="fas ${action.icon}"></i>
                     </div>
-                    <span class="text-xs font-medium">${action.title}</span>
+                    <span class="text-xs font-medium text-slate-700 dark:text-gray-300">${action.title}</span>
                 </button>
             `).join('');
         }
@@ -600,14 +718,14 @@
         function renderServices() {
             const container = document.getElementById('services-container');
             container.innerHTML = servicesData.map(service => `
-                <div class="service-card glass rounded-2xl p-4 relative group cursor-pointer" onclick="openService('${service.id}')">
-                    ${service.discount ? `<div class="absolute top-3 left-3"><span class="px-2 py-1 rounded-full bg-red-500/20 text-red-400 text-xs">${service.discount}</span></div>` : ''}
-                    ${service.badge ? `<div class="absolute top-3 left-3"><span class="px-2 py-1 rounded-full bg-${service.badge === 'مجاني' ? 'green' : 'blue'}-500/20 text-${service.badge === 'مجاني' ? 'green' : 'blue'}-400 text-xs">${service.badge}</span></div>` : ''}
+                <div class="service-card glass rounded-2xl p-4 relative group cursor-pointer hover:shadow-lg transition-all" onclick="openService('${service.id}')">
+                    ${service.discount ? `<div class="absolute top-3 left-3"><span class="px-2 py-1 rounded-full bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 text-xs font-bold">${service.discount}</span></div>` : ''}
+                    ${service.badge ? `<div class="absolute top-3 left-3"><span class="px-2 py-1 rounded-full bg-${service.badge === 'مجاني' ? 'green' : 'blue'}-100 dark:bg-${service.badge === 'مجاني' ? 'green' : 'blue'}-500/20 text-${service.badge === 'مجاني' ? 'green' : 'blue'}-600 dark:text-${service.badge === 'مجاني' ? 'green' : 'blue'}-400 text-xs font-bold">${service.badge}</span></div>` : ''}
                     <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${service.color} flex items-center justify-center text-2xl mb-3 shadow-lg group-hover:scale-110 transition-transform">
                         <i class="fas ${service.icon} text-white"></i>
                     </div>
-                    <h4 class="font-bold mb-1">${service.title}</h4>
-                    <p class="text-xs text-gray-400">${service.desc}</p>
+                    <h4 class="font-bold mb-1 text-slate-800 dark:text-white">${service.title}</h4>
+                    <p class="text-xs text-slate-500 dark:text-gray-400">${service.desc}</p>
                 </div>
             `).join('');
         }
@@ -615,12 +733,10 @@
         function renderAllServicesModal() {
             const container = document.getElementById('all-services-list');
             
-            // Get additional services from Firebase or use defaults
             db.ref('additionalServices').once('value', (snapshot) => {
                 let additionalServices = snapshot.val();
                 if (!additionalServices) {
                     additionalServices = defaultAdditionalServices;
-                    // Save to Firebase
                     defaultAdditionalServices.forEach((svc, idx) => {
                         db.ref('additionalServices/' + idx).set(svc);
                     });
@@ -629,14 +745,14 @@
                 container.innerHTML = `
                     <!-- Main Services -->
                     <div>
-                        <h4 class="text-sm font-bold text-gray-400 mb-3">الخدمات الرئيسية</h4>
+                        <h4 class="text-sm font-bold text-slate-500 dark:text-gray-400 mb-3">الخدمات الرئيسية</h4>
                         <div class="grid grid-cols-4 gap-3">
                             ${servicesData.map(service => `
-                                <div class="flex flex-col items-center gap-2 p-3 rounded-xl bg-white/5 cursor-pointer hover:bg-white/10 transition-colors" onclick="openTool('${service.id}')">
-                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center text-xl text-white">
+                                <div class="flex flex-col items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-white/5 cursor-pointer hover:bg-slate-100 dark:hover:bg-white/10 transition-colors" onclick="openTool('${service.id}')">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center text-xl text-white shadow-md">
                                         <i class="fas ${service.icon}"></i>
                                     </div>
-                                    <span class="text-xs text-center">${service.title}</span>
+                                    <span class="text-xs text-center text-slate-700 dark:text-gray-300">${service.title}</span>
                                 </div>
                             `).join('')}
                         </div>
@@ -644,18 +760,18 @@
 
                     <!-- Additional Services -->
                     <div>
-                        <h4 class="text-sm font-bold text-gray-400 mb-3">خدمات إضافية</h4>
+                        <h4 class="text-sm font-bold text-slate-500 dark:text-gray-400 mb-3">خدمات إضافية</h4>
                         <div class="space-y-2">
                             ${Array.isArray(additionalServices) ? additionalServices.map(item => `
-                                <div class="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors cursor-pointer" onclick="showToast('قريباً', 'info')">
-                                    <div class="w-12 h-12 rounded-xl bg-${item.color}-500/20 text-${item.color}-400 flex items-center justify-center text-xl">
+                                <div class="flex items-center gap-4 p-4 rounded-xl bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-pointer" onclick="showToast('قريباً', 'info')">
+                                    <div class="w-12 h-12 rounded-xl bg-${item.color}-100 dark:bg-${item.color}-500/20 text-${item.color}-600 dark:text-${item.color}-400 flex items-center justify-center text-xl">
                                         <i class="fas ${item.icon}"></i>
                                     </div>
                                     <div class="flex-1">
-                                        <div class="font-bold">${item.title}</div>
-                                        <div class="text-xs text-gray-400">${item.desc}</div>
+                                        <div class="font-bold text-slate-800 dark:text-white">${item.title}</div>
+                                        <div class="text-xs text-slate-500 dark:text-gray-400">${item.desc}</div>
                                     </div>
-                                    <i class="fas fa-chevron-left text-gray-400"></i>
+                                    <i class="fas fa-chevron-left text-slate-400 dark:text-gray-500"></i>
                                 </div>
                             `).join('') : ''}
                         </div>
@@ -685,10 +801,13 @@
 
             function animate() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const isDark = document.documentElement.classList.contains('dark');
                 particles.forEach(p => {
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(99, 102, 241, ${p.opacity})`;
+                    ctx.fillStyle = isDark ? 
+                        `rgba(99, 102, 241, ${p.opacity})` : 
+                        `rgba(59, 130, 246, ${p.opacity * 0.5})`;
                     ctx.fill();
                     p.x += p.speedX;
                     p.y += p.speedY;
@@ -713,7 +832,11 @@
                     current = end;
                     clearInterval(timer);
                 }
-                obj.textContent = Math.floor(current).toLocaleString();
+                if (id === 'major-percentage') {
+                    obj.textContent = Math.floor(current) + '%';
+                } else {
+                    obj.textContent = Math.floor(current).toLocaleString();
+                }
             }, 16);
         }
 
@@ -796,20 +919,20 @@
                     <div class="w-20 h-20 rounded-3xl bg-gradient-to-br ${service.color} flex items-center justify-center text-4xl mx-auto mb-4 shadow-lg shadow-primary/30">
                         <i class="fas ${service.icon} text-white"></i>
                     </div>
-                    <h3 class="text-2xl font-bold mb-2">${service.title}</h3>
-                    <p class="text-gray-400">${service.desc}</p>
-                    <div class="mt-4 inline-block px-4 py-2 rounded-full bg-primary/20 text-primary font-bold">
+                    <h3 class="text-2xl font-bold mb-2 text-slate-800 dark:text-white">${service.title}</h3>
+                    <p class="text-slate-500 dark:text-gray-400">${service.desc}</p>
+                    <div class="mt-4 inline-block px-4 py-2 rounded-full bg-primary/10 dark:bg-primary/20 text-primary font-bold">
                         ${service.price}
                     </div>
                 </div>
                 <div class="space-y-3 mb-6">
-                    <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5">
-                        <i class="fas fa-check-circle text-green-400"></i>
-                        <span class="text-sm">خدمة مضمونة 100%</span>
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-white/5">
+                        <i class="fas fa-check-circle text-green-500"></i>
+                        <span class="text-sm text-slate-700 dark:text-gray-300">خدمة مضمونة 100%</span>
                     </div>
-                    <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5">
-                        <i class="fas fa-clock text-blue-400"></i>
-                        <span class="text-sm">استجابة فورية</span>
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-white/5">
+                        <i class="fas fa-clock text-blue-500"></i>
+                        <span class="text-sm text-slate-700 dark:text-gray-300">استجابة فورية</span>
                     </div>
                 </div>
                 <button onclick="bookService('${service.id}')" class="w-full py-4 rounded-2xl bg-gradient-to-r from-primary to-secondary text-white font-bold text-lg shadow-lg shadow-primary/30 active:scale-95 transform transition-transform">
@@ -866,10 +989,10 @@
         function setActiveTab(element, tab) {
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active', 'text-primary');
-                item.classList.add('text-gray-400');
+                item.classList.add('text-slate-400');
             });
             element.classList.add('active', 'text-primary');
-            element.classList.remove('text-gray-400');
+            element.classList.remove('text-slate-400');
         }
 
         function openQuickAction() {
@@ -896,8 +1019,18 @@
         function showToast(message, type = 'info') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            const colors = { success: 'bg-green-500', error: 'bg-red-500', info: 'bg-primary', warning: 'bg-yellow-500' };
-            const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle', warning: 'fa-exclamation-triangle' };
+            const colors = { 
+                success: 'bg-green-500', 
+                error: 'bg-red-500', 
+                info: 'bg-primary', 
+                warning: 'bg-yellow-500' 
+            };
+            const icons = { 
+                success: 'fa-check-circle', 
+                error: 'fa-exclamation-circle', 
+                info: 'fa-info-circle', 
+                warning: 'fa-exclamation-triangle' 
+            };
             
             toast.className = `flex items-center gap-3 px-6 py-4 rounded-2xl ${colors[type]} text-white shadow-2xl min-w-[300px] transform translate-x-full transition-transform duration-300`;
             toast.innerHTML = `<i class="fas ${icons[type]} text-xl"></i><span class="font-bold">${message}</span>`;
@@ -937,6 +1070,10 @@
         // Expose for testing
         window.updateLevel = function(newLevel) {
             db.ref('users/' + currentUserId).update({ level: newLevel });
+        };
+        
+        window.updateMajorPercentage = function(newPercentage) {
+            db.ref('users/' + currentUserId).update({ majorPercentage: newPercentage });
         };
     </script>
 </body>
