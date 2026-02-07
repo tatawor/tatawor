@@ -926,8 +926,8 @@
         .floating-nav-container {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
-            border-radius: 30px;
-            padding: 8px;
+            border-radius: 25px;
+            padding: 6px 8px;
             box-shadow: 0 10px 40px rgba(124, 58, 237, 0.3), 
                         0 4px 12px rgba(0, 0, 0, 0.1);
             display: flex;
@@ -945,19 +945,21 @@
         }
 
         .nav-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 16px;
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
             border: none;
             background: transparent;
             color: #9CA3AF;
-            font-size: 20px;
+            font-size: 18px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
+            flex-direction: column;
+            gap: 2px;
         }
 
         .nav-btn:hover {
@@ -972,19 +974,19 @@
             box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
         }
 
-        .nav-btn .nav-label {
-            position: absolute;
-            bottom: -20px;
-            font-size: 10px;
+        .nav-label {
+            font-size: 9px;
             font-weight: 700;
-            opacity: 0;
-            transition: all 0.3s;
+            color: #6B7280;
             white-space: nowrap;
+            margin-top: 2px;
+        }
+
+        body.dark .nav-label {
+            color: #9CA3AF;
         }
 
         .nav-btn.active .nav-label {
-            opacity: 1;
-            bottom: -18px;
             color: #7C3AED;
         }
 
@@ -994,29 +996,30 @@
 
         /* Wallet Button - Center Prominent */
         .wallet-btn {
-            width: 70px;
-            height: 70px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             background: linear-gradient(135deg, #7C3AED 0%, #EC4899 50%, #F59E0B 100%);
-            border: 4px solid white;
-            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.5),
-                        0 0 0 4px rgba(124, 58, 237, 0.1);
+            border: 3px solid white;
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4),
+                        0 0 0 3px rgba(124, 58, 237, 0.1);
             color: white;
-            font-size: 28px;
+            font-size: 22px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            margin-top: -30px;
+            margin-top: -20px;
             z-index: 10;
+            flex-direction: column;
         }
 
         body.dark .wallet-btn {
             border-color: #1E1E2E;
-            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.6),
-                        0 0 0 4px rgba(124, 58, 237, 0.2);
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5),
+                        0 0 0 3px rgba(124, 58, 237, 0.2);
         }
 
         .wallet-btn:active {
@@ -1026,7 +1029,7 @@
         .wallet-btn::before {
             content: '';
             position: absolute;
-            inset: -8px;
+            inset: -6px;
             border-radius: 50%;
             background: linear-gradient(135deg, #7C3AED, #EC4899, #F59E0B);
             opacity: 0.3;
@@ -1039,20 +1042,20 @@
             50% { transform: scale(1.1); opacity: 0.1; }
         }
 
-        .wallet-btn .wallet-label {
+        .wallet-label {
             position: absolute;
-            bottom: -25px;
-            font-size: 11px;
+            bottom: -20px;
+            font-size: 9px;
             font-weight: 800;
             color: #7C3AED;
             background: white;
-            padding: 4px 12px;
-            border-radius: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             white-space: nowrap;
         }
 
-        body.dark .wallet-btn .wallet-label {
+        body.dark .wallet-label {
             background: #1E1E2E;
             color: #A78BFA;
         }
@@ -1095,7 +1098,7 @@
 
         .wallet-header {
             background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
-            padding: 30px 24px;
+            padding: 24px 20px;
             border-radius: 30px 30px 0 0;
             position: relative;
             color: white;
@@ -1124,37 +1127,37 @@
         }
 
         .wallet-balance-label {
-            font-size: 14px;
+            font-size: 13px;
             opacity: 0.9;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
         }
 
         .wallet-balance-amount {
-            font-size: 48px;
+            font-size: 36px;
             font-weight: 900;
             text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
         .wallet-balance-unit {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             opacity: 0.9;
         }
 
         .wallet-body {
-            padding: 24px;
+            padding: 20px;
         }
 
         .wallet-actions {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 24px;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
         .wallet-action-btn {
-            padding: 16px;
-            border-radius: 16px;
+            padding: 14px;
+            border-radius: 14px;
             border: none;
             background: #F3F4F6;
             cursor: pointer;
@@ -1162,7 +1165,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         body.dark .wallet-action-btn {
@@ -1179,14 +1182,14 @@
         }
 
         .wallet-action-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
             background: rgba(124, 58, 237, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 20px;
             color: #7C3AED;
         }
 
@@ -1197,14 +1200,14 @@
 
         .wallet-action-text {
             font-weight: 700;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         /* Transfer Form */
         .transfer-form {
             background: #F9FAFB;
-            border-radius: 20px;
-            padding: 20px;
+            border-radius: 18px;
+            padding: 16px;
             display: none;
         }
 
@@ -1223,15 +1226,15 @@
         }
 
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .form-label {
             display: block;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             color: #6B7280;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         body.dark .form-label {
@@ -1240,11 +1243,11 @@
 
         .form-input {
             width: 100%;
-            padding: 14px 16px;
+            padding: 12px 14px;
             border: 2px solid #E5E7EB;
-            border-radius: 12px;
+            border-radius: 10px;
             font-family: 'Cairo', sans-serif;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             transition: all 0.3s;
             background: white;
@@ -1268,13 +1271,13 @@
 
         .transfer-submit {
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             background: linear-gradient(135deg, #7C3AED, #EC4899);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             font-family: 'Cairo', sans-serif;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 800;
             cursor: pointer;
             transition: all 0.3s;
@@ -1297,13 +1300,13 @@
             background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(236, 72, 153, 0.1));
             border: 2px dashed #7C3AED;
             border-radius: 12px;
-            padding: 16px;
+            padding: 14px;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .points-display-label {
-            font-size: 12px;
+            font-size: 11px;
             color: #6B7280;
             font-weight: 600;
             margin-bottom: 4px;
@@ -1314,13 +1317,157 @@
         }
 
         .points-display-value {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 900;
             color: #7C3AED;
         }
 
         body.dark .points-display-value {
             color: #A78BFA;
+        }
+
+        /* Transaction History */
+        .transaction-history {
+            margin-top: 20px;
+            border-top: 1px solid #E5E7EB;
+            padding-top: 16px;
+        }
+
+        body.dark .transaction-history {
+            border-color: #374151;
+        }
+
+        .history-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: #1F2937;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        body.dark .history-title {
+            color: #F9FAFB;
+        }
+
+        .transaction-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .transaction-item {
+            background: #F9FAFB;
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s;
+        }
+
+        body.dark .transaction-item {
+            background: #2D2D3D;
+        }
+
+        .transaction-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .transaction-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .transaction-icon.sent {
+            background: #FEE2E2;
+            color: #EF4444;
+        }
+
+        .transaction-icon.received {
+            background: #D1FAE5;
+            color: #10B981;
+        }
+
+        .transaction-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .transaction-type {
+            font-size: 12px;
+            font-weight: 700;
+            color: #1F2937;
+        }
+
+        body.dark .transaction-type {
+            color: #F9FAFB;
+        }
+
+        .transaction-user {
+            font-size: 11px;
+            color: #6B7280;
+        }
+
+        body.dark .transaction-user {
+            color: #9CA3AF;
+        }
+
+        .transaction-amount {
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .transaction-amount.sent {
+            color: #EF4444;
+        }
+
+        .transaction-amount.received {
+            color: #10B981;
+        }
+
+        .transaction-time {
+            font-size: 10px;
+            color: #9CA3AF;
+            margin-top: 2px;
+        }
+
+        .history-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .history-tab {
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: none;
+            background: #F3F4F6;
+            font-size: 11px;
+            font-weight: 700;
+            color: #6B7280;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        body.dark .history-tab {
+            background: #374151;
+            color: #9CA3AF;
+        }
+
+        .history-tab.active {
+            background: linear-gradient(135deg, #7C3AED, #EC4899);
+            color: white;
         }
     </style>
 </head>
@@ -1495,14 +1642,14 @@
     <!-- Floating Navigation Bar -->
     <nav class="floating-nav">
         <div class="floating-nav-container">
-            <button class="nav-btn" onclick="openLessonsPage()" title="الدروس">
-                <i class="fas fa-graduation-cap"></i>
-                <span class="nav-label">دروس</span>
+            <button class="nav-btn" onclick="openProfilePage()" title="البروفايل">
+                <i class="fas fa-user"></i>
+                <span class="nav-label">البروفايل</span>
             </button>
             
-            <button class="nav-btn" onclick="openActivitiesPage()" title="الانشطة">
-                <i class="fas fa-trophy"></i>
-                <span class="nav-label">انشطة</span>
+            <button class="nav-btn" onclick="openReplaceCodePage()" title="استبدال الكود">
+                <i class="fas fa-exchange-alt"></i>
+                <span class="nav-label">استبدال</span>
             </button>
             
             <button class="wallet-btn" onclick="openWallet()" title="المحفظة">
@@ -1510,14 +1657,14 @@
                 <span class="wallet-label">المحفظة</span>
             </button>
             
-            <button class="nav-btn" onclick="openTestsPage()" title="الاختبارات">
-                <i class="fas fa-book-open"></i>
-                <span class="nav-label">اختبارات</span>
+            <button class="nav-btn" onclick="openFieldPage()" title="الميدان">
+                <i class="fas fa-map-marked-alt"></i>
+                <span class="nav-label">الميدان</span>
             </button>
             
-            <button class="nav-btn" onclick="openStorePage()" title="المتجر">
-                <i class="fas fa-shopping-bag"></i>
-                <span class="nav-label">متجر</span>
+            <button class="nav-btn" onclick="openActivitiesPage()" title="الانشطة">
+                <i class="fas fa-trophy"></i>
+                <span class="nav-label">انشطة</span>
             </button>
         </div>
     </nav>
@@ -1578,6 +1725,24 @@
                         <i class="fas fa-paper-plane"></i>
                         تأكيد التحويل
                     </button>
+                </div>
+
+                <!-- Transaction History -->
+                <div class="transaction-history">
+                    <div class="history-title">
+                        <i class="fas fa-history text-purple-500"></i>
+                        سجل المعاملات
+                    </div>
+                    
+                    <div class="history-tabs">
+                        <button class="history-tab active" onclick="switchHistoryTab('all', this)">الكل</button>
+                        <button class="history-tab" onclick="switchHistoryTab('sent', this)">الصادر</button>
+                        <button class="history-tab" onclick="switchHistoryTab('received', this)">الوارد</button>
+                    </div>
+                    
+                    <div class="transaction-list" id="transaction-list">
+                        <!-- Transactions will be loaded here -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -1708,6 +1873,8 @@
         let unreadCount = 0;
         let currentNotifTab = 'all';
         let notifListener = null;
+        let currentHistoryTab = 'all';
+        let transactions = [];
         
         const levels = [
             { threshold: 0, name: 'ضعيف' },
@@ -1735,6 +1902,7 @@
             initTheme();
             loadUserData();
             setupNotificationsListener();
+            loadTransactions();
         });
 
         // ==================== WALLET FUNCTIONS ====================
@@ -1743,6 +1911,7 @@
             document.getElementById('wallet-modal').classList.add('active');
             document.body.style.overflow = 'hidden';
             updateWalletDisplay();
+            loadTransactions();
         }
 
         function closeWallet(event) {
@@ -1830,6 +1999,7 @@
                 db.ref().update(updates).then(() => {
                     showToast('تم التحويل بنجاح! ✅');
                     hideTransferForm();
+                    loadTransactions();
                     
                     // Send notification to recipient
                     db.ref('notifications/' + code).push({
@@ -1844,6 +2014,69 @@
                     showToast('حدث خطأ أثناء التحويل');
                 });
             });
+        }
+
+        // ==================== TRANSACTION HISTORY ====================
+        
+        function loadTransactions() {
+            db.ref('transactions/' + currentUserId).orderByChild('timestamp').limitToLast(20).once('value')
+                .then(snapshot => {
+                    const data = snapshot.val();
+                    transactions = [];
+                    if (data) {
+                        Object.entries(data).forEach(([key, value]) => {
+                            transactions.push({ id: key, ...value });
+                        });
+                        transactions.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+                    }
+                    renderTransactions();
+                });
+        }
+
+        function switchHistoryTab(tab, btn) {
+            currentHistoryTab = tab;
+            document.querySelectorAll('.history-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            renderTransactions();
+        }
+
+        function renderTransactions() {
+            const container = document.getElementById('transaction-list');
+            let filtered = transactions;
+            
+            if (currentHistoryTab === 'sent') {
+                filtered = transactions.filter(t => t.type === 'sent');
+            } else if (currentHistoryTab === 'received') {
+                filtered = transactions.filter(t => t.type === 'received');
+            }
+            
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="padding: 20px;">
+                        <i class="fas fa-receipt" style="font-size: 32px;"></i>
+                        <p style="font-size: 12px;">لا توجد معاملات</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = filtered.map(t => `
+                <div class="transaction-item">
+                    <div class="transaction-info">
+                        <div class="transaction-icon ${t.type}">
+                            <i class="fas ${t.type === 'sent' ? 'fa-paper-plane' : 'fa-download'}"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <div class="transaction-type">${t.type === 'sent' ? 'تحويل صادر' : 'استلام وارد'}</div>
+                            <div class="transaction-user">${t.type === 'sent' ? 'إلى: ' + (t.toName || t.to) : 'من: ' + (t.fromName || t.from)}</div>
+                            <div class="transaction-time">${formatTime(t.timestamp)}</div>
+                        </div>
+                    </div>
+                    <div class="transaction-amount ${t.type}">
+                        ${t.type === 'sent' ? '-' : '+'} ${t.amount.toLocaleString()}
+                    </div>
+                </div>
+            `).join('');
         }
 
         // ==================== NOTIFICATIONS SYSTEM ====================
@@ -2168,10 +2401,23 @@
             }
         }
 
-        // القائمة الجانبية - الإصلاح هنا
+        // القائمة الجانبية
         function openImportantInfo() { callAndroid("openImportantInfo"); }
         function openContactUs() { callAndroid("openContactUs"); }
         function openReports() { callAndroid("openReports"); }
+
+        // Floating Nav Buttons - Android Activities
+        function openProfilePage() { 
+            callAndroid("openProfile"); 
+        }
+
+        function openReplaceCodePage() { 
+            callAndroid("openReplaceCode"); 
+        }
+
+        function openFieldPage() { 
+            callAndroid("openField"); 
+        }
 
         function logout() {
             if (window.AndroidApp && AndroidApp.logout) {
