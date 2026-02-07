@@ -1482,9 +1482,16 @@
         function openAIAssistant() { openModal('ai-modal'); }
         
         function openTool(tool) {
-            const names = { maintenance: 'التعليمات', store: 'الدروس', ai: 'الأنشطة', calendar: 'الاختبارات' };
-            showToast(names[tool] || tool);
-        }
+    const pages = {
+        maintenance: 'LearnActivity.html'
+    };
+
+    if (pages[tool]) {
+        window.location.href = pages[tool] + '?code=' + encodeURIComponent(currentUserId);
+    } else {
+        showToast('الصفحة غير متوفرة');
+    }
+}
 
         function openCategory(cat) {
             const names = { tech: 'البوت الذكي', design: 'الأدوات', marketing: 'متجر الأكاديمية', business: 'الجدول' };
