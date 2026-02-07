@@ -48,13 +48,14 @@
             color: #F9FAFB;
         }
         
-        /* Main Container */
+        /* Main Container - إضافة overflow hidden لإصلاح التوهج */
         .app-container {
             max-width: 480px;
             margin: 0 auto;
             min-height: 100vh;
             position: relative;
             background: linear-gradient(180deg, #EDE9FE 0%, #F3F4F6 100%);
+            overflow: hidden; /* إصلاح مشكلة التوهج */
         }
         
         body.dark .app-container {
@@ -165,6 +166,7 @@
             padding: 30px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             text-align: center;
+            overflow: hidden; /* إصلاح التوهج */
         }
         
         body.dark .circular-progress-container {
@@ -177,12 +179,14 @@
             width: 200px;
             height: 200px;
             margin: 0 auto;
+            overflow: hidden; /* إصلاح التوهج */
         }
         
         .circular-progress svg {
             transform: rotate(-90deg);
             width: 100%;
             height: 100%;
+            overflow: visible;
         }
         
         .progress-circle-bg {
@@ -203,7 +207,7 @@
             stroke-dasharray: 565.48;
             stroke-dashoffset: 565.48;
             transition: stroke-dashoffset 1.5s ease-in-out;
-            filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.5));
+            filter: drop-shadow(0 0 8px rgba(124, 58, 237, 0.4)); /* تقليل التوهج */
         }
         
         .progress-content {
@@ -244,16 +248,12 @@
             text-align: center;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s;
-            cursor: pointer;
+            cursor: default; /* تغيير المؤشر لأنه لم يعد قابلاً للنقر */
         }
         
         body.dark .stat-item {
             background: #1E1E2E;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
-        
-        .stat-item:active {
-            transform: scale(0.95);
         }
         
         .stat-icon {
@@ -829,31 +829,6 @@
             color: #F9FAFB;
         }
         
-        /* Wallet Card in Modal */
-        .wallet-card {
-            background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
-            border-radius: 24px;
-            padding: 30px;
-            margin: 20px;
-            color: white;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .wallet-pattern {
-            position: absolute;
-            inset: 0;
-            opacity: 0.1;
-            background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.5) 35px, rgba(255,255,255,.5) 70px);
-        }
-        
-        .wallet-balance {
-            font-size: 48px;
-            font-weight: 900;
-            margin: 10px 0;
-        }
-        
         /* Form Elements */
         .input-group {
             margin-bottom: 16px;
@@ -1065,9 +1040,9 @@
             </div>
         </div>
 
-        <!-- Stats Row - 2 items only, clickable -->
+        <!-- Stats Row - 2 items only, تم إزالة onClick من النقاط -->
         <div class="stats-row">
-            <div class="stat-item" onclick="openWalletModal()">
+            <div class="stat-item">
                 <div class="stat-icon purple">
                     <i class="fas fa-wallet"></i>
                 </div>
@@ -1094,30 +1069,30 @@
             <div class="actions-grid">
                 <button class="action-btn" onclick="openTool('maintenance')">
                     <div class="action-icon blue">
-                        <i class="fas fa-wrench"></i>
+                        <i class="fas fa-scroll"></i>
                     </div>
-                    <span class="action-label">صيانة</span>
+                    <span class="action-label">التعليمات</span>
                 </button>
                 
                 <button class="action-btn" onclick="openTool('store')">
                     <div class="action-icon green">
-                        <i class="fas fa-store"></i>
+                        <i class="fas fa-graduation-cap"></i>
                     </div>
-                    <span class="action-label">متجر</span>
+                    <span class="action-label">دروس</span>
                 </button>
                 
                 <button class="action-btn" onclick="openTool('ai')">
                     <div class="action-icon purple">
-                        <i class="fas fa-robot"></i>
+                        <i class="fas fa-trophy "></i>
                     </div>
-                    <span class="action-label">AI</span>
+                    <span class="action-label">انشطة</span>
                 </button>
                 
                 <button class="action-btn" onclick="openTool('calendar')">
                     <div class="action-icon orange">
-                        <i class="fas fa-calendar"></i>
+                        <i class="fas fa-book-open"></i>
                     </div>
-                    <span class="action-label">مواعيد</span>
+                    <span class="action-label">اختبارات</span>
                 </button>
             </div>
         </div>
@@ -1145,23 +1120,6 @@
             </div>
         </div>
 
-        <!-- Recent Activities -->
-        <div class="activities-section">
-            <h3 class="section-title">
-                <i class="fas fa-clock-rotate-left text-pink-500"></i>
-                آخر النشاطات
-            </h3>
-            
-            <div class="activity-list" id="activities-list">
-                <div class="text-center text-gray-400 py-8">
-                    <i class="fas fa-spinner fa-spin text-2xl mb-2"></i>
-                    <p>جاري التحميل...</p>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
     <!-- Side Menu - WITHOUT Wallet -->
     <div class="menu-overlay" id="menu-overlay" onclick="toggleMenu()"></div>
     <div class="side-menu" id="side-menu">
@@ -1176,7 +1134,6 @@
                 </div>
                 <div>
                     <div class="menu-name" id="menu-name">المستخدم</div>
-                    <div class="menu-email">متصل الآن</div>
                 </div>
             </div>
         </div>
@@ -1184,30 +1141,33 @@
         <div class="menu-items">
             <!-- Wallet REMOVED from menu -->
             
-            <button class="menu-item-btn" onclick="openAIAssistant(); toggleMenu();">
+            <button class="menu-item-btn">
                 <div class="menu-item-icon pink">
-                    <i class="fas fa-robot"></i>
+                    <i class="fas fa-heart"></i>
                 </div>
-                <span class="menu-item-text">المساعد الذكي</span>
+                <span class="menu-item-text">معلومات مهمة</span>
                 <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
             </button>
             
-            <button class="menu-item-btn">
-                <div class="menu-item-icon blue">
-                    <i class="fas fa-crown"></i>
-                </div>
-                <span class="menu-item-text">العضوية المميزة</span>
-                <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
-            </button>
+         
             
             <button class="menu-item-btn">
                 <div class="menu-item-icon orange">
-                    <i class="fas fa-history"></i>
+                    <i class="fas fa-comments"></i>
                 </div>
-                <span class="menu-item-text">السجل</span>
+                <span class="menu-item-text">تواصل معنا</span>
                 <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
             </button>
+                       
+         
             
+            <button class="menu-item-btn">
+                <div class="menu-item-icon orange">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <span class="menu-item-text">الابلاغ والشكاوي</span>
+                <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
+            </button>
             <button class="menu-item-btn" onclick="toggleDarkMode()">
                 <div class="menu-item-icon purple">
                     <i class="fas fa-moon"></i>
@@ -1223,103 +1183,6 @@
                 </div>
                 <span class="menu-item-text">تسجيل الخروج</span>
             </button>
-        </div>
-    </div>
-
-    <!-- Wallet Modal - FIXED Close Button -->
-    <div class="modal" id="wallet-modal">
-        <div class="modal-overlay" onclick="closeModal('wallet-modal')"></div>
-        <div class="modal-content">
-            <div class="modal-handle"></div>
-            
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-black dark:text-white">المحفظة</h2>
-                    <!-- FIXED Close button with proper dark mode styling -->
-                    <button onclick="closeModal('wallet-modal')" class="modal-close-btn light">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                
-                <div class="wallet-card">
-                    <div class="wallet-pattern"></div>
-                    <div class="relative z-10">
-                        <div class="text-white/70 text-sm font-bold mb-2">الرصيد المتاح</div>
-                        <div class="wallet-balance" id="modal-wallet-balance">0</div>
-                        <div class="text-white/50 text-sm">نقطة</div>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-4 mt-6">
-                    <button onclick="openTransferModal()" class="py-4 rounded-2xl bg-purple-100 text-purple-700 font-bold flex items-center justify-center gap-2">
-                        <i class="fas fa-exchange-alt"></i>
-                        تحويل
-                    </button>
-                    <button onclick="openHistoryModal()" class="py-4 rounded-2xl bg-pink-100 text-pink-700 font-bold flex items-center justify-center gap-2">
-                        <i class="fas fa-history"></i>
-                        السجل
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Transfer Modal - FIXED Close Button -->
-    <div class="modal" id="transfer-modal">
-        <div class="modal-overlay" onclick="closeModal('transfer-modal')"></div>
-        <div class="modal-content">
-            <div class="modal-handle"></div>
-            
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-black dark:text-white">تحويل النقاط</h2>
-                    <button onclick="closeModal('transfer-modal')" class="modal-close-btn light">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                
-                <div class="input-group">
-                    <label class="input-label">رقم المستلم</label>
-                    <input type="text" id="transfer-to" class="input-field" placeholder="أدخل كود المستخدم">
-                </div>
-                
-                <div class="input-group">
-                    <label class="input-label">المبلغ</label>
-                    <input type="number" id="transfer-amount" class="input-field" placeholder="0">
-                </div>
-                
-                <div class="input-group">
-                    <label class="input-label">ملاحظة (اختياري)</label>
-                    <input type="text" id="transfer-note" class="input-field" placeholder="...">
-                </div>
-                
-                <button onclick="executeTransfer()" class="btn-primary mt-4">
-                    تنفيذ التحويل
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- History Modal - FIXED Close Button -->
-    <div class="modal" id="history-modal">
-        <div class="modal-overlay" onclick="closeModal('history-modal')"></div>
-        <div class="modal-content" style="max-height: 80vh;">
-            <div class="modal-handle"></div>
-            
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-black dark:text-white">سجل المعاملات</h2>
-                    <button onclick="closeModal('history-modal')" class="modal-close-btn light">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                
-                <div id="history-list" class="space-y-4 pb-20">
-                    <div class="text-center text-gray-400 py-8">
-                        جاري التحميل...
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -1352,7 +1215,7 @@
                             <i class="fas fa-robot"></i>
                         </div>
                         <div class="bg-gray-100 dark:bg-gray-700 rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]">
-                            <p class="text-sm dark:text-white">مرحباً! كيف يمكنني مساعدتك اليوم؟</p>
+                            <p class="text-sm dark:text-white">مرحباً! كيف يمكنني مساعدك اليوم؟</p>
                         </div>
                     </div>
                 </div>
@@ -1396,7 +1259,7 @@
             { threshold: 0, name: 'ضعيف' },
             { threshold: 10, name: 'مبتدئ' },
             { threshold: 20, name: 'مقبول' },
-            { threshold: 30, name: 'تحت المتوسط' },
+            { threshold: 30, name: 'متوسط' },
             { threshold: 40, name: 'جيد' },
             { threshold: 50, name: 'جيد جداً' },
             { threshold: 60, name: 'مجتهد' },
@@ -1407,10 +1270,10 @@
         ];
 
         const categories = [
-            { id: 'tech', name: 'تقنية', count: '24 خدمة متاحة', icon: 'fa-microchip', color: 'cat-tech', decor: 'bg-blue-400' },
-            { id: 'design', name: 'تصميم', count: '18 خدمة متاحة', icon: 'fa-palette', color: 'cat-design', decor: 'bg-pink-400' },
-            { id: 'marketing', name: 'تسويق', count: '15 خدمة متاحة', icon: 'fa-bullhorn', color: 'cat-marketing', decor: 'bg-orange-400' },
-            { id: 'business', name: 'أعمال', count: '32 خدمة متاحة', icon: 'fa-briefcase', color: 'cat-business', decor: 'bg-emerald-400' }
+            { id: 'tech', name: 'البوت الذكي', count: 'بوت يوفر لك كل ماتحتاجه', icon: 'fa-robot', color: 'cat-tech', decor: 'bg-blue-400' },
+            { id: 'design', name: 'الادوات', count: 'يتوفر جميع الادوات المفيدة', icon: 'fa-tools', color: 'cat-design', decor: 'bg-pink-400' },
+            { id: 'marketing', name: 'متجر الاكاديمية', count: 'متجر شامل لكل الطلاب', icon: 'fa-shopping-cart', color: 'cat-marketing', decor: 'bg-orange-400' },
+            { id: 'business', name: 'الجدول', count: 'يوفر لكم كل المواعيد', icon: 'fa-calendar-day', color: 'cat-business', decor: 'bg-emerald-400' }
         ];
 
         function initTheme() {
@@ -1557,14 +1420,13 @@
             const nextLevel = levels.find(l => l.threshold > gradeNum);
             if (nextLevel) {
                 document.getElementById('level-description').textContent = 
-                    `${gradeNum}% - التالي: ${nextLevel.name}`;
+                   ` المستوى التالي : ${nextLevel.name}`;
             } else {
                 document.getElementById('level-description').textContent = 'مبروك! وصلت للامتياز 🎉';
             }
             
             const points = userData.points || 0;
             document.getElementById('wallet-balance').textContent = points.toLocaleString();
-            document.getElementById('modal-wallet-balance').textContent = points.toLocaleString();
         }
 
         function loadActivities() {
@@ -1618,41 +1480,6 @@
                         </div>
                     `;
                 }).join('');
-            });
-        }
-
-        function executeTransfer() {
-            const toUser = document.getElementById('transfer-to').value;
-            const amount = parseInt(document.getElementById('transfer-amount').value);
-            
-            if (!toUser || !amount || amount <= 0) {
-                showToast('يرجى إدخال جميع البيانات');
-                return;
-            }
-            
-            if (toUser === currentUserId) {
-                showToast('لا يمكن التحويل لنفسك');
-                return;
-            }
-            
-            const currentPoints = userData.points || 0;
-            if (amount > currentPoints) {
-                showToast('رصيد غير كافي');
-                return;
-            }
-            
-            const updates = {};
-            
-            updates['users/' + currentUserId + '/points'] = currentPoints - amount;
-            updates['users/' + toUser + '/points'] = firebase.database.ServerValue.increment(amount);
-            
-            db.ref().update(updates).then(() => {
-                showToast('تم التحويل بنجاح');
-                closeModal('transfer-modal');
-                document.getElementById('transfer-to').value = '';
-                document.getElementById('transfer-amount').value = '';
-            }).catch(err => {
-                showToast('حدث خطأ: ' + err.message);
             });
         }
 
@@ -1711,9 +1538,6 @@
             document.body.style.overflow = '';
         }
 
-        function openWalletModal() { openModal('wallet-modal'); }
-        function openTransferModal() { closeModal('wallet-modal'); openModal('transfer-modal'); }
-        function openHistoryModal() { openModal('history-modal'); }
         function openAIAssistant() { openModal('ai-modal'); }
         
         function openTool(tool) {
