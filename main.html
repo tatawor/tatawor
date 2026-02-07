@@ -49,6 +49,7 @@
             color: #F9FAFB;
         }
         
+        /* Main Container - أكثر إحكاماً */
         .app-container {
             max-width: 420px;
             margin: 0 auto;
@@ -62,7 +63,7 @@
             background: linear-gradient(180deg, #1E1B4B 0%, #0F0F1A 100%);
         }
         
-        /* Header */
+        /* Header - تصغير أكثر */
         .main-header {
             background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
             border-radius: 0 0 30px 30px;
@@ -83,7 +84,7 @@
             background-size: 40px 40px, 30px 30px;
         }
         
-        /* Profile Section */
+        /* Profile Section - تصغير */
         .header-profile {
             display: flex;
             align-items: center;
@@ -136,6 +137,7 @@
             border-color: #1E1B4B;
         }
         
+        /* Level Badge - تصغير */
         .level-chip {
             display: inline-flex;
             align-items: center;
@@ -151,7 +153,7 @@
             margin-top: 4px;
         }
         
-        /* Circular Progress */
+        /* Circular Progress - تصغير */
         .progress-section {
             margin: -20px 16px 16px;
             position: relative;
@@ -220,7 +222,14 @@
             -webkit-text-fill-color: transparent;
         }
         
-        /* Stats Row */
+        .progress-label-text {
+            font-size: 12px;
+            color: #9CA3AF;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        
+        /* Stats Row - تصغير */
         .stats-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -263,7 +272,7 @@
             color: #EC4899;
         }
         
-        /* Quick Actions */
+        /* Quick Actions - تصغير */
         .quick-actions {
             margin: 0 16px 16px;
         }
@@ -330,7 +339,7 @@
             color: #9CA3AF;
         }
         
-        /* Categories - FIXED SMALL FONT SIZE */
+        /* Categories Section - تصغير */
         .categories-section {
             margin: 0 16px 16px;
         }
@@ -338,21 +347,27 @@
         .categories-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .categories-list {
+            display: flex;
+            flex-direction: column;
             gap: 10px;
         }
         
         .category-card-large {
             background: white;
-            border-radius: 16px;
-            padding: 12px;
+            border-radius: 18px;
+            padding: 14px;
             position: relative;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
             transition: all 0.3s;
             cursor: pointer;
             display: flex;
-            flex-direction: column;
-            min-height: 100px;
+            align-items: center;
+            gap: 12px;
         }
         
         body.dark .category-card-large {
@@ -364,15 +379,63 @@
             transform: scale(0.98);
         }
         
+        .categories-grid .category-card-large {
+            flex-direction: column;
+            align-items: flex-start;
+            min-height: 120px;
+            padding: 16px;
+        }
+        
+        .categories-list .category-card-large {
+            min-height: auto;
+            padding: 10px 14px;
+        }
+        
+        .categories-list .category-icon-large {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            font-size: 20px;
+            margin-bottom: 0;
+        }
+        
+        .categories-list .category-title {
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+        
+        .categories-list .category-count {
+            font-size: 11px;
+        }
+        
+        .categories-list .category-arrow {
+            position: static;
+            margin-right: auto;
+            width: 28px;
+            height: 28px;
+        }
+        
+        .category-decoration {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            opacity: 0.15;
+        }
+        
         .category-icon-large {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
-            margin-bottom: 8px;
+            font-size: 22px;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 10px;
         }
         
         .cat-tech { background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%); color: #2563EB; }
@@ -381,28 +444,43 @@
         .cat-business { background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%); color: #059669; }
         
         .category-title {
-            font-size: 13px;
+            font-size: 15px;
             font-weight: 800;
             margin-bottom: 2px;
-            color: #1F2937;
-        }
-        
-        body.dark .category-title {
-            color: #F9FAFB;
         }
         
         .category-count {
-            font-size: 11px;
+            font-size: 12px;
             color: #9CA3AF;
-            font-weight: 500;
-            line-height: 1.3;
+            font-weight: 600;
         }
         
-        body.dark .category-count {
+        .category-arrow {
+            position: absolute;
+            bottom: 14px;
+            left: 14px;
+            width: 32px;
+            height: 32px;
+            background: #F3F4F6;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: #6B7280;
+            transition: all 0.3s;
         }
         
-        /* Side Menu */
+        body.dark .category-arrow {
+            background: #374151;
+            color: #9CA3AF;
+        }
+        
+        .category-card-large:hover .category-arrow {
+            background: #7C3AED;
+            color: white;
+        }
+        
+        /* Side Menu - تصغير */
         .side-menu {
             position: fixed;
             top: 0;
@@ -442,6 +520,147 @@
             visibility: visible;
         }
         
+        .menu-header {
+            background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+            padding: 30px 20px 60px;
+            position: relative;
+            border-radius: 0 0 24px 24px;
+        }
+        
+        .menu-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .menu-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+        }
+        
+        .menu-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+        }
+        
+        .menu-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .menu-name {
+            font-size: 18px;
+            font-weight: 800;
+        }
+        
+        .menu-items {
+            padding: 16px;
+            margin-top: -30px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .menu-item-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            margin-bottom: 6px;
+            border-radius: 14px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: none;
+            width: 100%;
+            text-align: right;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        body.dark .menu-item-btn {
+            background: #2D2D3D;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+        
+        .menu-item-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .menu-item-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        
+        .menu-item-icon.purple { background: #EDE9FE; color: #7C3AED; }
+        .menu-item-icon.pink { background: #FCE7F3; color: #EC4899; }
+        .menu-item-icon.blue { background: #DBEAFE; color: #3B82F6; }
+        .menu-item-icon.orange { background: #FFEDD5; color: #F97316; }
+        .menu-item-icon.red { background: #FEE2E2; color: #EF4444; }
+        
+        .menu-item-text {
+            flex: 1;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        
+        .menu-item-arrow {
+            color: #9CA3AF;
+            font-size: 12px;
+        }
+        
+        /* Toggle Switch */
+        .toggle-switch {
+            width: 44px;
+            height: 24px;
+            background: #E5E7EB;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        body.dark .toggle-switch {
+            background: #7C3AED;
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            right: 2px;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        body.dark .toggle-switch::after {
+            transform: translateX(-20px);
+        }
+        
         /* Notifications Panel */
         .notifications-panel {
             position: fixed;
@@ -466,16 +685,14 @@
             width: 100%;
             max-width: 420px;
             height: 100%;
-            background: #F8FAFC;
+            background: white;
             transform: translateX(100%);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             overflow-y: auto;
-            display: flex;
-            flex-direction: column;
         }
         
         body.dark .notifications-content {
-            background: #0F172A;
+            background: #1E1E2E;
         }
         
         .notifications-panel.active .notifications-content {
@@ -487,30 +704,25 @@
             padding: 20px;
             color: white;
             position: relative;
-            flex-shrink: 0;
         }
         
         .notifications-list {
-            flex: 1;
-            overflow-y: auto;
             padding: 16px;
         }
         
         .notification-item {
             background: white;
             border-radius: 16px;
-            padding: 14px;
-            margin-bottom: 10px;
+            padding: 16px;
+            margin-bottom: 12px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            border-right: 3px solid #E5E7EB;
+            border-right: 4px solid #7C3AED;
             position: relative;
-            transition: all 0.3s ease;
         }
         
         body.dark .notification-item {
-            background: #1E293B;
+            background: #2D2D3D;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            border-right-color: #374151;
         }
         
         .notification-item.unread {
@@ -518,16 +730,11 @@
             background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%);
         }
         
-        body.dark .notification-item.unread {
-            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
-        }
-        
         .notification-title {
             font-weight: 700;
             font-size: 14px;
             margin-bottom: 4px;
             color: #1F2937;
-            padding-left: 20px;
         }
         
         body.dark .notification-title {
@@ -535,7 +742,7 @@
         }
         
         .notification-body {
-            font-size: 12px;
+            font-size: 13px;
             color: #6B7280;
             line-height: 1.4;
         }
@@ -553,26 +760,50 @@
             gap: 4px;
         }
         
-        .notification-badge-dot {
+        .notification-badge {
             position: absolute;
-            top: 14px;
-            left: 14px;
+            top: 16px;
+            left: 16px;
             width: 8px;
             height: 8px;
             background: #EC4899;
             border-radius: 50%;
         }
         
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #9CA3AF;
+        /* View Toggle */
+        .view-toggle {
+            display: flex;
+            background: #F3F4F6;
+            border-radius: 10px;
+            padding: 3px;
+            gap: 3px;
         }
         
-        .empty-state i {
-            font-size: 48px;
-            margin-bottom: 16px;
-            opacity: 0.5;
+        body.dark .view-toggle {
+            background: #374151;
+        }
+        
+        .view-btn {
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 12px;
+            color: #6B7280;
+            transition: all 0.3s;
+        }
+        
+        .view-btn.active {
+            background: white;
+            color: #7C3AED;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        body.dark .view-btn.active {
+            background: #2D2D3D;
+            color: #A78BFA;
         }
         
         /* Toast */
@@ -601,7 +832,7 @@
             transform: translateX(-50%) translateY(0);
         }
         
-        /* Header buttons */
+        /* Header buttons - تصغير */
         .header-btn {
             width: 40px;
             height: 40px;
@@ -615,38 +846,102 @@
             border: none;
             cursor: pointer;
             position: relative;
-            transition: all 0.2s;
         }
         
-        .header-btn:active {
-            transform: scale(0.9);
+        .header-btn i {
+            font-size: 18px;
         }
         
-        .notification-badge {
+        .notification-count {
             position: absolute;
-            top: -4px;
-            right: -4px;
-            min-width: 20px;
-            height: 20px;
+            top: -2px;
+            right: -2px;
+            width: 18px;
+            height: 18px;
             background: #EF4444;
-            border-radius: 10px;
-            font-size: 11px;
+            border-radius: 50%;
+            font-size: 10px;
             font-weight: 800;
             display: flex;
             align-items: center;
             justify-content: center;
             border: 2px solid #7C3AED;
-            padding: 0 6px;
-            animation: pulse 2s infinite;
         }
         
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        
+        /* Hide scrollbar */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #9CA3AF;
+        }
+        
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        /* Loading shimmer */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .loading-shimmer {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+
+        /* Notification Tabs - NEW */
+        .notif-tabs {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+        
+        .notif-tab {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .notif-tab.active {
+            background: white;
+            color: #7C3AED;
+        }
+        
+        .notif-tab .badge {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            min-width: 20px;
+            text-align: center;
+        }
+        
+        .notif-tab.active .badge {
+            background: #EC4899;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -681,7 +976,7 @@
                 
                 <button onclick="showNotifications()" class="header-btn relative">
                     <i class="fas fa-bell"></i>
-                    <span class="notification-badge" id="notification-badge" style="display: none;">0</span>
+                    <span class="notification-count" id="notification-badge" style="display: none;">0</span>
                 </button>
             </div>
             
@@ -725,7 +1020,7 @@
                     </svg>
                     <div class="progress-content">
                         <div class="progress-percentage" id="progress-text">0%</div>
-                        <div class="text-xs text-gray-400 font-bold mt-1">المستوى الحالي</div>
+                        <div class="progress-label-text">المستوى الحالي</div>
                     </div>
                 </div>
                 
@@ -792,45 +1087,26 @@
             </div>
         </div>
 
-        <!-- Categories - FIXED SMALL FONTS -->
+        <!-- Categories -->
         <div class="categories-section">
-            <h3 class="section-title">
-                <i class="fas fa-th-large text-purple-500 text-sm"></i>
-                الأقسام
-            </h3>
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="section-title mb-0">
+                    <i class="fas fa-th-large text-purple-500 text-sm"></i>
+                    الأقسام
+                </h3>
+                
+                <div class="view-toggle">
+                    <button class="view-btn active" onclick="switchView('grid', this)">
+                        <i class="fas fa-th-large"></i>
+                    </button>
+                    <button class="view-btn" onclick="switchView('list', this)">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
             
-            <div class="categories-grid">
-                <div class="category-card-large" onclick="openCategory('tech')">
-                    <div class="category-icon-large cat-tech">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <div class="category-title">البوت الذكي</div>
-                    <div class="category-count">بوت يوفر لك كل ماتحتاجه</div>
-                </div>
-                
-                <div class="category-card-large" onclick="openCategory('design')">
-                    <div class="category-icon-large cat-design">
-                        <i class="fas fa-tools"></i>
-                    </div>
-                    <div class="category-title">الادوات</div>
-                    <div class="category-count">يتوفر جميع الادوات المفيدة</div>
-                </div>
-                
-                <div class="category-card-large" onclick="openCategory('marketing')">
-                    <div class="category-icon-large cat-marketing">
-                        <i class="fas fa-shopping-cart"></i>
-                    </div>
-                    <div class="category-title">متجر الاكاديمية</div>
-                    <div class="category-count">متجر شامل لكل الطلاب</div>
-                </div>
-                
-                <div class="category-card-large" onclick="openCategory('business')">
-                    <div class="category-icon-large cat-business">
-                        <i class="fas fa-calendar-day"></i>
-                    </div>
-                    <div class="category-title">الجدول</div>
-                    <div class="category-count">يوفر لكم كل المواعيد</div>
-                </div>
+            <div id="categories-container" class="categories-grid">
+                <!-- Categories will be populated here -->
             </div>
         </div>
 
@@ -839,48 +1115,60 @@
     <!-- Side Menu -->
     <div class="menu-overlay" id="menu-overlay" onclick="toggleMenu()"></div>
     <div class="side-menu" id="side-menu">
-        <div style="padding: 30px 20px; background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%); color: white; border-radius: 0 0 24px 24px;">
-            <button onclick="toggleMenu()" style="position: absolute; top: 16px; right: 16px; width: 36px; height: 36px; background: rgba(255,255,255,0.2); border-radius: 10px; border: none; color: white; cursor: pointer;">
+        <div class="menu-header">
+            <button class="menu-close" onclick="toggleMenu()">
                 <i class="fas fa-times"></i>
             </button>
-            <div style="display: flex; align-items: center; gap: 12px; margin-top: 20px;">
-                <div style="width: 50px; height: 50px; border-radius: 16px; border: 2px solid rgba(255,255,255,0.3); overflow: hidden;">
-                    <img id="menu-avatar" src="https://i.postimg.cc/g0Bm32zB/20260207-052318.png" style="width: 100%; height: 100%; object-fit: cover;">
+            
+            <div class="menu-profile">
+                <div class="menu-avatar">
+                    <img id="menu-avatar" src="https://i.postimg.cc/g0Bm32zB/20260207-052318.png" alt="Profile">
                 </div>
-                <div style="font-size: 18px; font-weight: 800;" id="menu-name">المستخدم</div>
+                <div>
+                    <div class="menu-name" id="menu-name">المستخدم</div>
+                </div>
             </div>
         </div>
         
-        <div style="padding: 16px; margin-top: -20px; position: relative; z-index: 10;">
-            <button onclick="openLearnPage()" style="display: flex; align-items: center; gap: 12px; padding: 12px; margin-bottom: 8px; border-radius: 14px; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: none; width: 100%; text-align: right; cursor: pointer;">
-                <div style="width: 40px; height: 40px; border-radius: 12px; background: #FCE7F3; color: #EC4899; display: flex; align-items: center; justify-content: center;"><i class="fas fa-heart"></i></div>
-                <span style="flex: 1; font-weight: 700; font-size: 14px;">معلومات مهمة</span>
-                <i class="fas fa-chevron-left" style="color: #9CA3AF; font-size: 12px;"></i>
+        <div class="menu-items">
+            
+            <button class="menu-item-btn" onclick="openLearnPage()">
+                <div class="menu-item-icon pink">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <span class="menu-item-text">معلومات مهمة</span>
+                <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
             </button>
             
-            <button onclick="openActivitiesPage()" style="display: flex; align-items: center; gap: 12px; padding: 12px; margin-bottom: 8px; border-radius: 14px; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: none; width: 100%; text-align: right; cursor: pointer;">
-                <div style="width: 40px; height: 40px; border-radius: 12px; background: #FFEDD5; color: #F97316; display: flex; align-items: center; justify-content: center;"><i class="fas fa-comments"></i></div>
-                <span style="flex: 1; font-weight: 700; font-size: 14px;">تواصل معنا</span>
-                <i class="fas fa-chevron-left" style="color: #9CA3AF; font-size: 12px;"></i>
+            <button class="menu-item-btn" onclick="openActivitiesPage()">
+                <div class="menu-item-icon orange">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <span class="menu-item-text">تواصل معنا</span>
+                <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
             </button>
                        
-            <button onclick="openToolsPage()" style="display: flex; align-items: center; gap: 12px; padding: 12px; margin-bottom: 8px; border-radius: 14px; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: none; width: 100%; text-align: right; cursor: pointer;">
-                <div style="width: 40px; height: 40px; border-radius: 12px; background: #FEE2E2; color: #EF4444; display: flex; align-items: center; justify-content: center;"><i class="fas fa-exclamation-triangle"></i></div>
-                <span style="flex: 1; font-weight: 700; font-size: 14px;">الابلاغ والشكاوي</span>
-                <i class="fas fa-chevron-left" style="color: #9CA3AF; font-size: 12px;"></i>
-            </button>
-            
-            <button onclick="toggleDarkMode()" style="display: flex; align-items: center; gap: 12px; padding: 12px; margin-bottom: 8px; border-radius: 14px; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: none; width: 100%; text-align: right; cursor: pointer;">
-                <div style="width: 40px; height: 40px; border-radius: 12px; background: #EDE9FE; color: #7C3AED; display: flex; align-items: center; justify-content: center;"><i class="fas fa-moon"></i></div>
-                <span style="flex: 1; font-weight: 700; font-size: 14px;">الوضع الليلي</span>
-                <div class="toggle-switch" id="menu-toggle-switch" style="width: 44px; height: 24px; background: #E5E7EB; border-radius: 12px; position: relative; cursor: pointer;">
-                    <div style="position: absolute; width: 20px; height: 20px; background: white; border-radius: 50%; top: 2px; right: 2px; transition: transform 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"></div>
+            <button class="menu-item-btn" onclick="openToolsPage()">
+                <div class="menu-item-icon orange">
+                    <i class="fas fa-exclamation-triangle"></i>
                 </div>
+                <span class="menu-item-text">الابلاغ والشكاوي</span>
+                <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
             </button>
             
-            <button onclick="logout()" style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: none; width: 100%; text-align: right; cursor: pointer; color: #EF4444;">
-                <div style="width: 40px; height: 40px; border-radius: 12px; background: #FEE2E2; color: #EF4444; display: flex; align-items: center; justify-content: center;"><i class="fas fa-sign-out-alt"></i></div>
-                <span style="flex: 1; font-weight: 700; font-size: 14px;">تسجيل الخروج</span>
+            <button class="menu-item-btn" onclick="toggleDarkMode()">
+                <div class="menu-item-icon purple">
+                    <i class="fas fa-moon"></i>
+                </div>
+                <span class="menu-item-text">الوضع الليلي</span>
+                <div class="toggle-switch" id="menu-toggle-switch"></div>
+            </button>
+            
+            <button class="menu-item-btn" onclick="logout()">
+                <div class="menu-item-icon red">
+                    <i class="fas fa-sign-out-alt"></i>
+                </div>
+                <span class="menu-item-text">تسجيل الخروج</span>
             </button>
         </div>
     </div>
@@ -889,13 +1177,26 @@
     <div class="notifications-panel" id="notifications-panel" onclick="closeNotifications(event)">
         <div class="notifications-content" onclick="event.stopPropagation()">
             <div class="notifications-header">
-                <div class="flex justify-between items-center mb-4">
-                    <div>
-                        <h2 class="text-xl font-black">الإشعارات</h2>
-                        <p class="text-sm opacity-80 mt-1" id="notifications-subtitle">جاري التحميل...</p>
-                    </div>
-                    <button onclick="closeNotifications()" class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center hover:bg-white/30 transition">
+                <div class="flex justify-between items-center mb-2">
+                    <h2 class="text-lg font-black">الإشعارات</h2>
+                    <button onclick="closeNotifications()" class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
                         <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <!-- Notification Tabs - NEW -->
+                <div class="notif-tabs hide-scrollbar">
+                    <button class="notif-tab active" onclick="switchNotifTab('all', this)" id="tab-all">
+                        الكل
+                        <span class="badge" id="count-all">0</span>
+                    </button>
+                    <button class="notif-tab" onclick="switchNotifTab('unread', this)" id="tab-unread">
+                        غير مقروء
+                        <span class="badge" id="count-unread">0</span>
+                    </button>
+                    <button class="notif-tab" onclick="switchNotifTab('priority', this)" id="tab-priority">
+                        عاجل
+                        <span class="badge" id="count-priority">0</span>
                     </button>
                 </div>
             </div>
@@ -911,12 +1212,12 @@
 
     <!-- Toast -->
     <div class="toast" id="toast">
-        <i class="fas fa-check-circle text-lg"></i>
+        <i class="fas fa-info-circle text-lg"></i>
         <span id="toast-message">رسالة</span>
     </div>
 
     <script>
-        // Firebase Config - تأكد من صحة هذه البيانات!
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyAEXAMPLEnY", 
             authDomain: "store-points-7d2f4.firebaseapp.com",
@@ -927,14 +1228,16 @@
             appId: "1:105011111111:web:abc123example"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        const messaging = firebase.messaging();
         
         let currentUserId = window.CURRENT_USER_CODE;
         let userData = null;
+        let previousData = null;
         let notifications = [];
         let unreadCount = 0;
+        let currentNotifTab = 'all';
         
         const levels = [
             { threshold: 0, name: 'ضعيف' },
@@ -950,30 +1253,198 @@
             { threshold: 100, name: 'امتياز' }
         ];
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('🚀 App starting...');
-            console.log('👤 User ID:', currentUserId);
-            
-            initTheme();
-            loadUserData();
-            initNotifications();
-            updateLastActive();
-            
-            // Update last active every minute
-            setInterval(updateLastActive, 60000);
-        });
+        const categories = [
+            { id: 'tech', name: 'البوت الذكي', count: 'بوت يوفر لك كل ماتحتاجه', icon: 'fa-robot', color: 'cat-tech', decor: 'bg-blue-400' },
+            { id: 'design', name: 'الادوات', count: 'يتوفر جميع الادوات المفيدة', icon: 'fa-tools', color: 'cat-design', decor: 'bg-pink-400' },
+            { id: 'marketing', name: 'متجر الاكاديمية', count: 'متجر شامل لكل الطلاب', icon: 'fa-shopping-cart', color: 'cat-marketing', decor: 'bg-orange-400' },
+            { id: 'business', name: 'الجدول', count: 'يوفر لكم كل المواعيد', icon: 'fa-calendar-day', color: 'cat-business', decor: 'bg-emerald-400' }
+        ];
 
-        function updateLastActive() {
-            db.ref(`users/${currentUserId}/lastActive`).set(Date.now())
-                .catch(err => console.error('Error updating lastActive:', err));
+        // Initialize Firebase Messaging
+        function initMessaging() {
+            // Subscribe to topic "all" automatically
+            messaging.subscribeToTopic("all")
+                .then(() => {
+                    console.log("Subscribed to topic 'all'");
+                })
+                .catch((err) => {
+                    console.error("Failed to subscribe to topic:", err);
+                });
+
+            // Handle foreground messages
+            messaging.onMessage((payload) => {
+                console.log("Message received in foreground:", payload);
+                showNotification(payload.notification);
+            });
+
+            // Load notifications from database
+            loadNotifications();
         }
 
-        // Theme Management
+        function showNotification(notification) {
+            // Add to notifications array
+            const newNotif = {
+                id: Date.now(),
+                title: notification.title || 'إشعار جديد',
+                body: notification.body || '',
+                timestamp: Date.now(),
+                read: false
+            };
+            
+            notifications.unshift(newNotif);
+            unreadCount++;
+            updateNotificationBadge();
+            showToast(notification.title || 'إشعار جديد');
+            
+            // Save to database
+            saveNotification(newNotif);
+        }
+
+        function loadNotifications() {
+            db.ref('notifications/' + currentUserId).orderByChild('timestamp').limitToLast(50).on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    notifications = Object.entries(data).map(([key, value]) => ({
+                        id: key,
+                        ...value
+                    })).sort((a, b) => b.timestamp - a.timestamp);
+                    
+                    unreadCount = notifications.filter(n => !n.read).length;
+                    updateNotificationBadge();
+                    updateNotifTabCounts();
+                    renderNotifications();
+                }
+            });
+        }
+
+        function saveNotification(notification) {
+            const notifRef = db.ref('notifications/' + currentUserId).push();
+            notifRef.set(notification);
+        }
+
+        function markAsRead(notifId) {
+            db.ref('notifications/' + currentUserId + '/' + notifId).update({ read: true });
+        }
+
+        function markAllAsRead() {
+            notifications.forEach(n => {
+                if (!n.read) {
+                    markAsRead(n.id);
+                }
+            });
+        }
+
+        // NEW: Switch notification tab
+        function switchNotifTab(tab, btn) {
+            currentNotifTab = tab;
+            
+            // Update UI
+            document.querySelectorAll('.notif-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            
+            renderNotifications();
+        }
+
+        // NEW: Update tab counts
+        function updateNotifTabCounts() {
+            const allCount = notifications.length;
+            const unreadCount = notifications.filter(n => !n.read).length;
+            const priorityCount = notifications.filter(n => n.priority).length;
+            
+            document.getElementById('count-all').textContent = allCount;
+            document.getElementById('count-unread').textContent = unreadCount;
+            document.getElementById('count-priority').textContent = priorityCount;
+        }
+
+        function updateNotificationBadge() {
+            const badge = document.getElementById('notification-badge');
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        function renderNotifications() {
+            const container = document.getElementById('notifications-list');
+            
+            // Filter based on current tab
+            let filteredNotifications = notifications;
+            if (currentNotifTab === 'unread') {
+                filteredNotifications = notifications.filter(n => !n.read);
+            } else if (currentNotifTab === 'priority') {
+                filteredNotifications = notifications.filter(n => n.priority);
+            }
+            
+            if (filteredNotifications.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-bell-slash"></i>
+                        <p>لا توجد إشعارات ${currentNotifTab === 'unread' ? 'غير مقروءة' : currentNotifTab === 'priority' ? 'عاجلة' : 'حالياً'}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = filteredNotifications.map(notif => `
+                <div class="notification-item ${!notif.read ? 'unread' : ''}" onclick="markAsRead('${notif.id}')">
+                    ${!notif.read ? '<div class="notification-badge"></div>' : ''}
+                    ${notif.priority ? '<div style="position: absolute; top: 16px; left: 30px; color: #EF4444; font-size: 12px;"><i class="fas fa-exclamation-circle"></i></div>' : ''}
+                    <div class="notification-title">${notif.title}</div>
+                    <div class="notification-body">${notif.body}</div>
+                    <div class="notification-time">
+                        <i class="far fa-clock"></i>
+                        ${formatTime(notif.timestamp)}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diff = now - date;
+            
+            if (diff < 60000) return 'الآن';
+            if (diff < 3600000) return Math.floor(diff / 60000) + ' دقيقة';
+            if (diff < 86400000) return Math.floor(diff / 3600000) + ' ساعة';
+            return date.toLocaleDateString('ar-SA');
+        }
+
+        function showNotifications() {
+            document.getElementById('notifications-panel').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            renderNotifications();
+        }
+
+        function closeNotifications(event) {
+            if (!event || event.target.id === 'notifications-panel') {
+                document.getElementById('notifications-panel').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
         function initTheme() {
             const theme = localStorage.getItem('theme');
             if (theme === 'dark') {
                 document.body.classList.add('dark');
+                updateToggleSwitch(true);
+            } else {
+                document.body.classList.remove('dark');
+                updateToggleSwitch(false);
+            }
+            renderCategories('grid');
+        }
+
+        function updateToggleSwitch(isDark) {
+            const toggle = document.getElementById('menu-toggle-switch');
+            if (toggle) {
+                if (isDark) {
+                    toggle.classList.add('active');
+                } else {
+                    toggle.classList.remove('active');
+                }
             }
         }
 
@@ -982,32 +1453,77 @@
             if (isDark) {
                 document.body.classList.remove('dark');
                 localStorage.setItem('theme', 'light');
+                updateToggleSwitch(false);
                 showToast('تم تفعيل الوضع الفاتح');
             } else {
                 document.body.classList.add('dark');
                 localStorage.setItem('theme', 'dark');
+                updateToggleSwitch(true);
                 showToast('تم تفعيل الوضع الليلي');
             }
         }
 
-        // User Data Management
-        function loadUserData() {
-            console.log('📊 Loading user data...');
+        function renderCategories(view) {
+            const container = document.getElementById('categories-container');
+            container.className = view === 'grid' ? 'categories-grid' : 'categories-list';
             
+            container.innerHTML = categories.map(cat => `
+                <div class="category-card-large" onclick="openCategory('${cat.id}')">
+                    <div class="category-decoration ${cat.decor}"></div>
+                    <div class="category-icon-large ${cat.color}">
+                        <i class="fas ${cat.icon}"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="category-title">${cat.name}</div>
+                        <div class="category-count">${cat.count}</div>
+                    </div>
+                    <div class="category-arrow">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadUserData() {
             db.ref('users/' + currentUserId).on('value', (snapshot) => {
-                const data = snapshot.val();
-                console.log('✅ User data loaded:', data);
-                
-                if (data) {
-                    userData = data;
+                const newData = snapshot.val();
+                if (newData) {
+                    if (previousData) checkForChanges(previousData, newData);
+                    userData = newData;
+                    previousData = {...newData};
                     updateUI();
                 } else {
-                    console.log('⚠️ No user data found, creating default...');
                     createDefaultUser();
                 }
-            }, (error) => {
-                console.error('❌ Error loading user data:', error);
             });
+        }
+
+        function checkForChanges(oldData, newData) {
+            const timestamp = Date.now();
+            const oldGrade = parseInt((oldData.grade || '0%').replace('%', ''));
+            const newGrade = parseInt((newData.grade || '0%').replace('%', ''));
+            
+            if (newGrade > oldGrade) {
+                const newLevel = levels.find(l => newGrade >= l.threshold && newGrade < (l.threshold + 10)) || levels[levels.length - 1];
+                db.ref('activities/' + currentUserId + '/act_' + timestamp).set({
+                    type: 'level_up',
+                    title: `ترقية إلى ${newLevel.name}`,
+                    amount: 0,
+                    timestamp: timestamp
+                });
+            }
+            
+            const oldPoints = oldData.points || 0;
+            const newPoints = newData.points || 0;
+            
+            if (newPoints !== oldPoints) {
+                db.ref('activities/' + currentUserId + '/act_' + timestamp + '_pts').set({
+                    type: newPoints > oldPoints ? 'earn' : 'spend',
+                    title: newPoints > oldPoints ? 'إضافة نقاط' : 'استخدام نقاط',
+                    amount: Math.abs(newPoints - oldPoints),
+                    timestamp: timestamp
+                });
+            }
         }
 
         function createDefaultUser() {
@@ -1016,13 +1532,9 @@
                 major: 'غير محدد',
                 points: 0,
                 grade: '0%',
-                avatar: 'https://i.postimg.cc/g0Bm32zB/20260207-052318.png',
-                lastActive: Date.now()
+                avatar: 'https://i.postimg.cc/g0Bm32zB/20260207-052318.png'
             };
-            
-            db.ref('users/' + currentUserId).set(defaultData)
-                .then(() => console.log('✅ Default user created'))
-                .catch(err => console.error('❌ Error creating user:', err));
+            db.ref('users/' + currentUserId).set(defaultData);
         }
 
         function updateUI() {
@@ -1061,7 +1573,8 @@
             
             const nextLevel = levels.find(l => l.threshold > gradeNum);
             if (nextLevel) {
-                document.getElementById('level-description').textContent = `المستوى التالي: ${nextLevel.name}`;
+                document.getElementById('level-description').textContent = 
+                   `المستوى التالي: ${nextLevel.name}`;
             } else {
                 document.getElementById('level-description').textContent = 'مبروك! وصلت للامتياز 🎉';
             }
@@ -1070,224 +1583,35 @@
             document.getElementById('wallet-balance').textContent = points.toLocaleString();
         }
 
-        // FIXED Notifications System
-        function initNotifications() {
-            console.log('🔔 Initializing notifications...');
-            
-            // Setup real-time listener for notifications
-            setupNotificationsListener();
-        }
-
-        function setupNotificationsListener() {
-            console.log('👂 Setting up notifications listener for user:', currentUserId);
-            
-            // استخدام onValue للاستماع للتغييرات في الوقت الفعلي
-            const notifRef = db.ref(`notifications/${currentUserId}`);
-            
-            notifRef.on('value', (snapshot) => {
-                console.log('📩 Notifications data received:', snapshot.val());
-                
-                const data = snapshot.val();
-                notifications = [];
-                
-                if (data) {
-                    Object.entries(data).forEach(([id, notif]) => {
-                        // التحقق من أن الإشعار غير محذوف
-                        if (!notif.deleted) {
-                            notifications.push({ id, ...notif });
-                        }
-                    });
-                    
-                    // ترتيب حسب الأحدث أولاً
-                    notifications.sort((a, b) => b.timestamp - a.timestamp);
-                    
-                    console.log(`✅ Loaded ${notifications.length} notifications`);
-                } else {
-                    console.log('ℹ️ No notifications found');
-                }
-                
-                updateNotificationBadge();
-                renderNotifications();
-            }, (error) => {
-                console.error('❌ Error loading notifications:', error);
-            });
-        }
-
-        function updateNotificationBadge() {
-            // حساب الإشعارات غير المقروءة فقط
-            unreadCount = notifications.filter(n => !n.read).length;
-            
-            console.log('🔔 Unread count:', unreadCount);
-            
-            const badge = document.getElementById('notification-badge');
-            
-            if (unreadCount > 0) {
-                badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
-                badge.style.display = 'flex';
-                console.log('✅ Badge shown with count:', unreadCount);
-            } else {
-                badge.style.display = 'none';
-                console.log('ℹ️ Badge hidden');
-            }
-            
-            // تحديث العنوان الفرعي
-            const subtitle = document.getElementById('notifications-subtitle');
-            if (subtitle) {
-                if (unreadCount > 0) {
-                    subtitle.textContent = `لديك ${unreadCount} إشعار${unreadCount > 1 ? 'ات' : ''} جديدة`;
-                } else {
-                    subtitle.textContent = 'جميع الإشعارات مقروءة';
-                }
-            }
-        }
-
-        function renderNotifications() {
-            const container = document.getElementById('notifications-list');
-            
-            if (notifications.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-bell-slash"></i>
-                        <p>لا توجد إشعارات حالياً</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = notifications.map(notif => `
-                <div class="notification-item ${notif.read ? '' : 'unread'}" id="notif-${notif.id}">
-                    ${!notif.read ? '<div class="notification-badge-dot"></div>' : ''}
-                    
-                    <div class="notification-title">${escapeHtml(notif.title)}</div>
-                    <div class="notification-body">${escapeHtml(notif.body)}</div>
-                    
-                    <div class="notification-time">
-                        <i class="far fa-clock"></i>
-                        ${formatTime(notif.timestamp)}
-                        ${notif.priority ? '<span style="color: #EF4444; margin-right: 8px;"><i class="fas fa-exclamation-circle"></i> عاجل</span>' : ''}
-                    </div>
-                    
-                    ${!notif.read ? `
-                        <button onclick="markAsRead('${notif.id}')" style="margin-top: 8px; padding: 6px 12px; background: linear-gradient(135deg, #7C3AED, #EC4899); color: white; border: none; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;">
-                            <i class="fas fa-check"></i> تحديد كمقروء
-                        </button>
-                    ` : ''}
-                </div>
-            `).join('');
-        }
-
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        function formatTime(timestamp) {
-            if (!timestamp) return 'غير معروف';
-            
-            const seconds = Math.floor((Date.now() - timestamp) / 1000);
-            
-            if (seconds < 60) return 'الآن';
-            if (seconds < 3600) return `${Math.floor(seconds / 60)} دقيقة`;
-            if (seconds < 86400) return `${Math.floor(seconds / 3600)} ساعة`;
-            if (seconds < 604800) return `${Math.floor(seconds / 86400)} يوم`;
-            
-            return new Date(timestamp).toLocaleDateString('ar-SA');
-        }
-
-        // Notification Actions
-        function markAsRead(notifId) {
-            console.log('👁️ Marking as read:', notifId);
-            
-            const updates = {
-                read: true,
-                readAt: Date.now()
-            };
-            
-            // التحقق من الحذف التلقائي
-            const notif = notifications.find(n => n.id === notifId);
-            if (notif && notif.autoDelete) {
-                updates.deleted = true;
-                updates.deletedAt = Date.now();
-                updates.deletedReason = 'auto_after_read';
-            }
-            
-            db.ref(`notifications/${currentUserId}/${notifId}`).update(updates)
-                .then(() => {
-                    if (notif?.autoDelete) {
-                        showToast('تمت القراءة والحذف التلقائي');
-                    } else {
-                        showToast('تم التحديد كمقروء');
-                    }
-                })
-                .catch(err => {
-                    console.error('❌ Error marking as read:', err);
-                    showToast('حدث خطأ', 'error');
-                });
-        }
-
-        // UI Functions
-        function showNotifications() {
-            document.getElementById('notifications-panel').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeNotifications(event) {
-            if (!event || event.target.id === 'notifications-panel') {
-                document.getElementById('notifications-panel').classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        }
-
         function toggleMenu() {
             document.getElementById('side-menu').classList.toggle('active');
             document.getElementById('menu-overlay').classList.toggle('active');
         }
 
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            const icon = toast.querySelector('i');
-            
-            toast.className = `toast ${type}`;
-            
-            if (type === 'success') {
-                icon.className = 'fas fa-check-circle text-lg';
-                toast.style.background = '#1F2937';
-            } else if (type === 'error') {
-                icon.className = 'fas fa-exclamation-circle text-lg';
-                toast.style.background = '#EF4444';
-            }
-            
-            document.getElementById('toast-message').textContent = message;
-            
-            toast.classList.remove('hidden');
-            toast.classList.add('show');
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.classList.add('hidden'), 300);
-            }, 3000);
+        function switchView(view, btn) {
+            document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderCategories(view);
         }
 
-        // Android Bridge Functions
         function callAndroid(fn) {
             if (window.AndroidApp && typeof AndroidApp[fn] === "function") {
                 AndroidApp[fn]();
             } else {
-                showToast("الميزة تعمل من داخل التطبيق فقط");
+                alert("الميزة تعمل من داخل التطبيق فقط");
             }
         }
 
+        /* ===== الوصول السريع ===== */
         function openLearnPage() { callAndroid("openLearn"); }
         function openLessonsPage() { callAndroid("openLessons"); }
         function openActivitiesPage() { callAndroid("openActivities"); }
         function openTestsPage() { callAndroid("openTests"); }
-        function openToolsPage() { callAndroid("openTools"); }
 
+        /* ===== الأقسام ===== */
         function openCategory(cat) {
             if (!window.AndroidApp) {
-                showToast("الميزة تعمل من داخل التطبيق فقط");
+                alert("الميزة تعمل من داخل التطبيق فقط");
                 return;
             }
             switch (cat) {
@@ -1302,9 +1626,29 @@
             if (window.AndroidApp && AndroidApp.logout) {
                 AndroidApp.logout();
             } else {
-                showToast("الميزة تعمل من داخل التطبيق فقط");
+                alert("الميزة تعمل من داخل التطبيق فقط");
             }
         }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            loadUserData();
+            initMessaging();
+        });
+
+        // Test functions
+        window.updateGrade = (g) => db.ref('users/' + currentUserId).update({ grade: g + '%' });
+        window.addPoints = (amount) => {
+            const current = userData.points || 0;
+            db.ref('users/' + currentUserId).update({ points: current + amount });
+        };
     </script>
 </body>
 </html>
