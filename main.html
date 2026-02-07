@@ -9,7 +9,6 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-messaging-compat.js"></script>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -41,7 +40,7 @@
             background: #F3F4F6;
             color: #1F2937;
             overflow-x: hidden;
-            padding-bottom: 10px;
+            padding-bottom: 100px;
         }
         
         body.dark {
@@ -49,7 +48,6 @@
             color: #F9FAFB;
         }
         
-        /* Main Container - أكثر إحكاماً */
         .app-container {
             max-width: 420px;
             margin: 0 auto;
@@ -63,7 +61,6 @@
             background: linear-gradient(180deg, #1E1B4B 0%, #0F0F1A 100%);
         }
         
-        /* Header - تصغير أكثر */
         .main-header {
             background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
             border-radius: 0 0 30px 30px;
@@ -84,7 +81,6 @@
             background-size: 40px 40px, 30px 30px;
         }
         
-        /* Profile Section - تصغير */
         .header-profile {
             display: flex;
             align-items: center;
@@ -137,7 +133,6 @@
             border-color: #1E1B4B;
         }
         
-        /* Level Badge - تصغير */
         .level-chip {
             display: inline-flex;
             align-items: center;
@@ -153,7 +148,6 @@
             margin-top: 4px;
         }
         
-        /* Circular Progress - تصغير */
         .progress-section {
             margin: -20px 16px 16px;
             position: relative;
@@ -229,7 +223,6 @@
             margin-top: 2px;
         }
         
-        /* Stats Row - تصغير */
         .stats-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -272,7 +265,6 @@
             color: #EC4899;
         }
         
-        /* Quick Actions - تصغير */
         .quick-actions {
             margin: 0 16px 16px;
         }
@@ -339,7 +331,6 @@
             color: #9CA3AF;
         }
         
-        /* Categories Section - تصغير */
         .categories-section {
             margin: 0 16px 16px;
         }
@@ -480,7 +471,6 @@
             color: white;
         }
         
-        /* Side Menu - تصغير */
         .side-menu {
             position: fixed;
             top: 0;
@@ -629,7 +619,6 @@
             font-size: 12px;
         }
         
-        /* Toggle Switch */
         .toggle-switch {
             width: 44px;
             height: 24px;
@@ -661,7 +650,6 @@
             transform: translateX(-20px);
         }
         
-        /* Notifications Panel */
         .notifications-panel {
             position: fixed;
             top: 0;
@@ -770,7 +758,6 @@
             border-radius: 50%;
         }
         
-        /* View Toggle */
         .view-toggle {
             display: flex;
             background: #F3F4F6;
@@ -806,7 +793,6 @@
             color: #A78BFA;
         }
         
-        /* Toast */
         .toast {
             position: fixed;
             top: 80px;
@@ -832,7 +818,6 @@
             transform: translateX(-50%) translateY(0);
         }
         
-        /* Header buttons - تصغير */
         .header-btn {
             width: 40px;
             height: 40px;
@@ -868,11 +853,9 @@
             border: 2px solid #7C3AED;
         }
         
-        /* Hide scrollbar */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* Empty state */
         .empty-state {
             text-align: center;
             padding: 40px 20px;
@@ -884,21 +867,7 @@
             margin-bottom: 16px;
             opacity: 0.5;
         }
-        
-        /* Loading shimmer */
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-        
-        .loading-shimmer {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            border-radius: 8px;
-        }
 
-        /* Notification Tabs - NEW */
         .notif-tabs {
             display: flex;
             gap: 8px;
@@ -941,6 +910,417 @@
         .notif-tab.active .badge {
             background: #EC4899;
             color: white;
+        }
+
+        /* ==================== FLOATING NAVIGATION BAR ==================== */
+        .floating-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            width: calc(100% - 40px);
+            max-width: 380px;
+        }
+
+        .floating-nav-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 8px;
+            box-shadow: 0 10px 40px rgba(124, 58, 237, 0.3), 
+                        0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            position: relative;
+            border: 1px solid rgba(124, 58, 237, 0.1);
+        }
+
+        body.dark .floating-nav-container {
+            background: rgba(30, 30, 46, 0.95);
+            border-color: rgba(124, 58, 237, 0.2);
+            box-shadow: 0 10px 40px rgba(124, 58, 237, 0.4), 
+                        0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            border: none;
+            background: transparent;
+            color: #9CA3AF;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .nav-btn:hover {
+            background: rgba(124, 58, 237, 0.1);
+            color: #7C3AED;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, #7C3AED, #EC4899);
+            color: white;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+        }
+
+        .nav-btn .nav-label {
+            position: absolute;
+            bottom: -20px;
+            font-size: 10px;
+            font-weight: 700;
+            opacity: 0;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-btn.active .nav-label {
+            opacity: 1;
+            bottom: -18px;
+            color: #7C3AED;
+        }
+
+        body.dark .nav-btn.active .nav-label {
+            color: #A78BFA;
+        }
+
+        /* Wallet Button - Center Prominent */
+        .wallet-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7C3AED 0%, #EC4899 50%, #F59E0B 100%);
+            border: 4px solid white;
+            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.5),
+                        0 0 0 4px rgba(124, 58, 237, 0.1);
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-top: -30px;
+            z-index: 10;
+        }
+
+        body.dark .wallet-btn {
+            border-color: #1E1E2E;
+            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.6),
+                        0 0 0 4px rgba(124, 58, 237, 0.2);
+        }
+
+        .wallet-btn:active {
+            transform: scale(0.95);
+        }
+
+        .wallet-btn::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7C3AED, #EC4899, #F59E0B);
+            opacity: 0.3;
+            z-index: -1;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.1); opacity: 0.1; }
+        }
+
+        .wallet-btn .wallet-label {
+            position: absolute;
+            bottom: -25px;
+            font-size: 11px;
+            font-weight: 800;
+            color: #7C3AED;
+            background: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            white-space: nowrap;
+        }
+
+        body.dark .wallet-btn .wallet-label {
+            background: #1E1E2E;
+            color: #A78BFA;
+        }
+
+        /* Wallet Modal */
+        .wallet-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+        }
+
+        .wallet-modal.active {
+            display: flex;
+        }
+
+        .wallet-content {
+            background: white;
+            width: 100%;
+            max-width: 420px;
+            border-radius: 30px 30px 0 0;
+            padding: 0;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        body.dark .wallet-content {
+            background: #1E1E2E;
+        }
+
+        .wallet-modal.active .wallet-content {
+            transform: translateY(0);
+        }
+
+        .wallet-header {
+            background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+            padding: 30px 24px;
+            border-radius: 30px 30px 0 0;
+            position: relative;
+            color: white;
+            text-align: center;
+        }
+
+        .wallet-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .wallet-balance-display {
+            margin-top: 10px;
+        }
+
+        .wallet-balance-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .wallet-balance-amount {
+            font-size: 48px;
+            font-weight: 900;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .wallet-balance-unit {
+            font-size: 18px;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .wallet-body {
+            padding: 24px;
+        }
+
+        .wallet-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .wallet-action-btn {
+            padding: 16px;
+            border-radius: 16px;
+            border: none;
+            background: #F3F4F6;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        body.dark .wallet-action-btn {
+            background: #2D2D3D;
+        }
+
+        .wallet-action-btn:active {
+            transform: scale(0.98);
+        }
+
+        .wallet-action-btn.primary {
+            background: linear-gradient(135deg, #7C3AED, #EC4899);
+            color: white;
+        }
+
+        .wallet-action-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: rgba(124, 58, 237, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #7C3AED;
+        }
+
+        .wallet-action-btn.primary .wallet-action-icon {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .wallet-action-text {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* Transfer Form */
+        .transfer-form {
+            background: #F9FAFB;
+            border-radius: 20px;
+            padding: 20px;
+            display: none;
+        }
+
+        body.dark .transfer-form {
+            background: #2D2D3D;
+        }
+
+        .transfer-form.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #6B7280;
+            margin-bottom: 8px;
+        }
+
+        body.dark .form-label {
+            color: #9CA3AF;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        body.dark .form-input {
+            background: #1E1E2E;
+            border-color: #374151;
+            color: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #7C3AED;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #9CA3AF;
+        }
+
+        .transfer-submit {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #7C3AED, #EC4899);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .transfer-submit:active {
+            transform: scale(0.98);
+        }
+
+        .transfer-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .points-display {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(236, 72, 153, 0.1));
+            border: 2px dashed #7C3AED;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .points-display-label {
+            font-size: 12px;
+            color: #6B7280;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        body.dark .points-display-label {
+            color: #9CA3AF;
+        }
+
+        .points-display-value {
+            font-size: 32px;
+            font-weight: 900;
+            color: #7C3AED;
+        }
+
+        body.dark .points-display-value {
+            color: #A78BFA;
         }
     </style>
 </head>
@@ -1112,6 +1492,97 @@
 
     </div>
 
+    <!-- Floating Navigation Bar -->
+    <nav class="floating-nav">
+        <div class="floating-nav-container">
+            <button class="nav-btn" onclick="openLessonsPage()" title="الدروس">
+                <i class="fas fa-graduation-cap"></i>
+                <span class="nav-label">دروس</span>
+            </button>
+            
+            <button class="nav-btn" onclick="openActivitiesPage()" title="الانشطة">
+                <i class="fas fa-trophy"></i>
+                <span class="nav-label">انشطة</span>
+            </button>
+            
+            <button class="wallet-btn" onclick="openWallet()" title="المحفظة">
+                <i class="fas fa-wallet"></i>
+                <span class="wallet-label">المحفظة</span>
+            </button>
+            
+            <button class="nav-btn" onclick="openTestsPage()" title="الاختبارات">
+                <i class="fas fa-book-open"></i>
+                <span class="nav-label">اختبارات</span>
+            </button>
+            
+            <button class="nav-btn" onclick="openStorePage()" title="المتجر">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="nav-label">متجر</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Wallet Modal -->
+    <div class="wallet-modal" id="wallet-modal" onclick="closeWallet(event)">
+        <div class="wallet-content" onclick="event.stopPropagation()">
+            <div class="wallet-header">
+                <button class="wallet-close" onclick="closeWallet()">
+                    <i class="fas fa-times"></i>
+                </button>
+                
+                <div class="wallet-balance-display">
+                    <div class="wallet-balance-label">رصيدك الحالي</div>
+                    <div class="wallet-balance-amount">
+                        <span id="wallet-modal-balance">0</span>
+                        <span class="wallet-balance-unit">نقطة</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="wallet-body">
+                <!-- Points Display in Body -->
+                <div class="points-display">
+                    <div class="points-display-label">النقاط المتاحة للتحويل</div>
+                    <div class="points-display-value" id="wallet-points-display">0</div>
+                </div>
+                
+                <div class="wallet-actions">
+                    <button class="wallet-action-btn primary" onclick="showTransferForm()">
+                        <div class="wallet-action-icon">
+                            <i class="fas fa-paper-plane"></i>
+                        </div>
+                        <span class="wallet-action-text">تحويل نقاط</span>
+                    </button>
+                    
+                    <button class="wallet-action-btn" onclick="openStorePage()">
+                        <div class="wallet-action-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <span class="wallet-action-text">الذهاب للمتجر</span>
+                    </button>
+                </div>
+                
+                <!-- Transfer Form -->
+                <div class="transfer-form" id="transfer-form">
+                    <div class="form-group">
+                        <label class="form-label">رقم الأكاديمي للطالب</label>
+                        <input type="text" class="form-input" id="transfer-code" placeholder="أدخل الرقم الأكاديمي" maxlength="20">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">عدد النقاط</label>
+                        <input type="number" class="form-input" id="transfer-amount" placeholder="0" min="1">
+                    </div>
+                    
+                    <button class="transfer-submit" onclick="submitTransfer()">
+                        <i class="fas fa-paper-plane"></i>
+                        تأكيد التحويل
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Side Menu -->
     <div class="menu-overlay" id="menu-overlay" onclick="toggleMenu()"></div>
     <div class="side-menu" id="side-menu">
@@ -1131,8 +1602,8 @@
         </div>
         
         <div class="menu-items">
-            
-            <button class="menu-item-btn" onclick="openLearnPage()">
+            <!-- إصلاح: تغيير الدوال لتطابق Android Interface -->
+            <button class="menu-item-btn" onclick="openImportantInfo()">
                 <div class="menu-item-icon pink">
                     <i class="fas fa-heart"></i>
                 </div>
@@ -1140,7 +1611,7 @@
                 <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
             </button>
             
-            <button class="menu-item-btn" onclick="openActivitiesPage()">
+            <button class="menu-item-btn" onclick="openContactUs()">
                 <div class="menu-item-icon orange">
                     <i class="fas fa-comments"></i>
                 </div>
@@ -1148,7 +1619,7 @@
                 <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
             </button>
                        
-            <button class="menu-item-btn" onclick="openToolsPage()">
+            <button class="menu-item-btn" onclick="openReports()">
                 <div class="menu-item-icon orange">
                     <i class="fas fa-exclamation-triangle"></i>
                 </div>
@@ -1184,7 +1655,6 @@
                     </button>
                 </div>
                 
-                <!-- Notification Tabs - NEW -->
                 <div class="notif-tabs hide-scrollbar">
                     <button class="notif-tab active" onclick="switchNotifTab('all', this)" id="tab-all">
                         الكل
@@ -1230,7 +1700,6 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
-        const messaging = firebase.messaging();
         
         let currentUserId = window.CURRENT_USER_CODE;
         let userData = null;
@@ -1238,6 +1707,7 @@
         let notifications = [];
         let unreadCount = 0;
         let currentNotifTab = 'all';
+        let notifListener = null;
         
         const levels = [
             { threshold: 0, name: 'ضعيف' },
@@ -1260,104 +1730,160 @@
             { id: 'business', name: 'الجدول', count: 'يوفر لكم كل المواعيد', icon: 'fa-calendar-day', color: 'cat-business', decor: 'bg-emerald-400' }
         ];
 
-        // Initialize Firebase Messaging
-        function initMessaging() {
-            // Subscribe to topic "all" automatically
-            messaging.subscribeToTopic("all")
-                .then(() => {
-                    console.log("Subscribed to topic 'all'");
-                })
-                .catch((err) => {
-                    console.error("Failed to subscribe to topic:", err);
-                });
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 App starting... User ID:', currentUserId);
+            initTheme();
+            loadUserData();
+            setupNotificationsListener();
+        });
 
-            // Handle foreground messages
-            messaging.onMessage((payload) => {
-                console.log("Message received in foreground:", payload);
-                showNotification(payload.notification);
-            });
-
-            // Load notifications from database
-            loadNotifications();
+        // ==================== WALLET FUNCTIONS ====================
+        
+        function openWallet() {
+            document.getElementById('wallet-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            updateWalletDisplay();
         }
 
-        function showNotification(notification) {
-            // Add to notifications array
-            const newNotif = {
-                id: Date.now(),
-                title: notification.title || 'إشعار جديد',
-                body: notification.body || '',
-                timestamp: Date.now(),
-                read: false
-            };
-            
-            notifications.unshift(newNotif);
-            unreadCount++;
-            updateNotificationBadge();
-            showToast(notification.title || 'إشعار جديد');
-            
-            // Save to database
-            saveNotification(newNotif);
+        function closeWallet(event) {
+            if (!event || event.target.id === 'wallet-modal') {
+                document.getElementById('wallet-modal').classList.remove('active');
+                document.body.style.overflow = '';
+                hideTransferForm();
+            }
         }
 
-        function loadNotifications() {
-            db.ref('notifications/' + currentUserId).orderByChild('timestamp').limitToLast(50).on('value', (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    notifications = Object.entries(data).map(([key, value]) => ({
-                        id: key,
-                        ...value
-                    })).sort((a, b) => b.timestamp - a.timestamp);
+        function updateWalletDisplay() {
+            const points = userData ? (userData.points || 0) : 0;
+            document.getElementById('wallet-modal-balance').textContent = points.toLocaleString();
+            document.getElementById('wallet-points-display').textContent = points.toLocaleString();
+        }
+
+        function showTransferForm() {
+            document.getElementById('transfer-form').classList.add('active');
+        }
+
+        function hideTransferForm() {
+            document.getElementById('transfer-form').classList.remove('active');
+            document.getElementById('transfer-code').value = '';
+            document.getElementById('transfer-amount').value = '';
+        }
+
+        function submitTransfer() {
+            const code = document.getElementById('transfer-code').value.trim();
+            const amount = parseInt(document.getElementById('transfer-amount').value);
+            
+            if (!code) {
+                showToast('الرجاء إدخال الرقم الأكاديمي');
+                return;
+            }
+            
+            if (!amount || amount <= 0) {
+                showToast('الرجاء إدخال عدد النقاط الصحيح');
+                return;
+            }
+            
+            const currentPoints = userData ? (userData.points || 0) : 0;
+            
+            if (amount > currentPoints) {
+                showToast('رصيدك غير كافٍ');
+                return;
+            }
+            
+            // Check if recipient exists
+            db.ref('users/' + code).once('value').then(snapshot => {
+                if (!snapshot.exists()) {
+                    showToast('الرقم الأكاديمي غير موجود');
+                    return;
+                }
+                
+                if (code === currentUserId) {
+                    showToast('لا يمكن التحويل لنفسك');
+                    return;
+                }
+                
+                const recipientData = snapshot.val();
+                const recipientPoints = recipientData.points || 0;
+                
+                // Perform transfer
+                const updates = {};
+                updates['users/' + currentUserId + '/points'] = currentPoints - amount;
+                updates['users/' + code + '/points'] = recipientPoints + amount;
+                
+                // Add transaction records
+                const timestamp = Date.now();
+                updates['transactions/' + currentUserId + '/' + timestamp] = {
+                    type: 'sent',
+                    to: code,
+                    toName: recipientData.name || 'مستخدم',
+                    amount: amount,
+                    timestamp: timestamp
+                };
+                updates['transactions/' + code + '/' + timestamp] = {
+                    type: 'received',
+                    from: currentUserId,
+                    fromName: userData.name || 'مستخدم',
+                    amount: amount,
+                    timestamp: timestamp
+                };
+                
+                db.ref().update(updates).then(() => {
+                    showToast('تم التحويل بنجاح! ✅');
+                    hideTransferForm();
                     
-                    unreadCount = notifications.filter(n => !n.read).length;
-                    updateNotificationBadge();
-                    updateNotifTabCounts();
-                    renderNotifications();
-                }
+                    // Send notification to recipient
+                    db.ref('notifications/' + code).push({
+                        title: '💰 استلام نقاط',
+                        body: `تم استلام ${amount} نقطة من ${userData.name || 'مستخدم'}`,
+                        timestamp: Date.now(),
+                        read: false,
+                        priority: false
+                    });
+                }).catch(err => {
+                    console.error(err);
+                    showToast('حدث خطأ أثناء التحويل');
+                });
             });
         }
 
-        function saveNotification(notification) {
-            const notifRef = db.ref('notifications/' + currentUserId).push();
-            notifRef.set(notification);
-        }
-
-        function markAsRead(notifId) {
-            db.ref('notifications/' + currentUserId + '/' + notifId).update({ read: true });
-        }
-
-        function markAllAsRead() {
-            notifications.forEach(n => {
-                if (!n.read) {
-                    markAsRead(n.id);
+        // ==================== NOTIFICATIONS SYSTEM ====================
+        
+        function setupNotificationsListener() {
+            console.log('👂 Setting up notifications listener for:', currentUserId);
+            const notifPath = `notifications/${currentUserId}`;
+            
+            if (notifListener) {
+                notifListener.off();
+            }
+            
+            notifListener = db.ref(notifPath);
+            
+            notifListener.on('value', (snapshot) => {
+                console.log('📩 Notifications data received');
+                const data = snapshot.val();
+                notifications = [];
+                
+                if (data) {
+                    Object.entries(data).forEach(([key, value]) => {
+                        if (!value.deleted) {
+                            notifications.push({ id: key, ...value });
+                        }
+                    });
+                    notifications.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
                 }
+                
+                updateNotificationBadge();
+                updateNotifTabCounts();
+                renderNotifications();
+            }, (error) => {
+                console.error('❌ Error loading notifications:', error);
             });
-        }
-
-        // NEW: Switch notification tab
-        function switchNotifTab(tab, btn) {
-            currentNotifTab = tab;
-            
-            // Update UI
-            document.querySelectorAll('.notif-tab').forEach(t => t.classList.remove('active'));
-            btn.classList.add('active');
-            
-            renderNotifications();
-        }
-
-        // NEW: Update tab counts
-        function updateNotifTabCounts() {
-            const allCount = notifications.length;
-            const unreadCount = notifications.filter(n => !n.read).length;
-            const priorityCount = notifications.filter(n => n.priority).length;
-            
-            document.getElementById('count-all').textContent = allCount;
-            document.getElementById('count-unread').textContent = unreadCount;
-            document.getElementById('count-priority').textContent = priorityCount;
         }
 
         function updateNotificationBadge() {
+            unreadCount = notifications.filter(n => !n.read).length;
             const badge = document.getElementById('notification-badge');
+            
             if (unreadCount > 0) {
                 badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
                 badge.style.display = 'flex';
@@ -1366,18 +1892,30 @@
             }
         }
 
+        function updateNotifTabCounts() {
+            document.getElementById('count-all').textContent = notifications.length;
+            document.getElementById('count-unread').textContent = notifications.filter(n => !n.read).length;
+            document.getElementById('count-priority').textContent = notifications.filter(n => n.priority).length;
+        }
+
+        function switchNotifTab(tab, btn) {
+            currentNotifTab = tab;
+            document.querySelectorAll('.notif-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            renderNotifications();
+        }
+
         function renderNotifications() {
             const container = document.getElementById('notifications-list');
+            let filtered = notifications;
             
-            // Filter based on current tab
-            let filteredNotifications = notifications;
             if (currentNotifTab === 'unread') {
-                filteredNotifications = notifications.filter(n => !n.read);
+                filtered = notifications.filter(n => !n.read);
             } else if (currentNotifTab === 'priority') {
-                filteredNotifications = notifications.filter(n => n.priority);
+                filtered = notifications.filter(n => n.priority);
             }
             
-            if (filteredNotifications.length === 0) {
+            if (filtered.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-bell-slash"></i>
@@ -1387,35 +1925,63 @@
                 return;
             }
             
-            container.innerHTML = filteredNotifications.map(notif => `
-                <div class="notification-item ${!notif.read ? 'unread' : ''}" onclick="markAsRead('${notif.id}')">
+            container.innerHTML = filtered.map(notif => `
+                <div class="notification-item ${!notif.read ? 'unread' : ''}" id="notif-${notif.id}">
                     ${!notif.read ? '<div class="notification-badge"></div>' : ''}
                     ${notif.priority ? '<div style="position: absolute; top: 16px; left: 30px; color: #EF4444; font-size: 12px;"><i class="fas fa-exclamation-circle"></i></div>' : ''}
-                    <div class="notification-title">${notif.title}</div>
-                    <div class="notification-body">${notif.body}</div>
+                    <div class="notification-title">${escapeHtml(notif.title || 'إشعار')}</div>
+                    <div class="notification-body">${escapeHtml(notif.body || '')}</div>
                     <div class="notification-time">
                         <i class="far fa-clock"></i>
                         ${formatTime(notif.timestamp)}
                     </div>
+                    ${!notif.read ? `
+                        <button onclick="event.stopPropagation(); markAsRead('${notif.id}')" 
+                                style="margin-top: 8px; padding: 6px 12px; background: linear-gradient(135deg, #7C3AED, #EC4899); color: white; border: none; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;">
+                            <i class="fas fa-check"></i> تحديد كمقروء
+                        </button>
+                    ` : ''}
                 </div>
             `).join('');
         }
 
-        function formatTime(timestamp) {
-            const date = new Date(timestamp);
-            const now = new Date();
-            const diff = now - date;
+        function markAsRead(notifId) {
+            const notif = notifications.find(n => n.id === notifId);
+            const updates = { read: true, readAt: Date.now() };
             
-            if (diff < 60000) return 'الآن';
-            if (diff < 3600000) return Math.floor(diff / 60000) + ' دقيقة';
-            if (diff < 86400000) return Math.floor(diff / 3600000) + ' ساعة';
-            return date.toLocaleDateString('ar-SA');
+            if (notif && notif.autoDelete) {
+                updates.deleted = true;
+                updates.deletedAt = Date.now();
+            }
+            
+            db.ref(`notifications/${currentUserId}/${notifId}`).update(updates);
+        }
+
+        // ==================== UTILITY FUNCTIONS ====================
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function formatTime(timestamp) {
+            if (!timestamp) return 'غير معروف';
+            const diff = Date.now() - timestamp;
+            const seconds = Math.floor(diff / 1000);
+            
+            if (seconds < 60) return 'الآن';
+            if (seconds < 3600) return `${Math.floor(seconds / 60)} دقيقة`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)} ساعة`;
+            if (seconds < 604800) return `${Math.floor(seconds / 86400)} يوم`;
+            
+            return new Date(timestamp).toLocaleDateString('ar-SA');
         }
 
         function showNotifications() {
             document.getElementById('notifications-panel').classList.add('active');
             document.body.style.overflow = 'hidden';
-            renderNotifications();
         }
 
         function closeNotifications(event) {
@@ -1429,38 +1995,15 @@
             const theme = localStorage.getItem('theme');
             if (theme === 'dark') {
                 document.body.classList.add('dark');
-                updateToggleSwitch(true);
-            } else {
-                document.body.classList.remove('dark');
-                updateToggleSwitch(false);
             }
             renderCategories('grid');
         }
 
-        function updateToggleSwitch(isDark) {
-            const toggle = document.getElementById('menu-toggle-switch');
-            if (toggle) {
-                if (isDark) {
-                    toggle.classList.add('active');
-                } else {
-                    toggle.classList.remove('active');
-                }
-            }
-        }
-
         function toggleDarkMode() {
+            document.body.classList.toggle('dark');
             const isDark = document.body.classList.contains('dark');
-            if (isDark) {
-                document.body.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-                updateToggleSwitch(false);
-                showToast('تم تفعيل الوضع الفاتح');
-            } else {
-                document.body.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-                updateToggleSwitch(true);
-                showToast('تم تفعيل الوضع الليلي');
-            }
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            showToast(isDark ? 'تم تفعيل الوضع الليلي' : 'تم تفعيل الوضع الفاتح');
         }
 
         function renderCategories(view) {
@@ -1562,7 +2105,6 @@
             
             document.getElementById('level-text').textContent = currentLevel.name;
             
-            // Update circular progress
             const circle = document.getElementById('progress-circle');
             const radius = 80;
             const circumference = 2 * Math.PI * radius;
@@ -1573,8 +2115,7 @@
             
             const nextLevel = levels.find(l => l.threshold > gradeNum);
             if (nextLevel) {
-                document.getElementById('level-description').textContent = 
-                   `المستوى التالي: ${nextLevel.name}`;
+                document.getElementById('level-description').textContent = `المستوى التالي: ${nextLevel.name}`;
             } else {
                 document.getElementById('level-description').textContent = 'مبروك! وصلت للامتياز 🎉';
             }
@@ -1594,24 +2135,29 @@
             renderCategories(view);
         }
 
+        // ==================== ANDROID INTERFACE FUNCTIONS ====================
+        
         function callAndroid(fn) {
             if (window.AndroidApp && typeof AndroidApp[fn] === "function") {
                 AndroidApp[fn]();
             } else {
-                alert("الميزة تعمل من داخل التطبيق فقط");
+                showToast("الميزة تعمل من داخل التطبيق فقط");
             }
         }
 
-        /* ===== الوصول السريع ===== */
+        // الوصول السريع
         function openLearnPage() { callAndroid("openLearn"); }
         function openLessonsPage() { callAndroid("openLessons"); }
         function openActivitiesPage() { callAndroid("openActivities"); }
         function openTestsPage() { callAndroid("openTests"); }
-
-        /* ===== الأقسام ===== */
+        
+        // الأقسام
+        function openToolsPage() { callAndroid("openTools"); }
+        function openStorePage() { callAndroid("openStore"); }
+        
         function openCategory(cat) {
             if (!window.AndroidApp) {
-                alert("الميزة تعمل من داخل التطبيق فقط");
+                showToast("الميزة تعمل من داخل التطبيق فقط");
                 return;
             }
             switch (cat) {
@@ -1622,11 +2168,16 @@
             }
         }
 
+        // القائمة الجانبية - الإصلاح هنا
+        function openImportantInfo() { callAndroid("openImportantInfo"); }
+        function openContactUs() { callAndroid("openContactUs"); }
+        function openReports() { callAndroid("openReports"); }
+
         function logout() {
             if (window.AndroidApp && AndroidApp.logout) {
                 AndroidApp.logout();
             } else {
-                alert("الميزة تعمل من داخل التطبيق فقط");
+                showToast("الميزة تعمل من داخل التطبيق فقط");
             }
         }
 
@@ -1637,17 +2188,23 @@
             setTimeout(() => toast.classList.remove('show'), 2500);
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            initTheme();
-            loadUserData();
-            initMessaging();
-        });
-
         // Test functions
         window.updateGrade = (g) => db.ref('users/' + currentUserId).update({ grade: g + '%' });
         window.addPoints = (amount) => {
             const current = userData.points || 0;
             db.ref('users/' + currentUserId).update({ points: current + amount });
+        };
+        
+        window.testNotification = () => {
+            const testNotif = {
+                title: "🔔 إشعار تجريبي",
+                body: "هذا إشعار test من Console",
+                timestamp: Date.now(),
+                read: false,
+                priority: false,
+                deleted: false
+            };
+            db.ref(`notifications/${currentUserId}`).push(testNotif);
         };
     </script>
 </body>
