@@ -1065,7 +1065,7 @@
             </h3>
             
             <div class="actions-grid">
-                <button class="action-btn" onclick="openTool('maintenance')">
+                <button class="action-btn" onclick="openLearnPage()">
                     <div class="action-icon blue">
                         <i class="fas fa-scroll"></i>
                     </div>
@@ -1228,7 +1228,15 @@
         <i class="fas fa-info-circle text-xl"></i>
         <span id="toast-message">رسالة</span>
     </div>
-
+<script>
+function openLearnPage() {
+    if (window.AndroidApp && typeof AndroidApp.openLearn === "function") {
+        AndroidApp.openLearn();
+    } else {
+        alert("الميزة تعمل من داخل التطبيق فقط");
+    }
+}
+</script>
     <script>
         // Firebase Config
         const firebaseConfig = {
@@ -1482,16 +1490,9 @@
         function openAIAssistant() { openModal('ai-modal'); }
         
         function openTool(tool) {
-    const pages = {
-        maintenance: 'LearnActivity.html'
-    };
-
-    if (pages[tool]) {
-        window.location.href = pages[tool] + '?code=' + encodeURIComponent(currentUserId);
-    } else {
-        showToast('الصفحة غير متوفرة');
-    }
-}
+            const names = { maintenance: 'التعليمات', store: 'الدروس', ai: 'الأنشطة', calendar: 'الاختبارات' };
+            showToast(names[tool] || tool);
+        }
 
         function openCategory(cat) {
             const names = { tech: 'البوت الذكي', design: 'الأدوات', marketing: 'متجر الأكاديمية', business: 'الجدول' };
