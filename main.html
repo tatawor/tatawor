@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#7C3AED">
-    <title>منصة المتخصصين</title>
+    <title>منصة المتخصصين - النظام المتكامل</title>
     
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-messaging-compat.js"></script>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -40,7 +41,7 @@
             background: #F3F4F6;
             color: #1F2937;
             overflow-x: hidden;
-            padding-bottom: 20px;
+            padding-bottom: 10px;
         }
         
         body.dark {
@@ -48,9 +49,8 @@
             color: #F9FAFB;
         }
         
-        /* Main Container */
         .app-container {
-            max-width: 480px;
+            max-width: 420px;
             margin: 0 auto;
             min-height: 100vh;
             position: relative;
@@ -62,12 +62,11 @@
             background: linear-gradient(180deg, #1E1B4B 0%, #0F0F1A 100%);
         }
         
-        /* Header - Reduced padding */
+        /* Header */
         .main-header {
             background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
-            border-radius: 0 0 40px 40px;
-            padding: 5px 10px 50px;
-            padding-top: 10px;
+            border-radius: 0 0 30px 30px;
+            padding: 8px 12px 35px;
             position: relative;
             overflow: hidden;
         }
@@ -84,29 +83,29 @@
             background-size: 40px 40px, 30px 30px;
         }
         
-        /* Profile Section in Header - Moved up */
+        /* Profile Section */
         .header-profile {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
             position: relative;
             z-index: 1;
-            margin-top: 10px;
+            margin-top: 8px;
         }
         
         .avatar-container {
             position: relative;
-            width: 70px;
-            height: 70px;
+            width: 55px;
+            height: 55px;
             flex-shrink: 0;
         }
         
         .avatar-ring {
             position: absolute;
-            inset: -4px;
+            inset: -3px;
             border-radius: 50%;
             background: linear-gradient(135deg, #FCD34D, #F59E0B, #EF4444);
-            padding: 3px;
+            padding: 2px;
         }
         
         .avatar-inner {
@@ -114,7 +113,7 @@
             height: 100%;
             border-radius: 50%;
             overflow: hidden;
-            border: 3px solid white;
+            border: 2px solid white;
             background: white;
         }
         
@@ -126,10 +125,10 @@
             position: absolute;
             bottom: 2px;
             right: 2px;
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             background: #10B981;
-            border: 3px solid white;
+            border: 2px solid white;
             border-radius: 50%;
         }
         
@@ -137,47 +136,45 @@
             border-color: #1E1B4B;
         }
         
-        /* Level Badge */
         .level-chip {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 13px;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 11px;
             font-weight: 700;
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.3);
-            margin-top: 6px;
+            margin-top: 4px;
         }
         
-        /* Circular Progress - بدون توهج */
+        /* Circular Progress */
         .progress-section {
-            margin: -25px 20px 20px;
+            margin: -20px 16px 16px;
             position: relative;
             z-index: 10;
         }
         
         .circular-progress-container {
             background: white;
-            border-radius: 30px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
             text-align: center;
-            overflow: hidden;
         }
         
         body.dark .circular-progress-container {
             background: #1E1E2E;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
         }
         
         .circular-progress {
             position: relative;
-            width: 200px;
-            height: 200px;
+            width: 160px;
+            height: 160px;
             margin: 0 auto;
         }
         
@@ -190,7 +187,7 @@
         .progress-circle-bg {
             fill: none;
             stroke: #E5E7EB;
-            stroke-width: 12;
+            stroke-width: 10;
         }
         
         body.dark .progress-circle-bg {
@@ -200,12 +197,11 @@
         .progress-circle {
             fill: none;
             stroke: url(#gradient);
-            stroke-width: 12;
+            stroke-width: 10;
             stroke-linecap: round;
-            stroke-dasharray: 565.48;
-            stroke-dashoffset: 565.48;
+            stroke-dasharray: 452.39;
+            stroke-dashoffset: 452.39;
             transition: stroke-dashoffset 1.5s ease-in-out;
-            /* تم إزالة filter: drop-shadow (التوهج) */
         }
         
         .progress-content {
@@ -217,52 +213,44 @@
         }
         
         .progress-percentage {
-            font-size: 48px;
+            font-size: 36px;
             font-weight: 900;
             background: linear-gradient(135deg, #7C3AED, #EC4899);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         
-        .progress-label-text {
-            font-size: 14px;
-            color: #9CA3AF;
-            font-weight: 600;
-            margin-top: 5px;
-        }
-        
-        /* Stats Row - 2 items only */
+        /* Stats Row */
         .stats-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin: 0 20px 20px;
+            gap: 10px;
+            margin: 0 16px 16px;
         }
         
         .stat-item {
             background: white;
-            border-radius: 24px;
-            padding: 20px;
+            border-radius: 20px;
+            padding: 16px;
             text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s;
-            cursor: default;
         }
         
         body.dark .stat-item {
             background: #1E1E2E;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         
         .stat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 16px;
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 12px;
-            font-size: 24px;
+            margin: 0 auto 10px;
+            font-size: 20px;
         }
         
         .stat-icon.purple {
@@ -275,15 +263,15 @@
             color: #EC4899;
         }
         
-        /* Quick Actions Grid */
+        /* Quick Actions */
         .quick-actions {
-            margin: 0 20px 20px;
+            margin: 0 16px 16px;
         }
         
         .section-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 800;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -292,15 +280,15 @@
         .actions-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
+            gap: 10px;
         }
         
         .action-btn {
             background: white;
-            border-radius: 20px;
-            padding: 16px 8px;
+            border-radius: 16px;
+            padding: 12px 6px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             transition: all 0.3s;
             border: none;
             cursor: pointer;
@@ -308,7 +296,7 @@
         
         body.dark .action-btn {
             background: #1E1E2E;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
         
         .action-btn:active {
@@ -316,14 +304,14 @@
         }
         
         .action-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 16px;
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 8px;
-            font-size: 20px;
+            margin: 0 auto 6px;
+            font-size: 18px;
             color: white;
         }
         
@@ -333,7 +321,7 @@
         .action-icon.orange { background: linear-gradient(135deg, #FBBF24, #F59E0B); }
         
         .action-label {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             color: #6B7280;
         }
@@ -342,107 +330,38 @@
             color: #9CA3AF;
         }
         
-        /* Categories Section */
+        /* Categories */
         .categories-section {
-            margin: 0 20px 20px;
+            margin: 0 16px 16px;
         }
         
-        /* Grid View (Default) */
         .categories-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-        
-        /* List View - Fixed spacing */
-        .categories-list {
-            display: flex;
-            flex-direction: column;
             gap: 12px;
         }
         
         .category-card-large {
             background: white;
-            border-radius: 20px;
+            border-radius: 18px;
             padding: 16px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
             transition: all 0.3s;
             cursor: pointer;
             display: flex;
-            align-items: center;
-            gap: 16px;
+            flex-direction: column;
+            min-height: 120px;
         }
         
         body.dark .category-card-large {
             background: #1E1E2E;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         
         .category-card-large:active {
             transform: scale(0.98);
-        }
-        
-        /* Grid mode specific */
-        .categories-grid .category-card-large {
-            flex-direction: column;
-            align-items: flex-start;
-            min-height: 140px;
-            padding: 20px;
-        }
-        
-        /* List mode specific - smaller and spaced */
-        .categories-list .category-card-large {
-            min-height: auto;
-            padding: 12px 16px;
-        }
-        
-        .categories-list .category-icon-large {
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
-            font-size: 22px;
-            margin-bottom: 0;
-        }
-        
-        .categories-list .category-title {
-            font-size: 16px;
-            margin-bottom: 2px;
-        }
-        
-        .categories-list .category-count {
-            font-size: 12px;
-        }
-        
-        .categories-list .category-arrow {
-            position: static;
-            margin-right: auto;
-            width: 32px;
-            height: 32px;
-        }
-        
-        .category-decoration {
-            position: absolute;
-            top: -20px;
-            left: -20px;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            opacity: 0.15;
-        }
-        
-        .category-icon-large {
-            width: 52px;
-            height: 52px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            position: relative;
-            z-index: 1;
-            margin-bottom: 12px;
         }
         
         .cat-tech { background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%); color: #2563EB; }
@@ -450,131 +369,12 @@
         .cat-marketing { background: linear-gradient(135deg, #FFEDD5 0%, #FED7AA 100%); color: #EA580C; }
         .cat-business { background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%); color: #059669; }
         
-        .category-title {
-            font-size: 17px;
-            font-weight: 800;
-            margin-bottom: 4px;
-        }
-        
-        .category-count {
-            font-size: 13px;
-            color: #9CA3AF;
-            font-weight: 600;
-        }
-        
-        .category-arrow {
-            position: absolute;
-            bottom: 16px;
-            left: 16px;
-            width: 36px;
-            height: 36px;
-            background: #F3F4F6;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6B7280;
-            transition: all 0.3s;
-        }
-        
-        body.dark .category-arrow {
-            background: #374151;
-            color: #9CA3AF;
-        }
-        
-        .category-card-large:hover .category-arrow {
-            background: #7C3AED;
-            color: white;
-        }
-        
-        /* Activities Section */
-        .activities-section {
-            margin: 0 20px 20px;
-        }
-        
-        .activity-list {
-            background: white;
-            border-radius: 24px;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-        }
-        
-        body.dark .activity-list {
-            background: #1E1E2E;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
-        
-        .activity-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 16px 0;
-            border-bottom: 1px solid #F3F4F6;
-        }
-        
-        body.dark .activity-item {
-            border-bottom-color: #374151;
-        }
-        
-        .activity-item:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-        
-        .activity-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-        
-        .activity-icon.gold {
-            background: linear-gradient(135deg, #FEF3C7, #FDE68A);
-            color: #D97706;
-        }
-        
-        .activity-icon.green {
-            background: linear-gradient(135deg, #D1FAE5, #A7F3D0);
-            color: #059669;
-        }
-        
-        .activity-icon.red {
-            background: linear-gradient(135deg, #FEE2E2, #FECACA);
-            color: #DC2626;
-        }
-        
-        .activity-content {
-            flex: 1;
-        }
-        
-        .activity-title {
-            font-weight: 700;
-            font-size: 15px;
-            margin-bottom: 4px;
-        }
-        
-        .activity-time {
-            font-size: 13px;
-            color: #9CA3AF;
-        }
-        
-        .activity-amount {
-            font-weight: 800;
-            font-size: 16px;
-        }
-        
-        .amount-positive { color: #059669; }
-        .amount-negative { color: #DC2626; }
-        
         /* Side Menu */
         .side-menu {
             position: fixed;
             top: 0;
             right: 0;
-            width: 300px;
+            width: 280px;
             height: 100vh;
             background: white;
             z-index: 1000;
@@ -609,302 +409,256 @@
             visibility: visible;
         }
         
-        .menu-header {
-            background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
-            padding: 40px 24px 80px;
-            position: relative;
-            border-radius: 0 0 30px 30px;
+        /* Notifications Panel - ENHANCED */
+        .notifications-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1001;
+            display: none;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
         }
         
-        .menu-close {
+        .notifications-panel.active {
+            display: block;
+        }
+        
+        .notifications-content {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        
-        .menu-profile {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            color: white;
-        }
-        
-        .menu-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            overflow: hidden;
-        }
-        
-        .menu-avatar img {
+            top: 0;
+            right: 0;
             width: 100%;
+            max-width: 420px;
             height: 100%;
-            object-fit: cover;
-        }
-        
-        .menu-name {
-            font-size: 20px;
-            font-weight: 800;
-        }
-        
-        .menu-email {
-            font-size: 13px;
-            opacity: 0.8;
-        }
-        
-        .menu-items {
-            padding: 20px;
-            margin-top: -40px;
-            position: relative;
-            z-index: 10;
-        }
-        
-        .menu-item-btn {
+            background: #F8FAFC;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
             display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 16px;
-            margin-bottom: 8px;
-            border-radius: 16px;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            border: none;
-            width: 100%;
-            text-align: right;
-            cursor: pointer;
-            transition: all 0.3s;
+            flex-direction: column;
         }
         
-        body.dark .menu-item-btn {
-            background: #2D2D3D;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        body.dark .notifications-content {
+            background: #0F172A;
+        }
+        
+        .notifications-panel.active .notifications-content {
+            transform: translateX(0);
+        }
+        
+        .notifications-header {
+            background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+            padding: 20px;
             color: white;
+            position: relative;
+            flex-shrink: 0;
         }
         
-        .menu-item-btn:active {
+        .notifications-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+        
+        /* ENHANCED Notification Item */
+        .notification-item {
+            background: white;
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border-right: 4px solid #E5E7EB;
+            position: relative;
+            transition: all 0.3s ease;
+            animation: slideIn 0.4s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        body.dark .notification-item {
+            background: #1E293B;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border-right-color: #374151;
+        }
+        
+        .notification-item.unread {
+            border-right-color: #EC4899;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.08) 0%, rgba(236, 72, 153, 0.08) 100%);
+        }
+        
+        body.dark .notification-item.unread {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(236, 72, 153, 0.15) 100%);
+        }
+        
+        .notification-item.reading {
+            opacity: 0.6;
             transform: scale(0.98);
         }
         
-        .menu-item-icon {
+        .notification-item.deleting {
+            animation: slideOut 0.4s ease-in forwards;
+        }
+        
+        @keyframes slideOut {
+            to {
+                opacity: 0;
+                transform: translateX(-100%);
+                height: 0;
+                margin: 0;
+                padding: 0;
+            }
+        }
+        
+        .notification-priority {
+            position: absolute;
+            top: -4px;
+            left: 20px;
+            background: #EF4444;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 800;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+        }
+        
+        .notification-icon {
             width: 44px;
             height: 44px;
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 20px;
+            margin-bottom: 12px;
         }
         
-        .menu-item-icon.purple { background: #EDE9FE; color: #7C3AED; }
-        .menu-item-icon.pink { background: #FCE7F3; color: #EC4899; }
-        .menu-item-icon.blue { background: #DBEAFE; color: #3B82F6; }
-        .menu-item-icon.orange { background: #FFEDD5; color: #F97316; }
-        .menu-item-icon.red { background: #FEE2E2; color: #EF4444; }
+        .notification-icon.info { background: linear-gradient(135deg, #DBEAFE, #BFDBFE); color: #2563EB; }
+        .notification-icon.success { background: linear-gradient(135deg, #D1FAE5, #A7F3D0); color: #059669; }
+        .notification-icon.warning { background: linear-gradient(135deg, #FFEDD5, #FED7AA); color: #EA580C; }
+        .notification-icon.urgent { background: linear-gradient(135deg, #FEE2E2, #FECACA); color: #DC2626; }
         
-        .menu-item-text {
-            flex: 1;
-            font-weight: 700;
+        .notification-title {
+            font-weight: 800;
+            font-size: 15px;
+            margin-bottom: 6px;
+            color: #1F2937;
+            line-height: 1.4;
         }
         
-        .menu-item-arrow {
-            color: #9CA3AF;
-        }
-        
-        /* Toggle Switch for Dark Mode */
-        .toggle-switch {
-            width: 50px;
-            height: 28px;
-            background: #E5E7EB;
-            border-radius: 14px;
-            position: relative;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        
-        body.dark .toggle-switch {
-            background: #7C3AED;
-        }
-        
-        .toggle-switch::after {
-            content: '';
-            position: absolute;
-            width: 22px;
-            height: 22px;
-            background: white;
-            border-radius: 50%;
-            top: 3px;
-            right: 3px;
-            transition: transform 0.3s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        
-        body.dark .toggle-switch::after {
-            transform: translateX(-22px);
-        }
-        
-        /* Modals */
-        .modal {
-            position: fixed;
-            inset: 0;
-            z-index: 1001;
-            display: none;
-            align-items: flex-end;
-            justify-content: center;
-        }
-        
-        .modal.active {
-            display: flex;
-        }
-        
-        .modal-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-        }
-        
-        .modal-content {
-            background: white;
-            border-radius: 40px 40px 0 0;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            transform: translateY(100%);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            z-index: 1;
-        }
-        
-        body.dark .modal-content {
-            background: #1E1E2E;
-        }
-        
-        .modal.active .modal-content {
-            transform: translateY(0);
-        }
-        
-        .modal-handle {
-            width: 40px;
-            height: 4px;
-            background: #E5E7EB;
-            border-radius: 2px;
-            margin: 12px auto;
-        }
-        
-        body.dark .modal-handle {
-            background: #374151;
-        }
-        
-        /* Close Button for Dark Mode */
-        .modal-close-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-        
-        .modal-close-btn.light {
-            background: #F3F4F6;
-            color: #374151;
-        }
-        
-        body.dark .modal-close-btn.light {
-            background: #374151;
+        body.dark .notification-title {
             color: #F9FAFB;
         }
         
-        /* Form Elements */
-        .input-group {
-            margin-bottom: 16px;
-        }
-        
-        .input-label {
-            display: block;
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 8px;
+        .notification-body {
+            font-size: 13px;
             color: #6B7280;
+            line-height: 1.6;
+            margin-bottom: 12px;
         }
         
-        body.dark .input-label {
+        body.dark .notification-body {
             color: #9CA3AF;
         }
         
-        .input-field {
-            width: 100%;
-            padding: 16px;
-            border-radius: 16px;
-            border: 2px solid #E5E7EB;
-            background: #F9FAFB;
-            font-family: 'Cairo', sans-serif;
-            font-size: 16px;
-            transition: all 0.3s;
+        .notification-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: #9CA3AF;
         }
         
-        body.dark .input-field {
-            background: #2D2D3D;
-            border-color: #374151;
-            color: white;
+        .notification-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #F3F4F6;
         }
         
-        .input-field:focus {
-            outline: none;
-            border-color: #7C3AED;
-            background: white;
+        body.dark .notification-actions {
+            border-top-color: #374151;
         }
         
-        .btn-primary {
-            width: 100%;
-            padding: 18px;
-            border-radius: 16px;
-            background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
-            color: white;
-            font-family: 'Cairo', sans-serif;
-            font-size: 16px;
-            font-weight: 800;
+        .notification-btn {
+            flex: 1;
+            padding: 8px;
+            border-radius: 10px;
             border: none;
+            font-size: 12px;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
         
-        .btn-primary:active {
-            transform: scale(0.98);
-            box-shadow: 0 2px 10px rgba(124, 58, 237, 0.3);
+        .notification-btn.read {
+            background: linear-gradient(135deg, #DDD6FE, #C4B5FD);
+            color: #7C3AED;
+        }
+        
+        .notification-btn.delete {
+            background: #FEE2E2;
+            color: #EF4444;
+        }
+        
+        .notification-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #9CA3AF;
+        }
+        
+        .empty-state i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+            background: linear-gradient(135deg, #7C3AED, #EC4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         /* Toast */
         .toast {
             position: fixed;
-            top: 100px;
+            top: 80px;
             left: 50%;
             transform: translateX(-50%) translateY(-100px);
             background: #1F2937;
             color: white;
-            padding: 16px 24px;
+            padding: 14px 24px;
             border-radius: 16px;
             font-weight: 700;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            font-size: 14px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             z-index: 2000;
             opacity: 0;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             display: flex;
             align-items: center;
             gap: 12px;
+            min-width: 280px;
+            justify-content: center;
         }
         
         .toast.show {
@@ -912,44 +666,116 @@
             transform: translateX(-50%) translateY(0);
         }
         
-        /* View Toggle */
-        .view-toggle {
-            display: flex;
-            background: #F3F4F6;
+        .toast.success { background: linear-gradient(135deg, #10B981, #059669); }
+        .toast.error { background: linear-gradient(135deg, #EF4444, #DC2626); }
+        .toast.info { background: linear-gradient(135deg, #3B82F6, #2563EB); }
+        
+        /* Header buttons */
+        .header-btn {
+            width: 40px;
+            height: 40px;
             border-radius: 12px;
-            padding: 4px;
-            gap: 4px;
-        }
-        
-        body.dark .view-toggle {
-            background: #374151;
-        }
-        
-        .view-btn {
-            padding: 8px 16px;
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            backdrop-filter: blur(10px);
             border: none;
-            background: transparent;
             cursor: pointer;
-            font-weight: 700;
-            color: #6B7280;
-            transition: all 0.3s;
+            position: relative;
+            transition: all 0.2s;
         }
         
-        .view-btn.active {
+        .header-btn:active {
+            transform: scale(0.9);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            min-width: 20px;
+            height: 20px;
+            background: #EF4444;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #7C3AED;
+            padding: 0 6px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        /* Swipe Actions Hint */
+        .swipe-hint {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #EF4444;
+            font-size: 20px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .notification-item:hover .swipe-hint {
+            opacity: 0.5;
+        }
+        
+        /* Bulk Actions Bar */
+        .bulk-actions {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
             background: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: flex;
+            gap: 16px;
+            z-index: 1002;
+            transition: transform 0.3s;
+        }
+        
+        body.dark .bulk-actions {
+            background: #1E293B;
+        }
+        
+        .bulk-actions.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .bulk-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .bulk-btn.read-all {
+            background: linear-gradient(135deg, #DDD6FE, #C4B5FD);
             color: #7C3AED;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         
-        body.dark .view-btn.active {
-            background: #2D2D3D;
-            color: #A78BFA;
+        .bulk-btn.delete-all {
+            background: #FEE2E2;
+            color: #EF4444;
         }
-        
-        /* Hide scrollbar */
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body>
@@ -973,18 +799,18 @@
 
     <div class="app-container">
         
-        <!-- Header - Reduced padding bottom -->
+        <!-- Header -->
         <header class="main-header">
             <div class="header-pattern"></div>
             
             <div class="flex justify-between items-start relative z-10">
-                <button onclick="toggleMenu()" class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-white backdrop-blur-sm">
-                    <i class="fas fa-bars text-xl"></i>
+                <button onclick="toggleMenu()" class="header-btn">
+                    <i class="fas fa-bars"></i>
                 </button>
                 
-                <button onclick="showNotifications()" class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-white backdrop-blur-sm relative">
-                    <i class="fas fa-bell text-xl"></i>
-                    <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs flex items-center justify-center font-bold border-2 border-white">3</span>
+                <button onclick="showNotifications()" class="header-btn relative">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notification-badge" style="display: none;">0</span>
                 </button>
             </div>
             
@@ -999,17 +825,17 @@
                 </div>
                 
                 <div class="text-white">
-                    <p class="text-sm opacity-80 mb-1">مرحباً بك</p>
-                    <h1 id="user-name" class="text-2xl font-black mb-1">جاري التحميل...</h1>
+                    <p class="text-xs opacity-80 mb-1">مرحباً بك</p>
+                    <h1 id="user-name" class="text-xl font-black mb-1">جاري التحميل...</h1>
                     <div class="level-chip">
-                        <i class="fas fa-crown text-yellow-300"></i>
+                        <i class="fas fa-crown text-yellow-300 text-xs"></i>
                         <span id="level-text">---</span>
                     </div>
                 </div>
             </div>
         </header>
 
-        <!-- Circular Progress - بدون توهج -->
+        <!-- Circular Progress -->
         <div class="progress-section">
             <div class="circular-progress-container">
                 <svg width="0" height="0" style="position:absolute">
@@ -1022,29 +848,29 @@
                 </svg>
                 
                 <div class="circular-progress">
-                    <svg viewBox="0 0 200 200">
-                        <circle class="progress-circle-bg" cx="100" cy="100" r="90"></circle>
-                        <circle id="progress-circle" class="progress-circle" cx="100" cy="100" r="90"></circle>
+                    <svg viewBox="0 0 180 180">
+                        <circle class="progress-circle-bg" cx="90" cy="90" r="80"></circle>
+                        <circle id="progress-circle" class="progress-circle" cx="90" cy="90" r="80"></circle>
                     </svg>
                     <div class="progress-content">
                         <div class="progress-percentage" id="progress-text">0%</div>
-                        <div class="progress-label-text">المستوى الحالي</div>
+                        <div class="text-xs text-gray-400 font-bold mt-1">المستوى الحالي</div>
                     </div>
                 </div>
                 
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-4 font-bold" id="level-description">
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-3 font-bold" id="level-description">
                     ابدأ رحلتك للوصول إلى الامتياز
                 </p>
             </div>
         </div>
 
-        <!-- Stats Row - 2 items only -->
+        <!-- Stats Row -->
         <div class="stats-row">
             <div class="stat-item">
                 <div class="stat-icon purple">
                     <i class="fas fa-wallet"></i>
                 </div>
-                <div class="text-2xl font-black text-gray-800 dark:text-white mb-1" id="wallet-balance">0</div>
+                <div class="text-xl font-black text-gray-800 dark:text-white mb-1" id="wallet-balance">0</div>
                 <div class="text-xs text-gray-500 font-bold">نقطة</div>
             </div>
             
@@ -1052,7 +878,7 @@
                 <div class="stat-icon pink">
                     <i class="fas fa-chart-line"></i>
                 </div>
-                <div class="text-2xl font-black text-purple-600 dark:text-purple-400 mb-1" id="grade-display">0%</div>
+                <div class="text-xl font-black text-purple-600 dark:text-purple-400 mb-1" id="grade-display">0%</div>
                 <div class="text-xs text-gray-500 font-bold">النسبة</div>
             </div>
         </div>
@@ -1060,7 +886,7 @@
         <!-- Quick Actions -->
         <div class="quick-actions">
             <h3 class="section-title">
-                <i class="fas fa-bolt text-yellow-500"></i>
+                <i class="fas fa-bolt text-yellow-500 text-sm"></i>
                 الوصول السريع
             </h3>
             
@@ -1081,7 +907,7 @@
                 
                 <button class="action-btn" onclick="openActivitiesPage()">
                     <div class="action-icon purple">
-                        <i class="fas fa-trophy "></i>
+                        <i class="fas fa-trophy"></i>
                     </div>
                     <span class="action-label">انشطة</span>
                 </button>
@@ -1097,162 +923,153 @@
 
         <!-- Categories -->
         <div class="categories-section">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="section-title mb-0">
-                    <i class="fas fa-th-large text-purple-500"></i>
-                    الأقسام
-                </h3>
-                
-                <div class="view-toggle">
-                    <button class="view-btn active" onclick="switchView('grid', this)">
-                        <i class="fas fa-th-large"></i>
-                    </button>
-                    <button class="view-btn" onclick="switchView('list', this)">
-                        <i class="fas fa-list"></i>
-                    </button>
-                </div>
-            </div>
+            <h3 class="section-title">
+                <i class="fas fa-th-large text-purple-500 text-sm"></i>
+                الأقسام
+            </h3>
             
-            <div id="categories-container" class="categories-grid">
-                <!-- Categories will be populated here -->
+            <div class="categories-grid">
+                <div class="category-card-large" onclick="openCategory('tech')">
+                    <div class="category-icon-large cat-tech">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="category-title">البوت الذكي</div>
+                    <div class="category-count">بوت يوفر لك كل ماتحتاجه</div>
+                </div>
+                
+                <div class="category-card-large" onclick="openCategory('design')">
+                    <div class="category-icon-large cat-design">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div class="category-title">الادوات</div>
+                    <div class="category-count">يتوفر جميع الادوات المفيدة</div>
+                </div>
+                
+                <div class="category-card-large" onclick="openCategory('marketing')">
+                    <div class="category-icon-large cat-marketing">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="category-title">متجر الاكاديمية</div>
+                    <div class="category-count">متجر شامل لكل الطلاب</div>
+                </div>
+                
+                <div class="category-card-large" onclick="openCategory('business')">
+                    <div class="category-icon-large cat-business">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="category-title">الجدول</div>
+                    <div class="category-count">يوفر لكم كل المواعيد</div>
+                </div>
             </div>
         </div>
 
-    <!-- Side Menu - WITHOUT Wallet -->
+    </div>
+
+    <!-- Side Menu -->
     <div class="menu-overlay" id="menu-overlay" onclick="toggleMenu()"></div>
     <div class="side-menu" id="side-menu">
-        <div class="menu-header">
-            <button class="menu-close" onclick="toggleMenu()">
+        <!-- Menu content remains the same -->
+        <div style="padding: 30px 20px; background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%); color: white; border-radius: 0 0 24px 24px;">
+            <button onclick="toggleMenu()" style="position: absolute; top: 16px; right: 16px; width: 36px; height: 36px; background: rgba(255,255,255,0.2); border-radius: 10px; border: none; color: white; cursor: pointer;">
                 <i class="fas fa-times"></i>
             </button>
-            
-            <div class="menu-profile">
-                <div class="menu-avatar">
-                    <img id="menu-avatar" src="https://i.postimg.cc/g0Bm32zB/20260207-052318.png" alt="Profile">
+            <div style="display: flex; align-items: center; gap: 12px; margin-top: 20px;">
+                <div style="width: 50px; height: 50px; border-radius: 16px; border: 2px solid rgba(255,255,255,0.3); overflow: hidden;">
+                    <img id="menu-avatar" src="https://i.postimg.cc/g0Bm32zB/20260207-052318.png" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
-                <div>
-                    <div class="menu-name" id="menu-name">المستخدم</div>
-                </div>
+                <div style="font-size: 18px; font-weight: 800;" id="menu-name">المستخدم</div>
             </div>
         </div>
         
-        <div class="menu-items">
-            
-            <button class="menu-item-btn" onclick="openLearnPage()">
-                <div class="menu-item-icon pink">
-                    <i class="fas fa-heart"></i>
-                </div>
-                <span class="menu-item-text">معلومات مهمة</span>
-                <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
+        <div style="padding: 16px; margin-top: -20px; position: relative; z-index: 10;">
+            <button onclick="openLearnPage()" style="display: flex; align-items: center; gap: 12px; padding: 12px; margin-bottom: 8px; border-radius: 14px; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: none; width: 100%; text-align: right; cursor: pointer;">
+                <div style="width: 40px; height: 40px; border-radius: 12px; background: #FCE7F3; color: #EC4899; display: flex; align-items: center; justify-content: center;"><i class="fas fa-heart"></i></div>
+                <span style="flex: 1; font-weight: 700; font-size: 14px;">معلومات مهمة</span>
+                <i class="fas fa-chevron-left" style="color: #9CA3AF; font-size: 12px;"></i>
             </button>
             
-            <button class="menu-item-btn" onclick="openActivitiesPage()">
-                <div class="menu-item-icon orange">
-                    <i class="fas fa-comments"></i>
-                </div>
-                <span class="menu-item-text">تواصل معنا</span>
-                <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
+            <button onclick="openActivitiesPage()" style="display: flex; align-items: center; gap: 12px; padding: 12px; margin-bottom: 8px; border-radius: 14px; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: none; width: 100%; text-align: right; cursor: pointer;">
+                <div style="width: 40px; height: 40px; border-radius: 12px; background: #FFEDD5; color: #F97316; display: flex; align-items: center; justify-content: center;"><i class="fas fa-comments"></i></div>
+                <span style="flex: 1; font-weight: 700; font-size: 14px;">تواصل معنا</span>
+                <i class="fas fa-chevron-left" style="color: #9CA3AF; font-size: 12px;"></i>
             </button>
                        
-            <button class="menu-item-btn" onclick="openToolsPage()">
-                <div class="menu-item-icon orange">
-                    <i class="fas fa-exclamation-triangle"></i>
-                </div>
-                <span class="menu-item-text">الابلاغ والشكاوي</span>
-                <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
+            <button onclick="openToolsPage()" style="display: flex; align-items: center; gap: 12px; padding: 12px; margin-bottom: 8px; border-radius: 14px; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: none; width: 100%; text-align: right; cursor: pointer;">
+                <div style="width: 40px; height: 40px; border-radius: 12px; background: #FEE2E2; color: #EF4444; display: flex; align-items: center; justify-content: center;"><i class="fas fa-exclamation-triangle"></i></div>
+                <span style="flex: 1; font-weight: 700; font-size: 14px;">الابلاغ والشكاوي</span>
+                <i class="fas fa-chevron-left" style="color: #9CA3AF; font-size: 12px;"></i>
             </button>
             
-            <button class="menu-item-btn" onclick="toggleDarkMode()">
-                <div class="menu-item-icon purple">
-                    <i class="fas fa-moon"></i>
+            <button onclick="toggleDarkMode()" style="display: flex; align-items: center; gap: 12px; padding: 12px; margin-bottom: 8px; border-radius: 14px; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: none; width: 100%; text-align: right; cursor: pointer;">
+                <div style="width: 40px; height: 40px; border-radius: 12px; background: #EDE9FE; color: #7C3AED; display: flex; align-items: center; justify-content: center;"><i class="fas fa-moon"></i></div>
+                <span style="flex: 1; font-weight: 700; font-size: 14px;">الوضع الليلي</span>
+                <div class="toggle-switch" id="menu-toggle-switch" style="width: 44px; height: 24px; background: #E5E7EB; border-radius: 12px; position: relative; cursor: pointer;">
+                    <div style="position: absolute; width: 20px; height: 20px; background: white; border-radius: 50%; top: 2px; right: 2px; transition: transform 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"></div>
                 </div>
-                <span class="menu-item-text">الوضع الليلي</span>
-                <div class="toggle-switch" id="menu-toggle-switch"></div>
             </button>
             
-            <button class="menu-item-btn" onclick="logout()">
-                <div class="menu-item-icon red">
-                    <i class="fas fa-sign-out-alt"></i>
-                </div>
-                <span class="menu-item-text">تسجيل الخروج</span>
+            <button onclick="logout()" style="display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: none; width: 100%; text-align: right; cursor: pointer; color: #EF4444;">
+                <div style="width: 40px; height: 40px; border-radius: 12px; background: #FEE2E2; color: #EF4444; display: flex; align-items: center; justify-content: center;"><i class="fas fa-sign-out-alt"></i></div>
+                <span style="flex: 1; font-weight: 700; font-size: 14px;">تسجيل الخروج</span>
             </button>
         </div>
     </div>
 
-    <!-- AI Modal -->
-    <div class="modal" id="ai-modal">
-        <div class="modal-overlay" onclick="closeModal('ai-modal')"></div>
-        <div class="modal-content" style="height: 80vh;">
-            <div class="modal-handle"></div>
-            
-            <div class="p-6 h-full flex flex-col">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-xl">
-                        <i class="fas fa-robot"></i>
-                    </div>
+    <!-- Enhanced Notifications Panel -->
+    <div class="notifications-panel" id="notifications-panel" onclick="closeNotifications(event)">
+        <div class="notifications-content" onclick="event.stopPropagation()">
+            <div class="notifications-header">
+                <div class="flex justify-between items-center mb-4">
                     <div>
-                        <h2 class="text-xl font-black dark:text-white">المساعد الذكي</h2>
-                        <div class="flex items-center gap-2 text-sm text-green-500">
-                            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                            متصل الآن
-                        </div>
+                        <h2 class="text-2xl font-black">الإشعارات</h2>
+                        <p class="text-sm opacity-80 mt-1" id="notifications-subtitle">جاري التحميل...</p>
                     </div>
-                    <button onclick="closeModal('ai-modal')" class="modal-close-btn light mr-auto">
+                    <button onclick="closeNotifications()" class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center hover:bg-white/30 transition">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
                 
-                <div id="chat-messages" class="flex-1 overflow-y-auto space-y-4 mb-4 hide-scrollbar">
-                    <div class="flex items-start gap-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white">
-                            <i class="fas fa-robot"></i>
-                        </div>
-                        <div class="bg-gray-100 dark:bg-gray-700 rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]">
-                            <p class="text-sm dark:text-white">مرحباً! كيف يمكنني مساعدك اليوم؟</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="flex gap-3">
-                    <input type="text" id="ai-input" class="input-field" placeholder="اكتب رسالتك..." onkeypress="if(event.key==='Enter') sendAIMessage()">
-                    <button onclick="sendAIMessage()" class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 text-white flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-paper-plane"></i>
+                <!-- Filter Tabs -->
+                <div class="flex gap-2 mt-4">
+                    <button onclick="filterNotifications('all')" class="notif-filter active px-4 py-2 rounded-xl bg-white/20 text-white text-sm font-bold hover:bg-white/30 transition" data-filter="all">
+                        الكل
                     </button>
+                    <button onclick="filterNotifications('unread')" class="notif-filter px-4 py-2 rounded-xl bg-white/10 text-white/70 text-sm font-bold hover:bg-white/20 transition" data-filter="unread">
+                        غير مقروء
+                    </button>
+                    <button onclick="filterNotifications('priority')" class="notif-filter px-4 py-2 rounded-xl bg-white/10 text-white/70 text-sm font-bold hover:bg-white/20 transition" data-filter="priority">
+                        عاجل
+                    </button>
+                </div>
+            </div>
+            
+            <div class="notifications-list" id="notifications-list">
+                <div class="empty-state">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>لا توجد إشعارات حالياً</p>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Bulk Actions -->
+    <div class="bulk-actions" id="bulk-actions">
+        <button onclick="markAllAsRead()" class="bulk-btn read-all">
+            <i class="fas fa-check-double"></i>
+            قراءة الكل
+        </button>
+        <button onclick="deleteAllRead()" class="bulk-btn delete-all">
+            <i class="fas fa-trash-alt"></i>
+            حذف المقروء
+        </button>
+    </div>
+
     <!-- Toast -->
     <div class="toast" id="toast">
-        <i class="fas fa-info-circle text-xl"></i>
+        <i class="fas fa-check-circle text-lg"></i>
         <span id="toast-message">رسالة</span>
     </div>
-<script>
-function callAndroid(fn) {
-    if (window.AndroidApp && typeof AndroidApp[fn] === "function") {
-        AndroidApp[fn]();
-    } else {
-        alert("الميزة تعمل من داخل التطبيق فقط");
-    }
-}
 
-/* ===== الوصول السريع ===== */
-function openLearnPage() { callAndroid("openLearn"); }
-function openLessonsPage() { callAndroid("openLessons"); }
-function openActivitiesPage() { callAndroid("openActivities"); }
-function openTestsPage() { callAndroid("openTests"); }
-
-/* ===== الأقسام ===== */
-function openBotPage() { callAndroid("openBot"); }
-function openToolsPage() { callAndroid("openTools"); }
-function openStorePage() { callAndroid("openStore"); }
-function openSchedulePage() { callAndroid("openSchedule"); }
-
-/* ===== القائمة الجانبية ===== */
-function logout() { callAndroid("logout"); }
-</script>
-</script>
     <script>
         // Firebase Config
         const firebaseConfig = {
@@ -1267,10 +1084,13 @@ function logout() { callAndroid("logout"); }
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        const messaging = firebase.messaging();
         
         let currentUserId = window.CURRENT_USER_CODE;
         let userData = null;
-        let previousData = null;
+        let notifications = [];
+        let currentFilter = 'all';
+        let unreadCount = 0;
         
         const levels = [
             { threshold: 0, name: 'ضعيف' },
@@ -1286,35 +1106,26 @@ function logout() { callAndroid("logout"); }
             { threshold: 100, name: 'امتياز' }
         ];
 
-        const categories = [
-            { id: 'tech', name: 'البوت الذكي', count: 'بوت يوفر لك كل ماتحتاجه', icon: 'fa-robot', color: 'cat-tech', decor: 'bg-blue-400' },
-            { id: 'design', name: 'الادوات', count: 'يتوفر جميع الادوات المفيدة', icon: 'fa-tools', color: 'cat-design', decor: 'bg-pink-400' },
-            { id: 'marketing', name: 'متجر الاكاديمية', count: 'متجر شامل لكل الطلاب', icon: 'fa-shopping-cart', color: 'cat-marketing', decor: 'bg-orange-400' },
-            { id: 'business', name: 'الجدول', count: 'يوفر لكم كل المواعيد', icon: 'fa-calendar-day', color: 'cat-business', decor: 'bg-emerald-400' }
-        ];
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            loadUserData();
+            initNotifications();
+            updateLastActive();
+            
+            // Update last active every minute
+            setInterval(updateLastActive, 60000);
+        });
 
+        function updateLastActive() {
+            db.ref(`users/${currentUserId}/lastActive`).set(Date.now());
+        }
+
+        // Theme Management
         function initTheme() {
-    const theme = localStorage.getItem('theme');
-
-    if (theme === 'dark') {
-        document.body.classList.add('dark');
-        updateToggleSwitch(true);
-    } else {
-        document.body.classList.remove('dark');
-        updateToggleSwitch(false);
-    }
-
-    renderCategories('grid');
-}
-
-        function updateToggleSwitch(isDark) {
-            const toggle = document.getElementById('menu-toggle-switch');
-            if (toggle) {
-                if (isDark) {
-                    toggle.classList.add('active');
-                } else {
-                    toggle.classList.remove('active');
-                }
+            const theme = localStorage.getItem('theme');
+            if (theme === 'dark') {
+                document.body.classList.add('dark');
             }
         }
 
@@ -1323,77 +1134,25 @@ function logout() { callAndroid("logout"); }
             if (isDark) {
                 document.body.classList.remove('dark');
                 localStorage.setItem('theme', 'light');
-                updateToggleSwitch(false);
-                showToast('تم تفعيل الوضع الفاتح');
+                showToast('تم تفعيل الوضع الفاتح', 'info');
             } else {
                 document.body.classList.add('dark');
                 localStorage.setItem('theme', 'dark');
-                updateToggleSwitch(true);
-                showToast('تم تفعيل الوضع الليلي');
+                showToast('تم تفعيل الوضع الليلي', 'info');
             }
         }
 
-        function renderCategories(view) {
-            const container = document.getElementById('categories-container');
-            container.className = view === 'grid' ? 'categories-grid' : 'categories-list';
-            
-            container.innerHTML = categories.map(cat => `
-                <div class="category-card-large" onclick="openCategory('${cat.id}')">
-                    <div class="category-decoration ${cat.decor}"></div>
-                    <div class="category-icon-large ${cat.color}">
-                        <i class="fas ${cat.icon}"></i>
-                    </div>
-                    <div class="flex-1">
-                        <div class="category-title">${cat.name}</div>
-                        <div class="category-count">${cat.count}</div>
-                    </div>
-                    <div class="category-arrow">
-                        <i class="fas fa-arrow-left"></i>
-                    </div>
-                </div>
-            `).join('');
-        }
-
+        // User Data Management
         function loadUserData() {
             db.ref('users/' + currentUserId).on('value', (snapshot) => {
-                const newData = snapshot.val();
-                if (newData) {
-                    if (previousData) checkForChanges(previousData, newData);
-                    userData = newData;
-                    previousData = {...newData};
+                const data = snapshot.val();
+                if (data) {
+                    userData = data;
                     updateUI();
                 } else {
                     createDefaultUser();
                 }
             });
-        }
-
-        function checkForChanges(oldData, newData) {
-            const timestamp = Date.now();
-            const oldGrade = parseInt((oldData.grade || '0%').replace('%', ''));
-            const newGrade = parseInt((newData.grade || '0%').replace('%', ''));
-            
-            if (newGrade > oldGrade) {
-                const newLevel = levels.find(l => newGrade >= l.threshold && newGrade < (l.threshold + 10)) || levels[levels.length - 1];
-                db.ref('activities/' + currentUserId + '/act_' + timestamp).set({
-                    type: 'level_up',
-                    title: `ترقية إلى ${newLevel.name}`,
-                    amount: 0,
-                    timestamp: timestamp
-                });
-            }
-            
-            const oldPoints = oldData.points || 0;
-            const newPoints = newData.points || 0;
-            
-            if (newPoints !== oldPoints) {
-                db.ref('activities/' + currentUserId + '/act_' + timestamp + '_pts').set({
-                    type: newPoints > oldPoints ? 'earn' : 'spend',
-                    title: newPoints > oldPoints ? 'إضافة نقاط' : 'استخدام نقاط',
-                    amount: Math.abs(newPoints - oldPoints),
-                    timestamp: timestamp
-                });
-            }
         }
 
         function createDefaultUser() {
@@ -1402,7 +1161,8 @@ function logout() { callAndroid("logout"); }
                 major: 'غير محدد',
                 points: 0,
                 grade: '0%',
-                avatar: 'https://i.postimg.cc/g0Bm32zB/20260207-052318.png'
+                avatar: 'https://i.postimg.cc/g0Bm32zB/20260207-052318.png',
+                lastActive: Date.now()
             };
             db.ref('users/' + currentUserId).set(defaultData);
         }
@@ -1413,7 +1173,6 @@ function logout() { callAndroid("logout"); }
             document.getElementById('user-name').textContent = userData.name || 'مستخدم';
             document.getElementById('menu-name').textContent = userData.name || 'مستخدم';
             
-            // استخدام الصورة الجديدة في جميع الأماكن
             const avatarUrl = userData.avatar || 'https://i.postimg.cc/g0Bm32zB/20260207-052318.png';
             document.getElementById('user-avatar').src = avatarUrl;
             document.getElementById('menu-avatar').src = avatarUrl;
@@ -1433,18 +1192,18 @@ function logout() { callAndroid("logout"); }
             
             document.getElementById('level-text').textContent = currentLevel.name;
             
-            // Update circular progress - بدون توهج
+            // Update circular progress
             const circle = document.getElementById('progress-circle');
-            const radius = 90;
+            const radius = 80;
             const circumference = 2 * Math.PI * radius;
             const offset = circumference - (gradeNum / 100) * circumference;
             circle.style.strokeDashoffset = offset;
+            circle.style.strokeDasharray = circumference;
             document.getElementById('progress-text').textContent = gradeNum + '%';
             
             const nextLevel = levels.find(l => l.threshold > gradeNum);
             if (nextLevel) {
-                document.getElementById('level-description').textContent = 
-                   ` المستوى التالي : ${nextLevel.name}`;
+                document.getElementById('level-description').textContent = `المستوى التالي: ${nextLevel.name}`;
             } else {
                 document.getElementById('level-description').textContent = 'مبروك! وصلت للامتياز 🎉';
             }
@@ -1453,38 +1212,294 @@ function logout() { callAndroid("logout"); }
             document.getElementById('wallet-balance').textContent = points.toLocaleString();
         }
 
-        function sendAIMessage() {
-            const input = document.getElementById('ai-input');
-            const message = input.value.trim();
-            if (!message) return;
+        // ENHANCED Notifications System
+        function initNotifications() {
+            // Subscribe to FCM
+            messaging.requestPermission()
+                .then(() => messaging.getToken())
+                .then(token => {
+                    db.ref(`users/${currentUserId}/fcmToken`).set(token);
+                    return messaging.subscribeToTopic("all");
+                })
+                .catch(err => console.log('Notification permission denied'));
             
-            const container = document.getElementById('chat-messages');
-            container.innerHTML += `
-                <div class="flex items-start gap-3 flex-row-reverse">
-                    <div class="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-white">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="bg-purple-500 text-white rounded-2xl rounded-tl-sm px-4 py-3 max-w-[80%]">
-                        <p class="text-sm">${message}</p>
-                    </div>
-                </div>
-            `;
-            input.value = '';
-            container.scrollTop = container.scrollHeight;
+            // Handle foreground messages
+            messaging.onMessage((payload) => {
+                showToast(payload.notification?.title || 'إشعار جديد', 'info');
+                playNotificationSound();
+                refreshNotifications();
+            });
             
-            setTimeout(() => {
-                container.innerHTML += `
-                    <div class="flex items-start gap-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white">
-                            <i class="fas fa-robot"></i>
+            // Real-time notifications listener
+            setupNotificationsListener();
+        }
+
+        function setupNotificationsListener() {
+            db.ref(`notifications/${currentUserId}`)
+                .orderByChild('timestamp')
+                .limitToLast(50)
+                .on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    notifications = [];
+                    
+                    if (data) {
+                        Object.entries(data).forEach(([id, notif]) => {
+                            if (!notif.deleted) {
+                                notifications.push({ id, ...notif });
+                            }
+                        });
+                        notifications.sort((a, b) => b.timestamp - a.timestamp);
+                    }
+                    
+                    updateNotificationBadge();
+                    renderNotifications();
+                });
+        }
+
+        function updateNotificationBadge() {
+            unreadCount = notifications.filter(n => !n.read).length;
+            const badge = document.getElementById('notification-badge');
+            
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+                badge.style.display = 'flex';
+                
+                // Show bulk actions if there are unread
+                if (unreadCount > 1) {
+                    document.getElementById('bulk-actions').classList.add('show');
+                }
+            } else {
+                badge.style.display = 'none';
+                document.getElementById('bulk-actions').classList.remove('show');
+            }
+            
+            // Update subtitle
+            const subtitle = document.getElementById('notifications-subtitle');
+            if (unreadCount > 0) {
+                subtitle.textContent = `لديك ${unreadCount} إشعار${unreadCount > 1 ? 'ات' : ''} غير مقروءة`;
+            } else {
+                subtitle.textContent = 'جميع الإشعارات مقروءة';
+            }
+        }
+
+        function renderNotifications() {
+            const container = document.getElementById('notifications-list');
+            
+            let filtered = notifications;
+            if (currentFilter === 'unread') {
+                filtered = notifications.filter(n => !n.read);
+            } else if (currentFilter === 'priority') {
+                filtered = notifications.filter(n => n.priority);
+            }
+            
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-bell-slash"></i>
+                        <p>${currentFilter === 'unread' ? 'لا توجد إشعارات غير مقروءة' : 'لا توجد إشعارات حالياً'}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = filtered.map(notif => {
+                const iconClass = getNotificationIcon(notif);
+                const timeAgo = formatTimeAgo(notif.timestamp);
+                
+                return `
+                    <div class="notification-item ${notif.read ? '' : 'unread'}" id="notif-${notif.id}">
+                        ${notif.priority ? '<span class="notification-priority">عاجل</span>' : ''}
+                        <i class="fas fa-chevron-left swipe-hint"></i>
+                        
+                        <div class="notification-icon ${iconClass}">
+                            <i class="fas ${getNotificationIconName(notif)}"></i>
                         </div>
-                        <div class="bg-gray-100 dark:bg-gray-700 rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]">
-                            <p class="text-sm dark:text-white">تم استلام رسالتك، سأقوم بالرد عليك قريباً.</p>
+                        
+                        <div class="notification-title">${escapeHtml(notif.title)}</div>
+                        <div class="notification-body">${escapeHtml(notif.body)}</div>
+                        
+                        <div class="notification-meta">
+                            <span><i class="far fa-clock ml-1"></i>${timeAgo}</span>
+                            <span>${notif.read ? '<i class="fas fa-check-double text-green-500 ml-1"></i>مقروء' : '<i class="fas fa-eye-slash text-pink-500 ml-1"></i>جديد'}</span>
+                        </div>
+                        
+                        <div class="notification-actions">
+                            ${!notif.read ? `
+                                <button onclick="markAsRead('${notif.id}')" class="notification-btn read">
+                                    <i class="fas fa-check"></i>
+                                    تحديد كمقروء
+                                </button>
+                            ` : ''}
+                            <button onclick="deleteNotification('${notif.id}')" class="notification-btn delete">
+                                <i class="fas fa-trash-alt"></i>
+                                حذف
+                            </button>
                         </div>
                     </div>
                 `;
-                container.scrollTop = container.scrollHeight;
-            }, 1000);
+            }).join('');
+        }
+
+        function getNotificationIcon(notif) {
+            if (notif.priority) return 'urgent';
+            if (notif.title?.includes('ترحيب')) return 'success';
+            if (notif.title?.includes('تحديث')) return 'info';
+            if (notif.title?.includes('تنبيه')) return 'warning';
+            return 'info';
+        }
+
+        function getNotificationIconName(notif) {
+            if (notif.priority) return 'exclamation';
+            if (notif.title?.includes('ترحيب')) return 'hand-sparkles';
+            if (notif.title?.includes('تحديث')) return 'info-circle';
+            if (notif.title?.includes('تنبيه')) return 'exclamation-triangle';
+            return 'bell';
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function formatTimeAgo(timestamp) {
+            const seconds = Math.floor((Date.now() - timestamp) / 1000);
+            
+            if (seconds < 60) return 'الآن';
+            if (seconds < 3600) return `${Math.floor(seconds / 60)} دقيقة`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)} ساعة`;
+            if (seconds < 604800) return `${Math.floor(seconds / 86400)} يوم`;
+            return new Date(timestamp).toLocaleDateString('ar-SA');
+        }
+
+        // Notification Actions
+        function markAsRead(notifId) {
+            const element = document.getElementById(`notif-${notifId}`);
+            if (element) element.classList.add('reading');
+            
+            const updates = {
+                read: true,
+                readAt: Date.now()
+            };
+            
+            // Check if auto-delete is enabled
+            const notif = notifications.find(n => n.id === notifId);
+            if (notif?.autoDelete) {
+                updates.deleted = true;
+                updates.deletedAt = Date.now();
+                updates.deletedReason = 'auto_after_read';
+            }
+            
+            db.ref(`notifications/${currentUserId}/${notifId}`).update(updates)
+                .then(() => {
+                    if (notif?.autoDelete) {
+                        showToast('تمت القراءة والحذف التلقائي', 'success');
+                    } else {
+                        showToast('تم التحديد كمقروء', 'success');
+                    }
+                })
+                .catch(() => showToast('حدث خطأ', 'error'));
+        }
+
+        function deleteNotification(notifId) {
+            if (!confirm('هل أنت متأكد من حذف هذا الإشعار؟')) return;
+            
+            const element = document.getElementById(`notif-${notifId}`);
+            if (element) element.classList.add('deleting');
+            
+            // Soft delete
+            db.ref(`notifications/${currentUserId}/${notifId}`).update({
+                deleted: true,
+                deletedAt: Date.now(),
+                deletedBy: 'user'
+            })
+            .then(() => showToast('تم الحذف بنجاح', 'success'))
+            .catch(() => showToast('حدث خطأ', 'error'));
+        }
+
+        function markAllAsRead() {
+            const unreadNotifs = notifications.filter(n => !n.read);
+            if (unreadNotifs.length === 0) return;
+            
+            const updates = {};
+            unreadNotifs.forEach(notif => {
+                const updateData = {
+                    read: true,
+                    readAt: Date.now()
+                };
+                
+                if (notif.autoDelete) {
+                    updateData.deleted = true;
+                    updateData.deletedAt = Date.now();
+                    updateData.deletedReason = 'auto_after_read';
+                }
+                
+                updates[`notifications/${currentUserId}/${notif.id}`] = updateData;
+            });
+            
+            db.ref().update(updates)
+                .then(() => {
+                    showToast(`تمت قراءة ${unreadNotifs.length} إشعار`, 'success');
+                    document.getElementById('bulk-actions').classList.remove('show');
+                })
+                .catch(() => showToast('حدث خطأ', 'error'));
+        }
+
+        function deleteAllRead() {
+            const readNotifs = notifications.filter(n => n.read && !n.deleted);
+            if (readNotifs.length === 0) {
+                showToast('لا توجد إشعارات مقروءة للحذف', 'info');
+                return;
+            }
+            
+            if (!confirm(`حذف ${readNotifs.length} إشعار مقروء؟`)) return;
+            
+            const updates = {};
+            readNotifs.forEach(notif => {
+                updates[`notifications/${currentUserId}/${notif.id}/deleted`] = true;
+                updates[`notifications/${currentUserId}/${notif.id}/deletedAt`] = Date.now();
+                updates[`notifications/${currentUserId}/${notif.id}/deletedBy`] = 'user_bulk';
+            });
+            
+            db.ref().update(updates)
+                .then(() => showToast('تم حذف المقروء بنجاح', 'success'))
+                .catch(() => showToast('حدث خطأ', 'error'));
+        }
+
+        function filterNotifications(type) {
+            currentFilter = type;
+            
+            // Update UI
+            document.querySelectorAll('.notif-filter').forEach(btn => {
+                if (btn.dataset.filter === type) {
+                    btn.classList.add('active', 'bg-white/20');
+                    btn.classList.remove('bg-white/10', 'text-white/70');
+                } else {
+                    btn.classList.remove('active', 'bg-white/20');
+                    btn.classList.add('bg-white/10', 'text-white/70');
+                }
+            });
+            
+            renderNotifications();
+        }
+
+        function refreshNotifications() {
+            // Force refresh
+            const notifRef = db.ref(`notifications/${currentUserId}`);
+            notifRef.once('value');
+        }
+
+        // UI Functions
+        function showNotifications() {
+            document.getElementById('notifications-panel').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeNotifications(event) {
+            if (!event || event.target.id === 'notifications-panel') {
+                document.getElementById('notifications-panel').classList.remove('active');
+                document.body.style.overflow = '';
+            }
         }
 
         function toggleMenu() {
@@ -1492,96 +1507,113 @@ function logout() { callAndroid("logout"); }
             document.getElementById('menu-overlay').classList.toggle('active');
         }
 
-        function switchView(view, btn) {
-            document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderCategories(view);
-        }
-
-        function openModal(id) {
-            document.getElementById(id).classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        function openAIAssistant() { openModal('ai-modal'); }
-        
-        function openTool(tool) {
-            const names = { maintenance: 'التعليمات', store: 'الدروس', ai: 'الأنشطة', calendar: 'الاختبارات' };
-            showToast(names[tool] || tool);
-        }
-
-function openCategory(cat) {
-
-    if (!window.AndroidApp) {
-        alert("الميزة تعمل من داخل التطبيق فقط");
-        return;
-    }
-
-    switch (cat) {
-        case 'tech':
-            AndroidApp.openBot();
-            break;
-
-        case 'design':
-            AndroidApp.openTools();
-            break;
-
-        case 'marketing':
-            AndroidApp.openStore();
-            break;
-
-        case 'business':
-            AndroidApp.openSchedule();
-            break;
-    }
-}
-
-        function showNotifications() { showToast('لديك 3 إشعارات جديدة'); }
-
-       
-function logout() {
-    if (window.AndroidApp && AndroidApp.logout) {
-        AndroidApp.logout();
-    } else {
-        alert("الميزة تعمل من داخل التطبيق فقط");
-    }
-}
-
-        function showToast(message) {
+        function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
+            const icon = toast.querySelector('i');
+            
+            toast.className = `toast ${type}`;
             document.getElementById('toast-message').textContent = message;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
+            
+            if (type === 'success') icon.className = 'fas fa-check-circle text-lg';
+            else if (type === 'error') icon.className = 'fas fa-exclamation-circle text-lg';
+            else icon.className = 'fas fa-info-circle text-lg';
+            
+            toast.classList.remove('hidden');
+            toast.classList.add('show', 'flex');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.classList.add('hidden'), 300);
+            }, 3000);
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            initTheme();
-            loadUserData();
+        function playNotificationSound() {
+            // Simple beep sound using Web Audio API
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 800;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.5);
+            } catch (e) {
+                console.log('Audio play failed');
+            }
+        }
+
+        // Android Bridge Functions
+        function callAndroid(fn) {
+            if (window.AndroidApp && typeof AndroidApp[fn] === "function") {
+                AndroidApp[fn]();
+            } else {
+                showToast("الميزة تعمل من داخل التطبيق فقط", 'info');
+            }
+        }
+
+        function openLearnPage() { callAndroid("openLearn"); }
+        function openLessonsPage() { callAndroid("openLessons"); }
+        function openActivitiesPage() { callAndroid("openActivities"); }
+        function openTestsPage() { callAndroid("openTests"); }
+        function openToolsPage() { callAndroid("openTools"); }
+
+        function openCategory(cat) {
+            if (!window.AndroidApp) {
+                showToast("الميزة تعمل من داخل التطبيق فقط", 'info');
+                return;
+            }
+            switch (cat) {
+                case 'tech': AndroidApp.openBot(); break;
+                case 'design': AndroidApp.openTools(); break;
+                case 'marketing': AndroidApp.openStore(); break;
+                case 'business': AndroidApp.openSchedule(); break;
+            }
+        }
+
+        function logout() {
+            if (window.AndroidApp && AndroidApp.logout) {
+                AndroidApp.logout();
+            } else {
+                showToast("الميزة تعمل من داخل التطبيق فقط", 'info');
+            }
+        }
+
+        // Swipe to delete functionality
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
         });
 
-        // Test functions
-        window.updateGrade = (g) => db.ref('users/' + currentUserId).update({ grade: g + '%' });
-        window.addPoints = (amount) => {
-            const current = userData.points || 0;
-            db.ref('users/' + currentUserId).update({ points: current + amount });
-        };
-    </script>
-        <script>
-/* ===== الوصول السريع ===== */
-function openLessonsPage() { AndroidApp.openLessons(); }
-function openActivitiesPage() { AndroidApp.openActivities(); }
-function openTestsPage() { AndroidApp.openTests(); }
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
 
-/* ===== الأقسام ===== */
-function openBotPage() { AndroidApp.openBot(); }
-function openToolsPage() { AndroidApp.openTools(); }
-function openStorePage() { AndroidApp.openStore(); }
-function openSchedulePage() { AndroidApp.openSchedule(); }
-</script>
+        function handleSwipe() {
+            const swipeThreshold = 100;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                const element = document.elementFromPoint(touchEndX, window.innerHeight / 2);
+                const notifItem = element?.closest('.notification-item');
+                
+                if (notifItem && diff > 0) {
+                    // Swipe left - delete
+                    const notifId = notifItem.id.replace('notif-', '');
+                    deleteNotification(notifId);
+                }
+            }
+        }
+    </script>
 </body>
 </html>
