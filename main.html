@@ -1072,14 +1072,14 @@
                     <span class="action-label">التعليمات</span>
                 </button>
                 
-                <button class="action-btn" onclick="openTool('store')">
+                <button class="action-btn" onclick="openLessonsPage()">
                     <div class="action-icon green">
                         <i class="fas fa-graduation-cap"></i>
                     </div>
                     <span class="action-label">دروس</span>
                 </button>
                 
-                <button class="action-btn" onclick="openTool('ai')">
+                <button class="action-btn" onclick="openActivitiesPage()">
                     <div class="action-icon purple">
                         <i class="fas fa-trophy "></i>
                     </div>
@@ -1494,10 +1494,31 @@ function openLearnPage() {
             showToast(names[tool] || tool);
         }
 
-        function openCategory(cat) {
-            const names = { tech: 'البوت الذكي', design: 'الأدوات', marketing: 'متجر الأكاديمية', business: 'الجدول' };
-            showToast(names[cat] || cat);
-        }
+function openCategory(cat) {
+
+    if (!window.AndroidApp) {
+        alert("الميزة تعمل من داخل التطبيق فقط");
+        return;
+    }
+
+    switch (cat) {
+        case 'tech':
+            AndroidApp.openBot();
+            break;
+
+        case 'design':
+            AndroidApp.openTools();
+            break;
+
+        case 'marketing':
+            AndroidApp.openStore();
+            break;
+
+        case 'business':
+            AndroidApp.openSchedule();
+            break;
+    }
+}
 
         function showNotifications() { showToast('لديك 3 إشعارات جديدة'); }
 
@@ -1525,5 +1546,17 @@ function openLearnPage() {
             db.ref('users/' + currentUserId).update({ points: current + amount });
         };
     </script>
+        <script>
+/* ===== الوصول السريع ===== */
+function openLessonsPage() { AndroidApp.openLessons(); }
+function openActivitiesPage() { AndroidApp.openActivities(); }
+function openTestsPage() { AndroidApp.openTests(); }
+
+/* ===== الأقسام ===== */
+function openBotPage() { AndroidApp.openBot(); }
+function openToolsPage() { AndroidApp.openTools(); }
+function openStorePage() { AndroidApp.openStore(); }
+function openSchedulePage() { AndroidApp.openSchedule(); }
+</script>
 </body>
 </html>
