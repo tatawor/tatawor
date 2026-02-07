@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#0f172a">
+    <meta name="theme-color" content="#7C3AED">
     <title>منصة المتخصصين</title>
     
     <!-- Firebase SDK -->
@@ -21,12 +21,11 @@
                 extend: {
                     fontFamily: { cairo: ['Cairo', 'sans-serif'] },
                     colors: {
-                        primary: '#6366f1',
-                        secondary: '#8b5cf6',
-                        accent: '#f59e0b',
-                        dark: '#0f172a',
-                        darker: '#020617',
-                        surface: '#1e293b',
+                        primary: '#7C3AED',
+                        secondary: '#EC4899',
+                        accent: '#F59E0B',
+                        dark: '#1E1B4B',
+                        surface: '#FFFFFF',
                     }
                 }
             }
@@ -38,374 +37,541 @@
         
         body {
             font-family: 'Cairo', sans-serif;
-            background: #0f172a;
-            color: #f8fafc;
+            background: #F3F4F6;
+            color: #1F2937;
             overflow-x: hidden;
+        }
+        
+        body.dark {
+            background: #0F0F1A;
+            color: #F9FAFB;
+        }
+        
+        /* Main Container */
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
             min-height: 100vh;
+            position: relative;
+            background: linear-gradient(180deg, #EDE9FE 0%, #F3F4F6 100%);
         }
         
-        /* Light Theme */
-        body.light {
-            background: #f8fafc;
-            color: #1e293b;
-        }
-        
-        /* Animated Background Mesh */
-        .mesh-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
-        
-        .mesh-bg::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            top: -50%;
-            left: -50%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.2) 0%, transparent 40%);
-            animation: meshMove 20s ease-in-out infinite;
-        }
-        
-        body.light .mesh-bg::before {
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.1) 0%, transparent 40%);
-        }
-        
-        @keyframes meshMove {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(30px, -30px) rotate(120deg); }
-            66% { transform: translate(-20px, 20px) rotate(240deg); }
-        }
-        
-        /* Floating Orbs */
-        .orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.4;
-            z-index: -1;
-            animation: floatOrb 15s ease-in-out infinite;
-        }
-        
-        .orb-1 {
-            width: 400px;
-            height: 400px;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            top: -100px;
-            right: -100px;
-            animation-delay: 0s;
-        }
-        
-        .orb-2 {
-            width: 300px;
-            height: 300px;
-            background: linear-gradient(135deg, #ec4899, #f43f5e);
-            bottom: 10%;
-            left: -100px;
-            animation-delay: -5s;
-        }
-        
-        .orb-3 {
-            width: 250px;
-            height: 250px;
-            background: linear-gradient(135deg, #06b6d4, #3b82f6);
-            top: 40%;
-            left: 20%;
-            animation-delay: -10s;
-        }
-        
-        body.light .orb {
-            opacity: 0.2;
-        }
-        
-        @keyframes floatOrb {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(30px, -30px) scale(1.1); }
-        }
-        
-        /* Glass Card */
-        .glass-card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-        
-        body.light .glass-card {
-            background: rgba(255, 255, 255, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+        body.dark .app-container {
+            background: linear-gradient(180deg, #1E1B4B 0%, #0F0F1A 100%);
         }
         
         /* Header */
-        .app-header {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        body.light .app-header {
-            background: rgba(255, 255, 255, 0.8);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        }
-        
-        /* Profile Section */
-        .profile-section {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        body.light .profile-section {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
-            border: 1px solid rgba(99, 102, 241, 0.2);
-        }
-        
-        .profile-section::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-            opacity: 0.3;
-        }
-        
-        /* Avatar Ring */
-        .avatar-ring {
-            position: relative;
-            width: 120px;
-            height: 120px;
-        }
-        
-        .avatar-ring::before {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #6366f1, #ec4899, #8b5cf6);
-            animation: rotateRing 3s linear infinite;
-        }
-        
-        .avatar-ring::after {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #6366f1, #ec4899, #8b5cf6);
-            filter: blur(10px);
-            opacity: 0.5;
-        }
-        
-        @keyframes rotateRing {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .avatar-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 4px solid #0f172a;
-            z-index: 1;
-        }
-        
-        body.light .avatar-inner {
-            border-color: #f8fafc;
-        }
-        
-        /* Level Badge */
-        .level-badge {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3));
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 14px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
-        }
-        
-        /* Circular Progress */
-        .circular-progress {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            margin: 0 auto;
-        }
-        
-        .circular-progress svg {
-            transform: rotate(-90deg);
-            width: 100%;
-            height: 100%;
-        }
-        
-        .progress-circle-bg {
-            fill: none;
-            stroke: rgba(255, 255, 255, 0.1);
-            stroke-width: 12;
-        }
-        
-        body.light .progress-circle-bg {
-            stroke: rgba(0, 0, 0, 0.05);
-        }
-        
-        .progress-circle {
-            fill: none;
-            stroke: url(#gradient);
-            stroke-width: 12;
-            stroke-linecap: round;
-            stroke-dasharray: 565.48;
-            stroke-dashoffset: 565.48;
-            transition: stroke-dashoffset 1.5s ease-in-out;
-            filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.5));
-        }
-        
-        .progress-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-        }
-        
-        .progress-percentage {
-            font-size: 48px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #fff, #a5b4fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        body.light .progress-percentage {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            -webkit-background-clip: text;
-        }
-        
-        /* Stats Cards */
-        .stat-box {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
+        .main-header {
+            background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+            border-radius: 0 0 40px 40px;
             padding: 20px;
-            transition: all 0.3s ease;
-        }
-        
-        body.light .stat-box {
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-        
-        .stat-box:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-        
-        /* Quick Actions */
-        .quick-action-btn {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 20px;
-            transition: all 0.3s ease;
+            padding-top: 60px;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.3);
         }
         
-        .quick-action-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
+        body.dark .main-header {
+            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.2);
         }
         
-        .quick-action-btn:hover::before {
-            left: 100%;
-        }
-        
-        .quick-action-btn:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
-            border-color: rgba(99, 102, 241, 0.5);
-        }
-        
-        /* Category Cards */
-        .category-card {
-            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 24px;
-            overflow: hidden;
-            position: relative;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        body.light .category-card {
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-        
-        .category-card::before {
-            content: '';
+        .header-pattern {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #6366f1, #ec4899);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
+            bottom: 0;
+            opacity: 0.1;
+            background-image: radial-gradient(circle at 20% 50%, white 2px, transparent 2px),
+                              radial-gradient(circle at 80% 30%, white 1px, transparent 1px);
+            background-size: 40px 40px, 30px 30px;
         }
         
-        .category-card:hover::before {
-            transform: scaleX(1);
+        /* Profile Section in Header */
+        .header-profile {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+            z-index: 1;
         }
         
-        .category-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+        .avatar-container {
+            position: relative;
+            width: 70px;
+            height: 70px;
         }
         
-        .category-icon {
-            width: 60px;
-            height: 60px;
+        .avatar-ring {
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FCD34D, #F59E0B, #EF4444);
+            padding: 3px;
+        }
+        
+        .avatar-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid white;
+            background: white;
+        }
+        
+        body.dark .avatar-inner {
+            border-color: #1E1B4B;
+        }
+        
+        .online-badge {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 16px;
+            height: 16px;
+            background: #10B981;
+            border: 3px solid white;
+            border-radius: 50%;
+        }
+        
+        body.dark .online-badge {
+            border-color: #1E1B4B;
+        }
+        
+        /* Level Badge */
+        .level-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Circular Progress Card */
+        .progress-card {
+            background: white;
+            border-radius: 30px;
+            padding: 24px;
+            margin: -30px 20px 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+        
+        body.dark .progress-card {
+            background: #1E1E2E;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .circular-chart {
+            display: block;
+            margin: 0 auto;
+            max-width: 200px;
+            max-height: 200px;
+        }
+        
+        .circle-bg {
+            fill: none;
+            stroke: #E5E7EB;
+            stroke-width: 3.8;
+        }
+        
+        body.dark .circle-bg {
+            stroke: #374151;
+        }
+        
+        .circle {
+            fill: none;
+            stroke-width: 3.8;
+            stroke-linecap: round;
+            animation: progress 1s ease-out forwards;
+        }
+        
+        @keyframes progress {
+            0% { stroke-dasharray: 0 100; }
+        }
+        
+        .percentage {
+            fill: #7C3AED;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 900;
+            font-size: 0.5em;
+            text-anchor: middle;
+        }
+        
+        body.dark .percentage {
+            fill: #A78BFA;
+        }
+        
+        .progress-label {
+            fill: #9CA3AF;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.2em;
+            text-anchor: middle;
+        }
+        
+        /* Stats Row */
+        .stats-row {
+            display: flex;
+            gap: 12px;
+            margin: 0 20px 20px;
+        }
+        
+        .stat-item {
+            flex: 1;
+            background: white;
+            border-radius: 24px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        body.dark .stat-item {
+            background: #1E1E2E;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .stat-item:active {
+            transform: scale(0.95);
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
             border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin: 0 auto 12px;
             font-size: 24px;
-            position: relative;
-            overflow: hidden;
         }
         
-        .category-icon::after {
-            content: '';
+        .stat-icon.purple {
+            background: linear-gradient(135deg, #DDD6FE 0%, #C4B5FD 100%);
+            color: #7C3AED;
+        }
+        
+        .stat-icon.pink {
+            background: linear-gradient(135deg, #FCE7F3 0%, #FBCFE8 100%);
+            color: #EC4899;
+        }
+        
+        .stat-icon.orange {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            color: #F59E0B;
+        }
+        
+        /* Quick Actions Grid */
+        .quick-actions {
+            margin: 0 20px 20px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        
+        .action-btn {
+            background: white;
+            border-radius: 20px;
+            padding: 16px 8px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        body.dark .action-btn {
+            background: #1E1E2E;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .action-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-size: 20px;
+            color: white;
+        }
+        
+        .action-icon.blue { background: linear-gradient(135deg, #60A5FA, #3B82F6); }
+        .action-icon.green { background: linear-gradient(135deg, #34D399, #10B981); }
+        .action-icon.purple { background: linear-gradient(135deg, #A78BFA, #8B5CF6); }
+        .action-icon.orange { background: linear-gradient(135deg, #FBBF24, #F59E0B); }
+        
+        .action-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #6B7280;
+        }
+        
+        body.dark .action-label {
+            color: #9CA3AF;
+        }
+        
+        /* Categories Section */
+        .categories-section {
+            margin: 0 20px 20px;
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        
+        .category-card-large {
+            background: white;
+            border-radius: 24px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        body.dark .category-card-large {
+            background: #1E1E2E;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .category-card-large:active {
+            transform: scale(0.98);
+        }
+        
+        .category-decoration {
             position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.3));
+            top: -20px;
+            left: -20px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            opacity: 0.2;
+        }
+        
+        .category-icon-large {
+            width: 56px;
+            height: 56px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cat-tech { background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%); color: #2563EB; }
+        .cat-design { background: linear-gradient(135deg, #FCE7F3 0%, #FBCFE8 100%); color: #DB2777; }
+        .cat-marketing { background: linear-gradient(135deg, #FFEDD5 0%, #FED7AA 100%); color: #EA580C; }
+        .cat-business { background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%); color: #059669; }
+        
+        .category-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        
+        .category-count {
+            font-size: 13px;
+            color: #9CA3AF;
+            font-weight: 600;
+        }
+        
+        .category-arrow {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 36px;
+            height: 36px;
+            background: #F3F4F6;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6B7280;
+            transition: all 0.3s;
+        }
+        
+        body.dark .category-arrow {
+            background: #374151;
+            color: #9CA3AF;
+        }
+        
+        .category-card-large:hover .category-arrow {
+            background: #7C3AED;
+            color: white;
+            transform: translateX(-5px);
+        }
+        
+        /* Activities Section */
+        .activities-section {
+            margin: 0 20px 100px;
+        }
+        
+        .activity-list {
+            background: white;
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        body.dark .activity-list {
+            background: #1E1E2E;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid #F3F4F6;
+        }
+        
+        body.dark .activity-item {
+            border-bottom-color: #374151;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
+        .activity-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .activity-icon.gold {
+            background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+            color: #D97706;
+        }
+        
+        .activity-icon.green {
+            background: linear-gradient(135deg, #D1FAE5, #A7F3D0);
+            color: #059669;
+        }
+        
+        .activity-icon.red {
+            background: linear-gradient(135deg, #FEE2E2, #FECACA);
+            color: #DC2626;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        
+        .activity-time {
+            font-size: 13px;
+            color: #9CA3AF;
+        }
+        
+        .activity-amount {
+            font-weight: 800;
+            font-size: 16px;
+        }
+        
+        .amount-positive { color: #059669; }
+        .amount-negative { color: #DC2626; }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 440px;
+            background: white;
+            border-radius: 30px;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            z-index: 100;
+        }
+        
+        body.dark .bottom-nav {
+            background: #1E1E2E;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            border-radius: 16px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: #9CA3AF;
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(135deg, #DDD6FE 0%, #E9D5FF 100%);
+            color: #7C3AED;
+        }
+        
+        body.dark .nav-item.active {
+            background: rgba(124, 58, 237, 0.2);
+        }
+        
+        .nav-item i {
+            font-size: 20px;
+        }
+        
+        .nav-item span {
+            font-size: 11px;
+            font-weight: 700;
         }
         
         /* Side Menu */
@@ -413,19 +579,19 @@
             position: fixed;
             top: 0;
             right: 0;
-            width: 320px;
+            width: 300px;
             height: 100vh;
-            background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%);
+            background: white;
             z-index: 1000;
             transform: translateX(100%);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: -20px 0 60px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.1);
             overflow-y: auto;
         }
         
-        body.light .side-menu {
-            background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
-            box-shadow: -20px 0 60px rgba(0, 0, 0, 0.1);
+        body.dark .side-menu {
+            background: #1E1E2E;
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.3);
         }
         
         .side-menu.active {
@@ -435,12 +601,12 @@
         .menu-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
             z-index: 999;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
         
         .menu-overlay.active {
@@ -449,75 +615,118 @@
         }
         
         .menu-header {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3));
-            padding: 40px 24px;
+            background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+            padding: 40px 24px 80px;
             position: relative;
-            overflow: hidden;
+            border-radius: 0 0 30px 30px;
         }
         
-        .menu-header::before {
-            content: '';
+        .menu-close {
             position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 15px 15px;
-        }
-        
-        .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 16px 24px;
-            margin: 4px 16px;
-            border-radius: 16px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .menu-item::before {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: linear-gradient(180deg, #6366f1, #ec4899);
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
-        }
-        
-        .menu-item:hover::before,
-        .menu-item.active::before {
-            transform: scaleY(1);
-        }
-        
-        .menu-item:hover,
-        .menu-item.active {
-            background: rgba(99, 102, 241, 0.1);
-        }
-        
-        .menu-icon {
-            width: 48px;
-            height: 48px;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .menu-profile {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: white;
+        }
+        
+        .menu-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+        }
+        
+        .menu-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .menu-name {
             font-size: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 800;
         }
         
-        body.light .menu-icon {
-            background: rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(0, 0, 0, 0.05);
+        .menu-email {
+            font-size: 13px;
+            opacity: 0.8;
         }
         
-        /* Modal */
+        .menu-items {
+            padding: 20px;
+            margin-top: -40px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .menu-item-btn {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            margin-bottom: 8px;
+            border-radius: 16px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border: none;
+            width: 100%;
+            text-align: right;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        body.dark .menu-item-btn {
+            background: #2D2D3D;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+        
+        .menu-item-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .menu-item-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .menu-item-icon.purple { background: #EDE9FE; color: #7C3AED; }
+        .menu-item-icon.pink { background: #FCE7F3; color: #EC4899; }
+        .menu-item-icon.blue { background: #DBEAFE; color: #3B82F6; }
+        .menu-item-icon.orange { background: #FFEDD5; color: #F97316; }
+        .menu-item-icon.red { background: #FEE2E2; color: #EF4444; }
+        
+        .menu-item-text {
+            flex: 1;
+            font-weight: 700;
+        }
+        
+        .menu-item-arrow {
+            color: #9CA3AF;
+        }
+        
+        /* Modals */
         .modal {
             position: fixed;
             inset: 0;
@@ -534,26 +743,24 @@
         .modal-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
         }
         
         .modal-content {
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            background: white;
             border-radius: 40px 40px 0 0;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
             transform: translateY(100%);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             z-index: 1;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        body.light .modal-content {
-            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        body.dark .modal-content {
+            background: #1E1E2E;
         }
         
         .modal.active .modal-content {
@@ -563,36 +770,98 @@
         .modal-handle {
             width: 40px;
             height: 4px;
-            background: rgba(255, 255, 255, 0.2);
+            background: #E5E7EB;
             border-radius: 2px;
             margin: 12px auto;
         }
         
-        body.light .modal-handle {
-            background: rgba(0, 0, 0, 0.2);
+        body.dark .modal-handle {
+            background: #374151;
         }
         
-        /* Activity List */
-        .activity-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
+        /* Wallet Card in Modal */
+        .wallet-card {
+            background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+            border-radius: 24px;
+            padding: 30px;
+            margin: 20px;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .wallet-pattern {
+            position: absolute;
+            inset: 0;
+            opacity: 0.1;
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.5) 35px, rgba(255,255,255,.5) 70px);
+        }
+        
+        .wallet-balance {
+            font-size: 48px;
+            font-weight: 900;
+            margin: 10px 0;
+        }
+        
+        /* Form Elements */
+        .input-group {
+            margin-bottom: 16px;
+        }
+        
+        .input-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #6B7280;
+        }
+        
+        body.dark .input-label {
+            color: #9CA3AF;
+        }
+        
+        .input-field {
+            width: 100%;
             padding: 16px;
-            background: rgba(255, 255, 255, 0.03);
             border-radius: 16px;
-            margin-bottom: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
+            border: 2px solid #E5E7EB;
+            background: #F9FAFB;
+            font-family: 'Cairo', sans-serif;
+            font-size: 16px;
+            transition: all 0.3s;
         }
         
-        body.light .activity-item {
-            background: rgba(0, 0, 0, 0.02);
-            border: 1px solid rgba(0, 0, 0, 0.05);
+        body.dark .input-field {
+            background: #2D2D3D;
+            border-color: #374151;
+            color: white;
         }
         
-        .activity-item:hover {
-            background: rgba(99, 102, 241, 0.1);
-            transform: translateX(-5px);
+        .input-field:focus {
+            outline: none;
+            border-color: #7C3AED;
+            background: white;
+        }
+        
+        .btn-primary {
+            width: 100%;
+            padding: 18px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+            color: white;
+            font-family: 'Cairo', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+        }
+        
+        .btn-primary:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 10px rgba(124, 58, 237, 0.3);
         }
         
         /* Toast */
@@ -600,16 +869,16 @@
             position: fixed;
             top: 100px;
             left: 50%;
-            transform: translateX(-50%) translateY(-20px);
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            transform: translateX(-50%) translateY(-100px);
+            background: #1F2937;
             color: white;
             padding: 16px 24px;
             border-radius: 16px;
             font-weight: 700;
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
             z-index: 2000;
             opacity: 0;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -620,89 +889,49 @@
             transform: translateX(-50%) translateY(0);
         }
         
-        /* Toggle Switch */
-        .toggle-switch {
-            width: 56px;
-            height: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            position: relative;
+        /* View Toggle */
+        .view-toggle {
+            display: flex;
+            background: #F3F4F6;
+            border-radius: 12px;
+            padding: 4px;
+            gap: 4px;
+        }
+        
+        body.dark .view-toggle {
+            background: #374151;
+        }
+        
+        .view-btn {
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: none;
+            background: transparent;
             cursor: pointer;
-            transition: background 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-weight: 700;
+            color: #6B7280;
+            transition: all 0.3s;
         }
         
-        body.light .toggle-switch {
-            background: rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-        }
-        
-        .toggle-switch.active {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-        }
-        
-        .toggle-switch::after {
-            content: '';
-            position: absolute;
-            width: 24px;
-            height: 24px;
+        .view-btn.active {
             background: white;
-            border-radius: 50%;
-            top: 2px;
-            right: 2px;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            color: #7C3AED;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         
-        .toggle-switch.active::after {
-            transform: translateX(-26px);
-        }
-        
-        /* Gradient Text */
-        .gradient-text {
-            background: linear-gradient(135deg, #6366f1, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        body.dark .view-btn.active {
+            background: #2D2D3D;
+            color: #A78BFA;
         }
         
         /* Hide scrollbar */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Level Colors */
-        .level-0 { color: #f87171; }
-        .level-10 { color: #fbbf24; }
-        .level-20 { color: #facc15; }
-        .level-30 { color: #60a5fa; }
-        .level-40 { color: #4ade80; }
-        .level-50 { color: #34d399; }
-        .level-60 { color: #2dd4bf; }
-        .level-70 { color: #22d3ee; }
-        .level-80 { color: #818cf8; }
-        .level-90 { color: #a78bfa; }
-        .level-100 { color: #f472b6; }
     </style>
 </head>
-<body class="antialiased pb-20">
+<body>
 
-    <!-- Background Elements -->
-    <div class="mesh-bg"></div>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-
-    <!-- SVG Gradient Definition -->
-    <svg width="0" height="0" style="position:absolute">
-        <defs>
-            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
-                <stop offset="50%" style="stop-color:#ec4899;stop-opacity:1" />
-                <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
-            </linearGradient>
-        </defs>
-    </svg>
-
-    <!-- Authentication Check -->
+    <!-- Auth Check -->
     <script>
         let code = null;
         if (window.AndroidSession && typeof AndroidSession.getCode === "function") {
@@ -713,201 +942,207 @@
             code = params.get("code");
         }
         if (!code) {
-            document.body.innerHTML = `
-                <div style="height:100vh;display:flex;align-items:center;justify-content:center;background:#0f172a;color:white;font-family:Cairo;">
-                    <div class="glass-card p-8 rounded-3xl text-center max-w-sm mx-4">
-                        <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-red-500/20 flex items-center justify-center">
-                            <i class="fas fa-lock text-3xl text-red-400"></i>
-                        </div>
-                        <h2 class="text-2xl font-black mb-2">غير مصرح</h2>
-                        <p class="text-gray-400">يرجى فتح الصفحة من داخل التطبيق</p>
-                    </div>
-                </div>
-            `;
+            document.body.innerHTML = '<div style="height:100vh;display:flex;align-items:center;justify-content:center;background:#7C3AED;color:white;font-family:Cairo;"><div>غير مصرح</div></div>';
             throw new Error("NO_CODE");
         }
         window.CURRENT_USER_CODE = code;
     </script>
 
-    <!-- Header -->
-    <header class="app-header fixed top-0 w-full z-50 px-6 py-4">
-        <div class="flex items-center justify-between max-w-lg mx-auto">
-            <button onclick="toggleMenu()" class="w-12 h-12 rounded-2xl flex items-center justify-center hover:bg-white/10 transition-colors">
-                <i class="fas fa-bars text-xl"></i>
-            </button>
+    <div class="app-container">
+        
+        <!-- Header -->
+        <header class="main-header">
+            <div class="header-pattern"></div>
             
-            <div class="flex items-center gap-2">
-                <span class="text-sm font-bold opacity-70">منصة المتخصصين</span>
+            <div class="flex justify-between items-start mb-6 relative z-10">
+                <button onclick="toggleMenu()" class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-white backdrop-blur-sm">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                
+                <button onclick="showNotifications()" class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-white backdrop-blur-sm relative">
+                    <i class="fas fa-bell text-xl"></i>
+                    <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs flex items-center justify-center font-bold border-2 border-white">3</span>
+                </button>
             </div>
             
-            <button onclick="showNotifications()" class="relative w-12 h-12 rounded-2xl flex items-center justify-center hover:bg-white/10 transition-colors">
-                <i class="fas fa-bell text-xl"></i>
-                <span class="absolute top-2 right-2 w-2.5 h-2.5 bg-rose-500 rounded-full animate-pulse"></span>
-            </button>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="max-w-lg mx-auto px-6 pt-24 space-y-8 relative z-10">
-
-        <!-- Profile Card -->
-        <div class="profile-section glass-card rounded-3xl p-8 text-center">
-            <div class="avatar-ring mx-auto mb-6">
-                <div class="avatar-inner">
-                    <img id="user-avatar" src="https://i.pravatar.cc/150?img=11" alt="Profile" class="w-full h-full object-cover">
+            <div class="header-profile">
+                <div class="avatar-container">
+                    <div class="avatar-ring">
+                        <div class="avatar-inner">
+                            <img id="user-avatar" src="https://i.pravatar.cc/150?img=11" alt="Profile">
+                        </div>
+                    </div>
+                    <div class="online-badge"></div>
+                </div>
+                
+                <div class="text-white">
+                    <p class="text-sm opacity-80 mb-1">مرحباً بك</p>
+                    <h1 id="user-name" class="text-2xl font-black mb-2">جاري التحميل...</h1>
+                    <div class="level-chip">
+                        <i class="fas fa-crown text-yellow-300"></i>
+                        <span id="level-text">---</span>
+                    </div>
                 </div>
             </div>
-            
-            <h1 id="user-name" class="text-2xl font-black mb-1">جاري التحميل...</h1>
-            <p id="user-major" class="text-indigo-400 font-bold mb-4">---</p>
-            
-            <div id="level-badge" class="level-badge">
-                <i class="fas fa-crown text-yellow-400"></i>
-                <span id="level-text">---</span>
-            </div>
-        </div>
+        </header>
 
-        <!-- Circular Progress -->
-        <div class="glass-card rounded-3xl p-8">
-            <div class="circular-progress">
-                <svg viewBox="0 0 200 200">
-                    <circle class="progress-circle-bg" cx="100" cy="100" r="90"></circle>
-                    <circle id="progress-circle" class="progress-circle" cx="100" cy="100" r="90"></circle>
-                </svg>
-                <div class="progress-content">
-                    <div class="progress-percentage" id="progress-percentage">0%</div>
-                    <div class="text-sm opacity-60 font-bold mt-1">المستوى الحالي</div>
-                </div>
-            </div>
-            <p class="text-center text-sm opacity-70 mt-4 font-medium" id="level-description">
+        <!-- Circular Progress Card -->
+        <div class="progress-card">
+            <svg viewBox="0 0 36 36" class="circular-chart">
+                <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                <path id="progress-circle" class="circle" stroke="url(#gradient)" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                <text x="18" y="16" class="progress-label">المستوى</text>
+                <text x="18" y="23" class="percentage" id="progress-text">0%</text>
+            </svg>
+            
+            <defs>
+                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#7C3AED;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-4 font-bold" id="level-description">
                 ابدأ رحلتك للوصول إلى الامتياز
             </p>
         </div>
 
-        <!-- Stats Grid -->
-        <div class="grid grid-cols-2 gap-4">
-            <div class="stat-box" onclick="openWalletModal()">
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400">
-                        <i class="fas fa-wallet"></i>
-                    </div>
-                    <span class="text-sm opacity-60 font-bold">الرصيد</span>
+        <!-- Stats Row -->
+        <div class="stats-row">
+            <div class="stat-item" onclick="openWalletModal()">
+                <div class="stat-icon purple">
+                    <i class="fas fa-wallet"></i>
                 </div>
-                <div class="text-3xl font-black" id="wallet-balance">0</div>
-                <div class="text-xs opacity-50 mt-1">نقطة</div>
+                <div class="text-2xl font-black text-gray-800 dark:text-white mb-1" id="wallet-balance">0</div>
+                <div class="text-xs text-gray-500 font-bold">نقطة</div>
             </div>
             
-            <div class="stat-box">
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <span class="text-sm opacity-60 font-bold">النسبة</span>
+            <div class="stat-item">
+                <div class="stat-icon pink">
+                    <i class="fas fa-chart-line"></i>
                 </div>
-                <div class="text-3xl font-black gradient-text" id="grade-display">0%</div>
-                <div class="text-xs opacity-50 mt-1">معدل التقدم</div>
+                <div class="text-2xl font-black text-purple-600 dark:text-purple-400 mb-1" id="grade-display">0%</div>
+                <div class="text-xs text-gray-500 font-bold">النسبة</div>
+            </div>
+            
+            <div class="stat-item">
+                <div class="stat-icon orange">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="text-2xl font-black text-orange-500 mb-1" id="rank-display">#1</div>
+                <div class="text-xs text-gray-500 font-bold">الترتيب</div>
             </div>
         </div>
 
         <!-- Quick Actions -->
-        <div>
-            <h3 class="text-lg font-black mb-4 flex items-center gap-2">
-                <i class="fas fa-bolt text-yellow-400"></i>
+        <div class="quick-actions">
+            <h3 class="section-title">
+                <i class="fas fa-bolt text-yellow-500"></i>
                 الوصول السريع
             </h3>
-            <div class="grid grid-cols-4 gap-3">
-                <button onclick="openTool('maintenance')" class="quick-action-btn flex flex-col items-center gap-2">
-                    <div class="w-12 h-12 rounded-xl bg-blue-500 flex items-center justify-center text-white text-lg shadow-lg shadow-blue-500/30">
+            
+            <div class="actions-grid">
+                <button class="action-btn" onclick="openTool('maintenance')">
+                    <div class="action-icon blue">
                         <i class="fas fa-wrench"></i>
                     </div>
-                    <span class="text-xs font-bold">صيانة</span>
+                    <span class="action-label">صيانة</span>
                 </button>
                 
-                <button onclick="openTool('store')" class="quick-action-btn flex flex-col items-center gap-2">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-500 flex items-center justify-center text-white text-lg shadow-lg shadow-emerald-500/30">
+                <button class="action-btn" onclick="openTool('store')">
+                    <div class="action-icon green">
                         <i class="fas fa-store"></i>
                     </div>
-                    <span class="text-xs font-bold">متجر</span>
+                    <span class="action-label">متجر</span>
                 </button>
                 
-                <button onclick="openTool('ai')" class="quick-action-btn flex flex-col items-center gap-2">
-                    <div class="w-12 h-12 rounded-xl bg-purple-500 flex items-center justify-center text-white text-lg shadow-lg shadow-purple-500/30">
+                <button class="action-btn" onclick="openTool('ai')">
+                    <div class="action-icon purple">
                         <i class="fas fa-robot"></i>
                     </div>
-                    <span class="text-xs font-bold">AI</span>
+                    <span class="action-label">AI</span>
                 </button>
                 
-                <button onclick="openTool('calendar')" class="quick-action-btn flex flex-col items-center gap-2">
-                    <div class="w-12 h-12 rounded-xl bg-orange-500 flex items-center justify-center text-white text-lg shadow-lg shadow-orange-500/30">
+                <button class="action-btn" onclick="openTool('calendar')">
+                    <div class="action-icon orange">
                         <i class="fas fa-calendar"></i>
                     </div>
-                    <span class="text-xs font-bold">مواعيد</span>
+                    <span class="action-label">مواعيد</span>
                 </button>
             </div>
         </div>
 
         <!-- Categories -->
-        <div>
+        <div class="categories-section">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-black flex items-center gap-2">
-                    <i class="fas fa-grid-2 text-indigo-400"></i>
+                <h3 class="section-title mb-0">
+                    <i class="fas fa-th-large text-purple-500"></i>
                     الأقسام
                 </h3>
-                <div class="flex gap-2">
-                    <button onclick="switchView('grid')" class="view-btn active w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-sm" data-view="grid">
+                
+                <div class="view-toggle">
+                    <button class="view-btn active" onclick="switchView('grid', this)">
                         <i class="fas fa-th-large"></i>
                     </button>
-                    <button onclick="switchView('list')" class="view-btn w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-sm" data-view="list">
+                    <button class="view-btn" onclick="switchView('list', this)">
                         <i class="fas fa-list"></i>
                     </button>
                 </div>
             </div>
             
-            <div id="categories-container" class="grid grid-cols-2 gap-4">
-                <div class="category-card p-5 cursor-pointer" onclick="openCategory('tech')">
-                    <div class="category-icon bg-gradient-to-br from-blue-500 to-cyan-400 text-white mb-4">
-                        <i class="fas fa-microchip"></i>
+            <div id="categories-container" class="categories-grid">
+                <div class="category-card-large" onclick="openCategory('tech')">
+                    <div class="category-decoration bg-blue-400"></div>
+                    <div>
+                        <div class="category-icon-large cat-tech">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <div class="category-title">تقنية</div>
+                        <div class="category-count">24 خدمة متاحة</div>
                     </div>
-                    <h4 class="font-bold mb-1">تقنية</h4>
-                    <p class="text-xs opacity-60 mb-3">برمجة، شبكات، أمن</p>
-                    <div class="flex items-center gap-1 text-xs font-bold text-indigo-400">
-                        <span>24 خدمة</span>
+                    <div class="category-arrow">
                         <i class="fas fa-arrow-left"></i>
                     </div>
                 </div>
                 
-                <div class="category-card p-5 cursor-pointer" onclick="openCategory('design')">
-                    <div class="category-icon bg-gradient-to-br from-purple-500 to-pink-500 text-white mb-4">
-                        <i class="fas fa-palette"></i>
+                <div class="category-card-large" onclick="openCategory('design')">
+                    <div class="category-decoration bg-pink-400"></div>
+                    <div>
+                        <div class="category-icon-large cat-design">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <div class="category-title">تصميم</div>
+                        <div class="category-count">18 خدمة متاحة</div>
                     </div>
-                    <h4 class="font-bold mb-1">تصميم</h4>
-                    <p class="text-xs opacity-60 mb-3">جرافيك، موشن، UI/UX</p>
-                    <div class="flex items-center gap-1 text-xs font-bold text-indigo-400">
-                        <span>18 خدمة</span>
+                    <div class="category-arrow">
                         <i class="fas fa-arrow-left"></i>
                     </div>
                 </div>
                 
-                <div class="category-card p-5 cursor-pointer" onclick="openCategory('marketing')">
-                    <div class="category-icon bg-gradient-to-br from-orange-500 to-red-500 text-white mb-4">
-                        <i class="fas fa-bullhorn"></i>
+                <div class="category-card-large" onclick="openCategory('marketing')">
+                    <div class="category-decoration bg-orange-400"></div>
+                    <div>
+                        <div class="category-icon-large cat-marketing">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <div class="category-title">تسويق</div>
+                        <div class="category-count">15 خدمة متاحة</div>
                     </div>
-                    <h4 class="font-bold mb-1">تسويق</h4>
-                    <p class="text-xs opacity-60 mb-3">إعلانات، SEO، محتوى</p>
-                    <div class="flex items-center gap-1 text-xs font-bold text-indigo-400">
-                        <span>15 خدمة</span>
+                    <div class="category-arrow">
                         <i class="fas fa-arrow-left"></i>
                     </div>
                 </div>
                 
-                <div class="category-card p-5 cursor-pointer" onclick="openCategory('business')">
-                    <div class="category-icon bg-gradient-to-br from-emerald-500 to-teal-500 text-white mb-4">
-                        <i class="fas fa-briefcase"></i>
+                <div class="category-card-large" onclick="openCategory('business')">
+                    <div class="category-decoration bg-emerald-400"></div>
+                    <div>
+                        <div class="category-icon-large cat-business">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div class="category-title">أعمال</div>
+                        <div class="category-count">32 خدمة متاحة</div>
                     </div>
-                    <h4 class="font-bold mb-1">أعمال</h4>
-                    <p class="text-xs opacity-60 mb-3">استشارات، إدارة، مالية</p>
-                    <div class="flex items-center gap-1 text-xs font-bold text-indigo-400">
-                        <span>32 خدمة</span>
+                    <div class="category-arrow">
                         <i class="fas fa-arrow-left"></i>
                     </div>
                 </div>
@@ -915,107 +1150,111 @@
         </div>
 
         <!-- Recent Activities -->
-        <div class="glass-card rounded-3xl p-6">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="font-black flex items-center gap-2">
-                    <i class="fas fa-clock-rotate-left text-pink-400"></i>
-                    آخر النشاطات
-                </h3>
-                <button onclick="openHistoryModal()" class="text-sm font-bold text-indigo-400 hover:text-indigo-300 transition-colors">
-                    عرض الكل
-                </button>
-            </div>
-            <div id="activities-list" class="space-y-3">
-                <div class="text-center opacity-50 py-8">
+        <div class="activities-section">
+            <h3 class="section-title">
+                <i class="fas fa-clock-rotate-left text-pink-500"></i>
+                آخر النشاطات
+            </h3>
+            
+            <div class="activity-list" id="activities-list">
+                <div class="text-center text-gray-400 py-8">
                     <i class="fas fa-spinner fa-spin text-2xl mb-2"></i>
-                    <p class="text-sm">جاري التحميل...</p>
+                    <p>جاري التحميل...</p>
                 </div>
             </div>
         </div>
 
-    </main>
+        <!-- Spacer for bottom nav -->
+        <div style="height: 100px;"></div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" onclick="setActiveNav(this)">
+                <i class="fas fa-home"></i>
+                <span>الرئيسية</span>
+            </button>
+            <button class="nav-item" onclick="openWalletModal()">
+                <i class="fas fa-wallet"></i>
+                <span>المحفظة</span>
+            </button>
+            <button class="nav-item" onclick="openAIAssistant()">
+                <i class="fas fa-robot"></i>
+                <span>AI</span>
+            </button>
+            <button class="nav-item" onclick="toggleMenu()">
+                <i class="fas fa-cog"></i>
+                <span>المزيد</span>
+            </button>
+        </nav>
+    </div>
 
     <!-- Side Menu -->
     <div class="menu-overlay" id="menu-overlay" onclick="toggleMenu()"></div>
     <div class="side-menu" id="side-menu">
         <div class="menu-header">
-            <div class="flex justify-between items-start mb-4">
-                <button onclick="toggleMenu()" class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-white/30">
-                    <img id="menu-avatar" src="https://i.pravatar.cc/150?img=11" class="w-full h-full object-cover">
+            <button class="menu-close" onclick="toggleMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="menu-profile">
+                <div class="menu-avatar">
+                    <img id="menu-avatar" src="https://i.pravatar.cc/150?img=11" alt="Profile">
                 </div>
                 <div>
-                    <h3 class="font-black text-lg" id="menu-name">المستخدم</h3>
-                    <p class="text-sm opacity-70" id="menu-email">user@example.com</p>
+                    <div class="menu-name" id="menu-name">المستخدم</div>
+                    <div class="menu-email">متصل الآن</div>
                 </div>
             </div>
         </div>
         
-        <div class="py-6 space-y-2">
-            <button class="menu-item active">
-                <div class="menu-icon text-indigo-400">
-                    <i class="fas fa-home"></i>
-                </div>
-                <div class="flex-1 text-right">
-                    <div class="font-bold">الرئيسية</div>
-                </div>
-            </button>
-            
-            <button class="menu-item" onclick="openWalletModal(); toggleMenu();">
-                <div class="menu-icon text-emerald-400">
+        <div class="menu-items">
+            <button class="menu-item-btn" onclick="openWalletModal(); toggleMenu();">
+                <div class="menu-item-icon purple">
                     <i class="fas fa-wallet"></i>
                 </div>
-                <div class="flex-1 text-right">
-                    <div class="font-bold">المحفظة</div>
-                    <div class="text-xs opacity-60" id="menu-balance">0 نقطة</div>
-                </div>
+                <span class="menu-item-text">المحفظة</span>
+                <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
             </button>
             
-            <button class="menu-item" onclick="openAIAssistant(); toggleMenu();">
-                <div class="menu-icon text-purple-400">
+            <button class="menu-item-btn" onclick="openAIAssistant(); toggleMenu();">
+                <div class="menu-item-icon pink">
                     <i class="fas fa-robot"></i>
                 </div>
-                <div class="flex-1 text-right">
-                    <div class="font-bold">المساعد الذكي</div>
-                </div>
+                <span class="menu-item-text">المساعد الذكي</span>
+                <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
             </button>
             
-            <button class="menu-item">
-                <div class="menu-icon text-amber-400">
+            <button class="menu-item-btn">
+                <div class="menu-item-icon blue">
                     <i class="fas fa-crown"></i>
                 </div>
-                <div class="flex-1 text-right">
-                    <div class="font-bold">العضوية المميزة</div>
-                    <div class="text-xs opacity-60">VIP</div>
+                <span class="menu-item-text">العضوية المميزة</span>
+                <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
+            </button>
+            
+            <button class="menu-item-btn">
+                <div class="menu-item-icon orange">
+                    <i class="fas fa-history"></i>
+                </div>
+                <span class="menu-item-text">السجل</span>
+                <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
+            </button>
+            
+            <button class="menu-item-btn" onclick="toggleDarkMode()">
+                <div class="menu-item-icon purple">
+                    <i class="fas fa-moon"></i>
+                </div>
+                <span class="menu-item-text">الوضع الليلي</span>
+                <div class="relative inline-block w-12 h-6 bg-gray-200 rounded-full dark:bg-gray-700">
+                    <div class="absolute top-1 right-1 w-4 h-4 bg-white rounded-full transition-transform dark:translate-x-6"></div>
                 </div>
             </button>
             
-            <button class="menu-item">
-                <div class="menu-icon text-blue-400">
-                    <i class="fas fa-cog"></i>
+            <button class="menu-item-btn" onclick="logout()">
+                <div class="menu-item-icon red">
+                    <i class="fas fa-sign-out-alt"></i>
                 </div>
-                <div class="flex-1 text-right">
-                    <div class="font-bold">الإعدادات</div>
-                </div>
-            </button>
-            
-            <div class="px-6 py-4">
-                <div class="h-px bg-white/10 mb-4"></div>
-                <div class="flex items-center justify-between">
-                    <span class="font-bold text-sm">الوضع الليلي</span>
-                    <div class="toggle-switch" id="theme-toggle" onclick="toggleDarkMode()"></div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="absolute bottom-0 left-0 right-0 p-6">
-            <button onclick="logout()" class="w-full py-4 rounded-2xl bg-red-500/20 text-red-400 font-bold hover:bg-red-500/30 transition-colors flex items-center justify-center gap-2">
-                <i class="fas fa-sign-out-alt"></i>
-                تسجيل الخروج
+                <span class="menu-item-text">تسجيل الخروج</span>
             </button>
         </div>
     </div>
@@ -1023,36 +1262,36 @@
     <!-- Wallet Modal -->
     <div class="modal" id="wallet-modal">
         <div class="modal-overlay" onclick="closeModal('wallet-modal')"></div>
-        <div class="modal-content p-6">
+        <div class="modal-content">
             <div class="modal-handle"></div>
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-black">المحفظة</h2>
-                <button onclick="closeModal('wallet-modal')" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
             
-            <div class="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl p-8 mb-6 text-center relative overflow-hidden">
-                <div class="absolute inset-0 opacity-20">
-                    <div class="absolute top-0 right-0 w-40 h-40 bg-white rounded-full blur-3xl"></div>
-                    <div class="absolute bottom-0 left-0 w-40 h-40 bg-white rounded-full blur-3xl"></div>
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-black">المحفظة</h2>
+                    <button onclick="closeModal('wallet-modal')" class="w-10 h-10 rounded-2xl bg-gray-100 flex items-center justify-center">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
-                <div class="relative z-10">
-                    <p class="text-white/70 text-sm mb-2 font-bold">الرصيد المتاح</p>
-                    <h3 class="text-5xl font-black text-white mb-1" id="modal-wallet-balance">0</h3>
-                    <p class="text-white/50 text-sm">نقطة</p>
+                
+                <div class="wallet-card">
+                    <div class="wallet-pattern"></div>
+                    <div class="relative z-10">
+                        <div class="text-white/70 text-sm font-bold mb-2">الرصيد المتاح</div>
+                        <div class="wallet-balance" id="modal-wallet-balance">0</div>
+                        <div class="text-white/50 text-sm">نقطة</div>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="grid grid-cols-2 gap-4">
-                <button onclick="openTransferModal()" class="py-4 rounded-2xl bg-white/5 hover:bg-white/10 transition-colors font-bold flex items-center justify-center gap-2">
-                    <i class="fas fa-exchange-alt text-indigo-400"></i>
-                    تحويل
-                </button>
-                <button onclick="openHistoryModal()" class="py-4 rounded-2xl bg-white/5 hover:bg-white/10 transition-colors font-bold flex items-center justify-center gap-2">
-                    <i class="fas fa-history text-indigo-400"></i>
-                    السجل
-                </button>
+                
+                <div class="grid grid-cols-2 gap-4 mt-6">
+                    <button onclick="openTransferModal()" class="py-4 rounded-2xl bg-purple-100 text-purple-700 font-bold flex items-center justify-center gap-2">
+                        <i class="fas fa-exchange-alt"></i>
+                        تحويل
+                    </button>
+                    <button onclick="openHistoryModal()" class="py-4 rounded-2xl bg-pink-100 text-pink-700 font-bold flex items-center justify-center gap-2">
+                        <i class="fas fa-history"></i>
+                        السجل
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1060,35 +1299,33 @@
     <!-- Transfer Modal -->
     <div class="modal" id="transfer-modal">
         <div class="modal-overlay" onclick="closeModal('transfer-modal')"></div>
-        <div class="modal-content p-6">
+        <div class="modal-content">
             <div class="modal-handle"></div>
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-black">تحويل النقاط</h2>
-                <button onclick="closeModal('transfer-modal')" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
             
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm opacity-60 mb-2 font-bold">رقم المستلم</label>
-                    <input type="text" id="transfer-to" placeholder="أدخل كود المستخدم" 
-                        class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-4 text-right focus:border-indigo-500 focus:outline-none transition-colors">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-black">تحويل النقاط</h2>
+                    <button onclick="closeModal('transfer-modal')" class="w-10 h-10 rounded-2xl bg-gray-100 flex items-center justify-center">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
                 
-                <div>
-                    <label class="block text-sm opacity-60 mb-2 font-bold">المبلغ</label>
-                    <input type="number" id="transfer-amount" placeholder="0" 
-                        class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-4 text-right focus:border-indigo-500 focus:outline-none transition-colors">
+                <div class="input-group">
+                    <label class="input-label">رقم المستلم</label>
+                    <input type="text" id="transfer-to" class="input-field" placeholder="أدخل كود المستخدم">
                 </div>
                 
-                <div>
-                    <label class="block text-sm opacity-60 mb-2 font-bold">ملاحظة (اختياري)</label>
-                    <input type="text" id="transfer-note" placeholder="..." 
-                        class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-4 text-right focus:border-indigo-500 focus:outline-none transition-colors">
+                <div class="input-group">
+                    <label class="input-label">المبلغ</label>
+                    <input type="number" id="transfer-amount" class="input-field" placeholder="0">
                 </div>
                 
-                <button onclick="executeTransfer()" class="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-black mt-4 shadow-lg shadow-indigo-500/30">
+                <div class="input-group">
+                    <label class="input-label">ملاحظة (اختياري)</label>
+                    <input type="text" id="transfer-note" class="input-field" placeholder="...">
+                </div>
+                
+                <button onclick="executeTransfer()" class="btn-primary mt-4">
                     تنفيذ التحويل
                 </button>
             </div>
@@ -1098,18 +1335,21 @@
     <!-- History Modal -->
     <div class="modal" id="history-modal">
         <div class="modal-overlay" onclick="closeModal('history-modal')"></div>
-        <div class="modal-content p-6 h-[80vh]">
+        <div class="modal-content" style="max-height: 80vh;">
             <div class="modal-handle"></div>
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-black">سجل المعاملات</h2>
-                <button onclick="closeModal('history-modal')" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div id="history-list" class="space-y-3 overflow-y-auto hide-scrollbar pb-20">
-                <div class="text-center opacity-50 py-8">
-                    <i class="fas fa-spinner fa-spin text-2xl mb-2"></i>
-                    <p>جاري التحميل...</p>
+            
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-black">سجل المعاملات</h2>
+                    <button onclick="closeModal('history-modal')" class="w-10 h-10 rounded-2xl bg-gray-100 flex items-center justify-center">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div id="history-list" class="space-y-4 pb-20">
+                    <div class="text-center text-gray-400 py-8">
+                        جاري التحميل...
+                    </div>
                 </div>
             </div>
         </div>
@@ -1118,42 +1358,37 @@
     <!-- AI Modal -->
     <div class="modal" id="ai-modal">
         <div class="modal-overlay" onclick="closeModal('ai-modal')"></div>
-        <div class="modal-content p-0 h-[90vh] flex flex-col">
-            <div class="p-6 border-b border-white/10 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center">
+        <div class="modal-content" style="height: 80vh;">
+            <div class="modal-handle"></div>
+            
+            <div class="p-6 h-full flex flex-col">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-xl">
                         <i class="fas fa-robot"></i>
                     </div>
                     <div>
-                        <h3 class="font-black">المساعد الذكي</h3>
-                        <div class="flex items-center gap-1 text-xs text-emerald-400">
-                            <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                        <h2 class="text-xl font-black">المساعد الذكي</h2>
+                        <div class="flex items-center gap-2 text-sm text-green-500">
+                            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                             متصل الآن
                         </div>
                     </div>
                 </div>
-                <button onclick="closeModal('ai-modal')" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            
-            <div id="chat-messages" class="flex-1 overflow-y-auto p-6 space-y-4">
-                <div class="flex items-start gap-3">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-xs">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <div class="bg-white/5 rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]">
-                        <p class="text-sm">مرحباً! كيف يمكنني مساعدتك؟</p>
+                
+                <div id="chat-messages" class="flex-1 overflow-y-auto space-y-4 mb-4 hide-scrollbar">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="bg-gray-100 rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]">
+                            <p class="text-sm">مرحباً! كيف يمكنني مساعدتك اليوم؟</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="p-4 border-t border-white/10">
-                <div class="flex gap-2">
-                    <input type="text" id="ai-input" placeholder="اكتب رسالتك..." 
-                        class="flex-1 bg-white/5 border border-white/10 rounded-2xl px-4 py-3 focus:border-indigo-500 focus:outline-none transition-colors"
-                        onkeypress="if(event.key==='Enter') sendAIMessage()">
-                    <button onclick="sendAIMessage()" class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center hover:shadow-lg hover:shadow-indigo-500/30 transition-all">
+                
+                <div class="flex gap-3">
+                    <input type="text" id="ai-input" class="input-field" placeholder="اكتب رسالتك..." onkeypress="if(event.key==='Enter') sendAIMessage()">
+                    <button onclick="sendAIMessage()" class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 text-white flex items-center justify-center flex-shrink-0">
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </div>
@@ -1162,7 +1397,7 @@
     </div>
 
     <!-- Toast -->
-    <div id="toast" class="toast">
+    <div class="toast" id="toast">
         <i class="fas fa-info-circle text-xl"></i>
         <span id="toast-message">رسالة</span>
     </div>
@@ -1187,42 +1422,31 @@
         let previousData = null;
         
         const levels = [
-            { threshold: 0, name: 'ضعيف', class: 'level-0', color: '#f87171' },
-            { threshold: 10, name: 'مبتدئ', class: 'level-10', color: '#fbbf24' },
-            { threshold: 20, name: 'مقبول', class: 'level-20', color: '#facc15' },
-            { threshold: 30, name: 'تحت المتوسط', class: 'level-30', color: '#60a5fa' },
-            { threshold: 40, name: 'جيد', class: 'level-40', color: '#4ade80' },
-            { threshold: 50, name: 'جيد جداً', class: 'level-50', color: '#34d399' },
-            { threshold: 60, name: 'مجتهد', class: 'level-60', color: '#2dd4bf' },
-            { threshold: 70, name: 'مثابر', class: 'level-70', color: '#22d3ee' },
-            { threshold: 80, name: 'متألق', class: 'level-80', color: '#818cf8' },
-            { threshold: 90, name: 'متفوق', class: 'level-90', color: '#a78bfa' },
-            { threshold: 100, name: 'امتياز', class: 'level-100', color: '#f472b6' }
+            { threshold: 0, name: 'ضعيف' },
+            { threshold: 10, name: 'مبتدئ' },
+            { threshold: 20, name: 'مقبول' },
+            { threshold: 30, name: 'تحت المتوسط' },
+            { threshold: 40, name: 'جيد' },
+            { threshold: 50, name: 'جيد جداً' },
+            { threshold: 60, name: 'مجتهد' },
+            { threshold: 70, name: 'مثابر' },
+            { threshold: 80, name: 'متألق' },
+            { threshold: 90, name: 'متفوق' },
+            { threshold: 100, name: 'امتياز' }
         ];
 
         function initTheme() {
             const saved = localStorage.getItem('theme');
-            if (saved === 'light') {
-                document.body.classList.add('light');
-                document.getElementById('theme-toggle').classList.add('active');
+            if (saved === 'dark') {
+                document.body.classList.add('dark');
             }
         }
 
         function toggleDarkMode() {
-            const isLight = document.body.classList.contains('light');
-            const toggle = document.getElementById('theme-toggle');
-            
-            if (isLight) {
-                document.body.classList.remove('light');
-                localStorage.setItem('theme', 'dark');
-                toggle.classList.remove('active');
-                showToast('تم تفعيل الوضع الليلي');
-            } else {
-                document.body.classList.add('light');
-                localStorage.setItem('theme', 'light');
-                toggle.classList.add('active');
-                showToast('تم تفعيل الوضع الفاتح');
-            }
+            document.body.classList.toggle('dark');
+            const isDark = document.body.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            showToast(isDark ? 'تم تفعيل الوضع الليلي' : 'تم تفعيل الوضع الفاتح');
         }
 
         function loadUserData() {
@@ -1283,7 +1507,6 @@
             if (!userData) return;
             
             document.getElementById('user-name').textContent = userData.name || 'مستخدم';
-            document.getElementById('user-major').textContent = userData.major || 'غير محدد';
             document.getElementById('menu-name').textContent = userData.name || 'مستخدم';
             document.getElementById('user-avatar').src = userData.avatar || 'https://i.pravatar.cc/150?img=11';
             document.getElementById('menu-avatar').src = userData.avatar || 'https://i.pravatar.cc/150?img=11';
@@ -1301,25 +1524,19 @@
                 }
             }
             
-            const badge = document.getElementById('level-badge');
-            badge.className = `level-badge ${currentLevel.class}`;
-            badge.style.borderColor = currentLevel.color;
-            badge.style.color = currentLevel.color;
             document.getElementById('level-text').textContent = currentLevel.name;
             
             // Update circular progress
             const circle = document.getElementById('progress-circle');
-            const radius = 90;
-            const circumference = 2 * Math.PI * radius;
-            const offset = circumference - (gradeNum / 100) * circumference;
-            circle.style.strokeDashoffset = offset;
-            
-            document.getElementById('progress-percentage').textContent = gradeNum + '%';
+            const percentage = gradeNum;
+            const dashArray = `${percentage}, 100`;
+            circle.setAttribute('stroke-dasharray', dashArray);
+            document.getElementById('progress-text').textContent = percentage + '%';
             
             const nextLevel = levels.find(l => l.threshold > gradeNum);
             if (nextLevel) {
                 document.getElementById('level-description').textContent = 
-                    `${gradeNum}% - التالي: ${nextLevel.name} (${nextLevel.threshold}%)`;
+                    `${percentage}% - التالي: ${nextLevel.name}`;
             } else {
                 document.getElementById('level-description').textContent = 'مبروك! وصلت للامتياز 🎉';
             }
@@ -1327,7 +1544,6 @@
             const points = userData.points || 0;
             document.getElementById('wallet-balance').textContent = points.toLocaleString();
             document.getElementById('modal-wallet-balance').textContent = points.toLocaleString();
-            document.getElementById('menu-balance').textContent = `${points.toLocaleString()} نقطة`;
         }
 
         function loadActivities() {
@@ -1337,31 +1553,47 @@
                 const container = document.getElementById('activities-list');
                 
                 if (!activities) {
-                    container.innerHTML = '<div class="text-center opacity-50 py-8">لا توجد نشاطات</div>';
+                    container.innerHTML = '<div class="text-center text-gray-400 py-8">لا توجد نشاطات</div>';
                     return;
                 }
                 
                 const sorted = Object.entries(activities).sort((a, b) => b[1].timestamp - a[1].timestamp);
                 
                 container.innerHTML = sorted.map(([key, activity]) => {
-                    let icon, color;
+                    let iconClass, icon, amountClass = '';
+                    
                     switch(activity.type) {
-                        case 'level_up': icon = 'fa-trophy'; color = 'text-amber-400'; break;
-                        case 'earn': case 'transfer_in': icon = 'fa-arrow-down'; color = 'text-emerald-400'; break;
-                        case 'spend': case 'transfer_out': icon = 'fa-arrow-up'; color = 'text-rose-400'; break;
-                        default: icon = 'fa-info'; color = 'text-blue-400';
+                        case 'level_up': 
+                            iconClass = 'gold'; 
+                            icon = 'fa-trophy'; 
+                            break;
+                        case 'earn': 
+                        case 'transfer_in': 
+                            iconClass = 'green'; 
+                            icon = 'fa-arrow-down'; 
+                            amountClass = 'amount-positive';
+                            break;
+                        case 'spend': 
+                        case 'transfer_out': 
+                            iconClass = 'red'; 
+                            icon = 'fa-arrow-up'; 
+                            amountClass = 'amount-negative';
+                            break;
+                        default: 
+                            iconClass = 'gold'; 
+                            icon = 'fa-info';
                     }
                     
                     return `
                         <div class="activity-item">
-                            <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center ${color}">
-                                <i class="fas ${icon} text-lg"></i>
+                            <div class="activity-icon ${iconClass}">
+                                <i class="fas ${icon}"></i>
                             </div>
-                            <div class="flex-1">
-                                <p class="font-bold text-sm">${activity.title}</p>
-                                <p class="text-xs opacity-60">${new Date(activity.timestamp).toLocaleDateString('ar-SA')}</p>
+                            <div class="activity-content">
+                                <div class="activity-title">${activity.title}</div>
+                                <div class="activity-time">${new Date(activity.timestamp).toLocaleDateString('ar-SA')}</div>
                             </div>
-                            ${activity.amount ? `<span class="${color} font-bold">${activity.type === 'earn' ? '+' : '-'}${activity.amount}</span>` : ''}
+                            ${activity.amount ? `<div class="activity-amount ${amountClass}">${activity.type === 'earn' || activity.type === 'transfer_in' ? '+' : '-'}${activity.amount}</div>` : ''}
                         </div>
                     `;
                 }).join('');
@@ -1394,14 +1626,6 @@
             updates['users/' + currentUserId + '/points'] = currentPoints - amount;
             updates['users/' + toUser + '/points'] = firebase.database.ServerValue.increment(amount);
             
-            updates['transactions/' + currentUserId + '/' + txId] = {
-                type: 'transfer',
-                title: 'تحويل إلى ' + toUser,
-                amount: -amount,
-                timestamp: Date.now(),
-                status: 'مكتمل'
-            };
-            
             db.ref().update(updates).then(() => {
                 showToast('تم التحويل بنجاح');
                 closeModal('transfer-modal');
@@ -1420,10 +1644,10 @@
             const container = document.getElementById('chat-messages');
             container.innerHTML += `
                 <div class="flex items-start gap-3 flex-row-reverse">
-                    <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-xs">
+                    <div class="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-white">
                         <i class="fas fa-user"></i>
                     </div>
-                    <div class="bg-indigo-500 rounded-2xl rounded-tl-sm px-4 py-3 max-w-[80%]">
+                    <div class="bg-purple-500 text-white rounded-2xl rounded-tl-sm px-4 py-3 max-w-[80%]">
                         <p class="text-sm">${message}</p>
                     </div>
                 </div>
@@ -1434,10 +1658,10 @@
             setTimeout(() => {
                 container.innerHTML += `
                     <div class="flex items-start gap-3">
-                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-xs">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white">
                             <i class="fas fa-robot"></i>
                         </div>
-                        <div class="bg-white/5 rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]">
+                        <div class="bg-gray-100 rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]">
                             <p class="text-sm">تم استلام رسالتك، سأقوم بالرد عليك قريباً.</p>
                         </div>
                     </div>
@@ -1447,36 +1671,41 @@
         }
 
         function toggleMenu() {
-            const menu = document.getElementById('side-menu');
-            const overlay = document.getElementById('menu-overlay');
-            menu.classList.toggle('active');
-            overlay.classList.toggle('active');
+            document.getElementById('side-menu').classList.toggle('active');
+            document.getElementById('menu-overlay').classList.toggle('active');
         }
 
-        function switchView(view) {
-            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+        function switchView(view, btn) {
+            document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
             
             const container = document.getElementById('categories-container');
             if (view === 'list') {
-                container.classList.remove('grid-cols-2');
-                container.classList.add('grid-cols-1');
+                container.classList.remove('categories-grid');
+                container.style.display = 'flex';
+                container.style.flexDirection = 'column';
             } else {
-                container.classList.remove('grid-cols-1');
-                container.classList.add('grid-cols-2');
+                container.style.display = '';
+                container.style.flexDirection = '';
+                container.classList.add('categories-grid');
             }
         }
 
-        function openModal(id) { 
+        function setActiveNav(btn) {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function openModal(id) {
             document.getElementById(id).classList.add('active');
             document.body.style.overflow = 'hidden';
         }
-        
-        function closeModal(id) { 
+
+        function closeModal(id) {
             document.getElementById(id).classList.remove('active');
             document.body.style.overflow = '';
         }
-        
+
         function openWalletModal() { openModal('wallet-modal'); }
         function openTransferModal() { closeModal('wallet-modal'); openModal('transfer-modal'); }
         function openHistoryModal() { openModal('history-modal'); }
