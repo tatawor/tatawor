@@ -40,6 +40,7 @@
             background: #F3F4F6;
             color: #1F2937;
             overflow-x: hidden;
+            padding-bottom: 20px;
         }
         
         body.dark {
@@ -60,19 +61,14 @@
             background: linear-gradient(180deg, #1E1B4B 0%, #0F0F1A 100%);
         }
         
-        /* Header */
+        /* Header - Reduced padding */
         .main-header {
             background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
             border-radius: 0 0 40px 40px;
-            padding: 20px;
-            padding-top: 60px;
+            padding: 15px 20px 30px;
+            padding-top: 50px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.3);
-        }
-        
-        body.dark .main-header {
-            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.2);
         }
         
         .header-pattern {
@@ -87,19 +83,21 @@
             background-size: 40px 40px, 30px 30px;
         }
         
-        /* Profile Section in Header */
+        /* Profile Section in Header - Moved up */
         .header-profile {
             display: flex;
             align-items: center;
             gap: 16px;
             position: relative;
             z-index: 1;
+            margin-top: 10px;
         }
         
         .avatar-container {
             position: relative;
             width: 70px;
             height: 70px;
+            flex-shrink: 0;
         }
         
         .avatar-ring {
@@ -151,87 +149,102 @@
             font-weight: 700;
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.3);
+            margin-top: 6px;
         }
         
-        /* Circular Progress Card */
-        .progress-card {
-            background: white;
-            border-radius: 30px;
-            padding: 24px;
-            margin: -30px 20px 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        /* OLD Circular Progress Design - Restored */
+        .progress-section {
+            margin: -25px 20px 20px;
             position: relative;
             z-index: 10;
+        }
+        
+        .circular-progress-container {
+            background: white;
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
         
-        body.dark .progress-card {
+        body.dark .circular-progress-container {
             background: #1E1E2E;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
         }
         
-        .circular-chart {
-            display: block;
+        .circular-progress {
+            position: relative;
+            width: 200px;
+            height: 200px;
             margin: 0 auto;
-            max-width: 200px;
-            max-height: 200px;
         }
         
-        .circle-bg {
+        .circular-progress svg {
+            transform: rotate(-90deg);
+            width: 100%;
+            height: 100%;
+        }
+        
+        .progress-circle-bg {
             fill: none;
             stroke: #E5E7EB;
-            stroke-width: 3.8;
+            stroke-width: 12;
         }
         
-        body.dark .circle-bg {
+        body.dark .progress-circle-bg {
             stroke: #374151;
         }
         
-        .circle {
+        .progress-circle {
             fill: none;
-            stroke-width: 3.8;
+            stroke: url(#gradient);
+            stroke-width: 12;
             stroke-linecap: round;
-            animation: progress 1s ease-out forwards;
+            stroke-dasharray: 565.48;
+            stroke-dashoffset: 565.48;
+            transition: stroke-dashoffset 1.5s ease-in-out;
+            filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.5));
         }
         
-        @keyframes progress {
-            0% { stroke-dasharray: 0 100; }
+        .progress-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
         }
         
-        .percentage {
-            fill: #7C3AED;
-            font-family: 'Cairo', sans-serif;
+        .progress-percentage {
+            font-size: 48px;
             font-weight: 900;
-            font-size: 0.5em;
-            text-anchor: middle;
+            background: linear-gradient(135deg, #7C3AED, #EC4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
-        body.dark .percentage {
-            fill: #A78BFA;
+        .progress-label-text {
+            font-size: 14px;
+            color: #9CA3AF;
+            font-weight: 600;
+            margin-top: 5px;
         }
         
-        .progress-label {
-            fill: #9CA3AF;
-            font-family: 'Cairo', sans-serif;
-            font-size: 0.2em;
-            text-anchor: middle;
-        }
-        
-        /* Stats Row */
+        /* Stats Row - 2 items only */
         .stats-row {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 12px;
             margin: 0 20px 20px;
         }
         
         .stat-item {
-            flex: 1;
             background: white;
             border-radius: 24px;
             padding: 20px;
             text-align: center;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s;
+            cursor: pointer;
         }
         
         body.dark .stat-item {
@@ -262,11 +275,6 @@
         .stat-icon.pink {
             background: linear-gradient(135deg, #FCE7F3 0%, #FBCFE8 100%);
             color: #EC4899;
-        }
-        
-        .stat-icon.orange {
-            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
-            color: #F59E0B;
         }
         
         /* Quick Actions Grid */
@@ -341,25 +349,32 @@
             margin: 0 20px 20px;
         }
         
+        /* Grid View (Default) */
         .categories-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 16px;
         }
         
+        /* List View - Fixed spacing */
+        .categories-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
         .category-card-large {
             background: white;
-            border-radius: 24px;
-            padding: 20px;
+            border-radius: 20px;
+            padding: 16px;
             position: relative;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             transition: all 0.3s;
             cursor: pointer;
-            min-height: 160px;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
         }
         
         body.dark .category-card-large {
@@ -371,27 +386,65 @@
             transform: scale(0.98);
         }
         
+        /* Grid mode specific */
+        .categories-grid .category-card-large {
+            flex-direction: column;
+            align-items: flex-start;
+            min-height: 140px;
+            padding: 20px;
+        }
+        
+        /* List mode specific - smaller and spaced */
+        .categories-list .category-card-large {
+            min-height: auto;
+            padding: 12px 16px;
+        }
+        
+        .categories-list .category-icon-large {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            font-size: 22px;
+            margin-bottom: 0;
+        }
+        
+        .categories-list .category-title {
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+        
+        .categories-list .category-count {
+            font-size: 12px;
+        }
+        
+        .categories-list .category-arrow {
+            position: static;
+            margin-right: auto;
+            width: 32px;
+            height: 32px;
+        }
+        
         .category-decoration {
             position: absolute;
             top: -20px;
             left: -20px;
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            opacity: 0.2;
+            opacity: 0.15;
         }
         
         .category-icon-large {
-            width: 56px;
-            height: 56px;
-            border-radius: 20px;
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
-            margin-bottom: 12px;
+            font-size: 24px;
             position: relative;
             z-index: 1;
+            margin-bottom: 12px;
         }
         
         .cat-tech { background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%); color: #2563EB; }
@@ -400,7 +453,7 @@
         .cat-business { background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%); color: #059669; }
         
         .category-title {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 800;
             margin-bottom: 4px;
         }
@@ -413,8 +466,8 @@
         
         .category-arrow {
             position: absolute;
-            bottom: 20px;
-            left: 20px;
+            bottom: 16px;
+            left: 16px;
             width: 36px;
             height: 36px;
             background: #F3F4F6;
@@ -434,12 +487,11 @@
         .category-card-large:hover .category-arrow {
             background: #7C3AED;
             color: white;
-            transform: translateX(-5px);
         }
         
         /* Activities Section */
         .activities-section {
-            margin: 0 20px 100px;
+            margin: 0 20px 20px;
         }
         
         .activity-list {
@@ -518,61 +570,6 @@
         
         .amount-positive { color: #059669; }
         .amount-negative { color: #DC2626; }
-        
-        /* Bottom Navigation */
-        .bottom-nav {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 40px);
-            max-width: 440px;
-            background: white;
-            border-radius: 30px;
-            padding: 12px 24px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-            z-index: 100;
-        }
-        
-        body.dark .bottom-nav {
-            background: #1E1E2E;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-        }
-        
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            padding: 8px 16px;
-            border-radius: 16px;
-            transition: all 0.3s;
-            cursor: pointer;
-            border: none;
-            background: transparent;
-            color: #9CA3AF;
-        }
-        
-        .nav-item.active {
-            background: linear-gradient(135deg, #DDD6FE 0%, #E9D5FF 100%);
-            color: #7C3AED;
-        }
-        
-        body.dark .nav-item.active {
-            background: rgba(124, 58, 237, 0.2);
-        }
-        
-        .nav-item i {
-            font-size: 20px;
-        }
-        
-        .nav-item span {
-            font-size: 11px;
-            font-weight: 700;
-        }
         
         /* Side Menu */
         .side-menu {
@@ -726,6 +723,38 @@
             color: #9CA3AF;
         }
         
+        /* FIXED Toggle Switch for Dark Mode */
+        .toggle-switch {
+            width: 50px;
+            height: 28px;
+            background: #E5E7EB;
+            border-radius: 14px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        body.dark .toggle-switch {
+            background: #7C3AED;
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            right: 3px;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        body.dark .toggle-switch::after {
+            transform: translateX(-22px);
+        }
+        
         /* Modals */
         .modal {
             position: fixed;
@@ -777,6 +806,27 @@
         
         body.dark .modal-handle {
             background: #374151;
+        }
+        
+        /* FIXED Close Button for Dark Mode */
+        .modal-close-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .modal-close-btn.light {
+            background: #F3F4F6;
+            color: #374151;
+        }
+        
+        body.dark .modal-close-btn.light {
+            background: #374151;
+            color: #F9FAFB;
         }
         
         /* Wallet Card in Modal */
@@ -950,11 +1000,11 @@
 
     <div class="app-container">
         
-        <!-- Header -->
+        <!-- Header - Reduced padding bottom -->
         <header class="main-header">
             <div class="header-pattern"></div>
             
-            <div class="flex justify-between items-start mb-6 relative z-10">
+            <div class="flex justify-between items-start relative z-10">
                 <button onclick="toggleMenu()" class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-white backdrop-blur-sm">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
@@ -977,7 +1027,7 @@
                 
                 <div class="text-white">
                     <p class="text-sm opacity-80 mb-1">مرحباً بك</p>
-                    <h1 id="user-name" class="text-2xl font-black mb-2">جاري التحميل...</h1>
+                    <h1 id="user-name" class="text-2xl font-black mb-1">جاري التحميل...</h1>
                     <div class="level-chip">
                         <i class="fas fa-crown text-yellow-300"></i>
                         <span id="level-text">---</span>
@@ -986,28 +1036,36 @@
             </div>
         </header>
 
-        <!-- Circular Progress Card -->
-        <div class="progress-card">
-            <svg viewBox="0 0 36 36" class="circular-chart">
-                <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                <path id="progress-circle" class="circle" stroke="url(#gradient)" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                <text x="18" y="16" class="progress-label">المستوى</text>
-                <text x="18" y="23" class="percentage" id="progress-text">0%</text>
-            </svg>
-            
-            <defs>
-                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" style="stop-color:#7C3AED;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
-                </linearGradient>
-            </defs>
-            
-            <p class="text-sm text-gray-500 dark:text-gray-400 mt-4 font-bold" id="level-description">
-                ابدأ رحلتك للوصول إلى الامتياز
-            </p>
+        <!-- OLD Circular Progress Design - Restored -->
+        <div class="progress-section">
+            <div class="circular-progress-container">
+                <svg width="0" height="0" style="position:absolute">
+                    <defs>
+                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#7C3AED;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                
+                <div class="circular-progress">
+                    <svg viewBox="0 0 200 200">
+                        <circle class="progress-circle-bg" cx="100" cy="100" r="90"></circle>
+                        <circle id="progress-circle" class="progress-circle" cx="100" cy="100" r="90"></circle>
+                    </svg>
+                    <div class="progress-content">
+                        <div class="progress-percentage" id="progress-text">0%</div>
+                        <div class="progress-label-text">المستوى الحالي</div>
+                    </div>
+                </div>
+                
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-4 font-bold" id="level-description">
+                    ابدأ رحلتك للوصول إلى الامتياز
+                </p>
+            </div>
         </div>
 
-        <!-- Stats Row -->
+        <!-- Stats Row - 2 items only, clickable -->
         <div class="stats-row">
             <div class="stat-item" onclick="openWalletModal()">
                 <div class="stat-icon purple">
@@ -1023,14 +1081,6 @@
                 </div>
                 <div class="text-2xl font-black text-purple-600 dark:text-purple-400 mb-1" id="grade-display">0%</div>
                 <div class="text-xs text-gray-500 font-bold">النسبة</div>
-            </div>
-            
-            <div class="stat-item">
-                <div class="stat-icon orange">
-                    <i class="fas fa-trophy"></i>
-                </div>
-                <div class="text-2xl font-black text-orange-500 mb-1" id="rank-display">#1</div>
-                <div class="text-xs text-gray-500 font-bold">الترتيب</div>
             </div>
         </div>
 
@@ -1091,61 +1141,7 @@
             </div>
             
             <div id="categories-container" class="categories-grid">
-                <div class="category-card-large" onclick="openCategory('tech')">
-                    <div class="category-decoration bg-blue-400"></div>
-                    <div>
-                        <div class="category-icon-large cat-tech">
-                            <i class="fas fa-microchip"></i>
-                        </div>
-                        <div class="category-title">تقنية</div>
-                        <div class="category-count">24 خدمة متاحة</div>
-                    </div>
-                    <div class="category-arrow">
-                        <i class="fas fa-arrow-left"></i>
-                    </div>
-                </div>
-                
-                <div class="category-card-large" onclick="openCategory('design')">
-                    <div class="category-decoration bg-pink-400"></div>
-                    <div>
-                        <div class="category-icon-large cat-design">
-                            <i class="fas fa-palette"></i>
-                        </div>
-                        <div class="category-title">تصميم</div>
-                        <div class="category-count">18 خدمة متاحة</div>
-                    </div>
-                    <div class="category-arrow">
-                        <i class="fas fa-arrow-left"></i>
-                    </div>
-                </div>
-                
-                <div class="category-card-large" onclick="openCategory('marketing')">
-                    <div class="category-decoration bg-orange-400"></div>
-                    <div>
-                        <div class="category-icon-large cat-marketing">
-                            <i class="fas fa-bullhorn"></i>
-                        </div>
-                        <div class="category-title">تسويق</div>
-                        <div class="category-count">15 خدمة متاحة</div>
-                    </div>
-                    <div class="category-arrow">
-                        <i class="fas fa-arrow-left"></i>
-                    </div>
-                </div>
-                
-                <div class="category-card-large" onclick="openCategory('business')">
-                    <div class="category-decoration bg-emerald-400"></div>
-                    <div>
-                        <div class="category-icon-large cat-business">
-                            <i class="fas fa-briefcase"></i>
-                        </div>
-                        <div class="category-title">أعمال</div>
-                        <div class="category-count">32 خدمة متاحة</div>
-                    </div>
-                    <div class="category-arrow">
-                        <i class="fas fa-arrow-left"></i>
-                    </div>
-                </div>
+                <!-- Categories will be populated here -->
             </div>
         </div>
 
@@ -1164,31 +1160,9 @@
             </div>
         </div>
 
-        <!-- Spacer for bottom nav -->
-        <div style="height: 100px;"></div>
-
-        <!-- Bottom Navigation -->
-        <nav class="bottom-nav">
-            <button class="nav-item active" onclick="setActiveNav(this)">
-                <i class="fas fa-home"></i>
-                <span>الرئيسية</span>
-            </button>
-            <button class="nav-item" onclick="openWalletModal()">
-                <i class="fas fa-wallet"></i>
-                <span>المحفظة</span>
-            </button>
-            <button class="nav-item" onclick="openAIAssistant()">
-                <i class="fas fa-robot"></i>
-                <span>AI</span>
-            </button>
-            <button class="nav-item" onclick="toggleMenu()">
-                <i class="fas fa-cog"></i>
-                <span>المزيد</span>
-            </button>
-        </nav>
     </div>
 
-    <!-- Side Menu -->
+    <!-- Side Menu - WITHOUT Wallet -->
     <div class="menu-overlay" id="menu-overlay" onclick="toggleMenu()"></div>
     <div class="side-menu" id="side-menu">
         <div class="menu-header">
@@ -1208,13 +1182,7 @@
         </div>
         
         <div class="menu-items">
-            <button class="menu-item-btn" onclick="openWalletModal(); toggleMenu();">
-                <div class="menu-item-icon purple">
-                    <i class="fas fa-wallet"></i>
-                </div>
-                <span class="menu-item-text">المحفظة</span>
-                <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
-            </button>
+            <!-- Wallet REMOVED from menu -->
             
             <button class="menu-item-btn" onclick="openAIAssistant(); toggleMenu();">
                 <div class="menu-item-icon pink">
@@ -1245,9 +1213,8 @@
                     <i class="fas fa-moon"></i>
                 </div>
                 <span class="menu-item-text">الوضع الليلي</span>
-                <div class="relative inline-block w-12 h-6 bg-gray-200 rounded-full dark:bg-gray-700">
-                    <div class="absolute top-1 right-1 w-4 h-4 bg-white rounded-full transition-transform dark:translate-x-6"></div>
-                </div>
+                <!-- FIXED Toggle Switch -->
+                <div class="toggle-switch" id="menu-toggle-switch"></div>
             </button>
             
             <button class="menu-item-btn" onclick="logout()">
@@ -1259,7 +1226,7 @@
         </div>
     </div>
 
-    <!-- Wallet Modal -->
+    <!-- Wallet Modal - FIXED Close Button -->
     <div class="modal" id="wallet-modal">
         <div class="modal-overlay" onclick="closeModal('wallet-modal')"></div>
         <div class="modal-content">
@@ -1267,8 +1234,9 @@
             
             <div class="p-6">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-black">المحفظة</h2>
-                    <button onclick="closeModal('wallet-modal')" class="w-10 h-10 rounded-2xl bg-gray-100 flex items-center justify-center">
+                    <h2 class="text-2xl font-black dark:text-white">المحفظة</h2>
+                    <!-- FIXED Close button with proper dark mode styling -->
+                    <button onclick="closeModal('wallet-modal')" class="modal-close-btn light">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -1296,7 +1264,7 @@
         </div>
     </div>
 
-    <!-- Transfer Modal -->
+    <!-- Transfer Modal - FIXED Close Button -->
     <div class="modal" id="transfer-modal">
         <div class="modal-overlay" onclick="closeModal('transfer-modal')"></div>
         <div class="modal-content">
@@ -1304,8 +1272,8 @@
             
             <div class="p-6">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-black">تحويل النقاط</h2>
-                    <button onclick="closeModal('transfer-modal')" class="w-10 h-10 rounded-2xl bg-gray-100 flex items-center justify-center">
+                    <h2 class="text-2xl font-black dark:text-white">تحويل النقاط</h2>
+                    <button onclick="closeModal('transfer-modal')" class="modal-close-btn light">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -1332,7 +1300,7 @@
         </div>
     </div>
 
-    <!-- History Modal -->
+    <!-- History Modal - FIXED Close Button -->
     <div class="modal" id="history-modal">
         <div class="modal-overlay" onclick="closeModal('history-modal')"></div>
         <div class="modal-content" style="max-height: 80vh;">
@@ -1340,8 +1308,8 @@
             
             <div class="p-6">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-black">سجل المعاملات</h2>
-                    <button onclick="closeModal('history-modal')" class="w-10 h-10 rounded-2xl bg-gray-100 flex items-center justify-center">
+                    <h2 class="text-2xl font-black dark:text-white">سجل المعاملات</h2>
+                    <button onclick="closeModal('history-modal')" class="modal-close-btn light">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -1355,7 +1323,7 @@
         </div>
     </div>
 
-    <!-- AI Modal -->
+    <!-- AI Modal - FIXED Close Button -->
     <div class="modal" id="ai-modal">
         <div class="modal-overlay" onclick="closeModal('ai-modal')"></div>
         <div class="modal-content" style="height: 80vh;">
@@ -1367,12 +1335,15 @@
                         <i class="fas fa-robot"></i>
                     </div>
                     <div>
-                        <h2 class="text-xl font-black">المساعد الذكي</h2>
+                        <h2 class="text-xl font-black dark:text-white">المساعد الذكي</h2>
                         <div class="flex items-center gap-2 text-sm text-green-500">
                             <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                             متصل الآن
                         </div>
                     </div>
+                    <button onclick="closeModal('ai-modal')" class="modal-close-btn light mr-auto">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
                 
                 <div id="chat-messages" class="flex-1 overflow-y-auto space-y-4 mb-4 hide-scrollbar">
@@ -1380,8 +1351,8 @@
                         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white">
                             <i class="fas fa-robot"></i>
                         </div>
-                        <div class="bg-gray-100 rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]">
-                            <p class="text-sm">مرحباً! كيف يمكنني مساعدتك اليوم؟</p>
+                        <div class="bg-gray-100 dark:bg-gray-700 rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]">
+                            <p class="text-sm dark:text-white">مرحباً! كيف يمكنني مساعدتك اليوم؟</p>
                         </div>
                     </div>
                 </div>
@@ -1435,18 +1406,67 @@
             { threshold: 100, name: 'امتياز' }
         ];
 
+        const categories = [
+            { id: 'tech', name: 'تقنية', count: '24 خدمة متاحة', icon: 'fa-microchip', color: 'cat-tech', decor: 'bg-blue-400' },
+            { id: 'design', name: 'تصميم', count: '18 خدمة متاحة', icon: 'fa-palette', color: 'cat-design', decor: 'bg-pink-400' },
+            { id: 'marketing', name: 'تسويق', count: '15 خدمة متاحة', icon: 'fa-bullhorn', color: 'cat-marketing', decor: 'bg-orange-400' },
+            { id: 'business', name: 'أعمال', count: '32 خدمة متاحة', icon: 'fa-briefcase', color: 'cat-business', decor: 'bg-emerald-400' }
+        ];
+
         function initTheme() {
             const saved = localStorage.getItem('theme');
             if (saved === 'dark') {
                 document.body.classList.add('dark');
+                updateToggleSwitch(true);
+            }
+            renderCategories('grid');
+        }
+
+        function updateToggleSwitch(isDark) {
+            const toggle = document.getElementById('menu-toggle-switch');
+            if (toggle) {
+                if (isDark) {
+                    toggle.classList.add('active');
+                } else {
+                    toggle.classList.remove('active');
+                }
             }
         }
 
         function toggleDarkMode() {
-            document.body.classList.toggle('dark');
             const isDark = document.body.classList.contains('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            showToast(isDark ? 'تم تفعيل الوضع الليلي' : 'تم تفعيل الوضع الفاتح');
+            if (isDark) {
+                document.body.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                updateToggleSwitch(false);
+                showToast('تم تفعيل الوضع الفاتح');
+            } else {
+                document.body.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                updateToggleSwitch(true);
+                showToast('تم تفعيل الوضع الليلي');
+            }
+        }
+
+        function renderCategories(view) {
+            const container = document.getElementById('categories-container');
+            container.className = view === 'grid' ? 'categories-grid' : 'categories-list';
+            
+            container.innerHTML = categories.map(cat => `
+                <div class="category-card-large" onclick="openCategory('${cat.id}')">
+                    <div class="category-decoration ${cat.decor}"></div>
+                    <div class="category-icon-large ${cat.color}">
+                        <i class="fas ${cat.icon}"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="category-title">${cat.name}</div>
+                        <div class="category-count">${cat.count}</div>
+                    </div>
+                    <div class="category-arrow">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function loadUserData() {
@@ -1526,17 +1546,18 @@
             
             document.getElementById('level-text').textContent = currentLevel.name;
             
-            // Update circular progress
+            // Update OLD circular progress
             const circle = document.getElementById('progress-circle');
-            const percentage = gradeNum;
-            const dashArray = `${percentage}, 100`;
-            circle.setAttribute('stroke-dasharray', dashArray);
-            document.getElementById('progress-text').textContent = percentage + '%';
+            const radius = 90;
+            const circumference = 2 * Math.PI * radius;
+            const offset = circumference - (gradeNum / 100) * circumference;
+            circle.style.strokeDashoffset = offset;
+            document.getElementById('progress-text').textContent = gradeNum + '%';
             
             const nextLevel = levels.find(l => l.threshold > gradeNum);
             if (nextLevel) {
                 document.getElementById('level-description').textContent = 
-                    `${percentage}% - التالي: ${nextLevel.name}`;
+                    `${gradeNum}% - التالي: ${nextLevel.name}`;
             } else {
                 document.getElementById('level-description').textContent = 'مبروك! وصلت للامتياز 🎉';
             }
@@ -1621,7 +1642,6 @@
             }
             
             const updates = {};
-            const txId = Date.now();
             
             updates['users/' + currentUserId + '/points'] = currentPoints - amount;
             updates['users/' + toUser + '/points'] = firebase.database.ServerValue.increment(amount);
@@ -1661,8 +1681,8 @@
                         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white">
                             <i class="fas fa-robot"></i>
                         </div>
-                        <div class="bg-gray-100 rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]">
-                            <p class="text-sm">تم استلام رسالتك، سأقوم بالرد عليك قريباً.</p>
+                        <div class="bg-gray-100 dark:bg-gray-700 rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]">
+                            <p class="text-sm dark:text-white">تم استلام رسالتك، سأقوم بالرد عليك قريباً.</p>
                         </div>
                     </div>
                 `;
@@ -1678,22 +1698,7 @@
         function switchView(view, btn) {
             document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            
-            const container = document.getElementById('categories-container');
-            if (view === 'list') {
-                container.classList.remove('categories-grid');
-                container.style.display = 'flex';
-                container.style.flexDirection = 'column';
-            } else {
-                container.style.display = '';
-                container.style.flexDirection = '';
-                container.classList.add('categories-grid');
-            }
-        }
-
-        function setActiveNav(btn) {
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            btn.classList.add('active');
+            renderCategories(view);
         }
 
         function openModal(id) {
