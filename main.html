@@ -48,14 +48,14 @@
             color: #F9FAFB;
         }
         
-        /* Main Container - إضافة overflow hidden لإصلاح التوهج */
+        /* Main Container */
         .app-container {
             max-width: 480px;
             margin: 0 auto;
             min-height: 100vh;
             position: relative;
             background: linear-gradient(180deg, #EDE9FE 0%, #F3F4F6 100%);
-            overflow: hidden; /* إصلاح مشكلة التوهج */
+            overflow: hidden;
         }
         
         body.dark .app-container {
@@ -153,7 +153,7 @@
             margin-top: 6px;
         }
         
-        /* OLD Circular Progress Design - Restored */
+        /* Circular Progress - بدون توهج */
         .progress-section {
             margin: -25px 20px 20px;
             position: relative;
@@ -166,7 +166,7 @@
             padding: 30px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             text-align: center;
-            overflow: hidden; /* إصلاح التوهج */
+            overflow: hidden;
         }
         
         body.dark .circular-progress-container {
@@ -179,14 +179,12 @@
             width: 200px;
             height: 200px;
             margin: 0 auto;
-            overflow: hidden; /* إصلاح التوهج */
         }
         
         .circular-progress svg {
             transform: rotate(-90deg);
             width: 100%;
             height: 100%;
-            overflow: visible;
         }
         
         .progress-circle-bg {
@@ -207,7 +205,7 @@
             stroke-dasharray: 565.48;
             stroke-dashoffset: 565.48;
             transition: stroke-dashoffset 1.5s ease-in-out;
-            filter: drop-shadow(0 0 8px rgba(124, 58, 237, 0.4)); /* تقليل التوهج */
+            /* تم إزالة filter: drop-shadow (التوهج) */
         }
         
         .progress-content {
@@ -248,7 +246,7 @@
             text-align: center;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s;
-            cursor: default; /* تغيير المؤشر لأنه لم يعد قابلاً للنقر */
+            cursor: default;
         }
         
         body.dark .stat-item {
@@ -723,7 +721,7 @@
             color: #9CA3AF;
         }
         
-        /* FIXED Toggle Switch for Dark Mode */
+        /* Toggle Switch for Dark Mode */
         .toggle-switch {
             width: 50px;
             height: 28px;
@@ -808,7 +806,7 @@
             background: #374151;
         }
         
-        /* FIXED Close Button for Dark Mode */
+        /* Close Button for Dark Mode */
         .modal-close-btn {
             width: 40px;
             height: 40px;
@@ -994,7 +992,7 @@
                 <div class="avatar-container">
                     <div class="avatar-ring">
                         <div class="avatar-inner">
-                            <img id="user-avatar" src="https://i.pravatar.cc/150?img=11" alt="Profile">
+                            <img id="user-avatar" src="https://i.postimg.cc/g0Bm32zB/20260207-052318.png" alt="Profile">
                         </div>
                     </div>
                     <div class="online-badge"></div>
@@ -1011,7 +1009,7 @@
             </div>
         </header>
 
-        <!-- OLD Circular Progress Design - Restored -->
+        <!-- Circular Progress - بدون توهج -->
         <div class="progress-section">
             <div class="circular-progress-container">
                 <svg width="0" height="0" style="position:absolute">
@@ -1040,7 +1038,7 @@
             </div>
         </div>
 
-        <!-- Stats Row - 2 items only, تم إزالة onClick من النقاط -->
+        <!-- Stats Row - 2 items only -->
         <div class="stats-row">
             <div class="stat-item">
                 <div class="stat-icon purple">
@@ -1130,7 +1128,7 @@
             
             <div class="menu-profile">
                 <div class="menu-avatar">
-                    <img id="menu-avatar" src="https://i.pravatar.cc/150?img=11" alt="Profile">
+                    <img id="menu-avatar" src="https://i.postimg.cc/g0Bm32zB/20260207-052318.png" alt="Profile">
                 </div>
                 <div>
                     <div class="menu-name" id="menu-name">المستخدم</div>
@@ -1139,7 +1137,6 @@
         </div>
         
         <div class="menu-items">
-            <!-- Wallet REMOVED from menu -->
             
             <button class="menu-item-btn">
                 <div class="menu-item-icon pink">
@@ -1149,8 +1146,6 @@
                 <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
             </button>
             
-         
-            
             <button class="menu-item-btn">
                 <div class="menu-item-icon orange">
                     <i class="fas fa-comments"></i>
@@ -1159,8 +1154,6 @@
                 <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
             </button>
                        
-         
-            
             <button class="menu-item-btn">
                 <div class="menu-item-icon orange">
                     <i class="fas fa-exclamation-triangle"></i>
@@ -1168,12 +1161,12 @@
                 <span class="menu-item-text">الابلاغ والشكاوي</span>
                 <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
             </button>
+            
             <button class="menu-item-btn" onclick="toggleDarkMode()">
                 <div class="menu-item-icon purple">
                     <i class="fas fa-moon"></i>
                 </div>
                 <span class="menu-item-text">الوضع الليلي</span>
-                <!-- FIXED Toggle Switch -->
                 <div class="toggle-switch" id="menu-toggle-switch"></div>
             </button>
             
@@ -1186,7 +1179,7 @@
         </div>
     </div>
 
-    <!-- AI Modal - FIXED Close Button -->
+    <!-- AI Modal -->
     <div class="modal" id="ai-modal">
         <div class="modal-overlay" onclick="closeModal('ai-modal')"></div>
         <div class="modal-content" style="height: 80vh;">
@@ -1340,7 +1333,6 @@
                     userData = newData;
                     previousData = {...newData};
                     updateUI();
-                    loadActivities();
                 } else {
                     createDefaultUser();
                 }
@@ -1381,7 +1373,7 @@
                 major: 'غير محدد',
                 points: 0,
                 grade: '0%',
-                avatar: 'https://i.pravatar.cc/150?img=11'
+                avatar: 'https://i.postimg.cc/g0Bm32zB/20260207-052318.png'
             };
             db.ref('users/' + currentUserId).set(defaultData);
         }
@@ -1391,8 +1383,11 @@
             
             document.getElementById('user-name').textContent = userData.name || 'مستخدم';
             document.getElementById('menu-name').textContent = userData.name || 'مستخدم';
-            document.getElementById('user-avatar').src = userData.avatar || 'https://i.pravatar.cc/150?img=11';
-            document.getElementById('menu-avatar').src = userData.avatar || 'https://i.pravatar.cc/150?img=11';
+            
+            // استخدام الصورة الجديدة في جميع الأماكن
+            const avatarUrl = userData.avatar || 'https://i.postimg.cc/g0Bm32zB/20260207-052318.png';
+            document.getElementById('user-avatar').src = avatarUrl;
+            document.getElementById('menu-avatar').src = avatarUrl;
             
             const gradeStr = userData.grade || '0%';
             const gradeNum = parseInt(gradeStr.replace('%', '')) || 0;
@@ -1409,7 +1404,7 @@
             
             document.getElementById('level-text').textContent = currentLevel.name;
             
-            // Update OLD circular progress
+            // Update circular progress - بدون توهج
             const circle = document.getElementById('progress-circle');
             const radius = 90;
             const circumference = 2 * Math.PI * radius;
@@ -1427,60 +1422,6 @@
             
             const points = userData.points || 0;
             document.getElementById('wallet-balance').textContent = points.toLocaleString();
-        }
-
-        function loadActivities() {
-            const activitiesRef = db.ref('activities/' + currentUserId).limitToLast(5);
-            activitiesRef.on('value', (snapshot) => {
-                const activities = snapshot.val();
-                const container = document.getElementById('activities-list');
-                
-                if (!activities) {
-                    container.innerHTML = '<div class="text-center text-gray-400 py-8">لا توجد نشاطات</div>';
-                    return;
-                }
-                
-                const sorted = Object.entries(activities).sort((a, b) => b[1].timestamp - a[1].timestamp);
-                
-                container.innerHTML = sorted.map(([key, activity]) => {
-                    let iconClass, icon, amountClass = '';
-                    
-                    switch(activity.type) {
-                        case 'level_up': 
-                            iconClass = 'gold'; 
-                            icon = 'fa-trophy'; 
-                            break;
-                        case 'earn': 
-                        case 'transfer_in': 
-                            iconClass = 'green'; 
-                            icon = 'fa-arrow-down'; 
-                            amountClass = 'amount-positive';
-                            break;
-                        case 'spend': 
-                        case 'transfer_out': 
-                            iconClass = 'red'; 
-                            icon = 'fa-arrow-up'; 
-                            amountClass = 'amount-negative';
-                            break;
-                        default: 
-                            iconClass = 'gold'; 
-                            icon = 'fa-info';
-                    }
-                    
-                    return `
-                        <div class="activity-item">
-                            <div class="activity-icon ${iconClass}">
-                                <i class="fas ${icon}"></i>
-                            </div>
-                            <div class="activity-content">
-                                <div class="activity-title">${activity.title}</div>
-                                <div class="activity-time">${new Date(activity.timestamp).toLocaleDateString('ar-SA')}</div>
-                            </div>
-                            ${activity.amount ? `<div class="activity-amount ${amountClass}">${activity.type === 'earn' || activity.type === 'transfer_in' ? '+' : '-'}${activity.amount}</div>` : ''}
-                        </div>
-                    `;
-                }).join('');
-            });
         }
 
         function sendAIMessage() {
@@ -1541,12 +1482,12 @@
         function openAIAssistant() { openModal('ai-modal'); }
         
         function openTool(tool) {
-            const names = { maintenance: 'الصيانة', store: 'المتجر', ai: 'المساعد الذكي', calendar: 'المواعيد' };
+            const names = { maintenance: 'التعليمات', store: 'الدروس', ai: 'الأنشطة', calendar: 'الاختبارات' };
             showToast(names[tool] || tool);
         }
 
         function openCategory(cat) {
-            const names = { tech: 'التقنية', design: 'التصميم', marketing: 'التسويق', business: 'الأعمال' };
+            const names = { tech: 'البوت الذكي', design: 'الأدوات', marketing: 'متجر الأكاديمية', business: 'الجدول' };
             showToast(names[cat] || cat);
         }
 
