@@ -1086,7 +1086,7 @@
                     <span class="action-label">انشطة</span>
                 </button>
                 
-                <button class="action-btn" onclick="openTool('calendar')">
+                <button class="action-btn" onclick="openTestsPage()">
                     <div class="action-icon orange">
                         <i class="fas fa-book-open"></i>
                     </div>
@@ -1138,7 +1138,7 @@
         
         <div class="menu-items">
             
-            <button class="menu-item-btn">
+            <button class="menu-item-btn" onclick="openLearnPage()">
                 <div class="menu-item-icon pink">
                     <i class="fas fa-heart"></i>
                 </div>
@@ -1146,7 +1146,7 @@
                 <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
             </button>
             
-            <button class="menu-item-btn">
+            <button class="menu-item-btn" onclick="openActivitiesPage()">
                 <div class="menu-item-icon orange">
                     <i class="fas fa-comments"></i>
                 </div>
@@ -1154,7 +1154,7 @@
                 <span class="menu-item-arrow"><i class="fas fa-chevron-left"></i></span>
             </button>
                        
-            <button class="menu-item-btn">
+            <button class="menu-item-btn" onclick="openToolsPage()">
                 <div class="menu-item-icon orange">
                     <i class="fas fa-exclamation-triangle"></i>
                 </div>
@@ -1229,13 +1229,29 @@
         <span id="toast-message">رسالة</span>
     </div>
 <script>
-function openLearnPage() {
-    if (window.AndroidApp && typeof AndroidApp.openLearn === "function") {
-        AndroidApp.openLearn();
+function callAndroid(fn) {
+    if (window.AndroidApp && typeof AndroidApp[fn] === "function") {
+        AndroidApp[fn]();
     } else {
         alert("الميزة تعمل من داخل التطبيق فقط");
     }
 }
+
+/* ===== الوصول السريع ===== */
+function openLearnPage() { callAndroid("openLearn"); }
+function openLessonsPage() { callAndroid("openLessons"); }
+function openActivitiesPage() { callAndroid("openActivities"); }
+function openTestsPage() { callAndroid("openTests"); }
+
+/* ===== الأقسام ===== */
+function openBotPage() { callAndroid("openBot"); }
+function openToolsPage() { callAndroid("openTools"); }
+function openStorePage() { callAndroid("openStore"); }
+function openSchedulePage() { callAndroid("openSchedule"); }
+
+/* ===== القائمة الجانبية ===== */
+function logout() { callAndroid("logout"); }
+</script>
 </script>
     <script>
         // Firebase Config
@@ -1278,13 +1294,18 @@ function openLearnPage() {
         ];
 
         function initTheme() {
-            const saved = localStorage.getItem('theme');
-            if (saved === 'dark') {
-                document.body.classList.add('dark');
-                updateToggleSwitch(true);
-            }
-            renderCategories('grid');
-        }
+    const theme = localStorage.getItem('theme');
+
+    if (theme === 'dark') {
+        document.body.classList.add('dark');
+        updateToggleSwitch(true);
+    } else {
+        document.body.classList.remove('dark');
+        updateToggleSwitch(false);
+    }
+
+    renderCategories('grid');
+}
 
         function updateToggleSwitch(isDark) {
             const toggle = document.getElementById('menu-toggle-switch');
@@ -1522,10 +1543,14 @@ function openCategory(cat) {
 
         function showNotifications() { showToast('لديك 3 إشعارات جديدة'); }
 
-        function logout() {
-            showToast('تم تسجيل الخروج');
-            setTimeout(() => location.reload(), 1000);
-        }
+       
+function logout() {
+    if (window.AndroidApp && AndroidApp.logout) {
+        AndroidApp.logout();
+    } else {
+        alert("الميزة تعمل من داخل التطبيق فقط");
+    }
+}
 
         function showToast(message) {
             const toast = document.getElementById('toast');
