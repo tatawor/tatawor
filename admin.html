@@ -522,6 +522,7 @@ body {
   display: flex;
   gap: 8px;
   margin-bottom: 10px;
+  flex-wrap: wrap;
 }
 
 .filter-select {
@@ -552,18 +553,20 @@ body {
   white-space: nowrap;
 }
 
+/* ✅ تعديل: تصغير حجم الخط في قائمة الطلاب */
 .student-item {
   background: var(--bg-input);
   border-radius: 8px;
-  padding: 10px 12px;
+  padding: 8px 10px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   cursor: pointer;
   border: 1px solid transparent;
   margin-bottom: 6px;
-  font-size: 11px;
+  font-size: 10px;
   transition: all 0.15s;
+  position: relative;
 }
 
 .student-item:last-child {
@@ -575,15 +578,21 @@ body {
   background: #fff;
 }
 
+.student-item.selected {
+  background: #e0e7ff;
+  border-color: var(--primary);
+}
+
+/* ✅ تعديل: تصغير الأفاتار */
 .student-item-avatar {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   background: var(--primary);
   border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 800;
   color: #fff;
   flex-shrink: 0;
@@ -593,11 +602,12 @@ body {
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   min-width: 0;
   overflow: hidden;
 }
 
+/* ✅ تعديل: تصغير الاسم */
 .student-item-name {
   font-weight: 800;
   color: var(--text-primary);
@@ -605,18 +615,19 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   flex-shrink: 0;
-  max-width: 80px;
+  max-width: 70px;
+  font-size: 10px;
 }
 
 .student-item-id {
   color: var(--text-muted);
-  font-size: 10px;
+  font-size: 9px;
   flex-shrink: 0;
 }
 
 .student-item-major {
   color: var(--text-secondary);
-  font-size: 10px;
+  font-size: 9px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -627,14 +638,209 @@ body {
 .student-item-points {
   background: var(--primary);
   color: #fff;
-  padding: 4px 10px;
+  padding: 3px 8px;
   border-radius: 12px;
-  font-size: 11px;
+  font-size: 9px;
   font-weight: 800;
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: 2px;
+}
+
+/* ✅ جديد: checkbox للتحديد */
+.student-checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--primary);
+  flex-shrink: 0;
+}
+
+/* ✅ جديد: أزرار التحديد الجماعي */
+.bulk-actions {
+  display: none;
+  background: var(--bg-card);
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 12px;
+  gap: 8px;
+  flex-wrap: wrap;
+  animation: slideDown 0.3s ease;
+}
+
+.bulk-actions.show {
+  display: flex;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.bulk-info {
+  font-size: 11px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+
+.bulk-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.bulk-delete-btn {
+  background: var(--danger);
+  color: #fff;
+}
+
+.bulk-edit-btn {
+  background: var(--warning);
+  color: #fff;
+}
+
+/* ✅ جديد: أزرار عرض القائمة */
+.view-toggle {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-input);
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.view-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  background: transparent;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.view-btn.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* ✅ جديد: عرض الشبكة */
+.students-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.grid-item {
+  background: var(--bg-input);
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+}
+
+.grid-item:hover {
+  border-color: var(--primary);
+  background: #fff;
+}
+
+.grid-item.selected {
+  background: #e0e7ff;
+  border-color: var(--primary);
+}
+
+.grid-item .student-checkbox {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 16px;
+  height: 16px;
+}
+
+.grid-item-avatar {
+  width: 40px;
+  height: 40px;
+  background: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.grid-item-name {
+  font-weight: 800;
+  font-size: 11px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.grid-item-id {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+.grid-item-major {
+  font-size: 9px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.grid-item-points {
+  background: var(--primary);
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+/* ✅ جديد: زر حذف في القائمة */
+.delete-item-btn {
+  background: var(--danger);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 9px;
+  cursor: pointer;
+  margin-right: 4px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.student-item:hover .delete-item-btn {
+  opacity: 1;
 }
 
 .empty-list {
@@ -1064,6 +1270,7 @@ body.is-super .page.super-only.active {
   .nav-btn { padding: 4px 8px; font-size: 9px; }
   .nav-icon { font-size: 16px; }
   .login-box { padding: 24px 16px; }
+  .students-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -1121,7 +1328,7 @@ body.is-super .page.super-only.active {
       <div class="card">
         <div class="card-title">🔍 بحث</div>
         <div class="search-box">
-          <input type="text" id="searchInput" class="search-input" placeholder="ابحث..." oninput="handleSearch(this.value)" />
+          <input type="text" id="searchInput" class="search-input" placeholder="ابحث بالاسم أو الرقم أو الجوال..." oninput="handleSearch(this.value)" />
           <button class="search-btn" onclick="searchStudent()">بحث</button>
           <div id="suggestions" class="suggestions"></div>
         </div>
@@ -1136,8 +1343,8 @@ body.is-super .page.super-only.active {
         
         <div class="form-row">
           <div class="form-group">
-            <label>الرقم</label>
-            <input type="text" id="studentId" placeholder="12345" />
+            <label>الرقم الأكاديمي (4 أرقام كحد أقصى)</label>
+            <input type="text" id="studentId" placeholder="1234" maxlength="4" oninput="validateAcademicId(this)" />
           </div>
           <div class="form-group">
             <label>الاسم</label>
@@ -1196,7 +1403,33 @@ body.is-super .page.super-only.active {
             <span id="sortIcon">🔤</span>
             <span id="sortText">أ-ي</span>
           </button>
+          <!-- ✅ جديد: أزرار تبديل العرض -->
+          <div class="view-toggle">
+            <button class="view-btn active" onclick="setViewMode('list', this)" title="قائمة">
+              <span>☰</span>
+              <span>قائمة</span>
+            </button>
+            <button class="view-btn" onclick="setViewMode('grid', this)" title="شبكة">
+              <span>⊞</span>
+              <span>شبكة</span>
+            </button>
+          </div>
         </div>
+      </div>
+
+      <!-- ✅ جديد: أدوات التحديد الجماعي -->
+      <div id="bulkActions" class="bulk-actions">
+        <div class="bulk-info">
+          <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll()" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary);">
+          <span>تحديد الكل</span>
+          <span id="selectedCount" style="font-weight: 800; color: var(--primary);">(0)</span>
+        </div>
+        <button class="bulk-btn bulk-edit-btn" onclick="bulkEditMajor()">
+          ✏️ تغيير التخصص
+        </button>
+        <button class="bulk-btn bulk-delete-btn" onclick="bulkDelete()">
+          🗑️ حذف
+        </button>
       </div>
 
       <!-- القائمة -->
@@ -1223,8 +1456,8 @@ body.is-super .page.super-only.active {
         
         <div class="form-row">
           <div class="form-group">
-            <label>الرقم الأكاديمي</label>
-            <input type="text" id="codeStudentId" placeholder="12345" />
+            <label>الرقم الأكاديمي (4 أرقام كحد أقصى)</label>
+            <input type="text" id="codeStudentId" placeholder="1234" maxlength="4" oninput="validateAcademicId(this)" />
           </div>
           <div class="form-group">
             <label>عدد النقاط</label>
@@ -1425,6 +1658,10 @@ let modalCallback = null;
 let currentGeneratedCode = null;
 let allLogs = [];
 let allAdmins = [];
+// ✅ جديد: متغيرات للتحديد الجماعي وطريقة العرض
+let selectedStudents = new Set();
+let currentViewMode = 'list'; // 'list' or 'grid'
+let currentFilteredStudents = [];
 
 // التحقق من وجود المشرفين في Firebase
 async function initializeAdmins() {
@@ -1531,6 +1768,10 @@ function logout() {
   
   // ✅ تفعيل الصفحة الأولى فقط
   document.getElementById('pageManage').classList.add('active');
+  
+  // ✅ إعادة تعيين التحديدات
+  selectedStudents.clear();
+  currentViewMode = 'list';
 }
 
 function setupInterfaceByRole() {
@@ -1853,6 +2094,10 @@ function loadStudents() {
     const data = snapshot.val() || {};
     allStudents = Object.entries(data).map(([id, s]) => ({ id, ...s }));
     updateMajorsList();
+    // ✅ تحديث القائمة إذا كنا في صفحة القائمة
+    if (document.getElementById('pageList').classList.contains('active')) {
+      renderStudentsList();
+    }
   });
 }
 
@@ -1905,6 +2150,17 @@ function updateMajorsList() {
   });
 }
 
+// ✅ جديد: التحقق من الرقم الأكاديمي (4 أرقام كحد أقصى)
+function validateAcademicId(input) {
+  // السماح فقط بالأرقام
+  input.value = input.value.replace(/[^0-9]/g, '');
+  // تقييد 4 أرقام كحد أقصى (maxlength في HTML يتعامل مع هذا أيضاً)
+  if (input.value.length > 4) {
+    input.value = input.value.slice(0, 4);
+  }
+}
+
+// ✅ جديد: البحث المحسن بالاسم أو الرقم أو الجوال
 function handleSearch(value) {
   const sug = document.getElementById('suggestions');
   if (!sug) return;
@@ -1914,9 +2170,11 @@ function handleSearch(value) {
     return;
   }
   
+  // البحث في الاسم أو الرقم أو رقم الجوال
   const matches = allStudents.filter(s => 
-    (s.name && s.name.includes(value)) || 
-    (s.id && s.id.includes(value))
+    (s.name && s.name.toLowerCase().includes(value.toLowerCase())) || 
+    (s.id && s.id.includes(value)) ||
+    (s.whatsappLink && s.whatsappLink.includes(value))
   ).slice(0, 5);
   
   sug.innerHTML = matches.length === 0 ? '<div class="suggestion-item">لا توجد نتائج</div>' :
@@ -1925,7 +2183,7 @@ function handleSearch(value) {
         <div class="suggestion-avatar">${s.name ? s.name[0] : '؟'}</div>
         <div style="flex:1">
           <div style="font-weight:800">${s.name}</div>
-          <div style="font-size:10px;color:var(--text-secondary)">${s.id} | ${s.major || 'بدون'}</div>
+          <div style="font-size:10px;color:var(--text-secondary)">${s.id} | ${s.major || 'بدون'} | ${s.whatsappLink || 'لا يوجد جوال'}</div>
         </div>
         <div style="background:var(--primary);color:#fff;padding:4px 10px;border-radius:12px;font-weight:800;font-size:11px">⭐ ${s.points || 0}</div>
       </div>
@@ -1935,7 +2193,12 @@ function handleSearch(value) {
 
 function searchStudent() {
   const val = document.getElementById('searchInput')?.value || '';
-  const student = allStudents.find(s => s.id === val || (s.name && s.name.includes(val)));
+  // البحث في الاسم أو الرقم أو الجوال
+  const student = allStudents.find(s => 
+    s.id === val || 
+    (s.name && s.name.includes(val)) ||
+    (s.whatsappLink && s.whatsappLink.includes(val))
+  );
   if (student) selectStudent(student.id);
   else showMessage('❌ لم يتم العثور على الطالب', 'error');
 }
@@ -1981,6 +2244,12 @@ async function addStudent() {
   
   if (!id || !name) {
     showMessage('⚠️ الرقم والاسم مطلوبان', 'error');
+    return;
+  }
+  
+  // ✅ التحقق من أن الرقم الأكاديمي 4 أرقام كحد أقصى
+  if (id.length > 4) {
+    showMessage('⚠️ الرقم الأكاديمي يجب أن يكون 4 أرقام كحد أقصى', 'error');
     return;
   }
   
@@ -2044,67 +2313,21 @@ async function saveStudent() {
   }
 }
 
-async function updatePoints() {
-  const id = document.getElementById('studentId')?.value;
-  const change = parseInt(document.getElementById('pointsChange')?.value);
-  
-  if (!id) {
-    showMessage('⚠️ اختر طالباً أولاً', 'error');
-    return;
-  }
-  
-  if (isNaN(change) || change === 0) {
-    showMessage('⚠️ أدخل رقماً صحيحاً غير صفر', 'error');
-    return;
-  }
-  
-  const current = parseInt(document.getElementById('currentPoints')?.textContent) || 0;
-  const newPoints = Math.max(0, current + change);
-  const studentName = document.getElementById('studentName')?.value || id;
-  
-  try {
-    await db.ref('users/' + id).update({ points: newPoints });
-    
-    // تسجيل فقط للمديرين
-    if (currentAdmin.role === 'super') {
-      await addLog(
-        change > 0 ? 'add' : 'deduct',
-        change > 0 ? `إضافة نقاط للطالب` : `خصم نقاط من الطالب`,
-        id,
-        studentName,
-        change
-      );
-    }
-    
-    const currentPointsEl = document.getElementById('currentPoints');
-    if (currentPointsEl) currentPointsEl.textContent = newPoints;
-    
-    const pointsChangeEl = document.getElementById('pointsChange');
-    if (pointsChangeEl) pointsChangeEl.value = '';
-    
-    showMessage(`✅ تم ${change > 0 ? 'إضافة' : 'خصم'} ${Math.abs(change)} نقطة`, 'success');
-  } catch (error) {
-    showMessage('❌ خطأ: ' + error.message, 'error');
-  }
-}
-
 async function deleteStudent() {
   const id = document.getElementById('studentId')?.value;
-  const name = document.getElementById('studentName')?.value;
-  
   if (!id) {
-    showMessage('⚠️ اختر طالباً للحذف', 'error');
+    showMessage('⚠️ لا يوجد طالب محدد', 'error');
     return;
   }
   
-  const confirmed = await showModal('🗑️', 'تأكيد الحذف', `حذف "${name}"؟`);
+  const confirmed = await showModal('🗑️', 'تأكيد الحذف', `حذف الطالب "${document.getElementById('studentName')?.value}"؟`);
   if (!confirmed) return;
   
   try {
     await db.ref('users/' + id).remove();
     
     if (currentAdmin.role === 'super') {
-      await addLog('delete', `حذف الطالب من النظام`, id, name);
+      await addLog('delete', `حذف طالب`, id, document.getElementById('studentName')?.value);
     }
     
     showMessage('🗑️ تم الحذف بنجاح', 'success');
@@ -2115,70 +2338,230 @@ async function deleteStudent() {
 }
 
 function clearForm() {
-  currentStudent = null;
-  
-  const fields = ['studentId', 'studentName', 'studentGrade', 'studentWhatsapp', 'studentPassword', 'pointsChange'];
+  const fields = ['studentId', 'studentName', 'studentGrade', 'studentMajor', 'studentWhatsapp', 'studentPassword'];
   fields.forEach(id => {
     const el = document.getElementById(id);
-    if (el) el.value = '';
+    if (el) {
+      el.value = '';
+      el.readOnly = false;
+    }
   });
-  
-  const majorEl = document.getElementById('studentMajor');
-  if (majorEl) majorEl.value = '';
-  
-  const studentIdEl = document.getElementById('studentId');
-  if (studentIdEl) studentIdEl.readOnly = false;
-  
-  const currentPointsEl = document.getElementById('currentPoints');
-  if (currentPointsEl) currentPointsEl.textContent = '0';
-  
-  const sug = document.getElementById('suggestions');
-  if (sug) sug.style.display = 'none';
+  document.getElementById('currentPoints').textContent = '0';
+  currentStudent = null;
 }
 
-function formatGrade(input) {
-  if (!input) return;
-  let v = input.value.replace('%', '').trim();
-  if (v && !v.endsWith('%')) input.value = v + '%';
-}
-
-function renderStudentsList() {
-  const filter = document.getElementById('filterMajor')?.value || '';
-  let list = filter ? allStudents.filter(s => s.major === filter) : [...allStudents];
-  
-  list.sort((a, b) => {
-    const nameA = (a.name || '').toLowerCase();
-    const nameB = (b.name || '').toLowerCase();
-    return sortAsc ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
-  });
-  
-  const container = document.getElementById('studentsList');
-  if (!container) return;
-  
-  const listCountEl = document.getElementById('listCount');
-  if (listCountEl) listCountEl.textContent = list.length;
-  
-  if (list.length === 0) {
-    container.innerHTML = `
-      <div class="empty-list">
-        <div class="empty-list-icon">📭</div>
-        <div>لا يوجد طلاب ${filter ? 'بهذا التخصص' : ''}</div>
-      </div>
-    `;
+async function updatePoints() {
+  if (!currentStudent) {
+    showMessage('⚠️ اختر طالباً أولاً', 'error');
     return;
   }
   
-  container.innerHTML = list.map(s => `
-    <div class="student-item" onclick="selectFromList('${s.id}')">
-      <div class="student-item-avatar">${s.name ? s.name[0] : '؟'}</div>
-      <div class="student-item-info">
-        <span class="student-item-name">${s.name || 'بدون'}</span>
-        <span class="student-item-id">| ${s.id}</span>
-        <span class="student-item-major">| ${s.major || 'بدون تخصص'}</span>
-      </div>
-      <div class="student-item-points">⭐ ${s.points || 0}</div>
-    </div>
-  `).join('');
+  const change = parseInt(document.getElementById('pointsChange')?.value) || 0;
+  if (change === 0) {
+    showMessage('⚠️ أدخل قيمة', 'error');
+    return;
+  }
+  
+  const newPoints = (currentStudent.points || 0) + change;
+  if (newPoints < 0) {
+    showMessage('⚠️ النقاط لا يمكن أن تكون سالبة', 'error');
+    return;
+  }
+  
+  try {
+    await db.ref('users/' + currentStudent.id).update({ points: newPoints });
+    
+    const action = change > 0 ? 'add' : 'deduct';
+    const actionText = change > 0 ? 'إضافة' : 'خصم';
+    
+    if (currentAdmin.role === 'super') {
+      await addLog(action, `${actionText} نقاط`, currentStudent.id, currentStudent.name, change);
+    }
+    
+    document.getElementById('currentPoints').textContent = newPoints;
+    document.getElementById('pointsChange').value = '';
+    currentStudent.points = newPoints;
+    
+    showMessage(`✅ تم ${actionText} ${Math.abs(change)} نقطة`, 'success');
+  } catch (e) {
+    showMessage('❌ خطأ: ' + e.message, 'error');
+  }
+}
+
+function formatGrade(input) {
+  let val = input.value.replace(/[^0-9.]/g, '');
+  if (val && !val.includes('%')) val += '%';
+  input.value = val;
+}
+
+// ==================== ✅ قائمة الطلاب المحدثة ====================
+
+// ✅ جديد: تبديل طريقة العرض
+function setViewMode(mode, btn) {
+  currentViewMode = mode;
+  
+  // تحديث الأزرار
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  
+  renderStudentsList();
+}
+
+// ✅ جديد: تحديد/إلغاء تحديد طالب
+function toggleStudentSelection(id, event) {
+  if (event) event.stopPropagation();
+  
+  if (selectedStudents.has(id)) {
+    selectedStudents.delete(id);
+  } else {
+    selectedStudents.add(id);
+  }
+  
+  updateBulkActions();
+  renderStudentsList(); // إعادة العرض لتحديث التصميم
+}
+
+// ✅ جديد: تحديد/إلغاء تحديد الكل
+function toggleSelectAll() {
+  const checkbox = document.getElementById('selectAllCheckbox');
+  const isChecked = checkbox.checked;
+  
+  if (isChecked) {
+    // تحديد كل الطلاب المعروضين حالياً
+    currentFilteredStudents.forEach(s => selectedStudents.add(s.id));
+  } else {
+    // إلغاء تحديد الكل
+    selectedStudents.clear();
+  }
+  
+  updateBulkActions();
+  renderStudentsList();
+}
+
+// ✅ جديد: تحديث أدوات التحديد الجماعي
+function updateBulkActions() {
+  const bulkActions = document.getElementById('bulkActions');
+  const selectedCount = document.getElementById('selectedCount');
+  const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+  
+  if (selectedStudents.size > 0) {
+    bulkActions.classList.add('show');
+    selectedCount.textContent = `(${selectedStudents.size})`;
+    
+    // تحديث حالة checkbox الكل
+    const allSelected = currentFilteredStudents.length > 0 && 
+                       currentFilteredStudents.every(s => selectedStudents.has(s.id));
+    selectAllCheckbox.checked = allSelected;
+  } else {
+    bulkActions.classList.remove('show');
+    selectAllCheckbox.checked = false;
+  }
+}
+
+// ✅ جديد: حذف جماعي
+async function bulkDelete() {
+  if (selectedStudents.size === 0) return;
+  
+  const confirmed = await showModal('🗑️', 'تأكيد الحذف الجماعي', `حذف ${selectedStudents.size} طالب؟`);
+  if (!confirmed) return;
+  
+  let deletedCount = 0;
+  const promises = [];
+  
+  selectedStudents.forEach(id => {
+    promises.push(
+      db.ref('users/' + id).remove().then(() => {
+        deletedCount++;
+      })
+    );
+  });
+  
+  try {
+    await Promise.all(promises);
+    
+    if (currentAdmin.role === 'super') {
+      await addLog('delete', `حذف جماعي لـ ${deletedCount} طالب`);
+    }
+    
+    showMessage(`🗑️ تم حذف ${deletedCount} طالب`, 'success');
+    selectedStudents.clear();
+    updateBulkActions();
+  } catch (e) {
+    showMessage('❌ خطأ: ' + e.message, 'error');
+  }
+}
+
+// ✅ جديد: تغيير التخصص للمجموعة
+async function bulkEditMajor() {
+  if (selectedStudents.size === 0) return;
+  
+  const result = await showModalWithInput('✏️', 'تغيير التخصص', `تغيير التخصص لـ ${selectedStudents.size} طالب إلى:`);
+  if (!result.confirmed || !result.value) return;
+  
+  const newMajor = result.value.trim();
+  if (!newMajor) {
+    showMessage('⚠️ أدخل اسم التخصص', 'error');
+    return;
+  }
+  
+  let updatedCount = 0;
+  const promises = [];
+  
+  selectedStudents.forEach(id => {
+    promises.push(
+      db.ref('users/' + id).update({ 
+        major: newMajor,
+        updatedAt: new Date().toISOString()
+      }).then(() => {
+        updatedCount++;
+      })
+    );
+  });
+  
+  try {
+    await Promise.all(promises);
+    
+    if (currentAdmin.role === 'super') {
+      await addLog('edit', `تغيير تخصص جماعي لـ ${updatedCount} طالب إلى: ${newMajor}`);
+    }
+    
+    showMessage(`✅ تم تحديث ${updatedCount} طالب`, 'success');
+    selectedStudents.clear();
+    updateBulkActions();
+    
+    // إضافة التخصص الجديد للقائمة إذا لم يكن موجوداً
+    if (!availableMajors.includes(newMajor)) {
+      availableMajors.push(newMajor);
+      availableMajors.sort();
+      updateMajorsList();
+    }
+  } catch (e) {
+    showMessage('❌ خطأ: ' + e.message, 'error');
+  }
+}
+
+// ✅ جديد: حذف طالب مباشرة من القائمة
+async function quickDeleteStudent(id, name, event) {
+  if (event) event.stopPropagation();
+  
+  const confirmed = await showModal('🗑️', 'تأكيد الحذف', `حذف الطالب "${name}"؟`);
+  if (!confirmed) return;
+  
+  try {
+    await db.ref('users/' + id).remove();
+    
+    if (currentAdmin.role === 'super') {
+      await addLog('delete', `حذف طالب من القائمة`, id, name);
+    }
+    
+    // إزالة من التحديدات إذا كان محدداً
+    selectedStudents.delete(id);
+    updateBulkActions();
+    
+    showMessage('🗑️ تم الحذف', 'success');
+  } catch (e) {
+    showMessage('❌ خطأ: ' + e.message, 'error');
+  }
 }
 
 function filterStudents() {
@@ -2187,105 +2570,92 @@ function filterStudents() {
 
 function toggleSort() {
   sortAsc = !sortAsc;
-  const sortIcon = document.getElementById('sortIcon');
-  const sortText = document.getElementById('sortText');
-  if (sortIcon) sortIcon.textContent = sortAsc ? '🔤' : '🔡';
-  if (sortText) sortText.textContent = sortAsc ? 'أ-ي' : 'ي-أ';
+  document.getElementById('sortIcon').textContent = sortAsc ? '🔤' : '🔡';
+  document.getElementById('sortText').textContent = sortAsc ? 'أ-ي' : 'ي-أ';
   renderStudentsList();
 }
 
-function selectFromList(id) {
-  selectStudent(id);
-  showPage('pageManage', document.querySelector('.nav-btn'));
+// ✅ محدث: عرض قائمة الطلاب مع التحديد وطريقة العرض
+function renderStudentsList() {
+  const container = document.getElementById('studentsList');
+  if (!container) return;
+  
+  const filterMajor = document.getElementById('filterMajor')?.value || '';
+  
+  let filtered = allStudents;
+  if (filterMajor) {
+    filtered = filtered.filter(s => s.major === filterMajor);
+  }
+  
+  filtered.sort((a, b) => {
+    const nameA = (a.name || '').localeCompare(b.name || '', 'ar');
+    return sortAsc ? nameA : -nameA;
+  });
+  
+  // حفظ الطلاب المعروضين حالياً للتحديد
+  currentFilteredStudents = filtered;
+  
+  document.getElementById('listCount').textContent = filtered.length;
+  
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="empty-list">
+        <div class="empty-list-icon">📭</div>
+        <div>لا يوجد طلاب</div>
+      </div>
+    `;
+    return;
+  }
+  
+  if (currentViewMode === 'grid') {
+    // عرض الشبكة
+    container.className = 'students-grid';
+    container.innerHTML = filtered.map(s => {
+      const isSelected = selectedStudents.has(s.id);
+      return `
+        <div class="grid-item ${isSelected ? 'selected' : ''}" onclick="selectStudent('${s.id}')">
+          <input type="checkbox" class="student-checkbox" 
+                 ${isSelected ? 'checked' : ''} 
+                 onclick="toggleStudentSelection('${s.id}', event)"
+                 title="تحديد">
+          <div class="grid-item-avatar">${s.name ? s.name[0] : '؟'}</div>
+          <div class="grid-item-name">${s.name}</div>
+          <div class="grid-item-id">${s.id}</div>
+          <div class="grid-item-major">${s.major || 'بدون'}</div>
+          <div class="grid-item-points">⭐ ${s.points || 0}</div>
+          <button class="delete-item-btn" onclick="quickDeleteStudent('${s.id}', '${s.name}', event)" title="حذف">🗑️</button>
+        </div>
+      `;
+    }).join('');
+  } else {
+    // عرض القائمة (الافتراضي)
+    container.className = 'students-list';
+    container.innerHTML = filtered.map(s => {
+      const isSelected = selectedStudents.has(s.id);
+      return `
+        <div class="student-item ${isSelected ? 'selected' : ''}">
+          <input type="checkbox" class="student-checkbox" 
+                 ${isSelected ? 'checked' : ''} 
+                 onclick="toggleStudentSelection('${s.id}', event)"
+                 title="تحديد">
+          <div class="student-item-avatar" onclick="selectStudent('${s.id}')">${s.name ? s.name[0] : '؟'}</div>
+          <div class="student-item-info" onclick="selectStudent('${s.id}')">
+            <div class="student-item-name">${s.name}</div>
+            <div class="student-item-id">${s.id}</div>
+            <div class="student-item-major">${s.major || 'بدون'}</div>
+          </div>
+          <div class="student-item-points" onclick="selectStudent('${s.id}')">
+            <span>⭐</span>
+            <span>${s.points || 0}</span>
+          </div>
+          <button class="delete-item-btn" onclick="quickDeleteStudent('${s.id}', '${s.name}', event)" title="حذف">🗑️</button>
+        </div>
+      `;
+    }).join('');
+  }
 }
 
 // ==================== الأكواد ====================
-
-function generateRandomCode() {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let code = '';
-  for (let i = 0; i < 8; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return code;
-}
-
-async function generateCode() {
-  const studentId = document.getElementById('codeStudentId')?.value.trim();
-  const points = parseInt(document.getElementById('codePoints')?.value);
-  
-  if (!studentId) {
-    showMessage('⚠️ أدخل الرقم الأكاديمي', 'error');
-    return;
-  }
-  
-  if (!points || points <= 0) {
-    showMessage('⚠️ أدخل عدد النقاط الصحيح', 'error');
-    return;
-  }
-  
-  const student = allStudents.find(s => s.id === studentId);
-  if (!student) {
-    showMessage('❌ الطالب غير موجود', 'error');
-    return;
-  }
-  
-  const code = generateRandomCode();
-  const codeData = {
-    code: code,
-    studentId: studentId,
-    studentName: student.name,
-    points: points,
-    createdAt: new Date().toISOString(),
-    used: false,
-    usedAt: null,
-    usedBy: null,
-    generatedBy: currentAdmin.name
-  };
-  
-  try {
-    await db.ref('codes/' + code).set(codeData);
-    currentGeneratedCode = code;
-    
-    if (currentAdmin.role === 'super') {
-      await addLog('generate-code', `توليد كود شحن: ${points} نقطة للطالب ${student.name}`, studentId, student.name);
-    }
-    
-    const generatedCodeText = document.getElementById('generatedCodeText');
-    const generatedCodeStudent = document.getElementById('generatedCodeStudent');
-    const generatedCodePoints = document.getElementById('generatedCodePoints');
-    const generatedCodeDisplay = document.getElementById('generatedCodeDisplay');
-    
-    if (generatedCodeText) generatedCodeText.textContent = code;
-    if (generatedCodeStudent) generatedCodeStudent.textContent = student.name;
-    if (generatedCodePoints) generatedCodePoints.textContent = points + ' نقطة';
-    if (generatedCodeDisplay) generatedCodeDisplay.style.display = 'block';
-    
-    showMessage('✅ تم توليد الكود', 'success');
-    loadCodes();
-    
-    const codeStudentId = document.getElementById('codeStudentId');
-    const codePoints = document.getElementById('codePoints');
-    if (codeStudentId) codeStudentId.value = '';
-    if (codePoints) codePoints.value = '';
-    
-  } catch (error) {
-    showMessage('❌ خطأ: ' + error.message, 'error');
-  }
-}
-
-function copyCode() {
-  if (!currentGeneratedCode) return;
-  
-  const tempInput = document.createElement('input');
-  tempInput.value = currentGeneratedCode;
-  document.body.appendChild(tempInput);
-  tempInput.select();
-  document.execCommand('copy');
-  document.body.removeChild(tempInput);
-  
-  showMessage('📋 تم نسخ الكود', 'success');
-}
 
 function loadCodes() {
   db.ref('codes').orderByChild('createdAt').limitToLast(50).on('value', (snapshot) => {
@@ -2293,22 +2663,21 @@ function loadCodes() {
     snapshot.forEach(child => {
       codes.unshift({ key: child.key, ...child.val() });
     });
-    renderCodesList(codes);
+    renderCodes(codes);
   });
 }
 
-function renderCodesList(codes) {
+function renderCodes(codes) {
   const container = document.getElementById('codesList');
   if (!container) return;
   
-  const codesCountEl = document.getElementById('codesCount');
-  if (codesCountEl) codesCountEl.textContent = codes.length;
+  document.getElementById('codesCount').textContent = codes.length;
   
   if (codes.length === 0) {
     container.innerHTML = `
       <div class="empty-list">
         <div class="empty-list-icon">🎫</div>
-        <div>لا توجد أكواد</div>
+        <div>لا توجد أكواد مُولدة</div>
       </div>
     `;
     return;
@@ -2319,8 +2688,9 @@ function renderCodesList(codes) {
       <div class="code-item-info">
         <div class="code-item-code">${c.code}</div>
         <div class="code-item-details">
-          ${c.studentName} | ${c.points} نقطة | بواسطة: ${c.generatedBy || 'unknown'}
-          ${c.used ? `<br>✓ ${formatDate(c.usedAt)}` : ''}
+          ${c.studentName} (${c.studentId}) - ${c.points} نقطة
+          <br>
+          ${formatDate(c.createdAt)} ${c.used ? `- استخدم: ${formatDate(c.usedAt)}` : ''}
         </div>
       </div>
       <div class="code-item-status">${c.used ? 'مستخدم' : 'متاح'}</div>
@@ -2328,81 +2698,139 @@ function renderCodesList(codes) {
   `).join('');
 }
 
-// ==================== المودال ====================
-
-function showModal(icon, title, text) {
-  return new Promise(resolve => {
-    modalCallback = resolve;
-    const modalIcon = document.getElementById('modalIcon');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalText = document.getElementById('modalText');
-    const modalInputArea = document.getElementById('modalInputArea');
-    const modal = document.getElementById('modal');
-    
-    if (modalIcon) modalIcon.textContent = icon;
-    if (modalTitle) modalTitle.textContent = title;
-    if (modalText) modalText.textContent = text;
-    if (modalInputArea) modalInputArea.innerHTML = '';
-    if (modal) modal.classList.add('active');
-  });
-}
-
-function showModalWithInput(icon, title, text) {
-  return new Promise(resolve => {
-    modalCallback = resolve;
-    const modalIcon = document.getElementById('modalIcon');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalText = document.getElementById('modalText');
-    const modalInputArea = document.getElementById('modalInputArea');
-    const modal = document.getElementById('modal');
-    
-    if (modalIcon) modalIcon.textContent = icon;
-    if (modalTitle) modalTitle.textContent = title;
-    if (modalText) modalText.textContent = text;
-    if (modalInputArea) modalInputArea.innerHTML = '<input type="text" id="modalInput" class="modal-input" placeholder="اكتب هنا..." />';
-    if (modal) modal.classList.add('active');
-    
-    setTimeout(() => {
-      const modalInput = document.getElementById('modalInput');
-      if (modalInput) modalInput.focus();
-    }, 100);
-  });
-}
-
-function closeModal(result = false) {
-  const modalInput = document.getElementById('modalInput');
-  const value = modalInput ? modalInput.value : null;
-  const modal = document.getElementById('modal');
-  if (modal) modal.classList.remove('active');
+async function generateCode() {
+  const studentId = document.getElementById('codeStudentId')?.value.trim();
+  const points = parseInt(document.getElementById('codePoints')?.value) || 0;
   
-  if (modalCallback) {
-    modalCallback(result && value ? { confirmed: true, value } : result);
-    modalCallback = null;
+  if (!studentId || points <= 0) {
+    showMessage('⚠️ الرقم والنقاط مطلوبان', 'error');
+    return;
   }
+  
+  // ✅ التحقق من أن الرقم الأكاديمي 4 أرقام كحد أقصى
+  if (studentId.length > 4) {
+    showMessage('⚠️ الرقم الأكاديمي يجب أن يكون 4 أرقام كحد أقصى', 'error');
+    return;
+  }
+  
+  const student = allStudents.find(s => s.id === studentId);
+  if (!student) {
+    showMessage('⚠️ الطالب غير موجود', 'error');
+    return;
+  }
+  
+  const code = generateRandomCode();
+  const codeData = {
+    code: code,
+    studentId: studentId,
+    studentName: student.name,
+    points: points,
+    createdBy: currentAdmin.name,
+    createdAt: new Date().toISOString(),
+    used: false
+  };
+  
+  try {
+    await db.ref('codes').push(codeData);
+    
+    if (currentAdmin.role === 'super') {
+      await addLog('generate-code', `توليد كود ${points} نقطة للطالب ${student.name}`, studentId, student.name);
+    }
+    
+    currentGeneratedCode = codeData;
+    
+    document.getElementById('generatedCodeText').textContent = code;
+    document.getElementById('generatedCodeStudent').textContent = student.name;
+    document.getElementById('generatedCodePoints').textContent = points;
+    document.getElementById('generatedCodeDisplay').style.display = 'block';
+    
+    document.getElementById('codeStudentId').value = '';
+    document.getElementById('codePoints').value = '';
+    
+    showMessage('✅ تم توليد الكود بنجاح', 'success');
+  } catch (e) {
+    showMessage('❌ خطأ: ' + e.message, 'error');
+  }
+}
+
+function generateRandomCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for (let i = 0; i < 6; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}
+
+function copyCode() {
+  if (!currentGeneratedCode) return;
+  
+  navigator.clipboard.writeText(currentGeneratedCode.code).then(() => {
+    showMessage('📋 تم نسخ الكود', 'success');
+  }).catch(() => {
+    showMessage('❌ فشل النسخ', 'error');
+  });
+}
+
+// ==================== مساعدة ====================
+
+function formatDate(isoString) {
+  if (!isoString) return '-';
+  const d = new Date(isoString);
+  return d.toLocaleDateString('ar-SA', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
 
 function showMessage(text, type) {
   const msg = document.getElementById('message');
   if (!msg) return;
   
-  msg.innerHTML = text;
+  msg.textContent = text;
   msg.className = `message ${type} show`;
-  setTimeout(() => msg.classList.remove('show'), 3000);
+  
+  setTimeout(() => {
+    msg.classList.remove('show');
+  }, 3000);
 }
 
-function formatDate(isoString) {
-  if (!isoString) return '';
-  const date = new Date(isoString);
-  return date.toLocaleDateString('ar-SA') + ' ' + date.toLocaleTimeString('ar-SA', {hour: '2-digit', minute: '2-digit'});
+function showModal(icon, title, text) {
+  return new Promise(resolve => {
+    document.getElementById('modalIcon').textContent = icon;
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalText').textContent = text;
+    document.getElementById('modalInputArea').innerHTML = '';
+    
+    modalCallback = resolve;
+    document.getElementById('modal').classList.add('active');
+  });
 }
 
-document.addEventListener('click', (e) => {
-  if (!e.target.closest('.search-box')) {
-    const sug = document.getElementById('suggestions');
-    if (sug) sug.style.display = 'none';
+function showModalWithInput(icon, title, text, defaultValue = '') {
+  return new Promise(resolve => {
+    document.getElementById('modalIcon').textContent = icon;
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalText').textContent = text;
+    document.getElementById('modalInputArea').innerHTML = `
+      <input type="text" id="modalInput" class="modal-input" value="${defaultValue}" placeholder="أدخل القيمة..." autofocus>
+    `;
+    
+    modalCallback = () => {
+      const val = document.getElementById('modalInput')?.value || '';
+      resolve({ confirmed: true, value: val });
+    };
+    
+    document.getElementById('modal').classList.add('active');
+    
+    setTimeout(() => document.getElementById('modalInput')?.focus(), 100);
+  });
+}
+
+function closeModal(confirmed) {
+  document.getElementById('modal').classList.remove('active');
+  if (modalCallback) {
+    modalCallback(confirmed);
+    modalCallback = null;
   }
-});
+}
 </script>
-
 </body>
 </html>
