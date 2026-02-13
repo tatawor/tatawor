@@ -106,6 +106,39 @@ body {
   font-family: 'Cairo', sans-serif;
 }
 
+/* ✅ جديد: أزرار عرض عامة في الهيدر */
+.view-toggle-header {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 4px;
+  background: rgba(255,255,255,0.15);
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.view-btn-header {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  background: transparent;
+  color: rgba(255,255,255,0.8);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+}
+
+.view-btn-header.active {
+  background: rgba(255,255,255,0.3);
+  color: #fff;
+}
+
 /* التنقل السفلي */
 .bottom-nav {
   position: fixed;
@@ -262,91 +295,109 @@ body {
   display: none;
 }
 
-/* النقاط */
-.points-fixed {
-  background: #fff;
-  border: 1px solid var(--primary);
-  border-radius: 10px;
-  padding: 10px 12px;
+/* ✅ تنسيق البيانات المدخلة - 6 أعمدة في الشبكة */
+.data-grid-container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
   margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
 }
 
-.points-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.points-icon {
-  width: 36px;
-  height: 36px;
-  background: var(--primary);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-}
-
-.points-text {
+.data-grid-item {
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px 4px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  min-height: 60px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.points-label {
-  font-size: 10px;
-  color: var(--text-secondary);
+.data-grid-item:hover {
+  border-color: var(--primary);
+  background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(44, 62, 148, 0.1);
+}
+
+.data-grid-item.selected {
+  background: #e0e7ff;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(44, 62, 148, 0.2);
+}
+
+.data-grid-item .label {
+  font-size: 9px;
+  color: var(--text-muted);
+  margin-bottom: 2px;
   font-weight: 600;
 }
 
-.points-value {
-  font-size: 1.5rem;
-  font-weight: 900;
-  color: var(--primary);
-  line-height: 1;
-}
-
-.points-input-group {
-  display: flex;
-  gap: 8px;
-  width: auto;
-}
-
-.points-input {
-  width: 60px;
-  padding: 8px;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 700;
-  background: var(--bg-input);
-  color: var(--text-primary);
-  height: 36px;
-}
-
-.points-btn {
-  padding: 8px 14px;
-  background: var(--primary);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
+.data-grid-item .value {
   font-size: 11px;
   font-weight: 800;
-  cursor: pointer;
-  height: 36px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  padding: 0 2px;
 }
 
-/* النموذج */
-.form-row {
+.data-grid-item .avatar {
+  width: 24px;
+  height: 24px;
+  background: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.data-grid-item .points-badge {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  background: var(--warning);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 20px;
+}
+
+/* ✅ نموذج البيانات المنسق */
+.data-form {
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.form-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.form-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
-  margin-bottom: 10px;
 }
 
 .form-group {
@@ -383,81 +434,82 @@ body {
   border-color: var(--primary);
 }
 
-/* الأزرار */
-.actions-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 12px;
+/* ✅ ✅ جديد: مجموعة إدخال مع زر توليد */
+.input-with-action {
+  display: flex;
+  gap: 6px;
+  align-items: stretch;
 }
 
-.btn {
-  padding: 10px;
+.input-with-action input {
+  flex: 1;
+}
+
+.generate-btn {
+  padding: 0 12px;
+  background: var(--success);
+  color: #fff;
   border: none;
   border-radius: 8px;
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 700;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 4px;
-  height: 40px;
+  white-space: nowrap;
   transition: all 0.2s;
 }
 
-.btn:active {
+.generate-btn:hover {
+  background: #047857;
+  transform: translateY(-1px);
+}
+
+.generate-btn:active {
   transform: scale(0.98);
 }
 
-.btn-primary {
-  background: var(--primary);
-  color: #fff;
-}
-
-.btn-success {
-  background: var(--success);
-  color: #fff;
-}
-
-.btn-danger {
-  background: var(--danger);
-  color: #fff;
-}
-
-.btn-secondary {
+/* ✅ شريط البحث المحسن */
+.search-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
   background: var(--bg-input);
-  color: var(--text-secondary);
+  padding: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border-color);
 }
 
-.btn-warning {
-  background: var(--warning);
-  color: #fff;
+.search-type-select {
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text-primary);
+  font-size: 11px;
+  font-weight: 700;
+  height: 40px;
+  font-family: 'Cairo', sans-serif;
+  min-width: 80px;
 }
 
-.btn-info {
-  background: var(--info);
-  color: #fff;
-}
-
-/* البحث */
-.search-box {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 10px;
+.search-input-wrapper {
+  flex: 1;
   position: relative;
 }
 
 .search-input {
-  flex: 1;
+  width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 12px;
-  background: var(--bg-input);
+  background: #fff;
   color: var(--text-primary);
   height: 40px;
+  font-family: 'Cairo', sans-serif;
 }
 
 .search-btn {
@@ -470,6 +522,7 @@ body {
   font-weight: 700;
   cursor: pointer;
   height: 40px;
+  white-space: nowrap;
 }
 
 /* الاقتراحات */
@@ -517,12 +570,289 @@ body {
   flex-shrink: 0;
 }
 
-/* قائمة الطلاب */
+/* ✅ أنماط القائمة/الشبكة المشتركة لجميع الصفحات */
+.view-container {
+  transition: all 0.3s ease;
+}
+
+/* عرض القائمة (List View) */
+.view-list .item-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg-input);
+  border-radius: 8px;
+  margin-bottom: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 11px;
+}
+
+.view-list .item-row:hover {
+  border-color: var(--primary);
+  background: #fff;
+}
+
+.view-list .item-row.selected {
+  background: #e0e7ff;
+  border-color: var(--primary);
+}
+
+.view-list .item-avatar {
+  width: 28px;
+  height: 28px;
+  background: var(--primary);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.view-list .item-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.view-list .item-title {
+  font-weight: 800;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
+  max-width: 100px;
+  font-size: 11px;
+}
+
+.view-list .item-subtitle {
+  color: var(--text-muted);
+  font-size: 10px;
+  flex-shrink: 0;
+}
+
+.view-list .item-detail {
+  color: var(--text-secondary);
+  font-size: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+.view-list .item-badge {
+  background: var(--primary);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* ✅ عرض الشبكة (Grid View) - 6 أعمدة صغيرة */
+.view-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+
+.view-grid .item-row {
+  background: var(--bg-input);
+  border-radius: 8px;
+  padding: 8px 4px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+  position: relative;
+  min-height: 70px;
+}
+
+.view-grid .item-row:hover {
+  border-color: var(--primary);
+  background: #fff;
+}
+
+.view-grid .item-row.selected {
+  background: #e0e7ff;
+  border-color: var(--primary);
+}
+
+.view-grid .item-avatar {
+  width: 28px;
+  height: 28px;
+  background: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.view-grid .item-title {
+  font-weight: 800;
+  font-size: 10px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.view-grid .item-subtitle {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+.view-grid .item-detail {
+  font-size: 9px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.view-grid .item-badge {
+  background: var(--primary);
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 9px;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+/* ✅ عناصر التحكم المشتركة */
+.item-checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--primary);
+  flex-shrink: 0;
+}
+
+.view-grid .item-checkbox {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 14px;
+  height: 14px;
+}
+
+.delete-btn {
+  background: var(--danger);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 9px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.item-row:hover .delete-btn {
+  opacity: 1;
+}
+
+/* ✅ أدوات التحديد الجماعي */
+.bulk-actions-bar {
+  display: none;
+  background: var(--bg-card);
+  border: 1px solid var(--primary);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 12px;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  animation: slideDown 0.3s ease;
+  box-shadow: var(--shadow);
+}
+
+.bulk-actions-bar.show {
+  display: flex;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.bulk-select-all {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.bulk-select-all input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--primary);
+}
+
+.bulk-count {
+  font-weight: 800;
+  color: var(--primary);
+  font-size: 12px;
+}
+
+.bulk-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+}
+
+.bulk-btn:hover {
+  transform: translateY(-1px);
+}
+
+.bulk-delete {
+  background: var(--danger);
+  color: #fff;
+}
+
+.bulk-edit {
+  background: var(--warning);
+  color: #fff;
+}
+
+/* الفلاتر */
 .filter-bar {
   display: flex;
   gap: 8px;
   margin-bottom: 10px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .filter-select {
@@ -553,164 +883,7 @@ body {
   white-space: nowrap;
 }
 
-/* ✅ تعديل: تصغير حجم الخط في قائمة الطلاب */
-.student-item {
-  background: var(--bg-input);
-  border-radius: 8px;
-  padding: 8px 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  border: 1px solid transparent;
-  margin-bottom: 6px;
-  font-size: 10px;
-  transition: all 0.15s;
-  position: relative;
-}
-
-.student-item:last-child {
-  margin-bottom: 0;
-}
-
-.student-item:hover {
-  border-color: var(--primary);
-  background: #fff;
-}
-
-.student-item.selected {
-  background: #e0e7ff;
-  border-color: var(--primary);
-}
-
-/* ✅ تعديل: تصغير الأفاتار */
-.student-item-avatar {
-  width: 24px;
-  height: 24px;
-  background: var(--primary);
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  font-weight: 800;
-  color: #fff;
-  flex-shrink: 0;
-}
-
-.student-item-info {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  min-width: 0;
-  overflow: hidden;
-}
-
-/* ✅ تعديل: تصغير الاسم */
-.student-item-name {
-  font-weight: 800;
-  color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex-shrink: 0;
-  max-width: 70px;
-  font-size: 10px;
-}
-
-.student-item-id {
-  color: var(--text-muted);
-  font-size: 9px;
-  flex-shrink: 0;
-}
-
-.student-item-major {
-  color: var(--text-secondary);
-  font-size: 9px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex: 1;
-  min-width: 0;
-}
-
-.student-item-points {
-  background: var(--primary);
-  color: #fff;
-  padding: 3px 8px;
-  border-radius: 12px;
-  font-size: 9px;
-  font-weight: 800;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 2px;
-}
-
-/* ✅ جديد: checkbox للتحديد */
-.student-checkbox {
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-  accent-color: var(--primary);
-  flex-shrink: 0;
-}
-
-/* ✅ جديد: أزرار التحديد الجماعي */
-.bulk-actions {
-  display: none;
-  background: var(--bg-card);
-  border: 1px solid var(--primary);
-  border-radius: 8px;
-  padding: 10px;
-  margin-bottom: 12px;
-  gap: 8px;
-  flex-wrap: wrap;
-  animation: slideDown 0.3s ease;
-}
-
-.bulk-actions.show {
-  display: flex;
-}
-
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.bulk-info {
-  font-size: 11px;
-  color: var(--text-secondary);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex: 1;
-}
-
-.bulk-btn {
-  padding: 6px 12px;
-  border: none;
-  border-radius: 6px;
-  font-size: 10px;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.bulk-delete-btn {
-  background: var(--danger);
-  color: #fff;
-}
-
-.bulk-edit-btn {
-  background: var(--warning);
-  color: #fff;
-}
-
-/* ✅ جديد: أزرار عرض القائمة */
+/* ✅ أزرار تبديل العرض العامة */
 .view-toggle {
   display: flex;
   gap: 4px;
@@ -721,7 +894,7 @@ body {
 }
 
 .view-btn {
-  padding: 6px 12px;
+  padding: 8px 14px;
   border: none;
   border-radius: 6px;
   font-size: 11px;
@@ -732,115 +905,12 @@ body {
   display: flex;
   align-items: center;
   gap: 4px;
+  transition: all 0.2s;
 }
 
 .view-btn.active {
   background: var(--primary);
   color: #fff;
-}
-
-/* ✅ جديد: عرض الشبكة */
-.students-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-}
-
-.grid-item {
-  background: var(--bg-input);
-  border-radius: 8px;
-  padding: 10px;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: all 0.15s;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 6px;
-}
-
-.grid-item:hover {
-  border-color: var(--primary);
-  background: #fff;
-}
-
-.grid-item.selected {
-  background: #e0e7ff;
-  border-color: var(--primary);
-}
-
-.grid-item .student-checkbox {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  width: 16px;
-  height: 16px;
-}
-
-.grid-item-avatar {
-  width: 40px;
-  height: 40px;
-  background: var(--primary);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  font-weight: 800;
-  color: #fff;
-}
-
-.grid-item-name {
-  font-weight: 800;
-  font-size: 11px;
-  color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
-
-.grid-item-id {
-  font-size: 9px;
-  color: var(--text-muted);
-}
-
-.grid-item-major {
-  font-size: 9px;
-  color: var(--text-secondary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
-
-.grid-item-points {
-  background: var(--primary);
-  color: #fff;
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-size: 10px;
-  font-weight: 800;
-}
-
-/* ✅ جديد: زر حذف في القائمة */
-.delete-item-btn {
-  background: var(--danger);
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  padding: 4px 8px;
-  font-size: 9px;
-  cursor: pointer;
-  margin-right: 4px;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-.student-item:hover .delete-item-btn {
-  opacity: 1;
 }
 
 .empty-list {
@@ -975,6 +1045,20 @@ body.is-super .page.super-only.active {
   font-family: 'Cairo', sans-serif;
 }
 
+/* ✅ محسّن: قائمة منسدلة للاختيار من التخصصات الموجودة */
+.modal-select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  font-size: 14px;
+  font-family: 'Cairo', sans-serif;
+  cursor: pointer;
+}
+
 .modal-buttons {
   display: flex;
   gap: 8px;
@@ -1073,58 +1157,6 @@ body.is-super .page.super-only.active {
   overflow-y: auto;
 }
 
-.code-item {
-  background: var(--bg-input);
-  border-radius: 8px;
-  padding: 12px;
-  margin-bottom: 8px;
-  border-right: 3px solid var(--primary);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.code-item.used {
-  border-right-color: var(--text-muted);
-  opacity: 0.7;
-}
-
-.code-item-info {
-  flex: 1;
-}
-
-.code-item-code {
-  font-family: 'Courier New', monospace;
-  font-size: 14px;
-  font-weight: 800;
-  color: var(--primary);
-  margin-bottom: 4px;
-  letter-spacing: 2px;
-}
-
-.code-item-used .code-item-code {
-  text-decoration: line-through;
-  color: var(--text-muted);
-}
-
-.code-item-details {
-  font-size: 10px;
-  color: var(--text-secondary);
-}
-
-.code-item-status {
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 10px;
-  font-weight: 800;
-  background: var(--success);
-  color: #fff;
-}
-
-.code-item-used .code-item-status {
-  background: var(--text-muted);
-}
-
 /* سجل العمليات - مخفي عن المشرفين العاديين */
 .logs-list {
   max-height: 500px;
@@ -1197,7 +1229,140 @@ body.is-super .page.super-only.active {
 .log-badge.add-student { background: #e0f2fe; color: var(--info); }
 .log-badge.generate-code { background: #fef3c7; color: #d97706; }
 
-/* إدارة المشرفين - مخفية عن المشرفين العاديين */
+/* ✅ ✅ جديد: إدارة المشرفين - عرض وتحرير الرمز */
+.admin-profile-card {
+  background: linear-gradient(135deg, var(--primary) 0%, #1a237e 100%);
+  color: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-profile-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.3;
+}
+
+.admin-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.admin-profile-avatar {
+  width: 50px;
+  height: 50px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.admin-profile-info {
+  flex: 1;
+}
+
+.admin-profile-name {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.admin-profile-role {
+  font-size: 11px;
+  opacity: 0.9;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.admin-password-section {
+  background: rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.admin-password-label {
+  font-size: 10px;
+  opacity: 0.8;
+  margin-bottom: 6px;
+}
+
+.admin-password-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-password-value {
+  flex: 1;
+  font-family: 'Courier New', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  background: rgba(0,0,0,0.2);
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.password-toggle-btn {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+}
+
+.password-toggle-btn:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+.change-password-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  background: #fff;
+  color: var(--primary);
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  z-index: 1;
+}
+
+.change-password-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* باقي أنماط المشرفين */
 .admin-item {
   background: var(--bg-input);
   border-radius: 8px;
@@ -1261,16 +1426,207 @@ body.is-super .page.super-only.active {
   color: #fff;
 }
 
+/* ✅ نقاط ثابتة محسنة */
+.points-fixed {
+  background: linear-gradient(135deg, var(--primary) 0%, #1a237e 100%);
+  color: #fff;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: 0 4px 12px rgba(44, 62, 148, 0.3);
+}
+
+.points-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.points-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.points-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.points-label {
+  font-size: 10px;
+  color: rgba(255,255,255,0.8);
+  font-weight: 600;
+}
+
+.points-value {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+}
+
+.points-input-group {
+  display: flex;
+  gap: 8px;
+  width: auto;
+}
+
+.points-input {
+  width: 70px;
+  padding: 10px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  height: 40px;
+}
+
+.points-input::placeholder {
+  color: rgba(255,255,255,0.6);
+}
+
+.points-btn {
+  padding: 10px 16px;
+  background: #fff;
+  color: var(--primary);
+  border: none;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  height: 40px;
+}
+
+/* ✅ أزرار الإجراءات */
+.actions-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.btn {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 40px;
+  transition: all 0.2s;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-success {
+  background: var(--success);
+  color: #fff;
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+}
+
+.btn-secondary {
+  background: var(--bg-input);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.btn-warning {
+  background: var(--warning);
+  color: #fff;
+}
+
+.btn-info {
+  background: var(--info);
+  color: #fff;
+}
+
 /* للشاشات الصغيرة */
 @media (max-width: 360px) {
   .container { min-width: 300px; }
   .form-row { gap: 8px; }
   .points-value { font-size: 1.3rem; }
-  .student-item-name { max-width: 60px; }
   .nav-btn { padding: 4px 8px; font-size: 9px; }
   .nav-icon { font-size: 16px; }
   .login-box { padding: 24px 16px; }
-  .students-grid { grid-template-columns: 1fr; }
+  .view-toggle-header { display: none; }
+  
+  /* ✅ تعديل الشبكة للشاشات الصغيرة */
+  .view-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+  }
+  
+  .view-grid .item-row {
+    padding: 6px 2px;
+    min-height: 60px;
+  }
+  
+  .view-grid .item-avatar {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+  }
+  
+  .view-grid .item-title {
+    font-size: 9px;
+  }
+  
+  .data-grid-container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+  
+  .data-grid-item {
+    min-height: 50px;
+    padding: 6px 2px;
+  }
+  
+  .data-grid-item .avatar {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+  }
+  
+  .data-grid-item .value {
+    font-size: 10px;
+  }
+  
+  .actions-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /* ✅ تعديلات للمشرفين في الشاشات الصغيرة */
+  .admin-password-value {
+    font-size: 14px;
+  }
 }
 </style>
 </head>
@@ -1301,6 +1657,17 @@ body.is-super .page.super-only.active {
       <span id="currentAdminName">المشرف</span>
       <button class="logout-btn" onclick="logout()">خروج</button>
     </div>
+    
+    <!-- ✅ جديد: أزرار تبديل العرض في الهيدر -->
+    <div class="view-toggle-header">
+      <button class="view-btn-header active" onclick="setGlobalViewMode('list', this)" title="قائمة">
+        <span>☰</span>
+      </button>
+      <button class="view-btn-header" onclick="setGlobalViewMode('grid', this)" title="شبكة">
+        <span>⊞</span>
+      </button>
+    </div>
+    
     <h1>نظام إدارة الطلاب</h1>
     <p id="headerSubtitle">إدارة البيانات والنقاط والأكواد</p>
   </div>
@@ -1314,7 +1681,7 @@ body.is-super .page.super-only.active {
         <div class="points-info">
           <div class="points-icon">⭐</div>
           <div class="points-text">
-            <div class="points-label">النقاط</div>
+            <div class="points-label">النقاط الحالية</div>
             <div class="points-value" id="currentPoints">0</div>
           </div>
         </div>
@@ -1324,55 +1691,61 @@ body.is-super .page.super-only.active {
         </div>
       </div>
 
-      <!-- البحث -->
+      <!-- ✅ البحث المحسن -->
       <div class="card">
-        <div class="card-title">🔍 بحث</div>
-        <div class="search-box">
-          <input type="text" id="searchInput" class="search-input" placeholder="ابحث بالاسم أو الرقم أو الجوال..." oninput="handleSearch(this.value)" />
+        <div class="card-title">🔍 بحث سريع</div>
+        <div class="search-bar">
+          <select id="searchType" class="search-type-select">
+            <option value="all">الكل</option>
+            <option value="id">الرقم</option>
+            <option value="phone">الجوال</option>
+          </select>
+          <div class="search-input-wrapper">
+            <input type="text" id="searchInput" class="search-input" placeholder="ابحث هنا..." oninput="handleSearch(this.value)" />
+            <div id="suggestions" class="suggestions"></div>
+          </div>
           <button class="search-btn" onclick="searchStudent()">بحث</button>
-          <div id="suggestions" class="suggestions"></div>
         </div>
       </div>
 
       <!-- الرسالة -->
       <div id="message" class="message"></div>
 
-      <!-- البيانات -->
-      <div class="card">
-        <div class="card-title">📝 البيانات</div>
-        
-        <div class="form-row">
-          <div class="form-group">
-            <label>الرقم الأكاديمي (4 أرقام كحد أقصى)</label>
-            <input type="text" id="studentId" placeholder="1234" maxlength="4" oninput="validateAcademicId(this)" />
+      <!-- ✅ نموذج إدخال البيانات -->
+      <div class="data-form">
+        <div class="form-title">📝 تعديل البيانات</div>
+        <div class="form-grid">
+          <!-- ✅ ✅ جديد: الرقم الأكاديمي مع زر توليد -->
+          <div class="form-group full">
+            <label>الرقم الأكاديمي (4 أرقام)</label>
+            <div class="input-with-action">
+              <input type="text" id="studentId" placeholder="1234" maxlength="4" oninput="validateAcademicId(this); updateGridDisplay();" />
+              <button class="generate-btn" onclick="generateAcademicId()" title="توليد رقم عشوائي">
+                🎲 توليد
+              </button>
+            </div>
           </div>
           <div class="form-group">
-            <label>الاسم</label>
-            <input type="text" id="studentName" placeholder="الاسم" />
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label>النسبة</label>
-            <input type="text" id="studentGrade" placeholder="95%" oninput="formatGrade(this)" />
+            <label>الاسم الكامل</label>
+            <input type="text" id="studentName" placeholder="اسم الطالب" oninput="updateGridDisplay()" />
           </div>
           <div class="form-group">
             <label>التخصص</label>
-            <select id="studentMajor">
-              <option value="">اختر</option>
+            <select id="studentMajor" onchange="updateGridDisplay()">
+              <option value="">اختر التخصص</option>
             </select>
           </div>
-        </div>
-
-        <div class="form-row">
           <div class="form-group">
-            <label>الواتساب</label>
-            <input type="tel" id="studentWhatsapp" placeholder="05xxxxxxxx" />
+            <label>النسبة المئوية</label>
+            <input type="text" id="studentGrade" placeholder="95%" oninput="formatGrade(this); updateGridDisplay()" />
           </div>
           <div class="form-group">
-            <label>الرمز</label>
-            <input type="text" id="studentPassword" placeholder="••••••" />
+            <label>الرمز السري</label>
+            <input type="text" id="studentPassword" placeholder="••••••" oninput="updateGridDisplay()" />
+          </div>
+          <div class="form-group">
+            <label>رقم الواتساب</label>
+            <input type="tel" id="studentWhatsapp" placeholder="05xxxxxxxx" oninput="updateGridDisplay()" />
           </div>
         </div>
 
@@ -1392,24 +1765,40 @@ body.is-super .page.super-only.active {
   <div id="pageList" class="page">
     <div class="content">
       
+      <!-- ✅ البحث في القائمة العامة -->
+      <div class="card">
+        <div class="card-title">🔍 بحث في القائمة</div>
+        <div class="search-bar">
+          <select id="listSearchType" class="search-type-select" onchange="renderStudentsList()">
+            <option value="all">الكل</option>
+            <option value="id">الرقم الأكاديمي</option>
+            <option value="phone">رقم الجوال</option>
+          </select>
+          <div class="search-input-wrapper">
+            <input type="text" id="listSearchInput" class="search-input" placeholder="ابحث في القائمة..." oninput="handleListSearch(this.value)" />
+          </div>
+          <button class="search-btn" onclick="renderStudentsList()">🔍</button>
+        </div>
+      </div>
+
       <!-- الفلاتر -->
       <div class="card">
         <div class="card-title">🔎 تصفية</div>
         <div class="filter-bar">
-          <select id="filterMajor" class="filter-select" onchange="filterStudents()">
+          <select id="filterMajor" class="filter-select" onchange="renderStudentsList()">
             <option value="">كل التخصصات</option>
           </select>
           <button class="sort-btn" onclick="toggleSort()">
             <span id="sortIcon">🔤</span>
             <span id="sortText">أ-ي</span>
           </button>
-          <!-- ✅ جديد: أزرار تبديل العرض -->
+          <!-- ✅ أزرار تبديل العرض المحلية -->
           <div class="view-toggle">
-            <button class="view-btn active" onclick="setViewMode('list', this)" title="قائمة">
+            <button class="view-btn active" onclick="setPageViewMode('list', this)" title="قائمة">
               <span>☰</span>
               <span>قائمة</span>
             </button>
-            <button class="view-btn" onclick="setViewMode('grid', this)" title="شبكة">
+            <button class="view-btn" onclick="setPageViewMode('grid', this)" title="شبكة">
               <span>⊞</span>
               <span>شبكة</span>
             </button>
@@ -1417,17 +1806,17 @@ body.is-super .page.super-only.active {
         </div>
       </div>
 
-      <!-- ✅ جديد: أدوات التحديد الجماعي -->
-      <div id="bulkActions" class="bulk-actions">
-        <div class="bulk-info">
-          <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll()" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary);">
+      <!-- ✅ أدوات التحديد الجماعي -->
+      <div id="bulkActionsList" class="bulk-actions-bar">
+        <label class="bulk-select-all">
+          <input type="checkbox" id="selectAllList" onchange="toggleSelectAll('list')">
           <span>تحديد الكل</span>
-          <span id="selectedCount" style="font-weight: 800; color: var(--primary);">(0)</span>
-        </div>
-        <button class="bulk-btn bulk-edit-btn" onclick="bulkEditMajor()">
+        </label>
+        <span class="bulk-count" id="selectedCountList">(0)</span>
+        <button class="bulk-btn bulk-edit" onclick="bulkEditMajor()">
           ✏️ تغيير التخصص
         </button>
-        <button class="bulk-btn bulk-delete-btn" onclick="bulkDelete()">
+        <button class="bulk-btn bulk-delete" onclick="bulkDelete()">
           🗑️ حذف
         </button>
       </div>
@@ -1435,7 +1824,7 @@ body.is-super .page.super-only.active {
       <!-- القائمة -->
       <div class="card">
         <div class="card-title">📋 الطلاب (<span id="listCount">0</span>)</div>
-        <div id="studentsList" class="students-list">
+        <div id="studentsList" class="view-container view-list">
           <div class="empty-list">
             <div class="empty-list-icon">📭</div>
             <div>لا يوجد طلاب</div>
@@ -1454,9 +1843,9 @@ body.is-super .page.super-only.active {
       <div class="card">
         <div class="card-title">🎟️ توليد كود جديد</div>
         
-        <div class="form-row">
+        <div class="form-grid">
           <div class="form-group">
-            <label>الرقم الأكاديمي (4 أرقام كحد أقصى)</label>
+            <label>الرقم الأكاديمي (4 أرقام)</label>
             <input type="text" id="codeStudentId" placeholder="1234" maxlength="4" oninput="validateAcademicId(this)" />
           </div>
           <div class="form-group">
@@ -1496,7 +1885,7 @@ body.is-super .page.super-only.active {
       <!-- سجل الأكواد -->
       <div class="card">
         <div class="card-title">📜 سجل الأكواد (<span id="codesCount">0</span>)</div>
-        <div id="codesList" class="codes-history">
+        <div id="codesList" class="view-container view-list">
           <div class="empty-list">
             <div class="empty-list-icon">🎫</div>
             <div>لا توجد أكواد مُولدة</div>
@@ -1533,7 +1922,7 @@ body.is-super .page.super-only.active {
       <!-- السجل -->
       <div class="card">
         <div class="card-title">📜 سجل العمليات (<span id="logsCount">0</span>)</div>
-        <div id="logsList" class="logs-list">
+        <div id="logsList" class="view-container view-list">
           <div class="empty-list">
             <div class="empty-list-icon">📋</div>
             <div>لا توجد عمليات مسجلة</div>
@@ -1548,11 +1937,41 @@ body.is-super .page.super-only.active {
   <div id="pageAdmins" class="page super-only">
     <div class="content">
       
+      <!-- ✅ ✅ جديد: بطاقة المشرف الحالي مع عرض وتحرير الرمز -->
+      <div class="card">
+        <div class="card-title">👤 حسابي</div>
+        <div class="admin-profile-card">
+          <div class="admin-profile-header">
+            <div class="admin-profile-avatar">👤</div>
+            <div class="admin-profile-info">
+              <div class="admin-profile-name" id="currentAdminDisplayName">-</div>
+              <div class="admin-profile-role">
+                <span id="currentAdminDisplayRole">-</span>
+                <span id="currentAdminDisplayDate">-</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="admin-password-section">
+            <div class="admin-password-label">الرمز السري الحالي:</div>
+            <div class="admin-password-display">
+              <div class="admin-password-value" id="currentAdminPasswordDisplay">••••••</div>
+              <button class="password-toggle-btn" onclick="togglePasswordVisibility()" id="togglePasswordBtn">
+                👁️ عرض
+              </button>
+            </div>
+            <button class="change-password-btn" onclick="changeMyPassword()">
+              🔑 تغيير الرمز
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- إضافة مشرف جديد -->
       <div class="card">
         <div class="card-title">➕ إضافة مشرف جديد</div>
         
-        <div class="form-row">
+        <div class="form-grid">
           <div class="form-group">
             <label>اسم المشرف</label>
             <input type="text" id="newAdminName" placeholder="الاسم" />
@@ -1561,9 +1980,6 @@ body.is-super .page.super-only.active {
             <label>الرمز</label>
             <input type="password" id="newAdminPass" placeholder="••••••" />
           </div>
-        </div>
-
-        <div class="form-row">
           <div class="form-group full">
             <label>نوع الحساب</label>
             <select id="newAdminRole">
@@ -1581,7 +1997,7 @@ body.is-super .page.super-only.active {
       <!-- قائمة المشرفين -->
       <div class="card">
         <div class="card-title">👥 المشرفون (<span id="adminsCount">0</span>)</div>
-        <div id="adminsList">
+        <div id="adminsList" class="view-container view-list">
           <div class="empty-list">
             <div class="empty-list-icon">👤</div>
             <div>لا يوجد مشرفون</div>
@@ -1658,10 +2074,12 @@ let modalCallback = null;
 let currentGeneratedCode = null;
 let allLogs = [];
 let allAdmins = [];
-// ✅ جديد: متغيرات للتحديد الجماعي وطريقة العرض
 let selectedStudents = new Set();
-let currentViewMode = 'list'; // 'list' or 'grid'
+let globalViewMode = 'list';
 let currentFilteredStudents = [];
+let allCodes = [];
+let listSearchQuery = '';
+let isPasswordVisible = false; // ✅ جديد: حالة عرض الرمز
 
 // التحقق من وجود المشرفين في Firebase
 async function initializeAdmins() {
@@ -1703,24 +2121,23 @@ async function login() {
     document.getElementById('appContainer').style.display = 'block';
     document.getElementById('currentAdminName').textContent = foundAdmin.name;
     
-    // ✅ إضافة كلاس للـ body للمديرين
     if (foundAdmin.role === 'super') {
       document.body.classList.add('is-super');
     } else {
       document.body.classList.remove('is-super');
     }
     
-    // إعداد الواجهة حسب الصلاحيات - إخفاء/إظهار الأقسام
     setupInterfaceByRole();
-    
     loadStudents();
     loadCodes();
     
-    // تحميل البيانات الحساسة فقط للمديرين
     if (currentAdmin.role === 'super') {
       loadLogs();
       loadAdminsList();
     }
+    
+    // ✅ تحديث عرض بيانات المشرف الحالي
+    updateCurrentAdminDisplay();
     
     showMessage(`✅ مرحباً ${foundAdmin.name}!`, 'success');
   } else {
@@ -1737,20 +2154,19 @@ function showLoginError(msg) {
 
 function logout() {
   currentAdmin = null;
+  isPasswordVisible = false; // ✅ إعادة تعيين حالة العرض
+  
   document.getElementById('appContainer').style.display = 'none';
   document.getElementById('loginPage').style.display = 'flex';
   document.getElementById('loginUsername').value = '';
   document.getElementById('loginPassword').value = '';
   
-  // ✅ إزالة كلاس المدير من body
   document.body.classList.remove('is-super');
   
-  // ✅ إعادة تعيين الواجهة - إخفاء جميع الصفحات أولاً
   document.querySelectorAll('.page').forEach(el => {
     el.classList.remove('active');
   });
   
-  // ✅ إعادة تعيين التنقل
   document.getElementById('mainNav').innerHTML = `
     <button class="nav-btn active" onclick="showPage('pageManage', this)">
       <span class="nav-icon">✏️</span>
@@ -1766,19 +2182,17 @@ function logout() {
     </button>
   `;
   
-  // ✅ تفعيل الصفحة الأولى فقط
   document.getElementById('pageManage').classList.add('active');
-  
-  // ✅ إعادة تعيين التحديدات
   selectedStudents.clear();
-  currentViewMode = 'list';
+  globalViewMode = 'list';
+  updateHeaderViewButtons();
+  clearForm();
 }
 
 function setupInterfaceByRole() {
   const nav = document.getElementById('mainNav');
   
   if (currentAdmin.role === 'super') {
-    // إضافة أزرار المدير فقط
     const logBtn = document.createElement('button');
     logBtn.className = 'nav-btn';
     logBtn.onclick = function() { showPage('pageLogs', this); };
@@ -1793,9 +2207,52 @@ function setupInterfaceByRole() {
     
     document.getElementById('headerSubtitle').textContent = 'مدير النظام';
   } else {
-    // المشرف العادي - إخفاء الأقسام الحساسة تماماً
     document.getElementById('headerSubtitle').textContent = 'نظام إدارة الطلاب';
   }
+}
+
+// ==================== ✅ نظام عرض قائمة/شبكة العام ====================
+
+function setGlobalViewMode(mode, btn) {
+  globalViewMode = mode;
+  updateHeaderViewButtons();
+  
+  renderStudentsList();
+  renderCodes(allCodes);
+  if (currentAdmin.role === 'super') {
+    renderLogs();
+    renderAdminsList();
+  }
+}
+
+function setPageViewMode(mode, btn) {
+  setGlobalViewMode(mode, null);
+  
+  const container = btn.closest('.view-toggle');
+  if (container) {
+    container.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+}
+
+function updateHeaderViewButtons() {
+  document.querySelectorAll('.view-btn-header').forEach(btn => {
+    btn.classList.remove('active');
+    if ((globalViewMode === 'list' && btn.innerHTML.includes('☰')) ||
+        (globalViewMode === 'grid' && btn.innerHTML.includes('⊞'))) {
+      btn.classList.add('active');
+    }
+  });
+  
+  document.querySelectorAll('.view-toggle').forEach(container => {
+    container.querySelectorAll('.view-btn').forEach(btn => {
+      btn.classList.remove('active');
+      if ((globalViewMode === 'list' && btn.innerHTML.includes('☰')) ||
+          (globalViewMode === 'grid' && btn.innerHTML.includes('⊞'))) {
+        btn.classList.add('active');
+      }
+    });
+  });
 }
 
 // ==================== التنقل ====================
@@ -1804,36 +2261,157 @@ function showPage(pageId, btn) {
   const targetPage = document.getElementById(pageId);
   if (!targetPage) return;
   
-  // ✅ منع المشرفين العاديين من الوصول للصفحات المخفية
   if (targetPage.classList.contains('super-only') && currentAdmin.role !== 'super') {
     showMessage('⛔ غير مصرح', 'error');
     return;
   }
   
-  // ✅ إخفاء جميع الصفحات تماماً (إزالة active من الكل)
   document.querySelectorAll('.page').forEach(p => {
     p.classList.remove('active');
   });
   
-  // ✅ إزالة active من جميع أزرار التنقل
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   
-  // ✅ تفعيل الصفحة المطلوبة فقط
   targetPage.classList.add('active');
   
-  // ✅ تفعيل الزر المضغوط
   if (btn) btn.classList.add('active');
   
-  // ✅ تحميل البيانات حسب الصفحة
   if (pageId === 'pageList') renderStudentsList();
-  if (pageId === 'pageCodes') loadCodes();
+  if (pageId === 'pageCodes') renderCodes(allCodes);
   if (pageId === 'pageLogs' && currentAdmin.role === 'super') renderLogs();
-  if (pageId === 'pageAdmins' && currentAdmin.role === 'super') renderAdminsList();
+  if (pageId === 'pageAdmins' && currentAdmin.role === 'super') {
+    renderAdminsList();
+    updateCurrentAdminDisplay(); // ✅ تحديث عرض بيانات المشرف
+  }
 }
 
 window.onload = function() {
   initializeAdmins();
 };
+
+// ==================== ✅ ✅ جديد: إدارة المشرف الحالي ====================
+
+function updateCurrentAdminDisplay() {
+  if (!currentAdmin) return;
+  
+  document.getElementById('currentAdminDisplayName').textContent = currentAdmin.name;
+  document.getElementById('currentAdminDisplayRole').textContent = currentAdmin.role === 'super' ? '👑 مدير نظام' : '👤 مشرف عادي';
+  document.getElementById('currentAdminDisplayDate').textContent = 'منذ ' + formatDateRelative(currentAdmin.createdAt);
+  
+  // إعادة تعيين عرض الرمز
+  isPasswordVisible = false;
+  updatePasswordDisplay();
+}
+
+function updatePasswordDisplay() {
+  const displayEl = document.getElementById('currentAdminPasswordDisplay');
+  const btnEl = document.getElementById('togglePasswordBtn');
+  
+  if (isPasswordVisible) {
+    displayEl.textContent = currentAdmin.password;
+    btnEl.innerHTML = '🙈 إخفاء';
+  } else {
+    displayEl.textContent = '••••••';
+    btnEl.innerHTML = '👁️ عرض';
+  }
+}
+
+function togglePasswordVisibility() {
+  isPasswordVisible = !isPasswordVisible;
+  updatePasswordDisplay();
+}
+
+async function changeMyPassword() {
+  const result = await showModalWithInput('🔑', 'تغيير الرمز', 'أدخل الرمز الجديد:', '');
+  
+  if (result.confirmed && result.value) {
+    const newPassword = result.value.trim();
+    
+    if (newPassword.length < 3) {
+      showMessage('⚠️ الرمز قصير جداً (3 أحرف على الأقل)', 'error');
+      return;
+    }
+    
+    if (newPassword === currentAdmin.password) {
+      showMessage('⚠️ الرمز الجديد يجب أن يختلف عن القديم', 'error');
+      return;
+    }
+    
+    try {
+      await db.ref('admins/' + currentAdmin.key).update({ 
+        password: newPassword,
+        updatedAt: new Date().toISOString()
+      });
+      
+      // تحديث الرمز في الذاكرة
+      currentAdmin.password = newPassword;
+      
+      // تحديث العرض
+      isPasswordVisible = true; // إظهار الرمز الجديد مؤقتاً
+      updatePasswordDisplay();
+      
+      await addLog('edit-admin', `تغيير رمز المشرف: ${currentAdmin.name} (نفسه)`);
+      showMessage('✅ تم تغيير الرمز بنجاح', 'success');
+      
+      // إخفاء الرمز بعد 3 ثواني
+      setTimeout(() => {
+        isPasswordVisible = false;
+        updatePasswordDisplay();
+      }, 3000);
+      
+    } catch (error) {
+      showMessage('❌ خطأ: ' + error.message, 'error');
+    }
+  }
+}
+
+function formatDateRelative(isoString) {
+  if (!isoString) return 'تاريخ غير معروف';
+  const date = new Date(isoString);
+  const now = new Date();
+  const diffTime = Math.abs(now - date);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  
+  if (diffDays === 1) return 'يوم واحد';
+  if (diffDays < 7) return `${diffDays} أيام`;
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)} أسابيع`;
+  if (diffDays < 365) return `${Math.floor(diffDays / 30)} أشهر`;
+  return `${Math.floor(diffDays / 365)} سنة`;
+}
+
+// ==================== ✅ ✅ جديد: توليد رقم أكاديمي ====================
+
+function generateAcademicId() {
+  // توليد رقم عشوائي من 4 أرقام
+  let newId;
+  let attempts = 0;
+  const maxAttempts = 100;
+  
+  do {
+    newId = Math.floor(1000 + Math.random() * 9000).toString();
+    attempts++;
+  } while (allStudents.some(s => s.id === newId) && attempts < maxAttempts);
+  
+  if (attempts >= maxAttempts) {
+    showMessage('⚠️ تعذر توليد رقم فريد، الرجاء المحاولة مرة أخرى', 'error');
+    return;
+  }
+  
+  // وضع الرقم في الحقل
+  const idField = document.getElementById('studentId');
+  idField.value = newId;
+  
+  // تحديث الشبكة
+  updateGridDisplay();
+  
+  // تأثير بصري
+  idField.style.background = '#d1fae5';
+  setTimeout(() => {
+    idField.style.background = '';
+  }, 500);
+  
+  showMessage(`✅ تم توليد الرقم: ${newId}`, 'success');
+}
 
 // ==================== سجل العمليات (للمديرين فقط) ====================
 
@@ -1905,6 +2483,8 @@ function renderLogs() {
   
   document.getElementById('logsCount').textContent = filtered.length;
   
+  container.className = `view-container view-${globalViewMode}`;
+  
   if (filtered.length === 0) {
     container.innerHTML = `
       <div class="empty-list">
@@ -1915,23 +2495,50 @@ function renderLogs() {
     return;
   }
   
-  container.innerHTML = filtered.map(log => `
-    <div class="log-item ${log.action}">
-      <div class="log-header">
-        <div class="log-admin">
-          👤 ${log.adminName}
-          ${log.adminRole === 'super' ? '<span>👑</span>' : ''}
-          <span class="log-badge ${log.action}">${getActionText(log.action)}</span>
+  container.innerHTML = filtered.map(log => {
+    const isSelected = selectedStudents.has(log.key);
+    if (globalViewMode === 'grid') {
+      return `
+        <div class="item-row ${isSelected ? 'selected' : ''} log-item ${log.action}">
+          <div class="item-avatar" style="background: ${getActionColor(log.action)}">📋</div>
+          <div class="item-title">${log.adminName}</div>
+          <div class="item-subtitle">${getActionText(log.action)}</div>
+          <div class="item-detail">${formatDate(log.timestamp)}</div>
+          <div class="item-badge">${log.pointsChange || ''}</div>
         </div>
-        <div class="log-time">${formatDate(log.timestamp)}</div>
-      </div>
-      <div class="log-content">
-        ${log.details}
-        ${log.pointsChange ? `<br><strong>التغيير:</strong> ${log.pointsChange > 0 ? '+' : ''}${log.pointsChange} نقطة` : ''}
-        ${log.studentName ? `<br><strong>الطالب:</strong> ${log.studentName} (${log.studentId})` : ''}
-      </div>
-    </div>
-  `).join('');
+      `;
+    } else {
+      return `
+        <div class="item-row ${isSelected ? 'selected' : ''} log-item ${log.action}">
+          <div class="log-header" style="width: 100%;">
+            <div class="log-admin">
+              👤 ${log.adminName}
+              ${log.adminRole === 'super' ? '<span>👑</span>' : ''}
+              <span class="log-badge ${log.action}">${getActionText(log.action)}</span>
+            </div>
+            <div class="log-time">${formatDate(log.timestamp)}</div>
+          </div>
+          <div class="log-content" style="width: 100%;">
+            ${log.details}
+            ${log.pointsChange ? `<br><strong>التغيير:</strong> ${log.pointsChange > 0 ? '+' : ''}${log.pointsChange} نقطة` : ''}
+            ${log.studentName ? `<br><strong>الطالب:</strong> ${log.studentName} (${log.studentId})` : ''}
+          </div>
+        </div>
+      `;
+    }
+  }).join('');
+}
+
+function getActionColor(action) {
+  const colors = {
+    'add': 'var(--success)',
+    'deduct': 'var(--danger)',
+    'edit': 'var(--warning)',
+    'delete': '#7c3aed',
+    'add-student': 'var(--info)',
+    'generate-code': '#f59e0b'
+  };
+  return colors[action] || 'var(--primary)';
 }
 
 function getActionText(action) {
@@ -1971,6 +2578,8 @@ function renderAdminsList() {
   
   document.getElementById('adminsCount').textContent = allAdmins.length;
   
+  container.className = `view-container view-${globalViewMode}`;
+  
   if (allAdmins.length === 0) {
     container.innerHTML = `
       <div class="empty-list">
@@ -1981,26 +2590,42 @@ function renderAdminsList() {
     return;
   }
   
-  container.innerHTML = allAdmins.map(admin => `
-    <div class="admin-item">
-      <div class="admin-info">
-        <div class="admin-name">
-          ${admin.name}
-          ${admin.role === 'super' ? '👑' : ''}
+  container.innerHTML = allAdmins.map(admin => {
+    const isSelected = selectedStudents.has(admin.key);
+    // لا نعرض المشرف الحالي في القائمة (لأنه له قسم خاص)
+    if (admin.key === currentAdmin.key) return '';
+    
+    if (globalViewMode === 'grid') {
+      return `
+        <div class="item-row ${isSelected ? 'selected' : ''}">
+          <div class="item-avatar" style="background: ${admin.role === 'super' ? 'var(--warning)' : 'var(--info)'}">👤</div>
+          <div class="item-title">${admin.name}</div>
+          <div class="item-subtitle">${admin.role === 'super' ? '👑 مدير' : 'مشرف'}</div>
+          <div class="item-detail">${admin.password ? '••••••' : 'لا يوجد رمز'}</div>
+          <button class="btn btn-warning" style="padding: 4px 8px; font-size: 9px;" onclick="editAdminPassword('${admin.key}', '${admin.name}')">تغيير الرمز</button>
+          <button class="btn btn-danger" style="padding: 4px 8px; font-size: 9px;" onclick="deleteAdmin('${admin.key}', '${admin.name}')">حذف</button>
         </div>
-        <div class="admin-role ${admin.role}">
-          ${admin.role === 'super' ? 'مدير نظام' : 'مشرف عادي'}
-          ${admin.name === currentAdmin.name ? ' (أنت)' : ''}
+      `;
+    } else {
+      return `
+        <div class="item-row ${isSelected ? 'selected' : ''} admin-item">
+          <div class="admin-info" style="flex: 1;">
+            <div class="admin-name">
+              ${admin.name}
+              ${admin.role === 'super' ? '👑' : ''}
+            </div>
+            <div class="admin-role ${admin.role}">
+              ${admin.role === 'super' ? 'مدير نظام' : 'مشرف عادي'}
+            </div>
+          </div>
+          <div class="admin-actions">
+            <button class="edit-admin-btn" onclick="editAdminPassword('${admin.key}', '${admin.name}')">تغيير الرمز</button>
+            <button class="delete-admin-btn" onclick="deleteAdmin('${admin.key}', '${admin.name}')">حذف</button>
+          </div>
         </div>
-      </div>
-      <div class="admin-actions">
-        ${admin.name !== currentAdmin.name ? `
-          <button class="edit-admin-btn" onclick="editAdminPassword('${admin.key}', '${admin.name}')">تغيير الرمز</button>
-          <button class="delete-admin-btn" onclick="deleteAdmin('${admin.key}', '${admin.name}')">حذف</button>
-        ` : '<span style="color: var(--text-muted); font-size: 11px;">حسابك</span>'}
-      </div>
-    </div>
-  `).join('');
+      `;
+    }
+  }).join('');
 }
 
 async function addNewAdmin() {
@@ -2094,7 +2719,6 @@ function loadStudents() {
     const data = snapshot.val() || {};
     allStudents = Object.entries(data).map(([id, s]) => ({ id, ...s }));
     updateMajorsList();
-    // ✅ تحديث القائمة إذا كنا في صفحة القائمة
     if (document.getElementById('pageList').classList.contains('active')) {
       renderStudentsList();
     }
@@ -2144,38 +2768,50 @@ function updateMajorsList() {
             this.value = "";
           }
         }
+        updateGridDisplay();
       };
     }
     select.value = currentVal;
   });
 }
 
-// ✅ جديد: التحقق من الرقم الأكاديمي (4 أرقام كحد أقصى)
 function validateAcademicId(input) {
-  // السماح فقط بالأرقام
   input.value = input.value.replace(/[^0-9]/g, '');
-  // تقييد 4 أرقام كحد أقصى (maxlength في HTML يتعامل مع هذا أيضاً)
   if (input.value.length > 4) {
     input.value = input.value.slice(0, 4);
   }
 }
 
-// ✅ جديد: البحث المحسن بالاسم أو الرقم أو الجوال
 function handleSearch(value) {
+  const searchType = document.getElementById('searchType')?.value || 'all';
   const sug = document.getElementById('suggestions');
+  
   if (!sug) return;
   
-  if (value.length < 2) {
+  if (value.length < 1) {
     sug.style.display = 'none';
     return;
   }
   
-  // البحث في الاسم أو الرقم أو رقم الجوال
-  const matches = allStudents.filter(s => 
-    (s.name && s.name.toLowerCase().includes(value.toLowerCase())) || 
-    (s.id && s.id.includes(value)) ||
-    (s.whatsappLink && s.whatsappLink.includes(value))
-  ).slice(0, 5);
+  let matches = [];
+  
+  switch(searchType) {
+    case 'id':
+      matches = allStudents.filter(s => s.id && s.id.includes(value));
+      break;
+    case 'phone':
+      matches = allStudents.filter(s => s.whatsappLink && s.whatsappLink.includes(value));
+      break;
+    case 'all':
+    default:
+      matches = allStudents.filter(s => 
+        (s.name && s.name.toLowerCase().includes(value.toLowerCase())) || 
+        (s.id && s.id.includes(value)) ||
+        (s.whatsappLink && s.whatsappLink.includes(value))
+      );
+  }
+  
+  matches = matches.slice(0, 5);
   
   sug.innerHTML = matches.length === 0 ? '<div class="suggestion-item">لا توجد نتائج</div>' :
     matches.map(s => `
@@ -2191,14 +2827,33 @@ function handleSearch(value) {
   sug.style.display = 'block';
 }
 
+function handleListSearch(value) {
+  listSearchQuery = value;
+  renderStudentsList();
+}
+
 function searchStudent() {
   const val = document.getElementById('searchInput')?.value || '';
-  // البحث في الاسم أو الرقم أو الجوال
-  const student = allStudents.find(s => 
-    s.id === val || 
-    (s.name && s.name.includes(val)) ||
-    (s.whatsappLink && s.whatsappLink.includes(val))
-  );
+  const searchType = document.getElementById('searchType')?.value || 'all';
+  
+  let student;
+  
+  switch(searchType) {
+    case 'id':
+      student = allStudents.find(s => s.id === val);
+      break;
+    case 'phone':
+      student = allStudents.find(s => s.whatsappLink && s.whatsappLink.includes(val));
+      break;
+    case 'all':
+    default:
+      student = allStudents.find(s => 
+        s.id === val || 
+        (s.name && s.name.includes(val)) ||
+        (s.whatsappLink && s.whatsappLink.includes(val))
+      );
+  }
+  
   if (student) selectStudent(student.id);
   else showMessage('❌ لم يتم العثور على الطالب', 'error');
 }
@@ -2235,6 +2890,7 @@ function selectStudent(id) {
   const currentPointsEl = document.getElementById('currentPoints');
   if (currentPointsEl) currentPointsEl.textContent = s.points || 0;
   
+  updateGridDisplay();
   showMessage(`✅ تم تحميل: ${s.name}`, 'success');
 }
 
@@ -2247,7 +2903,6 @@ async function addStudent() {
     return;
   }
   
-  // ✅ التحقق من أن الرقم الأكاديمي 4 أرقام كحد أقصى
   if (id.length > 4) {
     showMessage('⚠️ الرقم الأكاديمي يجب أن يكون 4 أرقام كحد أقصى', 'error');
     return;
@@ -2271,7 +2926,6 @@ async function addStudent() {
   try {
     await db.ref('users/' + id).set(data);
     
-    // تسجيل فقط للمديرين
     if (currentAdmin.role === 'super') {
       await addLog('add-student', `إضافة طالب جديد`, id, name);
     }
@@ -2308,6 +2962,7 @@ async function saveStudent() {
     }
     
     showMessage('✅ تم الحفظ بنجاح', 'success');
+    updateGridDisplay();
   } catch (e) {
     showMessage('❌ خطأ: ' + e.message, 'error');
   }
@@ -2348,6 +3003,7 @@ function clearForm() {
   });
   document.getElementById('currentPoints').textContent = '0';
   currentStudent = null;
+  updateGridDisplay();
 }
 
 async function updatePoints() {
@@ -2394,20 +3050,32 @@ function formatGrade(input) {
   input.value = val;
 }
 
-// ==================== ✅ قائمة الطلاب المحدثة ====================
-
-// ✅ جديد: تبديل طريقة العرض
-function setViewMode(mode, btn) {
-  currentViewMode = mode;
+function updateGridDisplay() {
+  const id = document.getElementById('studentId')?.value || '-';
+  const name = document.getElementById('studentName')?.value || '-';
+  const major = document.getElementById('studentMajor')?.value || '-';
+  const grade = document.getElementById('studentGrade')?.value || '-';
+  const password = document.getElementById('studentPassword')?.value || '-';
+  const whatsapp = document.getElementById('studentWhatsapp')?.value || '-';
   
-  // تحديث الأزرار
-  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  
-  renderStudentsList();
+  document.getElementById('gridStudentId').textContent = id.length > 8 ? id.substring(0, 8) + '...' : id;
+  document.getElementById('gridStudentName').textContent = name.length > 10 ? name.substring(0, 10) + '...' : name;
+  document.getElementById('gridStudentMajor').textContent = major.length > 8 ? major.substring(0, 8) + '...' : major;
+  document.getElementById('gridStudentGrade').textContent = grade;
+  document.getElementById('gridStudentPassword').textContent = password.length > 6 ? '••••••' : password;
+  document.getElementById('gridStudentWhatsapp').textContent = whatsapp.length > 10 ? whatsapp.substring(0, 10) + '...' : whatsapp;
 }
 
-// ✅ جديد: تحديد/إلغاء تحديد طالب
+function focusField(fieldId) {
+  const field = document.getElementById(fieldId);
+  if (field) {
+    field.focus();
+    field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+// ==================== قائمة الطلاب ====================
+
 function toggleStudentSelection(id, event) {
   if (event) event.stopPropagation();
   
@@ -2418,19 +3086,16 @@ function toggleStudentSelection(id, event) {
   }
   
   updateBulkActions();
-  renderStudentsList(); // إعادة العرض لتحديث التصميم
+  renderStudentsList();
 }
 
-// ✅ جديد: تحديد/إلغاء تحديد الكل
-function toggleSelectAll() {
-  const checkbox = document.getElementById('selectAllCheckbox');
+function toggleSelectAll(source) {
+  const checkbox = document.getElementById('selectAllList');
   const isChecked = checkbox.checked;
   
   if (isChecked) {
-    // تحديد كل الطلاب المعروضين حالياً
     currentFilteredStudents.forEach(s => selectedStudents.add(s.id));
   } else {
-    // إلغاء تحديد الكل
     selectedStudents.clear();
   }
   
@@ -2438,17 +3103,15 @@ function toggleSelectAll() {
   renderStudentsList();
 }
 
-// ✅ جديد: تحديث أدوات التحديد الجماعي
 function updateBulkActions() {
-  const bulkActions = document.getElementById('bulkActions');
-  const selectedCount = document.getElementById('selectedCount');
-  const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+  const bulkActions = document.getElementById('bulkActionsList');
+  const selectedCount = document.getElementById('selectedCountList');
+  const selectAllCheckbox = document.getElementById('selectAllList');
   
   if (selectedStudents.size > 0) {
     bulkActions.classList.add('show');
     selectedCount.textContent = `(${selectedStudents.size})`;
     
-    // تحديث حالة checkbox الكل
     const allSelected = currentFilteredStudents.length > 0 && 
                        currentFilteredStudents.every(s => selectedStudents.has(s.id));
     selectAllCheckbox.checked = allSelected;
@@ -2458,7 +3121,6 @@ function updateBulkActions() {
   }
 }
 
-// ✅ جديد: حذف جماعي
 async function bulkDelete() {
   if (selectedStudents.size === 0) return;
   
@@ -2491,16 +3153,24 @@ async function bulkDelete() {
   }
 }
 
-// ✅ جديد: تغيير التخصص للمجموعة
 async function bulkEditMajor() {
   if (selectedStudents.size === 0) return;
   
-  const result = await showModalWithInput('✏️', 'تغيير التخصص', `تغيير التخصص لـ ${selectedStudents.size} طالب إلى:`);
+  const majorsOptions = availableMajors.map(m => `<option value="${m}">${m}</option>`).join('');
+  
+  const result = await showModalWithSelect(
+    '✏️', 
+    'تغيير التخصص', 
+    `تغيير التخصص لـ ${selectedStudents.size} طالب:`,
+    majorsOptions,
+    'اختر التخصص...'
+  );
+  
   if (!result.confirmed || !result.value) return;
   
   const newMajor = result.value.trim();
-  if (!newMajor) {
-    showMessage('⚠️ أدخل اسم التخصص', 'error');
+  if (!newMajor || newMajor === '') {
+    showMessage('⚠️ اختر التخصص', 'error');
     return;
   }
   
@@ -2529,7 +3199,6 @@ async function bulkEditMajor() {
     selectedStudents.clear();
     updateBulkActions();
     
-    // إضافة التخصص الجديد للقائمة إذا لم يكن موجوداً
     if (!availableMajors.includes(newMajor)) {
       availableMajors.push(newMajor);
       availableMajors.sort();
@@ -2540,7 +3209,43 @@ async function bulkEditMajor() {
   }
 }
 
-// ✅ جديد: حذف طالب مباشرة من القائمة
+function showModalWithSelect(icon, title, text, options, placeholder) {
+  return new Promise(resolve => {
+    document.getElementById('modalIcon').textContent = icon;
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalText').textContent = text;
+    document.getElementById('modalInputArea').innerHTML = `
+      <select id="modalSelect" class="modal-select" style="margin-bottom: 16px;">
+        <option value="">${placeholder}</option>
+        ${options}
+        <option value="__new__">+ إضافة تخصص جديد</option>
+      </select>
+    `;
+    
+    const select = document.getElementById('modalSelect');
+    
+    modalCallback = () => {
+      let val = select.value;
+      
+      if (val === '__new__') {
+        const newVal = prompt('أدخل اسم التخصص الجديد:');
+        if (newVal && newVal.trim()) {
+          val = newVal.trim();
+        } else {
+          resolve({ confirmed: false, value: '' });
+          return;
+        }
+      }
+      
+      resolve({ confirmed: true, value: val });
+    };
+    
+    document.getElementById('modal').classList.add('active');
+    
+    setTimeout(() => select.focus(), 100);
+  });
+}
+
 async function quickDeleteStudent(id, name, event) {
   if (event) event.stopPropagation();
   
@@ -2554,7 +3259,6 @@ async function quickDeleteStudent(id, name, event) {
       await addLog('delete', `حذف طالب من القائمة`, id, name);
     }
     
-    // إزالة من التحديدات إذا كان محدداً
     selectedStudents.delete(id);
     updateBulkActions();
     
@@ -2564,10 +3268,6 @@ async function quickDeleteStudent(id, name, event) {
   }
 }
 
-function filterStudents() {
-  renderStudentsList();
-}
-
 function toggleSort() {
   sortAsc = !sortAsc;
   document.getElementById('sortIcon').textContent = sortAsc ? '🔤' : '🔡';
@@ -2575,16 +3275,36 @@ function toggleSort() {
   renderStudentsList();
 }
 
-// ✅ محدث: عرض قائمة الطلاب مع التحديد وطريقة العرض
 function renderStudentsList() {
   const container = document.getElementById('studentsList');
   if (!container) return;
   
   const filterMajor = document.getElementById('filterMajor')?.value || '';
+  const searchType = document.getElementById('listSearchType')?.value || 'all';
   
   let filtered = allStudents;
+  
   if (filterMajor) {
     filtered = filtered.filter(s => s.major === filterMajor);
+  }
+  
+  if (listSearchQuery) {
+    const query = listSearchQuery.toLowerCase();
+    switch(searchType) {
+      case 'id':
+        filtered = filtered.filter(s => s.id && s.id.includes(listSearchQuery));
+        break;
+      case 'phone':
+        filtered = filtered.filter(s => s.whatsappLink && s.whatsappLink.includes(listSearchQuery));
+        break;
+      case 'all':
+      default:
+        filtered = filtered.filter(s => 
+          (s.name && s.name.toLowerCase().includes(query)) || 
+          (s.id && s.id.includes(listSearchQuery)) ||
+          (s.whatsappLink && s.whatsappLink.includes(listSearchQuery))
+        );
+    }
   }
   
   filtered.sort((a, b) => {
@@ -2592,10 +3312,11 @@ function renderStudentsList() {
     return sortAsc ? nameA : -nameA;
   });
   
-  // حفظ الطلاب المعروضين حالياً للتحديد
   currentFilteredStudents = filtered;
   
   document.getElementById('listCount').textContent = filtered.length;
+  
+  container.className = `view-container view-${globalViewMode}`;
   
   if (filtered.length === 0) {
     container.innerHTML = `
@@ -2607,63 +3328,56 @@ function renderStudentsList() {
     return;
   }
   
-  if (currentViewMode === 'grid') {
-    // عرض الشبكة
-    container.className = 'students-grid';
-    container.innerHTML = filtered.map(s => {
-      const isSelected = selectedStudents.has(s.id);
+  container.innerHTML = filtered.map(s => {
+    const isSelected = selectedStudents.has(s.id);
+    if (globalViewMode === 'grid') {
       return `
-        <div class="grid-item ${isSelected ? 'selected' : ''}" onclick="selectStudent('${s.id}')">
-          <input type="checkbox" class="student-checkbox" 
+        <div class="item-row ${isSelected ? 'selected' : ''}" onclick="selectStudent('${s.id}')">
+          <input type="checkbox" class="item-checkbox" 
                  ${isSelected ? 'checked' : ''} 
                  onclick="toggleStudentSelection('${s.id}', event)"
                  title="تحديد">
-          <div class="grid-item-avatar">${s.name ? s.name[0] : '؟'}</div>
-          <div class="grid-item-name">${s.name}</div>
-          <div class="grid-item-id">${s.id}</div>
-          <div class="grid-item-major">${s.major || 'بدون'}</div>
-          <div class="grid-item-points">⭐ ${s.points || 0}</div>
-          <button class="delete-item-btn" onclick="quickDeleteStudent('${s.id}', '${s.name}', event)" title="حذف">🗑️</button>
+          <div class="item-avatar">${s.name ? s.name[0] : '؟'}</div>
+          <div class="item-title">${s.name}</div>
+          <div class="item-subtitle">${s.id}</div>
+          <div class="item-detail">${s.major || 'بدون'}</div>
+          <div class="item-badge">⭐ ${s.points || 0}</div>
+          <button class="delete-btn" onclick="quickDeleteStudent('${s.id}', '${s.name}', event)" title="حذف">🗑️</button>
         </div>
       `;
-    }).join('');
-  } else {
-    // عرض القائمة (الافتراضي)
-    container.className = 'students-list';
-    container.innerHTML = filtered.map(s => {
-      const isSelected = selectedStudents.has(s.id);
+    } else {
       return `
-        <div class="student-item ${isSelected ? 'selected' : ''}">
-          <input type="checkbox" class="student-checkbox" 
+        <div class="item-row ${isSelected ? 'selected' : ''}">
+          <input type="checkbox" class="item-checkbox" 
                  ${isSelected ? 'checked' : ''} 
                  onclick="toggleStudentSelection('${s.id}', event)"
                  title="تحديد">
-          <div class="student-item-avatar" onclick="selectStudent('${s.id}')">${s.name ? s.name[0] : '؟'}</div>
-          <div class="student-item-info" onclick="selectStudent('${s.id}')">
-            <div class="student-item-name">${s.name}</div>
-            <div class="student-item-id">${s.id}</div>
-            <div class="student-item-major">${s.major || 'بدون'}</div>
+          <div class="item-avatar" onclick="selectStudent('${s.id}')">${s.name ? s.name[0] : '؟'}</div>
+          <div class="item-info" onclick="selectStudent('${s.id}')">
+            <div class="item-title">${s.name}</div>
+            <div class="item-subtitle">${s.id}</div>
+            <div class="item-detail">${s.major || 'بدون'}</div>
           </div>
-          <div class="student-item-points" onclick="selectStudent('${s.id}')">
+          <div class="item-badge" onclick="selectStudent('${s.id}')">
             <span>⭐</span>
             <span>${s.points || 0}</span>
           </div>
-          <button class="delete-item-btn" onclick="quickDeleteStudent('${s.id}', '${s.name}', event)" title="حذف">🗑️</button>
+          <button class="delete-btn" onclick="quickDeleteStudent('${s.id}', '${s.name}', event)" title="حذف">🗑️</button>
         </div>
       `;
-    }).join('');
-  }
+    }
+  }).join('');
 }
 
 // ==================== الأكواد ====================
 
 function loadCodes() {
   db.ref('codes').orderByChild('createdAt').limitToLast(50).on('value', (snapshot) => {
-    const codes = [];
+    allCodes = [];
     snapshot.forEach(child => {
-      codes.unshift({ key: child.key, ...child.val() });
+      allCodes.unshift({ key: child.key, ...child.val() });
     });
-    renderCodes(codes);
+    renderCodes(allCodes);
   });
 }
 
@@ -2672,6 +3386,8 @@ function renderCodes(codes) {
   if (!container) return;
   
   document.getElementById('codesCount').textContent = codes.length;
+  
+  container.className = `view-container view-${globalViewMode}`;
   
   if (codes.length === 0) {
     container.innerHTML = `
@@ -2683,19 +3399,37 @@ function renderCodes(codes) {
     return;
   }
   
-  container.innerHTML = codes.map(c => `
-    <div class="code-item ${c.used ? 'code-item-used' : ''}">
-      <div class="code-item-info">
-        <div class="code-item-code">${c.code}</div>
-        <div class="code-item-details">
-          ${c.studentName} (${c.studentId}) - ${c.points} نقطة
-          <br>
-          ${formatDate(c.createdAt)} ${c.used ? `- استخدم: ${formatDate(c.usedAt)}` : ''}
+  container.innerHTML = codes.map(c => {
+    if (globalViewMode === 'grid') {
+      return `
+        <div class="item-row ${c.used ? 'used' : ''}">
+          <div class="item-avatar" style="background: ${c.used ? 'var(--text-muted)' : 'var(--success)'}">🎫</div>
+          <div class="item-title" style="font-family: monospace; letter-spacing: 1px; font-size: 9px;">${c.code}</div>
+          <div class="item-subtitle">${c.studentName}</div>
+          <div class="item-detail">${c.points} نقطة</div>
+          <div class="item-badge" style="background: ${c.used ? 'var(--text-muted)' : 'var(--success)'}">
+            ${c.used ? 'مستخدم' : 'متاح'}
+          </div>
         </div>
-      </div>
-      <div class="code-item-status">${c.used ? 'مستخدم' : 'متاح'}</div>
-    </div>
-  `).join('');
+      `;
+    } else {
+      return `
+        <div class="item-row code-item ${c.used ? 'code-item-used' : ''}">
+          <div class="code-item-info" style="flex: 1;">
+            <div class="code-item-code">${c.code}</div>
+            <div class="code-item-details">
+              ${c.studentName} (${c.studentId}) - ${c.points} نقطة
+              <br>
+              ${formatDate(c.createdAt)} ${c.used ? `- استخدم: ${formatDate(c.usedAt)}` : ''}
+            </div>
+          </div>
+          <div class="code-item-status" style="background: ${c.used ? 'var(--text-muted)' : 'var(--success)'}">
+            ${c.used ? 'مستخدم' : 'متاح'}
+          </div>
+        </div>
+      `;
+    }
+  }).join('');
 }
 
 async function generateCode() {
@@ -2707,7 +3441,6 @@ async function generateCode() {
     return;
   }
   
-  // ✅ التحقق من أن الرقم الأكاديمي 4 أرقام كحد أقصى
   if (studentId.length > 4) {
     showMessage('⚠️ الرقم الأكاديمي يجب أن يكون 4 أرقام كحد أقصى', 'error');
     return;
