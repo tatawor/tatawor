@@ -2,9 +2,11 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <title>روابطنا الرسمية</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 
 <style>
 /* إخفاء عناصر بلوجر */
@@ -13,126 +15,346 @@ header, footer, .sidebar, .top-bar, .search-form,
   display:none !important;
 }
 
-/* ===== الأساس ===== */
-body{
-  background:linear-gradient(180deg,#0f1220,#15182d);
-  font-family:'Segoe UI',Tahoma,sans-serif;
-  margin:0;
-  padding:25px 0;
-  color:#eaeaf0;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* ===== الحاوية ===== */
-.app-container{
-  max-width:420px;
-  margin:auto;
-  background:#1b1f3b;
-  border-radius:26px;
-  padding:26px 18px 36px;
-  box-shadow:0 20px 45px rgba(0,0,0,.45);
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Tajawal', sans-serif;
 }
 
-/* ===== العناوين ===== */
-.section-title{
-  font-size:18px;
-  font-weight:700;
-  margin:26px 0 18px;
-  color:#fff;
-  text-align:center;
+body {
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* ===== الشبكة ===== */
-.icons-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:18px;
+/* خلفية متحركة */
+.bg-shapes {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
 }
 
-/* ===== الكرت ===== */
-.icon-box{
-  background:linear-gradient(145deg,#232866,#1a1f4a);
-  border-radius:20px;
-  padding:22px 10px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-decoration:none;
-  transition:.25s ease;
-  box-shadow:0 10px 22px rgba(0,0,0,.35);
-}
-.icon-box:active{
-  transform:scale(.96);
-}
-.icon-box:hover{
-  transform:translateY(-6px);
-  box-shadow:0 16px 34px rgba(0,0,0,.55);
+.bg-shape {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.3;
+  animation: float 20s ease-in-out infinite;
 }
 
-/* ===== الأيقونة النصية ===== */
-.icon{
-  font-size:40px;
-  margin-bottom:10px;
-  line-height:1;
+.bg-shape:nth-child(1) {
+  width: 400px;
+  height: 400px;
+  background: #6366f1;
+  top: -150px;
+  right: -100px;
 }
 
-/* ===== النص ===== */
-.icon-label{
-  font-size:14px;
-  font-weight:600;
-  color:#e6e6ff;
+.bg-shape:nth-child(2) {
+  width: 300px;
+  height: 300px;
+  background: #06b6d4;
+  bottom: -100px;
+  left: -100px;
+  animation-delay: -7s;
 }
 
-.spacer{height:12px}
+.bg-shape:nth-child(3) {
+  width: 250px;
+  height: 250px;
+  background: #8b5cf6;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: -14s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -30px) scale(1.1); }
+}
+
+/* الحاوية الرئيسية */
+.app-container {
+  width: 92%;
+  max-width: 380px;
+  height: 90vh;
+  max-height: 800px;
+  margin: auto;
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(30px);
+  border-radius: 28px;
+  padding: 24px 18px;
+  box-shadow: 
+    0 25px 50px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    0 0 0 1px rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  overflow-y: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.app-container::-webkit-scrollbar { width: 4px; }
+.app-container::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.5);
+  border-radius: 2px;
+}
+
+/* العناوين */
+.section-title {
+  font-size: 13px;
+  font-weight: 800;
+  margin: 20px 0 14px;
+  color: #fff;
+  text-align: center;
+  position: relative;
+  opacity: 0;
+  animation: fadeInDown 0.5s ease forwards;
+  letter-spacing: 1px;
+}
+
+.section-title:first-child {
+  margin-top: 10px;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, #6366f1, #06b6d4);
+  border-radius: 2px;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* الشبكة */
+.icons-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+/* الكرت */
+.icon-box {
+  background: rgba(51, 65, 85, 0.5);
+  border-radius: 20px;
+  padding: 22px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255,255,255,0.05);
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+  animation-delay: calc(var(--i) * 0.08s);
+}
+
+.icon-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.icon-box:hover::before {
+  opacity: 1;
+}
+
+/* ألوان مميزة للبطاقات */
+.icon-box.whatsapp {
+  border-bottom: 3px solid #25d366;
+}
+
+.icon-box.whatsapp:hover {
+  background: rgba(37, 211, 102, 0.15);
+  border-color: rgba(37, 211, 102, 0.3);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(37, 211, 102, 0.2);
+}
+
+.icon-box.telegram {
+  border-bottom: 3px solid #0088cc;
+}
+
+.icon-box.telegram:hover {
+  background: rgba(0, 136, 204, 0.15);
+  border-color: rgba(0, 136, 204, 0.3);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 136, 204, 0.2);
+}
+
+.icon-box.youtube {
+  border-bottom: 3px solid #ff0000;
+}
+
+.icon-box.youtube:hover {
+  background: rgba(255, 0, 0, 0.15);
+  border-color: rgba(255, 0, 0, 0.3);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(255, 0, 0, 0.2);
+}
+
+.icon-box.website {
+  border-bottom: 3px solid #8b5cf6;
+}
+
+.icon-box.website:hover {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.3);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(139, 92, 246, 0.2);
+}
+
+.icon-box:active {
+  transform: scale(0.97);
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* الأيقونة */
+.icon {
+  width: 55px;
+  height: 55px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-bottom: 10px;
+  background: rgba(255,255,255,0.05);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.icon-box.whatsapp .icon { color: #25d366; }
+.icon-box.telegram .icon { color: #0088cc; }
+.icon-box.youtube .icon { color: #ff0000; }
+.icon-box.website .icon { color: #8b5cf6; }
+
+.icon-box:hover .icon {
+  transform: scale(1.1);
+  background: rgba(255,255,255,0.1);
+}
+
+/* النص */
+.icon-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #e2e8f0;
+  text-align: center;
+  line-height: 1.4;
+  transition: color 0.3s;
+}
+
+.icon-box:hover .icon-label {
+  color: #fff;
+}
+
+.spacer { height: 8px; }
+
+/* للجوال */
+@media (max-width: 480px) {
+  .app-container {
+    width: 100%;
+    height: 100vh;
+    max-height: none;
+    border-radius: 0;
+    padding: 28px 20px;
+    max-width: 100%;
+  }
+  
+  body { padding: 0; }
+}
+
+@media (min-width: 1024px) {
+  body::after {
+    content: 'هذه الواجهة مصممة للجوال فقط';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    color: #fff;
+    z-index: 9999;
+    background: rgba(15, 23, 42, 0.95);
+    padding: 30px;
+    border-radius: 20px;
+    font-family: 'Tajawal', sans-serif;
+  }
+  .app-container, .bg-shapes { display: none; }
+}
 </style>
 </head>
 
 <body>
 
+<div class="bg-shapes">
+  <div class="bg-shape"></div>
+  <div class="bg-shape"></div>
+  <div class="bg-shape"></div>
+</div>
+
 <div class="app-container">
 
-  <!-- واتساب -->
-  <div class="section-title">منصاتنا على واتساب</div>
+  <div class="section-title" style="--i:0">واتساب</div>
   <div class="icons-grid">
-    <a href="https://chat.whatsapp.com/Jv2RkT9vzwKIB0CzA52W5p?mode=ac_t" class="icon-box">
+    <a href="https://chat.whatsapp.com/Jv2RkT9vzwKIB0CzA52W5p?mode=ac_t" class="icon-box whatsapp" style="--i:1">
       <div class="icon">👥</div>
-      <div class="icon-label">المجتمع 1</div>
+      <div class="icon-label">المجتمع الرسمي</div>
     </a>
-    <a href="https://chat.whatsapp.com/GX9ddH2WvsHGy2u0h4SDJw?mode=ac_t" class="icon-box">
-      <div class="icon">👥</div>
-      <div class="icon-label">المجتمع 2</div>
-    </a>
-    <a href="https://chat.whatsapp.com/CfbhoBC9GlS0noUT94XI8U" class="icon-box">
-      <div class="icon">👥</div>
-      <div class="icon-label">المجتمع 3</div>
-    </a>
-
-    <!-- الإضافات الجديدة -->
-    <a href="https://chat.whatsapp.com/B8TCDOLaOWhEuGCOXUKeYP" class="icon-box">
+    <a href="https://chat.whatsapp.com/B8TCDOLaOWhEuGCOXUKeYP" class="icon-box whatsapp" style="--i:2">
       <div class="icon">👥</div>
       <div class="icon-label">الميدان</div>
     </a>
-    <a href="https://whatsapp.com/channel/0029VayFM8YKmCPMHtdPY83E" class="icon-box">
+    <a href="https://whatsapp.com/channel/0029VayFM8YKmCPMHtdPY83E" class="icon-box whatsapp" style="--i:3">
       <div class="icon">📢</div>
-      <div class="icon-label">الذكاء الاصطناعي</div>
+      <div class="icon-label">أكاديمية تطور</div>
     </a>
-
-    <a href="https://whatsapp.com/channel/0029VasNmmc05MUmJf0qAO2K" class="icon-box">
-      <div class="icon">📢</div>
-      <div class="icon-label">القناة</div>
+    <a href="https://whatsapp.com/channel/0029VbBVGmdLCoWyl8Vgqn1g" class="icon-box whatsapp" style="--i:4">
+      <div class="icon">🤖</div>
+      <div class="icon-label">الذكاء الاصطناعي</div>
     </a>
   </div>
 
   <div class="spacer"></div>
 
-  <!-- تيليجرام -->
-  <div class="section-title">منصاتنا على تيليجرام</div>
+  <div class="section-title" style="--i:5">تيليجرام</div>
   <div class="icons-grid">
-    <a href="https://t.me/tataworgroub" class="icon-box">
+    <a href="https://t.me/tataworgroub" class="icon-box telegram" style="--i:6">
       <div class="icon">💬</div>
       <div class="icon-label">المجموعة</div>
     </a>
-    <a href="https://t.me/tataw0r" class="icon-box">
+    <a href="https://t.me/tataw0r" class="icon-box telegram" style="--i:7">
       <div class="icon">📣</div>
       <div class="icon-label">القناة</div>
     </a>
@@ -140,20 +362,36 @@ body{
 
   <div class="spacer"></div>
 
-  <!-- روابط أخرى -->
-  <div class="section-title">روابط أخرى</div>
+  <div class="section-title" style="--i:8">روابط أخرى</div>
   <div class="icons-grid">
-    <a href="https://tataw0r.blogspot.com/" class="icon-box">
+    <a href="https://tataw0r.blogspot.com/" class="icon-box website" style="--i:9">
       <div class="icon">🌐</div>
-      <div class="icon-label">الموقع الإلكتروني</div>
+      <div class="icon-label">الموقع</div>
     </a>
-    <a href="https://youtube.com/@tatawor_acatemy" class="icon-box">
+    <a href="https://youtube.com/@tatawor_acatemy" class="icon-box youtube" style="--i:10">
       <div class="icon">▶️</div>
-      <div class="icon-label">قناة يوتيوب</div>
+      <div class="icon-label">يوتيوب</div>
     </a>
   </div>
 
 </div>
+
+<script>
+document.querySelectorAll('.icon-box').forEach((box) => {
+  box.addEventListener('click', function(e) {
+    let ripple = document.createElement('span');
+    ripple.style.cssText = 'position:absolute;border-radius:50%;background:rgba(255,255,255,0.3);transform:scale(0);animation:ripple 0.6s ease-out;left:50%;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;pointer-events:none;';
+    this.style.position = 'relative';
+    this.style.overflow = 'hidden';
+    this.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+  });
+});
+
+let style = document.createElement('style');
+style.textContent = '@keyframes ripple{to{transform:scale(4);opacity:0}}';
+document.head.appendChild(style);
+</script>
 
 </body>
 </html>
