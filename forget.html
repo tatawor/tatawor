@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>التحقق الأكاديمي</title>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<style>
+.header-logo,.sidebar,.search-form,.dark-toggle,.top-bar,header,#header-wrapper,footer,.footer-container,#footer-wrapper{display:none !important;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Arial,sans-serif;background:linear-gradient(to bottom,#f0f4f8,#d9e2ec);display:flex;justify-content:center;align-items:center;height:100vh;padding:20px;}
+.container{background:#fff;padding:25px 20px;border-radius:15px;box-shadow:0 6px 18px rgba(0,0,0,0.1);width:100%;max-width:400px;}
+h2{text-align:center;color:#333;margin-bottom:20px;font-size:1.4rem;}
+input{width:100%;padding:14px;margin-bottom:15px;border:1px solid #ccc;border-radius:10px;font-size:1rem;}
+button{width:100%;padding:14px;background-color:#007bff;color:#fff;border:none;border-radius:10px;font-size:1rem;cursor:pointer;transition:0.3s;}
+button:disabled{background-color:#999;cursor:not-allowed;}
+button:hover:not(:disabled){background-color:#0056b3;}
+#popupMsg{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#333;color:#fff;padding:25px 30px;border-radius:15px;box-shadow:0 8px 25px rgba(0,0,0,0.3);display:none;z-index:9999;font-size:1rem;text-align:center;max-width:90%;min-width:250px;}
+#popupMsg button{margin-top:15px;padding:10px 20px;background-color:#007bff;border:none;color:#fff;font-size:1rem;border-radius:8px;cursor:pointer;transition:0.3s;}
+#popupMsg button:hover{background-color:#0056b3;}
+@media(max-width:480px){.container{padding:20px 15px;}h2{font-size:1.2rem;}input,button{padding:12px;font-size:0.95rem;}}
+</style>
+</head>
+<body>
+<div class="container">
+<h2>أدخل الرقم الأكاديمي</h2>
+<input type="text" id="acadNumber" placeholder="الرقم الأكاديمي">
+<button id="sendBtn" onclick="sendData()">إرسال</button>
+</div>
+<div id="popupMsg">
+  <div id="popupText"></div>
+  <button id="popupButton" onclick="closePopup()" style="display:none;">حسناً</button>
+</div>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyA...ضع هنا",
+  authDomain: "store-points-7d2f4.firebaseapp.com",
+  databaseURL: "https://store-points-7d2f4-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "store-points-7d2f4",
+  storageBucket: "store-points-7d2f4.appspot.com",
+  messagingSenderId: "ضع هنا",
+  appId: "ضع هنا"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const sendButton=document.getElementById('sendBtn');
+
+function showMessage(msg,showButton=false){
+  const popup=document.getElementById('popupMsg');
+  const popupText=document.getElementById('popupText');
+  const popupButton=document.getElementById('popupButton');
+  popupText.innerHTML=msg;
+  popup.style.display='block';
+  popupButton.style.display=showButton?'inline-block':'none';
+}
+function closePopup(){document.getElementById('popupMsg').style.display='none';}
+
+// دالة escape للـ MarkdownV2
+function escapeMarkdownV2(text){
+  return text.replace(/([_*\[\]()~`>#+\-=|{}.!])/g,'\\$1');
+}
+
+async function sendData(){
+  const number=document.getElementById('acadNumber').value.trim();
+  if(!number){showMessage("الرجاء إدخال الرقم الأكاديمي",true);return;}
+
+  sendButton.disabled=true;
+  showMessage("جاري الإرسال...",false);
+
+  try{
+    const snapshot=await db.ref('users/'+number).get();
+    if(!snapshot.exists()){showMessage("الرقم الأكاديمي غير معتمد",true);sendButton.disabled=false;return;}
+    const data=snapshot.val();
+    if(!data.password||data.password.trim()===""){showMessage("لا يوجد كلمة مرور بعد، ادخل إلى التطبيق واضغط على تفعيل الحساب وقم بتعيين كلمة مرور خاصة بك",true);sendButton.disabled=false;return;}
+
+    // escape لكل الرموز الخاصة
+    const passwordEscaped = escapeMarkdownV2(data.password);
+    const numberEscaped = escapeMarkdownV2(number);
+    const nameEscaped = escapeMarkdownV2(data.name);
+
+    // تكوين الرسالة، كلمة المرور في مربع نسخ صغير inline code
+    const messageText = `الرقم الأكاديمي: ${numberEscaped}\nاسم: ${nameEscaped}\nكلمة المرور: \`${passwordEscaped}\``;
+
+    const botToken="8120894334:AAF4DHHvrtX_OPMQ5B5ID0qh8KUJuX-T75Y";
+    const chatId="-1002505809335";
+
+    const whatsappButton={inline_keyboard:[[{text:"مراسلة على واتساب",url:data.whatsappLink}]]};
+    const telegramUrl=`https://api.telegram.org/bot${botToken}/sendMessage`;
+
+    await fetch(telegramUrl,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        chat_id:chatId,
+        text:messageText,
+        reply_markup:whatsappButton,
+        parse_mode: "MarkdownV2"
+      })
+    });
+
+    showMessage("تم إرسال كلمة المرور بنجاح، الرجاء التحلي بالصبر",true);
+
+  }catch(error){
+    console.error(error);
+    showMessage("حدث خطأ أثناء التحقق",true);
+  }finally{
+    sendButton.disabled=false;
+  }
+}
+</script>
+</body>
+</html>

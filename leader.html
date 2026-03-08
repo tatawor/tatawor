@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم أكاديمية تطور</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-light: #8b5cf6;
+            --secondary: #ec4899;
+            --accent: #06b6d4;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #1e293b);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Animated Background Orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            z-index: 0;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb-1 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            top: -50px;
+            right: -50px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(135deg, var(--secondary), #f43f5e);
+            bottom: 10%;
+            left: -50px;
+            animation-delay: 5s;
+        }
+
+        .orb-3 {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, var(--accent), #3b82f6);
+            top: 40%;
+            left: 30%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        /* Glass Header - Smaller */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 0.6rem 1.5rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .header-content {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .logo-wrapper {
+            position: relative;
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo-glow {
+            position: absolute;
+            inset: -3px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            opacity: 0.5;
+            filter: blur(8px);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        .logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+            position: relative;
+            z-index: 2;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .brand-text h1 {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.1rem;
+        }
+
+        .brand-text span {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* View Toggle - Smaller */
+        .view-toggle {
+            display: flex;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 3px;
+            gap: 3px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .toggle-btn {
+            padding: 0.4rem 0.9rem;
+            border: none;
+            background: transparent;
+            color: rgba(255,255,255,0.6);
+            cursor: pointer;
+            border-radius: 10px;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .toggle-btn.active {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* Main Content - Compact */
+        .main-content {
+            padding: 5rem 1rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .welcome-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--glass-border);
+            padding: 0.4rem 0.8rem;
+            border-radius: 50px;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .welcome-badge i {
+            color: var(--accent);
+            font-size: 0.7rem;
+        }
+
+        .welcome-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 0.3rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .welcome-subtitle {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.85rem;
+            font-weight: 400;
+        }
+
+        /* Grid View - 2 Columns Compact */
+        .buttons-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            animation: fadeInUp 0.8s ease-out 0.1s both;
+        }
+
+        .glass-card {
+            position: relative;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.2rem 0.8rem;
+            text-decoration: none;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            min-height: 140px;
+            justify-content: center;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.7s;
+        }
+
+        .glass-card:hover::before {
+            left: 100%;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: rgba(255,255,255,0.4);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.1);
+        }
+
+        .card-shine {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.1), transparent);
+            pointer-events: none;
+        }
+
+        .icon-container {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            margin-bottom: 0.8rem;
+        }
+
+        .icon-bg {
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            opacity: 0.2;
+            filter: blur(15px);
+            transform: scale(1.2);
+            transition: all 0.4s;
+        }
+
+        .glass-card:hover .icon-bg {
+            transform: scale(1.4);
+            opacity: 0.4;
+        }
+
+        .icon-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(236, 72, 153, 0.2));
+            border: 2px solid rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: white;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s;
+            z-index: 2;
+        }
+
+        .glass-card:hover .icon-wrapper {
+            transform: rotateY(360deg);
+            border-color: rgba(255,255,255,0.5);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+        }
+
+        .card-1 .icon-wrapper { background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3)); }
+        .card-2 .icon-wrapper { background: linear-gradient(135deg, rgba(236, 72, 153, 0.3), rgba(244, 63, 94, 0.3)); }
+        .card-3 .icon-wrapper { background: linear-gradient(135deg, rgba(6, 182, 212, 0.3), rgba(59, 130, 246, 0.3)); }
+        .card-4 .icon-wrapper { background: linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(16, 185, 129, 0.3)); }
+        .card-5 .icon-wrapper { background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(234, 179, 8, 0.3)); }
+
+        .card-content h3 {
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .card-content p {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .card-arrow {
+            position: absolute;
+            bottom: 0.8rem;
+            left: 0.8rem;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            opacity: 0;
+            transform: translateX(-15px);
+            transition: all 0.4s;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .glass-card:hover .card-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* List View - Compact */
+        .buttons-list {
+            display: none;
+            flex-direction: column;
+            gap: 0.8rem;
+            animation: fadeInUp 0.8s ease-out 0.1s both;
+        }
+
+        .buttons-list.active {
+            display: flex;
+        }
+
+        .list-card {
+            position: relative;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            padding: 1rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .list-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .list-card:hover {
+            transform: translateX(-8px);
+            border-color: rgba(255,255,255,0.4);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .list-card:hover::before {
+            opacity: 1;
+        }
+
+        .list-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .list-icon-wrapper {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .list-icon-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.2));
+        }
+
+        .list-item:nth-child(1) .list-icon-wrapper { background: linear-gradient(135deg, rgba(99, 102, 241, 0.4), rgba(139, 92, 246, 0.4)); }
+        .list-item:nth-child(2) .list-icon-wrapper { background: linear-gradient(135deg, rgba(236, 72, 153, 0.4), rgba(244, 63, 94, 0.4)); }
+        .list-item:nth-child(3) .list-icon-wrapper { background: linear-gradient(135deg, rgba(6, 182, 212, 0.4), rgba(59, 130, 246, 0.4)); }
+        .list-item:nth-child(4) .list-icon-wrapper { background: linear-gradient(135deg, rgba(34, 197, 94, 0.4), rgba(16, 185, 129, 0.4)); }
+        .list-item:nth-child(5) .list-icon-wrapper { background: linear-gradient(135deg, rgba(245, 158, 11, 0.4), rgba(234, 179, 8, 0.4)); }
+
+        .list-text h3 {
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .list-text p {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.75rem;
+        }
+
+        .list-arrow {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s;
+        }
+
+        .list-card:hover .list-arrow {
+            background: rgba(255,255,255,0.2);
+            transform: translateX(-3px);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+        }
+
+        /* Footer - Compact */
+        .footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 1rem;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.75rem;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            animation: particleFloat 15s infinite;
+        }
+
+        @keyframes particleFloat {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 480px) {
+            .buttons-grid {
+                gap: 0.8rem;
+            }
+            
+            .glass-card {
+                padding: 1rem 0.6rem;
+                min-height: 130px;
+                border-radius: 14px;
+            }
+            
+            .icon-container {
+                width: 45px;
+                height: 45px;
+                margin-bottom: 0.6rem;
+            }
+            
+            .icon-wrapper {
+                font-size: 1.1rem;
+            }
+            
+            .card-content h3 {
+                font-size: 0.85rem;
+            }
+            
+            .card-content p {
+                font-size: 0.7rem;
+            }
+            
+            .welcome-title {
+                font-size: 1.3rem;
+            }
+            
+            .header {
+                padding: 0.5rem 1rem;
+            }
+            
+            .brand-text h1 {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    
+    <div class="particles" id="particles"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="brand">
+                <div class="logo-wrapper">
+                    <div class="logo-glow"></div>
+                    <img src="https://i.postimg.cc/g0Bm32zB/20260207-052318.png" alt="شعار أكاديمية تطور" class="logo-img">
+                </div>
+                <div class="brand-text">
+                    <h1>أكاديمية تطور</h1>
+                    <span>لوحة التحكم</span>
+                </div>
+            </div>
+            
+            <div class="view-toggle">
+                <button class="toggle-btn active" onclick="switchView('grid')" id="gridBtn">
+                    <i class="fas fa-th-large"></i>
+                    شبكة
+                </button>
+                <button class="toggle-btn" onclick="switchView('list')" id="listBtn">
+                    <i class="fas fa-list-ul"></i>
+                    قائمة
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="welcome-section">
+            <div class="welcome-badge">
+                <i class="fas fa-sparkles"></i>
+                مرحباً بك
+            </div>
+            <h2 class="welcome-title">لوحة التحكم</h2>
+            <p class="welcome-subtitle">اختر الخدمة المطلوبة لإدارة الأكاديمية</p>
+        </div>
+
+        <!-- Grid View - 2 Columns -->
+        <div class="buttons-grid" id="gridView">
+            <a href="https://tatawor.github.io/tatawor/admin.html" target="_blank" class="glass-card card-1">
+                <div class="card-shine"></div>
+                <div class="icon-container">
+                    <div class="icon-bg"></div>
+                    <div class="icon-wrapper">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h3>تسجيل الطلاب</h3>
+                    <p>إدارة بيانات الطلاب والنقاط</p>
+                </div>
+                <div class="card-arrow">
+                    <i class="fas fa-arrow-left"></i>
+                </div>
+            </a>
+
+            <a href="https://aymansumee0.github.io/dev.tools/stars.html" target="_blank" class="glass-card card-5">
+                <div class="card-shine"></div>
+                <div class="icon-container">
+                    <div class="icon-bg"></div>
+                    <div class="icon-wrapper">
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h3>إضافة نجوم</h3>
+                    <p>إضافة النقاط للطلاب</p>
+                </div>
+                <div class="card-arrow">
+                    <i class="fas fa-arrow-left"></i>
+                </div>
+            </a>
+
+            <a href="https://aymansumee0.github.io/dev.tools/send.html" target="_blank" class="glass-card card-2">
+                <div class="card-shine"></div>
+                <div class="icon-container">
+                    <div class="icon-bg"></div>
+                    <div class="icon-wrapper">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h3>الإشعارات</h3>
+                    <p>إرسال التنبيهات للطلاب</p>
+                </div>
+                <div class="card-arrow">
+                    <i class="fas fa-arrow-left"></i>
+                </div>
+            </a>
+
+            <a href="https://aymansumee0.github.io/dev.tools/admin_shop.html" target="_blank" class="glass-card card-3">
+                <div class="card-shine"></div>
+                <div class="icon-container">
+                    <div class="icon-bg"></div>
+                    <div class="icon-wrapper">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h3>المتجر</h3>
+                    <p>رفع المنتجات والموارد</p>
+                </div>
+                <div class="card-arrow">
+                    <i class="fas fa-arrow-left"></i>
+                </div>
+            </a>
+
+            <a href="https://aymansumee0.github.io/dev.tools/admin_ched.html" target="_blank" class="glass-card card-4">
+                <div class="card-shine"></div>
+                <div class="icon-container">
+                    <div class="icon-bg"></div>
+                    <div class="icon-wrapper">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h3>الجداول</h3>
+                    <p>إضافة الجداول الدراسية</p>
+                </div>
+                <div class="card-arrow">
+                    <i class="fas fa-arrow-left"></i>
+                </div>
+            </a>
+        </div>
+
+        <!-- List View -->
+        <div class="buttons-list" id="listView">
+            <a href="https://tatawor.github.io/tatawor/admin.html" target="_blank" class="list-card list-item">
+                <div class="list-content">
+                    <div class="list-icon-wrapper">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="list-text">
+                        <h3>تسجيل الطلاب والنقاط</h3>
+                        <p>إدارة بيانات الطلاب والنقاط</p>
+                    </div>
+                </div>
+                <div class="list-arrow">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+            </a>
+
+            <a href="https://aymansumee0.github.io/dev.tools/stars.html" target="_blank" class="list-card list-item">
+                <div class="list-content">
+                    <div class="list-icon-wrapper">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="list-text">
+                        <h3>إضافة نجوم</h3>
+                        <p>إضافة النقاط للطلاب</p>
+                    </div>
+                </div>
+                <div class="list-arrow">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+            </a>
+
+            <a href="https://aymansumee0.github.io/dev.tools/send.html" target="_blank" class="list-card list-item">
+                <div class="list-content">
+                    <div class="list-icon-wrapper">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="list-text">
+                        <h3>إرسال الإشعارات</h3>
+                        <p>إرسال التنبيهات للطلاب</p>
+                    </div>
+                </div>
+                <div class="list-arrow">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+            </a>
+
+            <a href="https://aymansumee0.github.io/dev.tools/admin_shop.html" target="_blank" class="list-card list-item">
+                <div class="list-content">
+                    <div class="list-icon-wrapper">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <div class="list-text">
+                        <h3>رفع المنتجات للمتجر</h3>
+                        <p>إدارة المنتجات والموارد</p>
+                    </div>
+                </div>
+                <div class="list-arrow">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+            </a>
+
+            <a href="https://aymansumee0.github.io/dev.tools/admin_ched.html" target="_blank" class="list-card list-item">
+                <div class="list-content">
+                    <div class="list-icon-wrapper">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="list-text">
+                        <h3>إضافة جدول دراسي</h3>
+                        <p>الجداول الدراسية والامتحانات</p>
+                    </div>
+                </div>
+                <div class="list-arrow">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 أكاديمية تطور - جميع الحقوق محفوظة</p>
+    </footer>
+
+    <script>
+        // View Switcher
+        function switchView(view) {
+            const gridView = document.getElementById('gridView');
+            const listView = document.getElementById('listView');
+            const gridBtn = document.getElementById('gridBtn');
+            const listBtn = document.getElementById('listBtn');
+
+            if (view === 'grid') {
+                gridView.style.display = 'grid';
+                listView.classList.remove('active');
+                gridBtn.classList.add('active');
+                listBtn.classList.remove('active');
+            } else {
+                gridView.style.display = 'none';
+                listView.classList.add('active');
+                gridBtn.classList.remove('active');
+                listBtn.classList.add('active');
+            }
+            
+            localStorage.setItem('preferredView', view);
+        }
+
+        // Load saved preference
+        const savedView = localStorage.getItem('preferredView') || 'grid';
+        if (savedView === 'list') {
+            switchView('list');
+        }
+
+        // Create Particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particle.style.opacity = Math.random() * 0.5 + 0.2;
+                container.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        // Add ripple effect on click
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${x}px;
+                    top: ${y}px;
+                    background: rgba(255,255,255,0.3);
+                    border-radius: 50%;
+                    transform: scale(0);
+                    animation: ripple 0.6s ease-out;
+                    pointer-events: none;
+                `;
+                
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(2);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

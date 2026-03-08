@@ -1,0 +1,2116 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>لوحة تحكم الجدول</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --primary: #6366f1;
+      --secondary: #ec4899;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --dark: #1e293b;
+      --gray: #64748b;
+      --light: #f8fafc;
+      --border: #e2e8f0;
+      --whatsapp: #25d366;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #f1f5f9;
+      min-height: 100vh;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    /* Login Screen Styles */
+    .login-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
+    }
+
+    .login-box {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+      text-align: center;
+    }
+
+    .login-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #6366f1, #ec4899);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+
+    .login-icon i {
+      font-size: 32px;
+      color: white;
+    }
+
+    .login-box h2 {
+      color: #1e293b;
+      font-size: 22px;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .login-box p {
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    .password-input-wrapper {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .password-input {
+      width: 100%;
+      padding: 16px 20px;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 16px;
+      text-align: center;
+      letter-spacing: 4px;
+      transition: all 0.2s;
+    }
+
+    .password-input:focus {
+      outline: none;
+      border-color: #6366f1;
+    }
+
+    .password-input.error {
+      border-color: #ef4444;
+      animation: shake 0.4s ease;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #6366f1, #ec4899);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .login-btn:active {
+      transform: translateY(0);
+    }
+
+    .error-message {
+      color: #ef4444;
+      font-size: 13px;
+      margin-top: 16px;
+      opacity: 0;
+      transition: opacity 0.2s;
+      font-weight: 600;
+    }
+
+    .error-message.show {
+      opacity: 1;
+    }
+
+    .login-footer {
+      color: rgba(255,255,255,0.7);
+      font-size: 12px;
+      margin-top: 24px;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    /* Mobile First Dashboard */
+    .dashboard {
+      display: none;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Compact Bottom Navigation */
+    .mobile-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+      z-index: 1000;
+      border-top: 1px solid var(--border);
+    }
+
+    .mobile-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 12px;
+      color: var(--gray);
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 600;
+      transition: all 0.2s;
+      border-radius: 12px;
+    }
+
+    .mobile-nav-item i {
+      font-size: 20px;
+    }
+
+    .mobile-nav-item.active {
+      color: var(--primary);
+      background: rgba(99, 102, 241, 0.1);
+    }
+
+    .mobile-nav-badge {
+      position: absolute;
+      top: 4px;
+      background: var(--danger);
+      color: white;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 12px;
+      padding-bottom: 80px;
+    }
+
+    /* Compact Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .page-title h1 {
+      font-size: 18px;
+      color: var(--dark);
+      font-weight: 700;
+    }
+
+    .page-title p {
+      color: var(--gray);
+      font-size: 12px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Compact Buttons */
+    .btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .btn-whatsapp {
+      background: var(--whatsapp);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--dark);
+      border: 1px solid var(--border);
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 11px;
+    }
+
+    .btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Compact Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 15px;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .stat-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .stat-icon.blue { background: #dbeafe; color: #1e40af; }
+    .stat-icon.green { background: #dcfce7; color: #166534; }
+    .stat-icon.orange { background: #fef3c7; color: #92400e; }
+    .stat-icon.purple { background: #f3e8ff; color: #7c3aed; }
+    .stat-icon.whatsapp { background: #d1fae5; color: #059669; }
+
+    .stat-info h3 {
+      font-size: 20px;
+      color: var(--dark);
+      line-height: 1;
+    }
+
+    .stat-info p {
+      color: var(--gray);
+      font-size: 11px;
+      margin-top: 3px;
+    }
+
+    /* Content Card */
+    .content-card {
+      background: white;
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      margin-bottom: 15px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Filter Pills */
+    .filter-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 5px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .filter-tab {
+      padding: 6px 14px;
+      background: #f1f5f9;
+      border: 1px solid transparent;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 600;
+      color: var(--gray);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .filter-tab.active {
+      background: white;
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Mobile Optimized Table - Card View */
+    .table-container {
+      overflow-x: auto;
+    }
+
+    .mobile-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .mobile-card {
+      background: #f8fafc;
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      position: relative;
+    }
+
+    .mobile-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .mobile-card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mobile-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .mobile-icon.course { background: #dbeafe; color: #1e40af; }
+    .mobile-icon.lecture { background: #dcfce7; color: #166534; }
+    .mobile-icon.workshop { background: #fef3c7; color: #92400e; }
+
+    .mobile-title-text h4 {
+      font-size: 14px;
+      color: var(--dark);
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .mobile-title-text span {
+      font-size: 11px;
+      color: var(--gray);
+    }
+
+    .mobile-status {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .status-now { background: #dcfce7; color: #166534; }
+    .status-soon { background: #fef3c7; color: #92400e; }
+    .status-later { background: #dbeafe; color: #1e40af; }
+    .status-ended { background: #f1f5f9; color: var(--gray); }
+
+    .mobile-card-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .mobile-info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .mobile-info-label {
+      font-size: 10px;
+      color: var(--gray);
+      text-transform: uppercase;
+    }
+
+    .mobile-info-value {
+      font-size: 12px;
+      color: var(--dark);
+      font-weight: 600;
+    }
+
+    .mobile-card-footer {
+      display: flex;
+      gap: 8px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .mobile-btn {
+      flex: 1;
+      padding: 8px;
+      border-radius: 8px;
+      border: none;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .mobile-btn-edit {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .mobile-btn-delete {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    /* WhatsApp Specific */
+    .whatsapp-card {
+      background: rgba(37, 211, 102, 0.05);
+      border-color: rgba(37, 211, 102, 0.2);
+    }
+
+    .days-tags {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .day-tag {
+      padding: 3px 8px;
+      background: #f1f5f9;
+      border-radius: 12px;
+      font-size: 10px;
+      color: var(--gray);
+    }
+
+    .day-tag.active {
+      background: #d1fae5;
+      color: #059669;
+      font-weight: 700;
+    }
+
+    /* Simple Modal for WebView */
+    .simple-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 2000;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .simple-modal.active {
+      display: flex;
+    }
+
+    .simple-modal-content {
+      background: white;
+      width: 100%;
+      max-height: 90vh;
+      border-radius: 24px 24px 0 0;
+      overflow-y: auto;
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .simple-modal-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 10;
+    }
+
+    .simple-modal-header h2 {
+      font-size: 18px;
+      color: var(--dark);
+    }
+
+    .close-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: none;
+      background: #f1f5f9;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--gray);
+    }
+
+    .simple-modal-body {
+      padding: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 700;
+      color: var(--dark);
+      font-size: 12px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 14px;
+      background: white;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* Time Input 12 Hour Format */
+    .time-input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4px;
+      background: white;
+    }
+
+    .time-input-wrapper:focus-within {
+      border-color: var(--primary);
+    }
+
+    .time-input {
+      flex: 1;
+      border: none;
+      padding: 8px;
+      font-family: inherit;
+      font-size: 16px;
+      text-align: center;
+      background: transparent;
+      outline: none;
+    }
+
+    .time-separator {
+      font-weight: 700;
+      color: var(--gray);
+    }
+
+    .ampm-selector {
+      display: flex;
+      background: #f1f5f9;
+      border-radius: 8px;
+      padding: 2px;
+    }
+
+    .ampm-btn {
+      padding: 8px 12px;
+      border: none;
+      background: transparent;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .ampm-btn.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Days Selector Compact */
+    .days-selector {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .day-checkbox {
+      display: none;
+    }
+
+    .day-label {
+      display: block;
+      padding: 10px 4px;
+      background: #f1f5f9;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 600;
+      color: var(--gray);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .day-checkbox:checked + .day-label {
+      background: var(--whatsapp);
+      color: white;
+    }
+
+    .simple-modal-footer {
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      position: sticky;
+      bottom: 0;
+      background: white;
+    }
+
+    .simple-modal-footer .btn {
+      flex: 1;
+      justify-content: center;
+    }
+
+    /* Preview Section */
+    .preview-frame {
+      width: 100%;
+      height: 60vh;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: white;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      background: white;
+      padding: 14px 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 3000;
+      transition: transform 0.3s ease;
+      min-width: 280px;
+      justify-content: center;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .toast-icon {
+      font-size: 20px;
+    }
+
+    .toast.success { border-right: 4px solid var(--success); }
+    .toast.error { border-right: 4px solid var(--danger); }
+    .toast.success .toast-icon { color: var(--success); }
+    .toast.error .toast-icon { color: var(--danger); }
+
+    /* Loading - Hidden by default */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(255,255,255,0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2500;
+    }
+
+    .loading-overlay.active {
+      display: flex;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--gray);
+    }
+
+    .empty-state i {
+      font-size: 40px;
+      margin-bottom: 12px;
+      opacity: 0.3;
+    }
+
+    .empty-state h3 {
+      font-size: 16px;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+
+    .empty-state p {
+      font-size: 12px;
+    }
+
+    /* Hide scrollbar for mobile nav */
+    .filter-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Tablet and up */
+    @media (min-width: 768px) {
+      .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      
+      .mobile-list {
+        display: none;
+      }
+      
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      
+      thead th {
+        background: #f8fafc;
+        padding: 12px;
+        text-align: right;
+        font-weight: 700;
+        color: var(--gray);
+        font-size: 11px;
+        border-bottom: 2px solid var(--border);
+      }
+      
+      tbody td {
+        padding: 14px 12px;
+        border-bottom: 1px solid var(--border);
+      }
+      
+      .simple-modal-content {
+        max-width: 500px;
+        border-radius: 24px;
+        margin: 20px;
+        max-height: 85vh;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .desktop-table {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login Screen -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-box">
+      <div class="login-icon">
+        <i class="fas fa-lock"></i>
+      </div>
+      
+      <h2>لوحة التحكم</h2>
+      <p>أدخل كلمة المرور للمتابعة</p>
+      
+      <div class="password-input-wrapper">
+        <input 
+          type="password" 
+          id="passwordInput" 
+          class="password-input"
+          placeholder="كلمة المرور" 
+          onkeyup="if(event.key === 'Enter') checkPassword()"
+        >
+      </div>
+      
+      <button class="login-btn" onclick="checkPassword()">
+        دخول
+      </button>
+      
+      <p class="error-message" id="errorMsg">
+        <i class="fas fa-exclamation-circle"></i>
+        كلمة المرور غير صحيحة
+      </p>
+    </div>
+    
+    <p class="login-footer">
+      <i class="fas fa-shield-alt"></i>
+      نظام محمي
+    </p>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="dashboard" id="dashboard">
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      
+      <!-- Academic Section -->
+      <section class="content-section" id="academicSection">
+        <div class="header">
+          <div class="page-title">
+            <h1>الجدول الأكاديمي</h1>
+            <p>إدارة الدورات والشروحات</p>
+          </div>
+          <button class="btn btn-success btn-sm" onclick="openAcademicModal()">
+            <i class="fas fa-plus"></i>
+            جديد
+          </button>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon blue">
+              <i class="fas fa-calendar"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="totalAcademic">0</h3>
+              <p>الجلسات</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">
+              <i class="fas fa-play"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="activeAcademic">0</h3>
+              <p>النشطة</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="totalInstructors">0</h3>
+              <p>المدربين</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="totalHours">0</h3>
+              <p>الساعات</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Academic List -->
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="fas fa-list" style="color: var(--primary);"></i>
+              الجلسات
+            </h2>
+            <div class="filter-tabs">
+              <div class="filter-tab active" onclick="filterAcademic('all', this)">الكل</div>
+              <div class="filter-tab" onclick="filterAcademic('دورة', this)">دورات</div>
+              <div class="filter-tab" onclick="filterAcademic('شرح', this)">شروحات</div>
+              <div class="filter-tab" onclick="filterAcademic('ورشة', this)">ورش</div>
+            </div>
+          </div>
+          
+          <div id="academicList" class="mobile-list">
+            <!-- Dynamic Mobile Cards -->
+          </div>
+          
+          <div class="table-container desktop-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>الجلسة</th>
+                  <th>النوع</th>
+                  <th>الوقت</th>
+                  <th>المدرب</th>
+                  <th>الحالة</th>
+                  <th>إجراء</th>
+                </tr>
+              </thead>
+              <tbody id="academicTable">
+                <!-- Dynamic -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- WhatsApp Section -->
+      <section class="content-section" id="whatsappSection" style="display: none;">
+        <div class="header">
+          <div class="page-title">
+            <h1>مجموعات الواتساب</h1>
+            <p>مواعيد الفتح والإغلاق</p>
+          </div>
+          <button class="btn btn-whatsapp btn-sm" onclick="openWhatsAppModal()">
+            <i class="fab fa-whatsapp"></i>
+            جديد
+          </button>
+        </div>
+
+        <!-- WhatsApp Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon whatsapp">
+              <i class="fab fa-whatsapp"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="totalGroups">0</h3>
+              <p>المجموعات</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">
+              <i class="fas fa-lock-open"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="openGroups">0</h3>
+              <p>المفتوحة</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange">
+              <i class="fas fa-lock"></i>
+            </div>
+            <div class="stat-info">
+              <h3 id="closedGroups">0</h3>
+              <p>المغلقة</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- WhatsApp List -->
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="fab fa-whatsapp" style="color: var(--whatsapp);"></i>
+              المجموعات
+            </h2>
+          </div>
+          
+          <div id="whatsappList" class="mobile-list">
+            <!-- Dynamic Mobile Cards -->
+          </div>
+          
+          <div class="table-container desktop-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>المجموعة</th>
+                  <th>الأيام</th>
+                  <th>المواعيد</th>
+                  <th>الحالة</th>
+                  <th>إجراء</th>
+                </tr>
+              </thead>
+              <tbody id="whatsappTable">
+                <!-- Dynamic -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Preview Section -->
+      <section class="content-section" id="previewSection" style="display: none;">
+        <div class="header">
+          <div class="page-title">
+            <h1>معاينة الجدول</h1>
+            <p>كما يظهر للطلاب</p>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="refreshPreview()">
+            <i class="fas fa-sync"></i>
+          </button>
+        </div>
+        
+        <div class="content-card" style="padding: 10px;">
+          <iframe class="preview-frame" id="previewFrame" src="about:blank"></iframe>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-nav">
+      <a class="mobile-nav-item active" onclick="showSection('academic', this)">
+        <i class="fas fa-graduation-cap"></i>
+        <span>الجداول</span>
+        <span class="mobile-nav-badge" id="academicBadge" style="display: none;">0</span>
+      </a>
+      <a class="mobile-nav-item" onclick="showSection('whatsapp', this)">
+        <i class="fab fa-whatsapp"></i>
+        <span>المجموعات</span>
+        <span class="mobile-nav-badge" id="whatsappBadge" style="display: none;">0</span>
+      </a>
+      <a class="mobile-nav-item" onclick="showSection('preview', this)">
+        <i class="fas fa-eye"></i>
+        <span>معاينة</span>
+      </a>
+    </nav>
+  </div>
+
+  <!-- Academic Modal -->
+  <div class="simple-modal" id="academicModal">
+    <div class="simple-modal-content">
+      <div class="simple-modal-header">
+        <h2 id="academicModalTitle">جلسة جديدة</h2>
+        <button class="close-btn" onclick="closeAcademicModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="simple-modal-body">
+        <form id="academicForm">
+          <input type="hidden" id="academicId">
+          
+          <div class="form-group">
+            <label>عنوان الجلسة *</label>
+            <input type="text" id="academicTitle" placeholder="مثال: مقدمة في الريادة" required>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>النوع *</label>
+              <select id="academicType" required>
+                <option value="دورة">دورة</option>
+                <option value="شرح">شرح</option>
+                <option value="ورشة">ورشة</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label>التاريخ *</label>
+              <input type="text" id="academicDate" placeholder="اختر التاريخ" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>وقت البدء *</label>
+            <div class="time-input-wrapper">
+              <input type="number" class="time-input" id="timeHour" min="1" max="12" value="9" placeholder="ساعة">
+              <span class="time-separator">:</span>
+              <input type="number" class="time-input" id="timeMinute" min="0" max="59" value="00" placeholder="دقيقة">
+              <div class="ampm-selector">
+                <button type="button" class="ampm-btn active" id="btnAM" onclick="setAmPm('AM')">ص</button>
+                <button type="button" class="ampm-btn" id="btnPM" onclick="setAmPm('PM')">م</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>المدة (دقيقة) *</label>
+              <input type="number" id="academicDuration" value="120" min="30" max="300" required>
+            </div>
+            
+            <div class="form-group">
+              <label>اليوم</label>
+              <input type="text" id="academicDay" readonly style="background: #f8fafc; color: var(--gray);">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>المدرب *</label>
+            <input type="text" id="academicInstructor" placeholder="اسم المدرب" required>
+          </div>
+          
+          <div class="form-group">
+            <label>المكان / الرابط</label>
+            <input type="text" id="academicLocation" placeholder="القاعة أو رابط Zoom">
+          </div>
+        </form>
+      </div>
+      
+      <div class="simple-modal-footer">
+        <button class="btn btn-secondary" onclick="closeAcademicModal()">إلغاء</button>
+        <button class="btn btn-success" onclick="saveAcademic()">
+          <i class="fas fa-save"></i>
+          حفظ
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WhatsApp Modal -->
+  <div class="simple-modal" id="whatsappModal">
+    <div class="simple-modal-content">
+      <div class="simple-modal-header">
+        <h2 id="whatsappModalTitle">مجموعة جديدة</h2>
+        <button class="close-btn" onclick="closeWhatsAppModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="simple-modal-body">
+        <form id="whatsappForm">
+          <input type="hidden" id="whatsappId">
+          
+          <div class="form-group">
+            <label>اسم المجموعة *</label>
+            <input type="text" id="whatsappName" placeholder="مثال: مجموعة التكاليف" required>
+          </div>
+          
+          <div class="form-group">
+            <label>أيام الفتح *</label>
+            <div class="days-selector">
+              <label>
+                <input type="checkbox" class="day-checkbox" value="0">
+                <span class="day-label">أحد</span>
+              </label>
+              <label>
+                <input type="checkbox" class="day-checkbox" value="1">
+                <span class="day-label">إثنين</span>
+              </label>
+              <label>
+                <input type="checkbox" class="day-checkbox" value="2">
+                <span class="day-label">ثلاثاء</span>
+              </label>
+              <label>
+                <input type="checkbox" class="day-checkbox" value="3">
+                <span class="day-label">أربعاء</span>
+              </label>
+              <label>
+                <input type="checkbox" class="day-checkbox" value="4">
+                <span class="day-label">خميس</span>
+              </label>
+              <label>
+                <input type="checkbox" class="day-checkbox" value="5">
+                <span class="day-label">جمعة</span>
+              </label>
+              <label>
+                <input type="checkbox" class="day-checkbox" value="6">
+                <span class="day-label">سبت</span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>وقت الفتح *</label>
+            <div class="time-input-wrapper">
+              <input type="number" class="time-input" id="openHour" min="1" max="12" value="9" placeholder="ساعة">
+              <span class="time-separator">:</span>
+              <input type="number" class="time-input" id="openMinute" min="0" max="59" value="00" placeholder="دقيقة">
+              <div class="ampm-selector">
+                <button type="button" class="ampm-btn active" id="openAM" onclick="setOpenAmPm('AM')">ص</button>
+                <button type="button" class="ampm-btn" id="openPM" onclick="setOpenAmPm('PM')">م</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>وقت الإغلاق *</label>
+            <div class="time-input-wrapper">
+              <input type="number" class="time-input" id="closeHour" min="1" max="12" value="5" placeholder="ساعة">
+              <span class="time-separator">:</span>
+              <input type="number" class="time-input" id="closeMinute" min="0" max="59" value="00" placeholder="دقيقة">
+              <div class="ampm-selector">
+                <button type="button" class="ampm-btn" id="closeAM" onclick="setCloseAmPm('AM')">ص</button>
+                <button type="button" class="ampm-btn active" id="closePM" onclick="setCloseAmPm('PM')">م</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>رابط المجموعة *</label>
+            <input type="url" id="whatsappLink" placeholder="https://chat.whatsapp.com/..." required>
+          </div>
+        </form>
+      </div>
+      
+      <div class="simple-modal-footer">
+        <button class="btn btn-secondary" onclick="closeWhatsAppModal()">إلغاء</button>
+        <button class="btn btn-whatsapp" onclick="saveWhatsApp()">
+          <i class="fab fa-whatsapp"></i>
+          حفظ
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <i class="fas fa-check-circle toast-icon"></i>
+    <span id="toastMessage">تم بنجاح</span>
+  </div>
+
+  <!-- Loading (Hidden by default, only for operations) -->
+  <div class="loading-overlay" id="loading">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://npmcdn.com/flatpickr/dist/l10n/ar.js"></script>
+
+  <script>
+    // Password Protection
+    const CORRECT_PASSWORD = 'a123123';
+    
+    function checkPassword() {
+      const input = document.getElementById('passwordInput');
+      const errorMsg = document.getElementById('errorMsg');
+      const loginScreen = document.getElementById('loginScreen');
+      const dashboard = document.getElementById('dashboard');
+      
+      if (input.value === CORRECT_PASSWORD) {
+        // Success
+        loginScreen.style.opacity = '0';
+        loginScreen.style.transition = 'opacity 0.3s ease';
+        dashboard.style.display = 'flex';
+        
+        setTimeout(() => {
+          loginScreen.style.display = 'none';
+          // Initialize dashboard after login
+          initDashboard();
+        }, 300);
+      } else {
+        // Error
+        errorMsg.classList.add('show');
+        input.classList.add('error');
+        
+        setTimeout(() => {
+          input.classList.remove('error');
+        }, 400);
+      }
+    }
+
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyByR2B-XISUw_PYh5EeIcbNQwwII0c6xZg",
+      authDomain: "store-points-7d2f4.firebaseapp.com",
+      databaseURL: "https://store-points-7d2f4-default-rtdb.asia-southeast1.firebasedatabase.app/",
+      projectId: "store-points-7d2f4",
+      storageBucket: "store-points-7d2f4.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    let academicData = [];
+    let whatsappData = [];
+    let currentAcademicFilter = 'all';
+    let datePickerInstance = null;
+    let currentAmPm = 'AM';
+    let openAmPm = 'AM';
+    let closeAmPm = 'PM';
+
+    const arabicDays = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+
+    // Preview URL
+    const PREVIEW_URL = 'https://aymansumee0.github.io/dev.tools/chedo_v1.html';
+
+    // Initialize - No loading screen on startup
+    document.addEventListener('DOMContentLoaded', function() {
+      // Don't auto-init, wait for password
+    });
+
+    function initDashboard() {
+      loadAcademic();
+      loadWhatsApp();
+    }
+
+    // Show Section
+    function showSection(section, element) {
+      document.querySelectorAll('.mobile-nav-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      if (element) element.classList.add('active');
+      
+      document.querySelectorAll('.content-section').forEach(s => s.style.display = 'none');
+      document.getElementById(section + 'Section').style.display = 'block';
+      
+      if (section === 'preview') {
+        refreshPreview();
+      }
+    }
+
+    // Initialize Date Picker
+    function initDatePicker() {
+      if (datePickerInstance) {
+        datePickerInstance.destroy();
+      }
+      
+      datePickerInstance = flatpickr("#academicDate", {
+        locale: "ar",
+        dateFormat: "d-m-Y",
+        defaultDate: new Date(),
+        onChange: function(selectedDates) {
+          if (selectedDates[0]) {
+            const dayIndex = selectedDates[0].getDay();
+            document.getElementById('academicDay').value = arabicDays[dayIndex];
+          }
+        }
+      });
+    }
+
+    // Convert 12h to 24h for storage
+    function to24Hour(hour, ampm) {
+      hour = parseInt(hour);
+      if (ampm === 'PM' && hour !== 12) hour += 12;
+      if (ampm === 'AM' && hour === 12) hour = 0;
+      return hour.toString().padStart(2, '0');
+    }
+
+    // Convert 24h to 12h for display
+    function to12Hour(time24) {
+      if (!time24) return '';
+      const [hour, minute] = time24.split(':').map(Number);
+      const ampm = hour >= 12 ? 'م' : 'ص';
+      const hour12 = hour % 12 || 12;
+      return `${hour12}:${minute.toString().padStart(2, '0')} ${ampm}`;
+    }
+
+    // Parse time from 24h to 12h components
+    function parseTimeTo12h(time24) {
+      const [hour, minute] = time24.split(':').map(Number);
+      const ampm = hour >= 12 ? 'PM' : 'AM';
+      const hour12 = hour % 12 || 12;
+      return { hour: hour12, minute: minute.toString().padStart(2, '0'), ampm: ampm };
+    }
+
+    // AM/PM Toggle Functions
+    function setAmPm(ampm) {
+      currentAmPm = ampm;
+      document.getElementById('btnAM').classList.toggle('active', ampm === 'AM');
+      document.getElementById('btnPM').classList.toggle('active', ampm === 'PM');
+    }
+
+    function setOpenAmPm(ampm) {
+      openAmPm = ampm;
+      document.getElementById('openAM').classList.toggle('active', ampm === 'AM');
+      document.getElementById('openPM').classList.toggle('active', ampm === 'PM');
+    }
+
+    function setCloseAmPm(ampm) {
+      closeAmPm = ampm;
+      document.getElementById('closeAM').classList.toggle('active', ampm === 'AM');
+      document.getElementById('closePM').classList.toggle('active', ampm === 'PM');
+    }
+
+    // Load Academic Data - No initial loading
+    function loadAcademic() {
+      const ref = database.ref('academic/sessions');
+      ref.on('value', (snapshot) => {
+        const data = snapshot.val() || {};
+        academicData = Object.entries(data).map(([id, session]) => ({
+          id,
+          ...session
+        })).sort((a, b) => parseDateTime(a.date, a.time) - parseDateTime(b.date, b.time));
+        
+        updateAcademicStats();
+        renderAcademicList();
+        renderAcademicTable();
+      });
+    }
+
+    function parseDateTime(dateStr, timeStr) {
+      const [day, month, year] = dateStr.split('-').map(Number);
+      const [hours, minutes] = timeStr.split(':').map(Number);
+      return new Date(year, month - 1, day, hours, minutes);
+    }
+
+    function getSessionStatus(session) {
+      const now = new Date();
+      const startTime = parseDateTime(session.date, session.time);
+      const endTime = new Date(startTime.getTime() + (session.duration || 120) * 60000);
+      
+      if (now >= startTime && now <= endTime) {
+        return { text: 'جارية', class: 'status-now' };
+      } else if (now < startTime) {
+        const diffHrs = Math.floor((startTime - now) / (1000 * 60 * 60));
+        if (diffHrs < 24) return { text: 'قريباً', class: 'status-soon' };
+        return { text: 'لاحقاً', class: 'status-later' };
+      } else {
+        return { text: 'انتهت', class: 'status-ended' };
+      }
+    }
+
+    function updateAcademicStats() {
+      const badge = document.getElementById('academicBadge');
+      badge.textContent = academicData.length;
+      badge.style.display = academicData.length > 0 ? 'block' : 'none';
+      
+      document.getElementById('totalAcademic').textContent = academicData.length;
+      
+      const activeCount = academicData.filter(s => {
+        const status = getSessionStatus(s);
+        return status.text === 'جارية' || status.text === 'قريباً';
+      }).length;
+      document.getElementById('activeAcademic').textContent = activeCount;
+      
+      const instructors = new Set(academicData.map(s => s.instructor));
+      document.getElementById('totalInstructors').textContent = instructors.size;
+      
+      const totalHours = academicData.reduce((sum, s) => sum + (s.duration || 120) / 60, 0);
+      document.getElementById('totalHours').textContent = Math.round(totalHours);
+    }
+
+    function filterAcademic(type, element) {
+      currentAcademicFilter = type;
+      document.querySelectorAll('#academicSection .filter-tab').forEach(t => t.classList.remove('active'));
+      element.classList.add('active');
+      renderAcademicList();
+      renderAcademicTable();
+    }
+
+    // Render Mobile List with 12h format
+    function renderAcademicList() {
+      const container = document.getElementById('academicList');
+      let filtered = academicData;
+      if (currentAcademicFilter !== 'all') {
+        filtered = academicData.filter(s => s.type === currentAcademicFilter);
+      }
+      
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="far fa-calendar-plus"></i>
+            <h3>لا توجد جلسات</h3>
+            <p>اضغط على "جديد" لإضافة جلسة</p>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = filtered.map(session => {
+        const status = getSessionStatus(session);
+        const typeClass = session.type === 'دورة' ? 'course' : session.type === 'شرح' ? 'lecture' : 'workshop';
+        const icon = session.type === 'دورة' ? 'fa-graduation-cap' : session.type === 'شرح' ? 'fa-chalkboard-teacher' : 'fa-tools';
+        
+        return `
+          <div class="mobile-card">
+            <div class="mobile-card-header">
+              <div class="mobile-card-title">
+                <div class="mobile-icon ${typeClass}">
+                  <i class="fas ${icon}"></i>
+                </div>
+                <div class="mobile-title-text">
+                  <h4>${session.title}</h4>
+                  <span>${session.day} • ${session.date}</span>
+                </div>
+              </div>
+              <span class="mobile-status ${status.class}">
+                <i class="fas fa-circle" style="font-size: 6px;"></i>
+                ${status.text}
+              </span>
+            </div>
+            
+            <div class="mobile-card-body">
+              <div class="mobile-info-item">
+                <span class="mobile-info-label">الوقت</span>
+                <span class="mobile-info-value">${to12Hour(session.time)}</span>
+              </div>
+              <div class="mobile-info-item">
+                <span class="mobile-info-label">المدة</span>
+                <span class="mobile-info-value">${session.duration || 120} دقيقة</span>
+              </div>
+              <div class="mobile-info-item">
+                <span class="mobile-info-label">المدرب</span>
+                <span class="mobile-info-value">${session.instructor}</span>
+              </div>
+              <div class="mobile-info-item">
+                <span class="mobile-info-label">المكان</span>
+                <span class="mobile-info-value" style="font-size: 11px;">${session.location || '---'}</span>
+              </div>
+            </div>
+            
+            <div class="mobile-card-footer">
+              <button class="mobile-btn mobile-btn-edit" onclick="editAcademic('${session.id}')">
+                <i class="fas fa-edit"></i>
+                تعديل
+              </button>
+              <button class="mobile-btn mobile-btn-delete" onclick="deleteAcademic('${session.id}')">
+                <i class="fas fa-trash"></i>
+                حذف
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Render Desktop Table with 12h format
+    function renderAcademicTable() {
+      const tbody = document.getElementById('academicTable');
+      if (!tbody) return;
+      
+      let filtered = academicData;
+      if (currentAcademicFilter !== 'all') {
+        filtered = academicData.filter(s => s.type === currentAcademicFilter);
+      }
+      
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px;">لا توجد جلسات</td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = filtered.map(session => {
+        const status = getSessionStatus(session);
+        const typeClass = session.type === 'دورة' ? 'course' : session.type === 'شرح' ? 'lecture' : 'workshop';
+        
+        return `
+          <tr>
+            <td>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="mobile-icon ${typeClass}" style="width: 32px; height: 32px; font-size: 14px;">
+                  <i class="fas ${session.type === 'دورة' ? 'fa-graduation-cap' : session.type === 'شرح' ? 'fa-chalkboard-teacher' : 'fa-tools'}"></i>
+                </div>
+                <div>
+                  <div style="font-weight: 700; font-size: 13px;">${session.title}</div>
+                  <div style="font-size: 11px; color: var(--gray);">${session.day}</div>
+                </div>
+              </div>
+            </td>
+            <td><span style="font-size: 11px; padding: 4px 10px; background: #f1f5f9; border-radius: 12px;">${session.type}</span></td>
+            <td>
+              <div style="font-weight: 600;">${to12Hour(session.time)}</div>
+              <div style="font-size: 11px; color: var(--gray);">${session.date}</div>
+            </td>
+            <td>${session.instructor}</td>
+            <td><span class="mobile-status ${status.class}" style="font-size: 11px;">${status.text}</span></td>
+            <td>
+              <div style="display: flex; gap: 6px;">
+                <button class="icon-btn edit" onclick="editAcademic('${session.id}')" style="width: 28px; height: 28px;">
+                  <i class="fas fa-edit" style="font-size: 12px;"></i>
+                </button>
+                <button class="icon-btn delete" onclick="deleteAcademic('${session.id}')" style="width: 28px; height: 28px;">
+                  <i class="fas fa-trash" style="font-size: 12px;"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Academic Modal Functions
+    function openAcademicModal() {
+      document.getElementById('academicForm').reset();
+      document.getElementById('academicId').value = '';
+      document.getElementById('academicModalTitle').textContent = 'جلسة جديدة';
+      setAmPm('AM');
+      document.getElementById('timeHour').value = '9';
+      document.getElementById('timeMinute').value = '00';
+      
+      initDatePicker();
+      
+      const today = new Date();
+      document.getElementById('academicDay').value = arabicDays[today.getDay()];
+      
+      document.getElementById('academicModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeAcademicModal() {
+      document.getElementById('academicModal').classList.remove('active');
+      document.body.style.overflow = '';
+      if (datePickerInstance) {
+        datePickerInstance.destroy();
+        datePickerInstance = null;
+      }
+    }
+
+    function saveAcademic() {
+      const form = document.getElementById('academicForm');
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      showLoading(true);
+      
+      const hour24 = to24Hour(document.getElementById('timeHour').value, currentAmPm);
+      const minute = document.getElementById('timeMinute').value.padStart(2, '0');
+      
+      const data = {
+        title: document.getElementById('academicTitle').value,
+        type: document.getElementById('academicType').value,
+        day: document.getElementById('academicDay').value,
+        date: document.getElementById('academicDate').value,
+        time: `${hour24}:${minute}`,
+        duration: parseInt(document.getElementById('academicDuration').value),
+        instructor: document.getElementById('academicInstructor').value,
+        location: document.getElementById('academicLocation').value || 'القاعة الرئيسية'
+      };
+
+      const id = document.getElementById('academicId').value;
+      let ref;
+      if (id) {
+        ref = database.ref('academic/sessions/' + id);
+      } else {
+        ref = database.ref('academic/sessions').push();
+      }
+
+      ref.set(data).then(() => {
+        showLoading(false);
+        closeAcademicModal();
+        showToast('success', id ? 'تم التحديث' : 'تمت الإضافة');
+      }).catch(err => {
+        showLoading(false);
+        showToast('error', 'حدث خطأ');
+      });
+    }
+
+    function editAcademic(id) {
+      const session = academicData.find(s => s.id === id);
+      if (!session) return;
+
+      document.getElementById('academicId').value = id;
+      document.getElementById('academicTitle').value = session.title;
+      document.getElementById('academicType').value = session.type;
+      document.getElementById('academicDay').value = session.day;
+      document.getElementById('academicDuration').value = session.duration || 120;
+      document.getElementById('academicInstructor').value = session.instructor;
+      document.getElementById('academicLocation').value = session.location || '';
+      
+      // Parse time to 12h format
+      const time12 = parseTimeTo12h(session.time);
+      document.getElementById('timeHour').value = time12.hour;
+      document.getElementById('timeMinute').value = time12.minute;
+      setAmPm(time12.ampm);
+      
+      initDatePicker();
+      datePickerInstance.setDate(session.date, true);
+      
+      document.getElementById('academicModalTitle').textContent = 'تعديل الجلسة';
+      document.getElementById('academicModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function deleteAcademic(id) {
+      if (!confirm('حذف هذه الجلسة؟')) return;
+      
+      showLoading(true);
+      database.ref('academic/sessions/' + id).remove()
+        .then(() => {
+          showLoading(false);
+          showToast('success', 'تم الحذف');
+        })
+        .catch(() => {
+          showLoading(false);
+          showToast('error', 'حدث خطأ');
+        });
+    }
+
+    // Load WhatsApp Data - No initial loading
+    function loadWhatsApp() {
+      const ref = database.ref('whatsapp/groups');
+      ref.on('value', (snapshot) => {
+        const data = snapshot.val() || {};
+        whatsappData = Object.entries(data).map(([id, group]) => ({ id, ...group }));
+        updateWhatsAppStats();
+        renderWhatsAppList();
+        renderWhatsAppTable();
+      });
+    }
+
+    function updateWhatsAppStats() {
+      const badge = document.getElementById('whatsappBadge');
+      badge.textContent = whatsappData.length;
+      badge.style.display = whatsappData.length > 0 ? 'block' : 'none';
+      
+      document.getElementById('totalGroups').textContent = whatsappData.length;
+      
+      const now = new Date();
+      const currentDay = now.getDay();
+      const currentTime = now.getHours() * 60 + now.getMinutes();
+      
+      let openCount = 0;
+      whatsappData.forEach(group => {
+        const [openH, openM] = group.openTime.split(':').map(Number);
+        const [closeH, closeM] = group.closeTime.split(':').map(Number);
+        const openMinutes = openH * 60 + openM;
+        const closeMinutes = closeH * 60 + closeM;
+        
+        if (group.days.includes(currentDay) && currentTime >= openMinutes && currentTime <= closeMinutes) {
+          openCount++;
+        }
+      });
+      
+      document.getElementById('openGroups').textContent = openCount;
+      document.getElementById('closedGroups').textContent = whatsappData.length - openCount;
+    }
+
+    // Render WhatsApp List with 12h format
+    function renderWhatsAppList() {
+      const container = document.getElementById('whatsappList');
+      const now = new Date();
+      const currentDay = now.getDay();
+      const currentTime = now.getHours() * 60 + now.getMinutes();
+      
+      if (whatsappData.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fab fa-whatsapp"></i>
+            <h3>لا توجد مجموعات</h3>
+            <p>اضغط على "جديد" لإضافة مجموعة</p>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = whatsappData.map(group => {
+        const [openH, openM] = group.openTime.split(':').map(Number);
+        const [closeH, closeM] = group.closeTime.split(':').map(Number);
+        const openMinutes = openH * 60 + openM;
+        const closeMinutes = closeH * 60 + closeM;
+        
+        const isOpen = group.days.includes(currentDay) && 
+                      currentTime >= openMinutes && 
+                      currentTime <= closeMinutes;
+        
+        return `
+          <div class="mobile-card whatsapp-card">
+            <div class="mobile-card-header">
+              <div class="mobile-card-title">
+                <div class="mobile-icon" style="background: #d1fae5; color: #059669;">
+                  <i class="fab fa-whatsapp"></i>
+                </div>
+                <div class="mobile-title-text">
+                  <h4>${group.name}</h4>
+                  <div class="days-tags">
+                    ${group.days.map(d => `
+                      <span class="day-tag ${d === currentDay ? 'active' : ''}">${arabicDays[d]}</span>
+                    `).join('')}
+                  </div>
+                </div>
+              </div>
+              <span class="mobile-status ${isOpen ? 'status-now' : 'status-ended'}">
+                <i class="fas ${isOpen ? 'fa-lock-open' : 'fa-lock'}" style="font-size: 10px;"></i>
+                ${isOpen ? 'مفتوحة' : 'مغلقة'}
+              </span>
+            </div>
+            
+            <div class="mobile-card-body">
+              <div class="mobile-info-item">
+                <span class="mobile-info-label">الفتح</span>
+                <span class="mobile-info-value">${to12Hour(group.openTime)}</span>
+              </div>
+              <div class="mobile-info-item">
+                <span class="mobile-info-label">الإغلاق</span>
+                <span class="mobile-info-value">${to12Hour(group.closeTime)}</span>
+              </div>
+            </div>
+            
+            <div class="mobile-card-footer">
+              <a href="${group.link}" target="_blank" class="mobile-btn" style="background: #d1fae5; color: #059669; text-decoration: none;">
+                <i class="fab fa-whatsapp"></i>
+                فتح
+              </a>
+              <button class="mobile-btn mobile-btn-edit" onclick="editWhatsApp('${group.id}')">
+                <i class="fas fa-edit"></i>
+                تعديل
+              </button>
+              <button class="mobile-btn mobile-btn-delete" onclick="deleteWhatsApp('${group.id}')">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Render WhatsApp Table with 12h format
+    function renderWhatsAppTable() {
+      const tbody = document.getElementById('whatsappTable');
+      if (!tbody) return;
+      
+      const now = new Date();
+      const currentDay = now.getDay();
+      const currentTime = now.getHours() * 60 + now.getMinutes();
+      
+      if (whatsappData.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px;">لا توجد مجموعات</td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = whatsappData.map(group => {
+        const [openH, openM] = group.openTime.split(':').map(Number);
+        const [closeH, closeM] = group.closeTime.split(':').map(Number);
+        const openMinutes = openH * 60 + openM;
+        const closeMinutes = closeH * 60 + closeM;
+        
+        const isOpen = group.days.includes(currentDay) && 
+                      currentTime >= openMinutes && 
+                      currentTime <= closeMinutes;
+        
+        return `
+          <tr>
+            <td>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="mobile-icon" style="width: 32px; height: 32px; font-size: 14px; background: #d1fae5; color: #059669;">
+                  <i class="fab fa-whatsapp"></i>
+                </div>
+                <span style="font-weight: 700;">${group.name}</span>
+              </div>
+            </td>
+            <td>
+              <div class="days-tags">
+                ${group.days.map(d => `
+                  <span class="day-tag ${d === currentDay ? 'active' : ''}" style="font-size: 10px; padding: 2px 8px;">${arabicDays[d]}</span>
+                `).join('')}
+              </div>
+            </td>
+            <td>${to12Hour(group.openTime)} - ${to12Hour(group.closeTime)}</td>
+            <td><span class="mobile-status ${isOpen ? 'status-now' : 'status-ended'}" style="font-size: 11px;">${isOpen ? 'مفتوحة' : 'مغلقة'}</span></td>
+            <td>
+              <div style="display: flex; gap: 6px;">
+                <a href="${group.link}" target="_blank" class="icon-btn edit" style="width: 28px; height: 28px; text-decoration: none; display: inline-flex;">
+                  <i class="fab fa-whatsapp" style="font-size: 12px;"></i>
+                </a>
+                <button class="icon-btn edit" onclick="editWhatsApp('${group.id}')" style="width: 28px; height: 28px;">
+                  <i class="fas fa-edit" style="font-size: 12px;"></i>
+                </button>
+                <button class="icon-btn delete" onclick="deleteWhatsApp('${group.id}')" style="width: 28px; height: 28px;">
+                  <i class="fas fa-trash" style="font-size: 12px;"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // WhatsApp Modal Functions
+    function openWhatsAppModal() {
+      document.getElementById('whatsappForm').reset();
+      document.getElementById('whatsappId').value = '';
+      document.querySelectorAll('.day-checkbox').forEach(cb => cb.checked = false);
+      document.getElementById('whatsappModalTitle').textContent = 'مجموعة جديدة';
+      setOpenAmPm('AM');
+      setCloseAmPm('PM');
+      document.getElementById('openHour').value = '9';
+      document.getElementById('openMinute').value = '00';
+      document.getElementById('closeHour').value = '5';
+      document.getElementById('closeMinute').value = '00';
+      document.getElementById('whatsappModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeWhatsAppModal() {
+      document.getElementById('whatsappModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function saveWhatsApp() {
+      const days = Array.from(document.querySelectorAll('.day-checkbox:checked')).map(cb => parseInt(cb.value));
+      
+      if (days.length === 0) {
+        alert('اختر يوم واحد على الأقل');
+        return;
+      }
+
+      showLoading(true);
+      
+      const openHour24 = to24Hour(document.getElementById('openHour').value, openAmPm);
+      const openMinute = document.getElementById('openMinute').value.padStart(2, '0');
+      const closeHour24 = to24Hour(document.getElementById('closeHour').value, closeAmPm);
+      const closeMinute = document.getElementById('closeMinute').value.padStart(2, '0');
+
+      const data = {
+        name: document.getElementById('whatsappName').value,
+        days: days,
+        openTime: `${openHour24}:${openMinute}`,
+        closeTime: `${closeHour24}:${closeMinute}`,
+        link: document.getElementById('whatsappLink').value
+      };
+
+      const id = document.getElementById('whatsappId').value;
+      let ref;
+      if (id) {
+        ref = database.ref('whatsapp/groups/' + id);
+      } else {
+        ref = database.ref('whatsapp/groups').push();
+      }
+
+      ref.set(data).then(() => {
+        showLoading(false);
+        closeWhatsAppModal();
+        showToast('success', id ? 'تم التحديث' : 'تمت الإضافة');
+      }).catch(() => {
+        showLoading(false);
+        showToast('error', 'حدث خطأ');
+      });
+    }
+
+    function editWhatsApp(id) {
+      const group = whatsappData.find(g => g.id === id);
+      if (!group) return;
+
+      document.getElementById('whatsappId').value = id;
+      document.getElementById('whatsappName').value = group.name;
+      document.getElementById('whatsappLink').value = group.link;
+      
+      // Parse times to 12h format
+      const openTime12 = parseTimeTo12h(group.openTime);
+      document.getElementById('openHour').value = openTime12.hour;
+      document.getElementById('openMinute').value = openTime12.minute;
+      setOpenAmPm(openTime12.ampm);
+      
+      const closeTime12 = parseTimeTo12h(group.closeTime);
+      document.getElementById('closeHour').value = closeTime12.hour;
+      document.getElementById('closeMinute').value = closeTime12.minute;
+      setCloseAmPm(closeTime12.ampm);
+      
+      document.querySelectorAll('.day-checkbox').forEach(cb => {
+        cb.checked = group.days.includes(parseInt(cb.value));
+      });
+      
+      document.getElementById('whatsappModalTitle').textContent = 'تعديل المجموعة';
+      document.getElementById('whatsappModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function deleteWhatsApp(id) {
+      if (!confirm('حذف هذه المجموعة؟')) return;
+      
+      showLoading(true);
+      database.ref('whatsapp/groups/' + id).remove()
+        .then(() => {
+          showLoading(false);
+          showToast('success', 'تم الحذف');
+        })
+        .catch(() => {
+          showLoading(false);
+          showToast('error', 'حدث خطأ');
+        });
+    }
+
+    // Preview - Use the new URL
+    function refreshPreview() {
+      document.getElementById('previewFrame').src = PREVIEW_URL + '?' + Date.now();
+    }
+
+    // Toast
+    function showToast(type, message) {
+      const toast = document.getElementById('toast');
+      toast.className = 'toast ' + type;
+      document.querySelector('.toast-icon').className = 'toast-icon fas ' + (type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle');
+      document.getElementById('toastMessage').textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    // Loading - Only show for operations, not on startup
+    function showLoading(show) {
+      document.getElementById('loading').classList.toggle('active', show);
+    }
+
+    // Close modals on outside click
+    document.querySelectorAll('.simple-modal').forEach(modal => {
+      modal.addEventListener('click', function(e) {
+        if (e.target === this) {
+          if (this.id === 'academicModal') closeAcademicModal();
+          if (this.id === 'whatsappModal') closeWhatsAppModal();
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

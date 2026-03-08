@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>نظام الاختبارات الذكي</title>
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    
+    :root {
+      --primary: #2C3E94;
+      --success: #059669;
+      --danger: #dc2626;
+      --warning: #d97706;
+      --bg-card: #ffffff;
+      --text-primary: #1a1a2e;
+      --text-secondary: #5a5a7a;
+      --shadow: 0 4px 20px rgba(44, 62, 148, 0.15);
+    }
+    
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      direction: rtl;
+    }
+    
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    
+    /* الصفحات */
+    .page {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+    
+    .page.active {
+      display: block;
+    }
+    
+    /* صفحة تسجيل الدخول */
+    .login-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 30px;
+      margin-top: 50px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+    
+    .logo {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--primary), #764ba2);
+      border-radius: 20px;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      color: white;
+    }
+    
+    .login-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    
+    .input-group {
+      margin: 15px 0;
+      text-align: right;
+    }
+    
+    .input-group label {
+      display: block;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      font-size: 0.85rem;
+    }
+    
+    .input-field {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid #e0e2e8;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-family: 'Cairo', sans-serif;
+      text-align: center;
+      background: #f8f9fa;
+    }
+    
+    .input-field:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: white;
+    }
+    
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--primary), #764ba2);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 15px;
+      font-family: 'Cairo', sans-serif;
+    }
+    
+    /* الهيدر */
+    .header {
+      background: rgba(255,255,255,0.95);
+      border-radius: 16px;
+      padding: 15px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow);
+    }
+    
+    .student-info h3 {
+      font-size: 0.95rem;
+      color: var(--text-primary);
+    }
+    
+    .student-info p {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+    
+    /* شريط التقدم */
+    .progress-bar {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+    }
+    
+    .progress-track {
+      height: 8px;
+      background: #e0e2e8;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), #764ba2);
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+    
+    /* بطاقة السؤال */
+    .quiz-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    
+    .question-number {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--primary), #764ba2);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    
+    .question-text {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    
+    /* خيارات الإجابة - 3 خيارات فقط */
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .option {
+      background: #f8f9fa;
+      border: 2px solid #e0e2e8;
+      border-radius: 12px;
+      padding: 15px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .option:hover {
+      border-color: var(--primary);
+      background: #f0f2f5;
+    }
+    
+    .option.selected {
+      border-color: var(--primary);
+      background: rgba(44, 62, 148, 0.05);
+    }
+    
+    .option-letter {
+      width: 32px;
+      height: 32px;
+      background: white;
+      border: 2px solid #e0e2e8;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    
+    .option.selected .option-letter {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+    
+    /* أزرار التنقل */
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .btn-nav {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+    }
+    
+    .btn-prev {
+      background: #f0f2f5;
+      color: var(--text-secondary);
+    }
+    
+    .btn-next, .btn-submit {
+      background: linear-gradient(135deg, var(--primary), #764ba2);
+      color: white;
+    }
+    
+    /* بطاقة النتيجة */
+    .result-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 40px 30px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      margin-top: 50px;
+    }
+    
+    .result-icon {
+      font-size: 80px;
+      margin-bottom: 20px;
+    }
+    
+    .result-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 15px;
+    }
+    
+    .result-message {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 25px;
+    }
+    
+    .success-box {
+      background: #d1fae5;
+      border: 2px solid var(--success);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+      animation: pulse 2s infinite;
+    }
+    
+    .success-text {
+      color: var(--success);
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+    
+    /* المودال */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 20px;
+    }
+    
+    .modal-overlay.active {
+      display: flex;
+    }
+    
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      width: 100%;
+      max-width: 340px;
+      text-align: center;
+    }
+    
+    .modal-icon {
+      font-size: 60px;
+      margin-bottom: 15px;
+    }
+    
+    .modal-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    
+    .modal-text {
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+    
+    .modal-btn {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+      margin: 5px;
+    }
+    
+    .modal-btn-confirm {
+      background: linear-gradient(135deg, var(--primary), #764ba2);
+      color: white;
+    }
+    
+    .modal-btn-cancel {
+      background: #f0f2f5;
+      color: var(--text-secondary);
+    }
+    
+    /* التنبيهات */
+    .alert {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      left: 20px;
+      background: white;
+      padding: 16px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 3000;
+      border-right: 4px solid;
+    }
+    
+    .alert.show {
+      display: block;
+    }
+    
+    .alert.error { border-right-color: var(--danger); }
+    .alert.success { border-right-color: var(--success); }
+    
+    /* حماية */
+    .security-notice {
+      background: #fee2e2;
+      border: 1px solid var(--danger);
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 15px;
+      font-size: 0.8rem;
+      color: var(--danger);
+    }
+    
+    /* تنبيه الخروج */
+    .exit-warning {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(220, 38, 38, 0.95);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 5000;
+      color: white;
+      text-align: center;
+      padding: 40px;
+    }
+    
+    .exit-warning.active {
+      display: flex;
+    }
+    
+    .exit-warning-icon {
+      font-size: 80px;
+      margin-bottom: 20px;
+    }
+    
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  
+  <!-- صفحة تسجيل الدخول -->
+  <div id="loginPage" class="page active">
+    <div class="login-card">
+      <div class="logo">🎓</div>
+      <h1 class="login-title">جرافيكس الكبيوتر مستوى اول</h1>
+      
+      <div class="input-group">
+        <label>الرقم الأكاديمي</label>
+        <input type="text" id="loginId" class="input-field" placeholder="أدخل رقمك الأكاديمي" />
+      </div>
+      
+      <div class="input-group">
+        <label>كلمة المرور</label>
+        <input type="password" id="loginPass" class="input-field" placeholder="أدخل كلمة المرور" />
+      </div>
+      
+      <button class="btn-primary" onclick="handleLogin()">دخول</button>
+      
+      <div class="security-notice">
+        🔒 نظام مؤمن | يمنع النسخ والغش
+      </div>
+    </div>
+  </div>
+
+  <!-- صفحة الرفض - التخصص غير مطابق -->
+  <div id="rejectMajorPage" class="page">
+    <div class="result-card">
+      <div class="result-icon">🚫</div>
+      <h2 class="result-title" style="color: var(--danger);">غير مصرح</h2>
+      <p class="result-message">
+        هذا الاختبار مخصص لتخصص معين<br>
+        تخصصك غير مطابق للمتطلبات
+      </p>
+      <button class="btn-primary" onclick="logout()">خروج</button>
+    </div>
+  </div>
+
+  <!-- صفحة الاختبار منجز -->
+  <div id="alreadyDonePage" class="page">
+    <div class="result-card">
+      <div class="result-icon">✅</div>
+      <h2 class="result-title" style="color: var(--success);">لقد اجتزت الاختبار</h2>
+      <p class="result-message">
+        لقد قمت بإجتياز هذا الاختبار مسبقاً<br>
+        نسبتك الحالية: <span id="currentGradeDisplay">0%</span>
+      </p>
+      <button class="btn-primary" onclick="logout()">خروج</button>
+    </div>
+  </div>
+
+  <!-- صفحة الاختبار -->
+  <div id="quizPage" class="page">
+    <div class="header">
+      <div class="student-info">
+        <h3 id="headerName">اسم الطالب</h3>
+        <p id="headerId">الرقم الأكاديمي</p>
+      </div>
+    </div>
+
+    <div class="progress-bar">
+      <div class="progress-header">
+        <span>تقدم الاختبار</span>
+        <span id="progressText">1 / 5</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width: 20%"></div>
+      </div>
+    </div>
+
+    <div class="quiz-card">
+      <span class="question-number" id="qNumber">السؤال 1</span>
+      <h2 class="question-text" id="qText">جاري التحميل...</h2>
+      
+      <div class="options" id="optionsContainer"></div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-nav btn-prev" id="prevBtn" onclick="prevQuestion()" style="display: none;">السابق</button>
+      <button class="btn-nav btn-next" id="nextBtn" onclick="nextQuestion()">التالي</button>
+      <button class="btn-nav btn-submit" id="submitBtn" onclick="submitQuiz()" style="display: none;">إنهاء</button>
+    </div>
+  </div>
+
+  <!-- صفحة النتائج -->
+  <div id="resultPage" class="page">
+    <div class="result-card" id="resultCard"></div>
+  </div>
+
+</div>
+
+<!-- تنبيه الخروج -->
+<div id="exitWarning" class="exit-warning">
+  <div class="exit-warning-icon">⚠️</div>
+  <h2>تم إيقاف الاختبار!</h2>
+  <p>لقد غادرت النافذة. تم إلغاء إجاباتك.</p>
+  <button class="btn-primary" onclick="logout()" style="margin-top: 20px;">إعادة الدخول</button>
+</div>
+
+<!-- المودال -->
+<div id="modal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-icon" id="modalIcon">⚠️</div>
+    <h3 class="modal-title" id="modalTitle">تنبيه</h3>
+    <p class="modal-text" id="modalText">رسالة</p>
+    <div id="modalButtons">
+      <button class="modal-btn modal-btn-confirm" id="modalConfirmBtn">تأكيد</button>
+      <button class="modal-btn modal-btn-cancel" id="modalCancelBtn">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- التنبيه -->
+<div id="alert" class="alert"></div>
+
+<script>
+// ==========================================
+// إعدادات Firebase - عدلها حسب قاعدة بياناتك
+// ==========================================
+const firebaseConfig = {
+  apiKey: "AIzaSyAEXAMPLEnY", 
+  authDomain: "store-points-7d2f4.firebaseapp.com",
+  databaseURL: "https://store-points-7d2f4-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "store-points-7d2f4",
+  storageBucket: "store-points-7d2f4.appspot.com",
+  messagingSenderId: "105011111111",
+  appId: "1:105011111111:web:abc123example"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// ==========================================
+// المتغيرات العامة
+// ==========================================
+let currentStudent = null;
+let currentQuestion = 0;
+let answers = {};
+let quizSubmitted = false;
+
+// ==========================================
+// الأسئلة - 3 خيارات لكل سؤال
+// ==========================================
+const quizQuestions = [
+  {
+    question: "ما هو الجرافيكس؟",
+    options: [
+      "لغة بصرية",      // 0 - صح
+      "نوع من الطباعة",      // 1
+      "لغة برمجة"            // 2
+    ],
+    correct: 0
+  },
+  {
+    question: "أيهما افضل بتطوير المهارات؟",
+    options: [
+      "التغذية البصرية",           // 0
+      "التفكير الابداعي",              // 1 - صح
+      "التقليد والممارسة"               // 2
+    ],
+    correct: 1
+  },
+  {
+    question: "ما هي دقة الصورة المثالية للطباعة؟",
+    options: [
+      "72 DPI",              // 0
+      "150 DPI",             // 1
+      "300 DPI"              // 2 - صح
+    ],
+    correct: 2
+  },
+  {
+    question: "مالفرق بين الفيكتور والريستور؟",
+    options: [
+      "الفيكتور يتكسر عند التكبير والريستور لايتكسر عند التكبير",             // 0
+      "الريستور يتكسر عند التكبير والفيكتور لايتكسر عند التكبير",           // 1 - صح
+      "لايوجد اختلاف بينهم"             // 2
+    ],
+    correct: 1
+  },
+  {
+    question: "ماهو cmyk؟",
+    options: [
+      "نظام الوان للشاشات",             // 0
+      "نظام ألوان للطباعة",           // 1 - صح
+      "نوع من انواع الملفات"             // 2
+    ],
+    correct: 1
+  },
+  {
+    question: "اي من امدادات الصور يدعم الشفافية",
+    options: [
+      "png",             // 0
+      "jpg",           // 1 - صح
+      "gif"             // 2
+    ],
+    correct: 0
+  },
+  {
+    question: "اي من الصور اللي تقبل الضغط وتقليل الحجم",
+    options: [
+      "png",             // 0
+      "gif",           // 1 - صح
+      "jpg"             // 2
+    ],
+    correct: 2
+  },
+  
+  {
+    question: "اي من هذه الامدادات تدعم اقل الوان",
+    options: [
+      "jpg",             // 0
+      "gif",           // 1 - صح
+      "png"             // 2
+    ],
+    correct: 1
+  },
+  {
+    question: "ماهو التفكير الابداعي؟",
+    options: [
+      "البحث والاستلهام",             // 0
+      "القدرة على رؤية الاشياء بشكل مختلف",           // 1 - صح
+      "التقليد والممارسة"             // 2
+    ],
+    correct: 1
+  },
+  {
+    question: "ماهو نظام الالوان اللي يدعم مليونين لون ؟",
+    options: [
+      "RGB",             // 0
+      "GIF",           // 1 - صح
+      "CMYK"             // 2
+    ],
+    correct: 2
+  },
+  {
+    question: "ماهو RGB؟",
+    options: [
+      "نظام ألوان للطباعة",  // 0
+      "نظام ألوان للشاشات",  // 1 - صح
+      "نوع من الملفات"       // 2
+    ],
+    correct: 1
+  }
+];
+
+// ==========================================
+// تسجيل الدخول والتحقق
+// ==========================================
+async function handleLogin() {
+  const id = document.getElementById('loginId').value.trim();
+  const pass = document.getElementById('loginPass').value.trim();
+  
+  if (!id || !pass) {
+    showAlert('⚠️ أدخل جميع البيانات', 'error');
+    return;
+  }
+  
+  try {
+    // جلب بيانات الطالب
+    const snapshot = await db.ref('users/' + id).once('value');
+    const student = snapshot.val();
+    
+    if (!student) {
+      showAlert('❌ الرقم غير موجود', 'error');
+      return;
+    }
+    
+    // التحقق من كلمة المرور
+    if (student.password !== pass && student.id !== pass) {
+      showAlert('❌ كلمة المرور خطأ', 'error');
+      return;
+    }
+    
+    currentStudent = { id, ...student };
+    
+    // ==========================================
+    // التحقق من التخصص (عدل هنا التخصص المطلوب)
+    // ==========================================
+    const allowedMajor = "جرافيكس الكمبيوتر"; // ← غير التخصص هنا
+    const studentMajor = (student.major || '').trim();
+    
+    if (studentMajor !== allowedMajor) {
+      showPage('rejectMajorPage');
+      return;
+    }
+    
+    // ==========================================
+    // التحقق من النسبة (هل اجتاز الاختبار مسبقاً؟)
+    // ==========================================
+    const currentGrade = parseInt(student.grade) || 0;
+    
+    if (currentGrade >= 10) {
+      // اجتاز الاختبار مسبقاً
+      document.getElementById('currentGradeDisplay').textContent = student.grade || '10%';
+      showPage('alreadyDonePage');
+      return;
+    }
+    
+    // ==========================================
+    // النسبة 0% - السماح بالدخول للاختبار
+    // ==========================================
+    startQuiz();
+    
+  } catch (error) {
+    console.error(error);
+    showAlert('❌ خطأ في الاتصال', 'error');
+  }
+}
+
+// ==========================================
+// بدء الاختبار
+// ==========================================
+function startQuiz() {
+  showPage('quizPage');
+  
+  document.getElementById('headerName').textContent = currentStudent.name;
+  document.getElementById('headerId').textContent = currentStudent.id;
+  
+  currentQuestion = 0;
+  answers = {};
+  quizSubmitted = false;
+  
+  // منع الخروج
+  preventExit();
+  
+  renderQuestion();
+}
+
+// ==========================================
+// عرض السؤال
+// ==========================================
+function renderQuestion() {
+  const q = quizQuestions[currentQuestion];
+  
+  document.getElementById('qNumber').textContent = `السؤال ${currentQuestion + 1} من ${quizQuestions.length}`;
+  document.getElementById('qText').textContent = q.question;
+  
+  // التقدم
+  const progress = ((currentQuestion + 1) / quizQuestions.length) * 100;
+  document.getElementById('progressFill').style.width = progress + '%';
+  document.getElementById('progressText').textContent = `${currentQuestion + 1} / ${quizQuestions.length}`;
+  
+  // الخيارات (3 خيارات)
+  const container = document.getElementById('optionsContainer');
+  container.innerHTML = '';
+  
+  const letters = ['أ', 'ب', 'ج']; // 3 حروف فقط
+  
+  q.options.forEach((opt, idx) => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    if (answers[currentQuestion] === idx) div.classList.add('selected');
+    
+    div.innerHTML = `
+      <div class="option-letter">${letters[idx]}</div>
+      <div>${opt}</div>
+    `;
+    
+    div.onclick = () => {
+      answers[currentQuestion] = idx;
+      renderQuestion();
+    };
+    
+    container.appendChild(div);
+  });
+  
+  // الأزرار
+  document.getElementById('prevBtn').style.display = currentQuestion > 0 ? 'block' : 'none';
+  
+  if (currentQuestion === quizQuestions.length - 1) {
+    document.getElementById('nextBtn').style.display = 'none';
+    document.getElementById('submitBtn').style.display = 'block';
+  } else {
+    document.getElementById('nextBtn').style.display = 'block';
+    document.getElementById('submitBtn').style.display = 'none';
+  }
+}
+
+// ==========================================
+// التنقل
+// ==========================================
+function nextQuestion() {
+  if (answers[currentQuestion] === undefined) {
+    showAlert('⚠️ اختر إجابة', 'error');
+    return;
+  }
+  currentQuestion++;
+  renderQuestion();
+}
+
+function prevQuestion() {
+  currentQuestion--;
+  renderQuestion();
+}
+
+// ==========================================
+// إنهاء الاختبار
+// ==========================================
+async function submitQuiz() {
+  if (answers[currentQuestion] === undefined) {
+    showAlert('⚠️ اختر إجابة', 'error');
+    return;
+  }
+  
+  const confirmed = await showModal('📝', 'تأكيد', 'هل أنت متأكد من إنهاء الاختبار؟');
+  if (!confirmed) return;
+  
+  quizSubmitted = true;
+  checkResults();
+}
+
+// ==========================================
+// فحص النتائج
+// ==========================================
+async function checkResults() {
+  let wrongCount = 0;
+  
+  quizQuestions.forEach((q, idx) => {
+    if (answers[idx] !== q.correct) wrongCount++;
+  });
+  
+  const allCorrect = wrongCount === 0;
+  
+  showResults(wrongCount, allCorrect);
+  
+  // إذا كل الإجابات صحيحة → رفع النسبة والنقاط
+  if (allCorrect) {
+    await updateGradeAndPoints();
+  }
+}
+
+// ==========================================
+// عرض النتائج
+// ==========================================
+function showResults(wrongCount, allCorrect) {
+  showPage('resultPage');
+  
+  const card = document.getElementById('resultCard');
+  
+  if (allCorrect) {
+    // نجاح كامل
+    card.innerHTML = `
+      <div class="result-icon">🎉</div>
+      <h2 class="result-title" style="color: var(--success);">مبروك! نجاح كامل</h2>
+      <p class="result-message">
+        أجبت على جميع الأسئلة بشكل صحيح
+      </p>
+      <div class="success-box" id="successBox">
+        <div class="success-text">🌟 جاري رفع نسبتك ونقاطك...</div>
+      </div>
+    `;
+  } else {
+    // فشل - يظهر عدد الأخطاء فقط
+    card.innerHTML = `
+      <div class="result-icon">😔</div>
+      <h2 class="result-title" style="color: var(--danger);">لم تنجح</h2>
+      <p class="result-message">
+        عدد الأخطاء: <strong>${wrongCount}</strong> أخطاء<br>
+        يجب الإجابة على جميع الأسئلة بشكل صحيح
+      </p>
+      <button class="btn-primary" onclick="logout()">حاول مرة أخرى</button>
+    `;
+  }
+}
+
+// ==========================================
+// تحديث النسبة والنقاط في قاعدة البيانات
+// ==========================================
+async function updateGradeAndPoints() {
+  try {
+    const newGrade = 10; // نسبة ثابتة 10%
+    
+    // جلب البيانات الحالية أولاً
+    const snapshot = await db.ref('users/' + currentStudent.id).once('value');
+    const studentData = snapshot.val();
+    const currentPoints = studentData.points || 0;
+    const newPoints = currentPoints + 10; // إضافة 10 نقاط
+    
+    await db.ref('users/' + currentStudent.id).update({
+      grade: newGrade + '%',
+      points: newPoints, // ← إضافة 10 نقاط
+      quizCompletedAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    });
+    
+    // تحديث الواجهة
+    const box = document.getElementById('successBox');
+    if (box) {
+      box.innerHTML = `
+        <div class="success-text">✅ تهانينا! لقد ارتفعت نسبتك ونقاطك</div>
+        <div style="margin-top: 10px; font-size: 1.3rem;">النسبة الجديدة: 10%</div>
+        <div style="margin-top: 5px; font-size: 1.1rem; color: #059669;">النقاط الجديدة: ${newPoints}</div>
+      `;
+    }
+    
+    // إضافة زر الخروج
+    const card = document.getElementById('resultCard');
+    const btn = document.createElement('button');
+    btn.className = 'btn-primary';
+    btn.style.marginTop = '20px';
+    btn.textContent = 'خروج';
+    btn.onclick = logout;
+    card.appendChild(btn);
+    
+    showAlert('✅ تم تحديث نسبتك ونقاطك بنجاح!', 'success');
+    
+  } catch (error) {
+    console.error(error);
+    showAlert('❌ خطأ في التحديث', 'error');
+  }
+}
+
+// ==========================================
+// دوال مساعدة
+// ==========================================
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+}
+
+function showModal(icon, title, text) {
+  return new Promise(resolve => {
+    document.getElementById('modalIcon').textContent = icon;
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalText').textContent = text;
+    
+    const confirmBtn = document.getElementById('modalConfirmBtn');
+    const cancelBtn = document.getElementById('modalCancelBtn');
+    
+    confirmBtn.onclick = () => {
+      closeModal();
+      resolve(true);
+    };
+    
+    cancelBtn.onclick = () => {
+      closeModal();
+      resolve(false);
+    };
+    
+    document.getElementById('modal').classList.add('active');
+  });
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+}
+
+function showAlert(text, type) {
+  const alert = document.getElementById('alert');
+  alert.textContent = text;
+  alert.className = 'alert show ' + type;
+  setTimeout(() => alert.classList.remove('show'), 3000);
+}
+
+function logout() {
+  location.reload();
+}
+
+// ==========================================
+// منع الخروج والغش
+// ==========================================
+function preventExit() {
+  // منع الرجوع
+  history.pushState(null, null, location.href);
+  window.addEventListener('popstate', () => {
+    history.pushState(null, null, location.href);
+    if (!quizSubmitted) showExitWarning();
+  });
+  
+  // كشف تبديل التبويب
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && !quizSubmitted) {
+      showExitWarning();
+    }
+  });
+  
+  // منع النسخ
+  document.addEventListener('copy', e => {
+    e.preventDefault();
+    showAlert('⛔ النسخ ممنوع!', 'error');
+  });
+  
+  document.addEventListener('paste', e => {
+    e.preventDefault();
+    showAlert('⛔ اللصق ممنوع!', 'error');
+  });
+  
+  document.addEventListener('contextmenu', e => e.preventDefault());
+}
+
+function showExitWarning() {
+  document.getElementById('exitWarning').classList.add('active');
+  quizSubmitted = true;
+}
+
+// منع إغلاق الصفحة
+window.addEventListener('beforeunload', e => {
+  if (!quizSubmitted && document.getElementById('quizPage').classList.contains('active')) {
+    e.returnValue = 'ستفقد تقدمك!';
+  }
+});
+</script>
+
+</body>
+</html>

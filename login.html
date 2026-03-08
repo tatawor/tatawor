@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>أكاديمية تطور التعليمية</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    font-family: 'Tajawal', sans-serif;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: fixed;
+  }
+
+  /* خلفية متدرجة */
+  .bg-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 50%, #c2e9fb 100%);
+    z-index: -2;
+  }
+
+  /* دوائر زخرفية */
+  .circles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+  }
+
+  .circle-1 { width: 250px; height: 250px; top: -80px; right: -80px; animation: float 20s infinite ease-in-out; }
+  .circle-2 { width: 180px; height: 180px; bottom: 10%; left: -40px; animation: float 25s infinite ease-in-out reverse; }
+  .circle-3 { width: 120px; height: 120px; top: 40%; right: 8%; background: rgba(167, 139, 250, 0.3); animation: float 18s infinite ease-in-out; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-20px) scale(1.05); }
+  }
+
+  /* الحاوية الرئيسية - تصغير طفيف فقط */
+  .main-wrapper {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 15px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* الشعار - مع الحفاظ على الحركة */
+  .logo-container {
+    margin-top: 25px;
+    margin-bottom: 20px;
+    text-align: center;
+    animation: fadeInDown 0.8s ease;
+  }
+
+  .logo-img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 20px rgba(124, 58, 237, 0.3));
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* البطاقة الزجاجية - تصغير طفيف */
+  .glass-card {
+    width: 100%;
+    max-width: 300px;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 25px;
+    padding: 28px 25px;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+    flex-shrink: 0;
+    animation: fadeInUp 0.8s ease 0.2s both;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* العنوان */
+  .header-text {
+    text-align: center;
+    margin-bottom: 22px;
+  }
+
+  .header-text h1 {
+    color: #1f2937;
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+
+  .header-text p {
+    color: #6b7280;
+    font-size: 13px;
+    font-weight: 400;
+  }
+
+  /* التبويبات */
+  .tabs {
+    display: flex;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 14px;
+    padding: 4px;
+    margin-bottom: 20px;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    color: #6b7280;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.3s;
+  }
+
+  .tab.active {
+    background: rgba(255, 255, 255, 0.9);
+    color: #7c3aed;
+    box-shadow: 0 2px 10px rgba(124, 58, 237, 0.15);
+  }
+
+  /* النماذج */
+  .form-group {
+    margin-bottom: 15px;
+    position: relative;
+  }
+
+  .input-wrapper {
+    position: relative;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 14px;
+    border: 2px solid transparent;
+    transition: all 0.3s;
+  }
+
+  .input-wrapper:focus-within {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: #a78bfa;
+    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1);
+  }
+
+  input {
+    width: 100%;
+    padding: 13px 40px 13px 14px;
+    border: none;
+    background: transparent;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    color: #1f2937;
+    outline: none;
+  }
+
+  input::placeholder {
+    color: #9ca3af;
+    font-size: 13px;
+  }
+
+  .input-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    opacity: 0.6;
+  }
+
+  .toggle-password {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+  }
+
+  .toggle-password:hover {
+    opacity: 0.8;
+  }
+
+  /* مجموعة الهاتف */
+  .phone-row {
+    display: flex;
+    gap: 10px;
+  }
+
+  .country-select {
+    width: 95px;
+    flex-shrink: 0;
+  }
+
+  .country-select select {
+    width: 100%;
+    padding: 13px 8px;
+    border: none;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 14px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13px;
+    color: #1f2937;
+    cursor: pointer;
+    outline: none;
+    border: 2px solid rgba(124, 58, 237, 0.2);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='%237c3aed'%3E%3Cpath d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 8px center;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .country-select select:focus {
+    border-color: #7c3aed;
+  }
+
+  /* زر رئيسي */
+  .btn-primary {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    border: none;
+    border-radius: 14px;
+    color: #fff;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 8px 25px rgba(124, 58, 237, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: rotate(45deg);
+    transition: all 0.5s;
+    opacity: 0;
+  }
+
+  .btn-primary:hover::after {
+    animation: shine 0.6s ease-in-out;
+  }
+
+  @keyframes shine {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); opacity: 0; }
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* spinner */
+  .spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 0.8s linear infinite;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* روابط */
+  .links-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.3);
+  }
+
+  .link {
+    color: #7c3aed;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    transition: color 0.3s;
+  }
+
+  .link:hover {
+    color: #5b21b6;
+  }
+
+  /* تنبيه */
+  .notice {
+    background: rgba(255, 255, 255, 0.6);
+    border-right: 3px solid #f59e0b;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-size: 12px;
+    color: #92400e;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    line-height: 1.4;
+  }
+
+  /* رسائل التنبيه */
+  .alert {
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-size: 12px;
+    display: none;
+    animation: shake 0.4s;
+  }
+
+  .alert-error {
+    background: rgba(254, 226, 226, 0.8);
+    color: #991b1b;
+    border: 1px solid rgba(252, 165, 165, 0.5);
+  }
+
+  .alert-success {
+    background: rgba(209, 250, 229, 0.8);
+    color: #065f46;
+    border: 1px solid rgba(110, 231, 183, 0.5);
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  /* مؤشر قوة كلمة المرور */
+  .strength-meter {
+    height: 3px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 2px;
+    margin-top: 6px;
+    overflow: hidden;
+    display: none;
+  }
+
+  .strength-meter.show {
+    display: block;
+  }
+
+  .strength-fill {
+    height: 100%;
+    width: 0;
+    transition: all 0.3s;
+  }
+
+  /* عناصر عائمة */
+  .floating-elements {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .dot {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 50%;
+    animation: floatUp 12s infinite;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100vh) scale(1); opacity: 0; }
+  }
+
+  /* Responsive */
+  @media (max-height: 700px) {
+    .logo-container { margin-top: 15px; margin-bottom: 15px; }
+    .logo-img { width: 80px; height: 80px; }
+    .glass-card { padding: 22px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-container"></div>
+
+<div class="circles">
+  <div class="circle circle-1"></div>
+  <div class="circle circle-2"></div>
+  <div class="circle circle-3"></div>
+</div>
+
+<div class="floating-elements" id="floatingElements"></div>
+
+<div class="main-wrapper">
+  <!-- الشعار المتحرك -->
+  <div class="logo-container">
+    <img src="https://i.postimg.cc/g0Bm32zB/20260207-052318.png" alt="شعار الأكاديمية" class="logo-img">
+  </div>
+
+  <!-- البطاقة الزجاجية -->
+  <div class="glass-card">
+    <div class="header-text">
+      <h1 id="pageTitle">تسجيل الدخول</h1>
+      <p id="pageSubtitle">أهلاً بك مجدداً في أكاديمية تطور</p>
+    </div>
+
+    <!-- التبويبات -->
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('login')" id="tabLogin">تسجيل الدخول</button>
+      <button class="tab" onclick="switchTab('activate')" id="tabActivate">تفعيل الحساب</button>
+    </div>
+
+    <div id="alertBox" class="alert"></div>
+
+    <!-- نموذج تسجيل الدخول -->
+    <div id="loginForm">
+      <div class="notice">
+        <span>💡</span>
+        <span>إذا لم تملك كلمة مرور مسبقاً، اضغط على "تفعيل الحساب"</span>
+      </div>
+
+      <div class="form-group">
+        <div class="input-wrapper">
+          <input type="text" id="loginCode" placeholder="الرقم الأكاديمي" autocomplete="off">
+          <span class="input-icon">👤</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="input-wrapper">
+          <input type="password" id="loginPass" placeholder="كلمة المرور">
+          <span class="input-icon">🔒</span>
+          <button class="toggle-password" onclick="togglePassword('loginPass')">👁️</button>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="login()" id="loginBtn">
+        دخول
+      </button>
+
+      <div class="links-row">
+        <a href="#" class="link" onclick="openExternal('forgot')">نسيت كلمة المرور؟</a>
+        <a href="#" class="link" onclick="openExternal('help')">كيف أفعل حسابي؟</a>
+      </div>
+    </div>
+
+    <!-- نموذج التفعيل -->
+    <div id="activateForm" class="hidden">
+      <div class="form-group">
+        <div class="input-wrapper">
+          <input type="text" id="activateCode" placeholder="الرقم الأكاديمي المعتمد" autocomplete="off">
+          <span class="input-icon">🆔</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="input-wrapper">
+          <input type="password" id="activatePass" placeholder="كلمة مرور جديدة" oninput="checkStrength(this.value)">
+          <span class="input-icon">🔐</span>
+          <button class="toggle-password" onclick="togglePassword('activatePass')">👁️</button>
+        </div>
+        <div class="strength-meter" id="strengthMeter">
+          <div class="strength-fill" id="strengthFill"></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="phone-row">
+          <div class="country-select">
+            <select id="countryCode">
+              <option value="967">🇾🇪 +967</option>
+              <option value="966">🇸🇦 +966</option>
+              <option value="971">🇦🇪 +971</option>
+              <option value="965">🇰🇼 +965</option>
+              <option value="974">🇶🇦 +974</option>
+              <option value="973">🇧🇭 +973</option>
+              <option value="968">🇴🇲 +968</option>
+              <option value="962">🇯🇴 +962</option>
+              <option value="20">🇪🇬 +20</option>
+              <option value="964">🇮🇶 +964</option>
+            </select>
+          </div>
+          <div class="input-wrapper" style="flex:1;">
+            <input type="tel" id="whatsappNum" placeholder="رقم الواتساب" dir="ltr" onkeypress="return preventSpace(event)" oninput="removeSpaces(this)">
+            <span class="input-icon">📱</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="activate()" id="activateBtn">
+        تفعيل الحساب
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+<script>
+// تهيئة Firebase
+const firebaseConfig = {
+  databaseURL: "https://store-points-7d2f4-default-rtdb.asia-southeast1.firebasedatabase.app/"
+};
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+// عناصر عائمة
+function createFloatingElements() {
+  const container = document.getElementById('floatingElements');
+  for(let i = 0; i < 15; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'dot';
+    dot.style.left = Math.random() * 100 + '%';
+    dot.style.animationDelay = Math.random() * 12 + 's';
+    dot.style.animationDuration = (8 + Math.random() * 8) + 's';
+    container.appendChild(dot);
+  }
+}
+createFloatingElements();
+
+// منع المسافات في حقل الواتساب
+function preventSpace(e) {
+  if (e.key === ' ') {
+    e.preventDefault();
+    return false;
+  }
+  return true;
+}
+
+// إزالة المسافات عند اللصق أو الكتابة
+function removeSpaces(input) {
+  input.value = input.value.replace(/\s/g, '');
+}
+
+// تبديل التبويبات
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  
+  if(tab === 'login') {
+    document.getElementById('tabLogin').classList.add('active');
+    document.getElementById('loginForm').classList.remove('hidden');
+    document.getElementById('activateForm').classList.add('hidden');
+    document.getElementById('pageTitle').textContent = 'تسجيل الدخول';
+    document.getElementById('pageSubtitle').textContent = 'أهلاً بك مجدداً في أكاديمية تطور';
+  } else {
+    document.getElementById('tabActivate').classList.add('active');
+    document.getElementById('loginForm').classList.add('hidden');
+    document.getElementById('activateForm').classList.remove('hidden');
+    document.getElementById('pageTitle').textContent = 'تفعيل الحساب';
+    document.getElementById('pageSubtitle').textContent = 'أنشئ حسابك للوصول للمنصة';
+  }
+  hideAlert();
+}
+
+// إظهار/إخفاء كلمة المرور
+function togglePassword(id) {
+  const input = document.getElementById(id);
+  input.type = input.type === 'password' ? 'text' : 'password';
+}
+
+// فحص قوة كلمة المرور
+function checkStrength(password) {
+  const meter = document.getElementById('strengthMeter');
+  const fill = document.getElementById('strengthFill');
+  
+  if(password.length === 0) {
+    meter.classList.remove('show');
+    return;
+  }
+  
+  meter.classList.add('show');
+  
+  let strength = 0;
+  if(password.length > 6) strength++;
+  if(password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+  if(password.match(/[0-9]/)) strength++;
+  if(password.match(/[^a-zA-Z0-9]/)) strength++;
+  
+  fill.style.width = (strength / 4 * 100) + '%';
+  
+  if(strength <= 1) fill.style.background = '#ef4444';
+  else if(strength === 2) fill.style.background = '#f59e0b';
+  else fill.style.background = '#10b981';
+}
+
+// عرض التنبيهات
+function showAlert(message, type) {
+  const alert = document.getElementById('alertBox');
+  alert.textContent = message;
+  alert.className = 'alert alert-' + type;
+  alert.style.display = 'block';
+  setTimeout(() => alert.style.display = 'none', 5000);
+}
+
+function hideAlert() {
+  document.getElementById('alertBox').style.display = 'none';
+}
+
+// فتح روابط خارجية
+function openExternal(type) {
+  const urls = {
+    forgot: 'https://your-domain.com/reset-password',
+    help: 'https://your-domain.com/help'
+  };
+  
+  if(typeof Android !== "undefined") {
+    Android.openExternalLink(urls[type]);
+  } else {
+    window.open(urls[type], '_blank');
+  }
+}
+
+// تسجيل الدخول
+function login() {
+  const code = document.getElementById('loginCode').value.trim();
+  const pass = document.getElementById('loginPass').value.trim();
+  const btn = document.getElementById('loginBtn');
+  
+  if(!code || !pass) {
+    showAlert('أدخل الرقم الأكاديمي وكلمة المرور', 'error');
+    return;
+  }
+  
+  const cleanCode = code.replace(/[.#$\[\]]/g, '_');
+  
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> جاري الدخول...';
+  
+  database.ref('users/' + cleanCode).once('value')
+    .then(snapshot => {
+      btn.disabled = false;
+      btn.textContent = 'دخول';
+      
+      if(!snapshot.exists()) {
+        showAlert('الرقم الأكاديمي غير موجود', 'error');
+        return;
+      }
+      
+      const correctPass = snapshot.child('password').val();
+      
+      if(pass !== correctPass) {
+        showAlert('كلمة المرور غير صحيحة', 'error');
+        return;
+      }
+      
+      showAlert('تم تسجيل الدخول بنجاح!', 'success');
+      
+      if(typeof Android !== "undefined") {
+        Android.saveSession(cleanCode);
+        setTimeout(() => Android.navigateToMain(), 1000);
+      } else {
+        localStorage.setItem('userCode', cleanCode);
+      }
+    })
+    .catch(error => {
+      btn.disabled = false;
+      btn.textContent = 'دخول';
+      showAlert('فشل الاتصال بالخادم', 'error');
+    });
+}
+
+// تفعيل الحساب
+function activate() {
+  const code = document.getElementById('activateCode').value.trim();
+  const pass = document.getElementById('activatePass').value.trim();
+  const countryCode = document.getElementById('countryCode').value;
+  const phone = document.getElementById('whatsappNum').value.trim();
+  const btn = document.getElementById('activateBtn');
+  
+  if(!code) {
+    showAlert('أدخل رقم أكاديمي معتمد', 'error');
+    return;
+  }
+  if(!pass) {
+    showAlert('أدخل كلمة مرور', 'error');
+    return;
+  }
+  if(!phone) {
+    showAlert('أدخل رقم واتساب', 'error');
+    return;
+  }
+  
+  // التأكد من عدم وجود مسافات
+  if(phone.includes(' ')) {
+    showAlert('رقم الواتساب لا يجب أن يحتوي على مسافات', 'error');
+    return;
+  }
+  
+  const cleanCode = code.replace(/[.#$\[\]]/g, '_');
+  const fullNumber = countryCode + phone;
+  
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> جاري التفعيل...';
+  
+  const userRef = database.ref('users/' + cleanCode);
+  
+  userRef.once('value')
+    .then(snapshot => {
+      if(!snapshot.exists()) {
+        throw new Error('not_found');
+      }
+      
+      const existingPass = snapshot.child('password').val();
+      if(existingPass && existingPass.toString().trim() !== '') {
+        throw new Error('already_activated');
+      }
+      
+      return userRef.update({
+        password: pass,
+        whatsappLink: 'https://wa.me/' + fullNumber,
+        activatedAt: new Date().toISOString()
+      });
+    })
+    .then(() => {
+      btn.disabled = false;
+      btn.textContent = 'تفعيل الحساب';
+      showAlert('تم تفعيل حسابك بنجاح!', 'success');
+      
+      document.getElementById('activatePass').value = '';
+      document.getElementById('whatsappNum').value = '';
+      document.getElementById('strengthMeter').classList.remove('show');
+      
+      setTimeout(() => {
+        switchTab('login');
+        document.getElementById('loginCode').value = code;
+      }, 2000);
+    })
+    .catch(error => {
+      btn.disabled = false;
+      btn.textContent = 'تفعيل الحساب';
+      
+      if(error.message === 'not_found') showAlert('رقم أكاديمي غير صحيح', 'error');
+      else if(error.message === 'already_activated') showAlert('الرقم مفعل مسبقاً', 'error');
+      else showAlert('فشل في التفعيل', 'error');
+    });
+}
+
+// Enter للإرسال
+document.addEventListener('keypress', function(e) {
+  if(e.key === 'Enter') {
+    if(!document.getElementById('loginForm').classList.contains('hidden')) {
+      login();
+    } else {
+      activate();
+    }
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>أدوات البرمجة</title>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&display=swap');
+
+  body{
+    font-family:'Cairo',sans-serif;
+    background:#eef2ff;
+    margin:0; padding:25px;
+    display:flex; justify-content:center;
+    min-height:100vh;
+  }
+  .app{max-width:460px;width:100%}
+
+  .tools-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:20px;width:100%;
+  }
+  .tool-card{
+    border-radius:18px;padding:25px 15px;text-align:center;cursor:pointer;
+    transition:transform .25s ease,box-shadow .25s ease;user-select:none;color:#fff;
+    box-shadow:0 8px 18px rgba(0,0,0,.12);
+  }
+  .tool-card:hover{transform:translateY(-6px);box-shadow:0 15px 35px rgba(0,0,0,.25)}
+  .tool-icon{font-size:42px;margin-bottom:15px}
+  .tool-label{font-weight:700;font-size:18px}
+
+  .gradient-1{background:linear-gradient(135deg,#667eea,#764ba2)}
+  .gradient-2{background:linear-gradient(135deg,#f7971e,#ffd200);color:#3a2e00}
+  .gradient-3{background:linear-gradient(135deg,#43cea2,#185a9d)}
+  .gradient-4{background:linear-gradient(135deg,#ff416c,#ff4b2b)}
+  .gradient-5{background:linear-gradient(135deg,#00c6ff,#0072ff)}
+  .gradient-6{background:linear-gradient(135deg,#1fbd3f,#12851b)}
+  .gradient-7{background:linear-gradient(135deg,#BA0B4E,#C809B1)}
+  .gradient-8{background:linear-gradient(135deg,#09005E,#4C2D91)}
+  .gradient-9{background:linear-gradient(135deg,#46EFC2,#15D086)}
+  .gradient-10{background:linear-gradient(135deg,#DD3212,#573A2F)}
+
+  .screen{display:none}
+  .screen.active{display:block}
+
+  .topbar{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .back{
+    border:0;padding:10px 14px;border-radius:12px;cursor:pointer;
+    box-shadow:0 8px 18px rgba(0,0,0,.12);
+    background:#fff;
+  }
+  .title{font-weight:800;font-size:18px}
+
+  /* ====== Shared tool style (dark tools) ====== */
+  .dark-tool{
+    background:#0d1117;
+    color:#fff;
+    border-radius:18px;
+    padding:16px;
+    box-shadow:0 8px 18px rgba(0,0,0,.12);
+  }
+  .dark-tool textarea,
+  .dark-tool input,
+  .dark-tool select{
+    width:100%;
+    background:#161b22;
+    color:#00ff99;
+    border:2px solid #00e0ff;
+    border-radius:12px;
+    padding:12px;
+    font-size:15px;
+    direction:ltr;
+    box-sizing:border-box;
+    margin-bottom:12px;
+    outline:none;
+  }
+  .dark-tool textarea{min-height:130px; resize:vertical;}
+  .dark-tool label{display:block;font-weight:800;margin:2px 0 6px}
+  .dark-tool button{
+    background:linear-gradient(135deg,#00e0ff,#00ffa3);
+    color:#000;
+    border:none;
+    padding:10px 14px;
+    margin:4px 4px 0 0;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:900;
+    font-size:14px;
+    transition:0.2s;
+  }
+  .dark-tool button:hover{transform:scale(1.03)}
+  .result{
+    width:100%;
+    background:#161b22;
+    color:#00ff99;
+    border:2px solid #00e0ff;
+    border-radius:12px;
+    padding:12px;
+    font-size:14px;
+    white-space:pre-wrap;
+    word-break:break-word;
+    min-height:90px;
+    box-sizing:border-box;
+    direction:ltr;
+  }
+  .copy-btn{
+    display:block;
+    margin:10px auto 0;
+    background:#00e0ff !important;
+    color:#000 !important;
+    padding:10px 30px;
+    border-radius:10px;
+    font-weight:900;
+  }
+  .copy-btn:hover{background:#00ffa3 !important}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .row > *{flex:1}
+
+  /* ================= UI Generator ================= */
+  .ui-page{
+    background:#ffffff;
+    border-radius:22px;
+    padding:18px;
+    box-shadow:0 14px 30px rgba(0,0,0,.14);
+    border:1px solid #dde4ff;
+  }
+  .ui-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:12px;
+    flex-wrap:wrap;
+  }
+  .ui-head .badge{
+    background:linear-gradient(135deg,#00c6ff,#0072ff);
+    color:#fff;
+    font-weight:900;
+    padding:7px 12px;
+    border-radius:999px;
+    font-size:13px;
+    box-shadow:0 8px 18px rgba(0,114,255,.28);
+  }
+  .ui-head .sub{
+    color:#4b5563;
+    font-weight:800;
+    font-size:13px;
+  }
+
+  /* ✅ Preview wrapper */
+  .ui-preview{
+    width:100%;
+    height:170px;
+    border-radius:26px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    box-sizing:border-box;
+    margin:12px 0 14px;
+    background:#fff;
+    border:1px dashed #cfd8ff;
+  }
+
+  /* ✅ Real shape preview (this is what we style live) */
+  .preview-card{
+    width:78%;
+    height:74px;
+    border-radius:24px;
+    background:#ffffff;
+    border:2px solid rgba(0,0,0,.12);
+    box-shadow:0 10px 20px rgba(0,0,0,.10);
+  }
+
+  /* ❌ Disable old circle overlay */
+  .ui-preview::after{content:none !important;}
+
+  .ui-grid2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .ui-field{
+    background:#f6f8ff;
+    border:1px solid #d7defa;
+    border-radius:16px;
+    padding:12px;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.6);
+  }
+  .ui-field label{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-weight:900;
+    color:#1a2b6d;
+    margin:0 0 10px;
+    font-size:14px;
+    gap:10px;
+  }
+  .ui-color{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .ui-color input[type="color"]{
+    width:52px;height:44px;
+    border-radius:12px;
+    border:1px solid #c9d3ff;
+    padding:0;
+    background:#fff;
+    cursor:pointer;
+  }
+  .ui-color .bar{
+    flex:1;
+    height:10px;
+    border-radius:10px;
+    background:#000;
+    box-shadow:0 6px 14px rgba(0,0,0,.10);
+  }
+
+  .ui-select{
+    width:100%;
+    height:46px;
+    border-radius:14px;
+    border:1px solid #c9d3ff;
+    padding:10px 12px;
+    font-weight:900;
+    background:#fff;
+    box-sizing:border-box;
+  }
+
+  .hint{
+    margin:14px 0 8px;
+    font-weight:900;
+    color:#111827;
+    font-size:14px;
+  }
+
+  .slider-line{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:10px;
+    background:#f6f8ff;
+    border:1px solid #d7defa;
+    padding:10px 12px;
+    border-radius:16px;
+  }
+  .slider-line .tag{
+    width:46px;
+    color:#1a2b6d;
+    font-weight:900;
+    text-align:left;
+    direction:ltr;
+  }
+  .slider-line input[type="range"]{
+    flex:1;
+    margin:0;
+  }
+  .slider-line .val{
+    width:42px;
+    text-align:right;
+    color:#111;
+    font-weight:900;
+  }
+
+  .viewname-box{
+    margin-top:10px;
+    background:#f6f8ff;
+    border:1px dashed #9fb2ff;
+    border-radius:18px;
+    padding:14px;
+  }
+  .viewname-box label{
+    font-size:15px;
+    font-weight:900;
+    margin-bottom:10px;
+    display:block;
+    color:#1a2b6d;
+  }
+  #uiViewName{
+    width:100%;
+    height:56px;
+    font-size:18px;
+    font-weight:900;
+    border-radius:16px;
+    border:2px solid #7aa7ff;
+    background:#ffffff;
+    color:#000;
+    padding:12px;
+    box-sizing:border-box;
+    direction:ltr;
+    box-shadow:0 10px 18px rgba(122,167,255,.22);
+    outline:none;
+  }
+
+  .ui-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:14px;
+  }
+  .ui-btn{
+    height:54px;
+    border:0;
+    border-radius:16px;
+    font-weight:900;
+    font-size:15px;
+    cursor:pointer;
+    box-shadow:0 10px 18px rgba(0,0,0,.12);
+    transition:transform .15s ease;
+  }
+  .ui-btn:active{transform:scale(.98)}
+  .ui-btn.primary{
+    background:linear-gradient(135deg,#00c6ff,#0072ff);
+    color:#fff;
+  }
+  .ui-btn.secondary{
+    background:linear-gradient(135deg,#ffb703,#fb8500);
+    color:#1f1300;
+  }
+
+  /* ===================== Mobile Responsive ===================== */
+  @media (max-width: 520px){
+    body{ padding:14px; }
+    .app{ max-width:100%; }
+
+    .tools-grid{
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:14px;
+    }
+    .tool-card{ padding:18px 12px; border-radius:16px; }
+    .tool-icon{ font-size:36px; margin-bottom:10px; }
+    .tool-label{ font-size:16px; }
+
+    .ui-page{ padding:14px; border-radius:18px; }
+    .ui-preview{ height:150px; border-radius:22px; }
+    .preview-card{ width:86%; height:70px; }
+
+    .ui-grid2{
+      grid-template-columns:1fr;
+      gap:10px;
+    }
+
+    .ui-field{ padding:10px; border-radius:14px; }
+    .ui-select{ height:48px; }
+
+    .slider-line{
+      padding:10px;
+      border-radius:14px;
+    }
+    .slider-line .tag{ width:52px; font-size:13px; }
+    .slider-line .val{ width:44px; font-size:13px; }
+
+    .viewname-box{ padding:12px; border-radius:16px; }
+    #uiViewName{ height:54px; font-size:17px; }
+
+    .ui-actions{
+      grid-template-columns:1fr;
+      gap:10px;
+    }
+    .ui-btn{ height:52px; font-size:15px; }
+
+    .dark-tool{ padding:14px; border-radius:16px; }
+    .dark-tool textarea{ min-height:120px; }
+  }
+
+  @media (max-width: 360px){
+    .tools-grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <!-- ✅ شاشة الأقسام -->
+  <div id="home" class="screen active">
+    <div class="tools-grid">
+
+      <div class="tool-card gradient-5" onclick="openTool('tool_ui_gen')" title="UI Generator">
+        <div class="tool-icon">🧱</div>
+        <div class="tool-label">UI Generator</div>
+      </div>
+
+      <div class="tool-card gradient-1" onclick="openTool('tool_json')" title="منسق JSON">
+        <div class="tool-icon">🧩</div>
+        <div class="tool-label">منسق JSON</div>
+      </div>
+
+      <div class="tool-card gradient-6" onclick="openTool('tool_regex')" title="اختبار Regex">
+        <div class="tool-icon">🔎</div>
+        <div class="tool-label">اختبار Regex</div>
+      </div>
+
+      <div class="tool-card gradient-10" onclick="openTool('tool_uuid')" title="مولد UUID">
+        <div class="tool-icon">🆔</div>
+        <div class="tool-label">مولد UUID</div>
+      </div>
+
+      <div class="tool-card gradient-7" onclick="soon()" title="قريباً">
+        <div class="tool-icon">⏳</div>
+        <div class="tool-label">قريباً</div>
+      </div>
+
+      <div class="tool-card gradient-8" onclick="soon()" title="قريباً">
+        <div class="tool-icon">⏳</div>
+        <div class="tool-label">قريباً</div>
+      </div>
+
+      <div class="tool-card gradient-9" onclick="soon()" title="قريباً">
+        <div class="tool-icon">⏳</div>
+        <div class="tool-label">قريباً</div>
+      </div>
+
+      <div class="tool-card gradient-4" onclick="soon()" title="قريباً">
+        <div class="tool-icon">⏳</div>
+        <div class="tool-label">قريباً</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===================== UI GENERATOR ===================== -->
+  <div id="tool_ui_gen" class="screen">
+    <div class="topbar">
+      <button class="back" onclick="goHome()">رجوع</button>
+      <div class="title">UI Generator</div>
+    </div>
+
+    <div class="ui-page">
+
+      <div class="ui-head">
+        <div class="badge">واجهة جاهزة للكود</div>
+        <div class="sub">اختر الألوان والحواف ثم انسخ كود Java</div>
+      </div>
+
+      <!-- ✅ Preview موجود ويعرض الشكل الحقيقي -->
+      <div class="ui-preview" id="uiPreview">
+        <div class="preview-card"></div>
+      </div>
+
+      <div class="ui-grid2">
+        <div class="ui-field">
+          <label>اللون الأول <span id="uiC1Hex">#FFFFFF</span></label>
+          <div class="ui-color">
+            <input type="color" id="uiC1" value="#ffffff">
+            <div class="bar" id="uiC1Bar"></div>
+          </div>
+        </div>
+
+        <div class="ui-field">
+          <label>اللون الثاني <span id="uiC2Hex">#FFFFFF</span></label>
+          <div class="ui-color">
+            <input type="color" id="uiC2" value="#ffffff">
+            <div class="bar" id="uiC2Bar"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ui-grid2" style="margin-top:12px">
+        <div class="ui-field">
+          <label>لون الحد (Stroke)</label>
+          <div class="ui-color">
+            <input type="color" id="uiStrokeColor" value="#000000">
+            <div class="bar" id="uiStrokeBar" style="background:#000"></div>
+          </div>
+        </div>
+
+        <div class="ui-field">
+          <label>الألوان المتدرجة</label>
+          <select id="uiDir" class="ui-select">
+            <option value="NONE">افتراضي</option>
+            <option value="TOP_BOTTOM">T-B</option>
+            <option value="BOTTOM_TOP">B-T</option>
+            <option value="LEFT_RIGHT">L-R</option>
+            <option value="RIGHT_LEFT">R-L</option>
+            <option value="TL_BR">TL-BR</option>
+            <option value="BR_TL">BR-TL</option>
+            <option value="BL_TR">BL-TR</option>
+            <option value="TR_BL">TR-BL</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="hint">الزوايا والحواف</div>
+
+      <div class="slider-line">
+        <div class="tag">LB</div>
+        <input type="range" id="uiLB" min="0" max="120" value="64">
+        <div class="val" id="uiLBv">64</div>
+      </div>
+
+      <div class="slider-line">
+        <div class="tag">LT</div>
+        <input type="range" id="uiLT" min="0" max="120" value="64">
+        <div class="val" id="uiLTv">64</div>
+      </div>
+
+      <div class="slider-line">
+        <div class="tag">RT</div>
+        <input type="range" id="uiRT" min="0" max="120" value="64">
+        <div class="val" id="uiRTv">64</div>
+      </div>
+
+      <div class="slider-line">
+        <div class="tag">RB</div>
+        <input type="range" id="uiRB" min="0" max="120" value="64">
+        <div class="val" id="uiRBv">64</div>
+      </div>
+
+      <div class="slider-line">
+        <div class="tag">All</div>
+        <input type="range" id="uiAll" min="0" max="120" value="64">
+        <div class="val" id="uiAllv">64</div>
+      </div>
+
+      <div class="hint">الظل والحد</div>
+
+      <div class="ui-grid2">
+        <div class="slider-line" style="margin:0">
+          <div class="tag">Shadow</div>
+          <input type="range" id="uiShadow" min="0" max="25" value="6">
+          <div class="val" id="uiShadowv">6</div>
+        </div>
+
+        <div class="slider-line" style="margin:0">
+          <div class="tag">Stroke</div>
+          <input type="range" id="uiStroke" min="0" max="20" value="2">
+          <div class="val" id="uiStrokev">2</div>
+        </div>
+      </div>
+
+      <div class="viewname-box">
+        <label>اسم العنصر</label>
+        <input id="uiViewName" placeholder="ضع اسم العنصر هنا" value="">
+      </div>
+
+      <div class="ui-actions">
+        <button class="ui-btn primary" onclick="uiGenerateAndCopy()">📋 نسخ كود Java</button>
+        <button class="ui-btn secondary" onclick="uiReset()">إعادة ضبط</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===================== JSON FORMATTER ===================== -->
+  <div id="tool_json" class="screen">
+    <div class="topbar">
+      <button class="back" onclick="goHome()">رجوع</button>
+      <div class="title">منسق JSON</div>
+    </div>
+
+    <div class="dark-tool">
+      <textarea id="jsonInput" placeholder="ضع JSON هنا..."></textarea>
+      <div class="row">
+        <button onclick="jsonFormat()">تنسيق</button>
+        <button onclick="jsonMinify()">تصغير</button>
+        <button onclick="jsonValidate()">تحقق</button>
+      </div>
+      <div id="jsonOut" class="result" style="margin-top:10px;">النتيجة ستظهر هنا...</div>
+      <button class="copy-btn" onclick="copyTextFromDiv('jsonOut')">نسخ النتيجة</button>
+    </div>
+  </div>
+
+  <!-- ===================== REGEX TESTER ===================== -->
+  <div id="tool_regex" class="screen">
+    <div class="topbar">
+      <button class="back" onclick="goHome()">رجوع</button>
+      <div class="title">اختبار Regex</div>
+    </div>
+
+    <div class="dark-tool">
+      <div class="row">
+        <input id="rxPattern" placeholder="Pattern مثل: \\b\\w+\\b" style="direction:ltr">
+        <input id="rxFlags" placeholder="Flags مثل: gi" style="direction:ltr">
+      </div>
+      <textarea id="rxText" placeholder="النص المراد البحث فيه..."></textarea>
+
+      <div class="row">
+        <button onclick="rxTest()">اختبار</button>
+        <button onclick="rxClear()">مسح</button>
+      </div>
+
+      <div id="rxOut" class="result" style="margin-top:10px;">النتيجة ستظهر هنا...</div>
+      <button class="copy-btn" onclick="copyTextFromDiv('rxOut')">نسخ النتيجة</button>
+    </div>
+  </div>
+
+  <!-- ===================== UUID GENERATOR ===================== -->
+  <div id="tool_uuid" class="screen">
+    <div class="topbar">
+      <button class="back" onclick="goHome()">رجوع</button>
+      <div class="title">مولد UUID</div>
+    </div>
+
+    <div class="dark-tool">
+      <div class="row">
+        <input id="uuidCount" type="number" value="5" min="1" max="100" style="direction:ltr">
+        <button onclick="uuidGenerate()">توليد</button>
+      </div>
+
+      <div id="uuidOut" class="result" style="margin-top:10px;">النتيجة ستظهر هنا...</div>
+      <button class="copy-btn" onclick="copyTextFromDiv('uuidOut')">نسخ النتيجة</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ===== Navigation ===== */
+function hideAll(){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); }
+function goHome(){ hideAll(); document.getElementById('home').classList.add('active'); window.scrollTo(0,0); }
+function openTool(id){ hideAll(); const el=document.getElementById(id); if(!el) return; el.classList.add('active'); window.scrollTo(0,0); }
+function soon(){ alert("قريباً 🔥\nهذه الميزة سيتم إضافتها في تحديث قادم."); }
+
+/* ===== Copy ===== */
+function copyText(t){
+  const text = (t || "").trim();
+  if(!text) return alert("لا توجد نتيجة لنسخها!");
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>alert("✅ تم النسخ!")).catch(()=>fallbackCopy(text));
+  }else{
+    fallbackCopy(text);
+  }
+}
+function copyTextFromDiv(id){
+  const t = (document.getElementById(id).textContent || "").trim();
+  if(!t || t.includes("النتيجة ستظهر هنا")) return alert("لا توجد نتيجة لنسخها!");
+  copyText(t);
+}
+function fallbackCopy(t){
+  const ta=document.createElement("textarea");
+  ta.value=t;
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand("copy");
+  document.body.removeChild(ta);
+  alert("✅ تم النسخ!");
+}
+
+/* ===================== UI Generator Logic ===================== */
+const ui = {
+  strokeColor: document.getElementById("uiStrokeColor"),
+  c1: document.getElementById("uiC1"),
+  c2: document.getElementById("uiC2"),
+  dir: document.getElementById("uiDir"),
+  lb: document.getElementById("uiLB"),
+  lt: document.getElementById("uiLT"),
+  rt: document.getElementById("uiRT"),
+  rb: document.getElementById("uiRB"),
+  all: document.getElementById("uiAll"),
+  shadow: document.getElementById("uiShadow"),
+  stroke: document.getElementById("uiStroke"),
+  viewName: document.getElementById("uiViewName"),
+  v: {
+    lb: document.getElementById("uiLBv"),
+    lt: document.getElementById("uiLTv"),
+    rt: document.getElementById("uiRTv"),
+    rb: document.getElementById("uiRBv"),
+    all: document.getElementById("uiAllv"),
+    shadow: document.getElementById("uiShadowv"),
+    stroke: document.getElementById("uiStrokev"),
+  },
+  c1Hex: document.getElementById("uiC1Hex"),
+  c2Hex: document.getElementById("uiC2Hex"),
+  c1Bar: document.getElementById("uiC1Bar"),
+  c2Bar: document.getElementById("uiC2Bar"),
+  strokeBar: document.getElementById("uiStrokeBar")
+};
+
+function uiDirToCss(dir){
+  const map = {
+    NONE: null,
+    TOP_BOTTOM: "to bottom",
+    BOTTOM_TOP: "to top",
+    LEFT_RIGHT: "to right",
+    RIGHT_LEFT: "to left",
+    TL_BR: "to bottom right",
+    BR_TL: "to top left",
+    BL_TR: "to top right",
+    TR_BL: "to bottom left"
+  };
+  return map[dir] || null;
+}
+function uiUpdateValues(){
+  ui.v.lb.textContent = ui.lb.value;
+  ui.v.lt.textContent = ui.lt.value;
+  ui.v.rt.textContent = ui.rt.value;
+  ui.v.rb.textContent = ui.rb.value;
+  ui.v.all.textContent = ui.all.value;
+  ui.v.shadow.textContent = ui.shadow.value;
+  ui.v.stroke.textContent = ui.stroke.value;
+
+  ui.c1Hex.textContent = ui.c1.value.toUpperCase();
+  ui.c2Hex.textContent = ui.c2.value.toUpperCase();
+  ui.c1Bar.style.background = ui.c1.value;
+  ui.c2Bar.style.background = ui.c2.value;
+  ui.strokeBar.style.background = ui.strokeColor.value;
+}
+function uiApplyAllIfUsed(){
+  const a = ui.all.value;
+  ui.lb.value = a;
+  ui.lt.value = a;
+  ui.rt.value = a;
+  ui.rb.value = a;
+}
+
+/* ✅ Apply styles to the preview card (real preview) */
+function uiUpdatePreview(){
+  uiUpdateValues();
+
+  const dir = ui.dir.value;
+  const cssDir = uiDirToCss(dir);
+
+  let bg = ui.c1.value;
+  if(cssDir){
+    bg = `linear-gradient(${cssDir}, ${ui.c1.value}, ${ui.c2.value})`;
+  }
+
+  const card = document.querySelector(".preview-card");
+  if(!card) return;
+
+  card.style.background = bg;
+  card.style.border = `${ui.stroke.value}px solid ${ui.strokeColor.value}`;
+  card.style.borderRadius =
+    `${ui.lt.value}px ${ui.rt.value}px ${ui.rb.value}px ${ui.lb.value}px`;
+  card.style.boxShadow = `0 ${ui.shadow.value}px ${ui.shadow.value*3}px rgba(0,0,0,.25)`;
+}
+
+function uiGenerateAndCopy(){
+  const viewName = (ui.viewName.value || "").trim();
+  if(!viewName){
+    alert("اكتب اسم العنصر أولاً");
+    return;
+  }
+
+  const dir = ui.dir.value;
+  const orientMap = {
+    NONE: "TOP_BOTTOM",
+    TOP_BOTTOM: "TOP_BOTTOM",
+    BOTTOM_TOP: "BOTTOM_TOP",
+    LEFT_RIGHT: "LEFT_RIGHT",
+    RIGHT_LEFT: "RIGHT_LEFT",
+    TL_BR: "TL_BR",
+    BR_TL: "BR_TL",
+    BL_TR: "BL_TR",
+    TR_BL: "TR_BL"
+  };
+  const orient = orientMap[dir] || "TOP_BOTTOM";
+
+  const c1 = ui.c1.value.toUpperCase();
+  const c2 = ui.c2.value.toUpperCase();
+  const strokeColor = ui.strokeColor.value.toUpperCase();
+
+  const outC1 = (dir === "NONE") ? c1 : c1;
+  const outC2 = (dir === "NONE") ? c1 : c2;
+
+  const code =
+`int[] colors${viewName} = { Color.parseColor("${outC1}"), Color.parseColor("${outC2}") };
+android.graphics.drawable.GradientDrawable ${viewName}BG = new android.graphics.drawable.GradientDrawable(android.graphics.drawable.GradientDrawable.Orientation.${orient}, colors${viewName});
+${viewName}BG.setCornerRadii(new float[]{(int)${ui.lt.value},(int)${ui.lt.value},(int)${ui.rt.value},(int)${ui.rt.value},(int)${ui.rb.value},(int)${ui.rb.value},(int)${ui.lb.value},(int)${ui.lb.value}});
+${viewName}BG.setStroke((int) ${ui.stroke.value}, Color.parseColor("${strokeColor}"));
+${viewName}.setElevation((float) ${ui.shadow.value});
+${viewName}.setBackground(${viewName}BG);
+
+// Paste this code in (add source directly block)
+// Generated by Tatwor Academy UI Generator
+// © أكاديمية تطور التعليمية`;
+
+  copyText(code);
+}
+
+function uiReset(){
+  ui.strokeColor.value = "#000000";
+  ui.c1.value = "#ffffff";
+  ui.c2.value = "#ffffff";
+  ui.dir.value = "NONE";
+  ui.all.value = 64;
+  uiApplyAllIfUsed();
+  ui.shadow.value = 6;
+  ui.stroke.value = 2;
+  ui.viewName.value = "";
+  uiUpdatePreview();
+}
+
+/* events */
+ui.all.addEventListener("input", ()=>{ uiApplyAllIfUsed(); uiUpdatePreview(); });
+[ui.strokeColor, ui.c1, ui.c2, ui.dir, ui.lb, ui.lt, ui.rt, ui.rb, ui.shadow, ui.stroke].forEach(el=>{
+  el.addEventListener("input", uiUpdatePreview);
+});
+uiUpdatePreview();
+
+/* ===================== JSON ===================== */
+function jsonFormat(){
+  const text = (document.getElementById("jsonInput").value || "").trim();
+  if(!text) return alert("ضع JSON أولاً!");
+  try{
+    const obj = JSON.parse(text);
+    document.getElementById("jsonOut").textContent = JSON.stringify(obj, null, 2);
+  }catch(e){
+    alert("JSON غير صحيح!");
+  }
+}
+function jsonMinify(){
+  const text = (document.getElementById("jsonInput").value || "").trim();
+  if(!text) return alert("ضع JSON أولاً!");
+  try{
+    const obj = JSON.parse(text);
+    document.getElementById("jsonOut").textContent = JSON.stringify(obj);
+  }catch(e){
+    alert("JSON غير صحيح!");
+  }
+}
+function jsonValidate(){
+  const text = (document.getElementById("jsonInput").value || "").trim();
+  if(!text) return alert("ضع JSON أولاً!");
+  try{
+    JSON.parse(text);
+    document.getElementById("jsonOut").textContent = "✅ JSON صحيح";
+  }catch(e){
+    document.getElementById("jsonOut").textContent = "❌ JSON غير صحيح";
+  }
+}
+
+/* ===================== Regex ===================== */
+function rxTest(){
+  const p = (document.getElementById("rxPattern").value || "").trim();
+  const f = (document.getElementById("rxFlags").value || "").trim();
+  const text = (document.getElementById("rxText").value || "");
+  if(!p) return alert("اكتب Pattern!");
+  try{
+    const r = new RegExp(p, f);
+    const matches = [...text.matchAll(r)];
+    if(matches.length === 0){
+      document.getElementById("rxOut").textContent = "لا توجد مطابقات";
+      return;
+    }
+    let list = matches.map((m,i)=>`${i+1}) "${m[0]}" عند index ${m.index}`).join("\n");
+    document.getElementById("rxOut").textContent = `عدد المطابقات: ${matches.length}\n\n${list}`;
+  }catch(e){
+    alert("Regex/Flags غير صحيحة!");
+  }
+}
+function rxClear(){
+  document.getElementById("rxPattern").value = "";
+  document.getElementById("rxFlags").value = "";
+  document.getElementById("rxText").value = "";
+  document.getElementById("rxOut").textContent = "النتيجة ستظهر هنا...";
+}
+
+/* ===================== UUID ===================== */
+function uuidGenerate(){
+  const n = Math.max(1, Math.min(100, parseInt(document.getElementById("uuidCount").value || "5", 10)));
+  let arr = [];
+  for(let i=0;i<n;i++){
+    arr.push(crypto.randomUUID ? crypto.randomUUID() : fallbackUUID());
+  }
+  document.getElementById("uuidOut").textContent = arr.join("\n");
+}
+function fallbackUUID(){
+  const s = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  );
+  return s;
+}
+</script>
+
+</body>
+</html>

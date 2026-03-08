@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>أدوات التشفير</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
+body{font-family:Cairo;background:#eef2ff;margin:0;padding:20px;display:flex;justify-content:center}
+.app{max-width:480px;width:100%}
+h1{text-align:center;color:#ff8a00;margin-bottom:20px}
+
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.card{background:#fff;border-radius:16px;padding:18px;text-align:center;
+box-shadow:0 8px 20px rgba(0,0,0,.12);cursor:pointer;transition:.25s}
+.card:hover{transform:translateY(-6px)}
+.card span{font-weight:700}
+
+.screen{display:none}
+.screen.active{display:block}
+.topbar{display:flex;gap:10px;margin-bottom:10px}
+.back{border:0;padding:8px 14px;border-radius:10px}
+.tool{background:#0d1117;border-radius:18px;padding:15px;color:#fff}
+
+textarea,input{
+width:100%;background:#161b22;color:#00ff99;
+border:2px solid #00e0ff;border-radius:12px;
+padding:10px;margin-bottom:10px;font-size:15px}
+
+button{
+background:linear-gradient(135deg,#00e0ff,#00ffa3);
+border:0;padding:10px 14px;border-radius:10px;
+cursor:pointer;font-weight:bold;margin:3px}
+
+.result{
+background:#161b22;border:2px solid #00e0ff;
+border-radius:12px;padding:10px;min-height:70px;
+word-break:break-all}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<div id="home" class="screen active">
+<h1>أدوات التشفير</h1>
+<div class="grid">
+  <div class="card" onclick="openTool('url')"><span>URL Encode</span></div>
+  <div class="card" onclick="openTool('base64')"><span>Base64</span></div>
+  <div class="card" onclick="openTool('hex')"><span>Hex UTF-8</span></div>
+  <div class="card" onclick="openTool('html')"><span>HTML Entities</span></div>
+  <div class="card" onclick="openTool('rot13')"><span>ROT13</span></div>
+  <div class="card" onclick="openTool('binary')"><span>Binary</span></div>
+  <div class="card" onclick="openTool('unicode')"><span>Unicode</span></div>
+  <div class="card" onclick="openTool('caesar')"><span>Caesar</span></div>
+  <div class="card" onclick="openTool('md5')"><span>MD5</span></div>
+  <div class="card" onclick="openTool('sha')"><span>SHA-1 / SHA-256</span></div>
+  <div class="card" onclick="openTool('morse')"><span>Morse</span></div>
+  <div class="card" onclick="openTool('aes')"><span>AES</span></div>
+</div>
+</div>
+
+<!-- قالب أداة -->
+<script>
+function toolTemplate(id,title,extra=""){
+document.write(`
+<div id="${id}" class="screen">
+<div class="topbar">
+<button class="back" onclick="goHome()">رجوع</button>
+<b>${title}</b>
+</div>
+<div class="tool">
+${extra}
+<textarea id="${id}_in" placeholder="النص..."></textarea>
+<button onclick="${id}_enc()">تشفير</button>
+<button onclick="${id}_dec()">فك</button>
+<div id="${id}_out" class="result"></div>
+<button onclick="copy('${id}_out')">نسخ</button>
+</div></div>`);
+}
+</script>
+
+<script>
+toolTemplate("url","URL Encode");
+toolTemplate("base64","Base64");
+toolTemplate("hex","Hex UTF-8");
+toolTemplate("html","HTML Entities");
+toolTemplate("rot13","ROT13");
+toolTemplate("binary","Binary");
+toolTemplate("unicode","Unicode Escapes");
+toolTemplate("caesar","Caesar Cipher",'<input id="caesar_key" type="number" placeholder="المفتاح (مثلاً 3)">');
+toolTemplate("md5","MD5");
+toolTemplate("sha","SHA-1 / SHA-256");
+toolTemplate("morse","Morse Code");
+toolTemplate("aes","AES-GCM",'<input id="aes_key" placeholder="كلمة السر">');
+</script>
+
+<script>
+function hideAll(){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'))}
+function openTool(id){hideAll();document.getElementById(id).classList.add('active')}
+function goHome(){hideAll();document.getElementById('home').classList.add('active')}
+function copy(id){navigator.clipboard.writeText(document.getElementById(id).textContent)}
+
+/* URL */
+url_enc=()=>url_out.textContent=encodeURIComponent(url_in.value)
+url_dec=()=>url_out.textContent=decodeURIComponent(url_in.value)
+
+/* Base64 */
+base64_enc=()=>base64_out.textContent=btoa(unescape(encodeURIComponent(base64_in.value)))
+base64_dec=()=>base64_out.textContent=decodeURIComponent(escape(atob(base64_in.value)))
+
+/* Hex */
+hex_enc=()=>hex_out.textContent=[...new TextEncoder().encode(hex_in.value)]
+.map(b=>b.toString(16).padStart(2,"0")).join(" ")
+hex_dec=()=>hex_out.textContent=new TextDecoder().decode(
+new Uint8Array(hex_in.value.split(/\s+/).map(h=>parseInt(h,16))))
+
+/* HTML */
+html_enc=()=>html_out.textContent=html_in.value.replace(/[<>&"]/g,
+c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]))
+html_dec=()=>html_out.textContent=new DOMParser()
+.parseFromString(html_in.value,"text/html").documentElement.textContent
+
+/* ROT13 */
+rot13_enc=rot13_dec=()=>rot13_out.textContent=
+rot13_in.value.replace(/[a-zA-Z]/g,c=>
+String.fromCharCode((c<="Z"?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26))
+
+/* Binary */
+binary_enc=()=>binary_out.textContent=[...binary_in.value]
+.map(c=>c.charCodeAt(0).toString(2).padStart(8,"0")).join(" ")
+binary_dec=()=>binary_out.textContent=binary_in.value.split(" ")
+.map(b=>String.fromCharCode(parseInt(b,2))).join("")
+
+/* Unicode */
+unicode_enc=()=>unicode_out.textContent=[...unicode_in.value]
+.map(c=>"\\u"+c.charCodeAt(0).toString(16).padStart(4,"0")).join("")
+unicode_dec=()=>unicode_out.textContent=unicode_in.value.replace(/\\u([\dA-F]{4})/gi,
+(_,h)=>String.fromCharCode(parseInt(h,16)))
+
+/* Caesar */
+caesar_enc=caesar_dec=()=>{
+let k=parseInt(caesar_key.value)||0;
+caesar_out.textContent=[...caesar_in.value].map(c=>{
+let x=c.charCodeAt(0);
+return (x>=65&&x<=90)?String.fromCharCode((x-65+k+26)%26+65):
+(x>=97&&x<=122)?String.fromCharCode((x-97+k+26)%26+97):c}).join("")
+}
+
+/* MD5 + SHA */
+async function digest(type,t){return [...new Uint8Array(
+await crypto.subtle.digest(type,new TextEncoder().encode(t)))]
+.map(b=>b.toString(16).padStart(2,"0")).join("")}
+md5_enc=async()=>md5_out.textContent=await digest("MD5",md5_in.value)
+md5_dec=()=>md5_out.textContent="لا يمكن فك MD5"
+
+sha_enc=async()=>sha_out.textContent=
+"SHA-1: "+await digest("SHA-1",sha_in.value)+"\nSHA-256: "+await digest("SHA-256",sha_in.value)
+sha_dec=()=>sha_out.textContent="تشفير أحادي الاتجاه"
+
+/* Morse */
+const morseMap={a:".-",b:"-...",c:"-.-.",d:"-..",e:".",f:"..-.",g:"--.",
+h:"....",i:"..",j:".---",k:"-.-",l:".-..",m:"--",n:"-.",o:"---",
+p:".--.",q:"--.-",r:".-.",s:"...",t:"-",u:"..-",v:"...-",w:".--",
+x:"-..-",y:"-.--",z:"--.."," ":"/"}
+morse_enc=()=>morse_out.textContent=[...morse_in.value.toLowerCase()]
+.map(c=>morseMap[c]||"").join(" ")
+morse_dec=()=>morse_out.textContent=morse_in.value.split(" ")
+.map(m=>Object.keys(morseMap).find(k=>morseMap[k]==m)||"").join("")
+
+/* AES */
+async function aes_enc(){
+let key=await crypto.subtle.importKey("raw",new TextEncoder().encode(aes_key.value),
+"AES-GCM",false,["encrypt"])
+let iv=crypto.getRandomValues(new Uint8Array(12))
+let enc=await crypto.subtle.encrypt({name:"AES-GCM",iv},key,new TextEncoder().encode(aes_in.value))
+aes_out.textContent=btoa(String.fromCharCode(...iv,...new Uint8Array(enc)))
+}
+async function aes_dec(){
+let data=Uint8Array.from(atob(aes_in.value),c=>c.charCodeAt(0))
+let iv=data.slice(0,12),ct=data.slice(12)
+let key=await crypto.subtle.importKey("raw",new TextEncoder().encode(aes_key.value),
+"AES-GCM",false,["decrypt"])
+let dec=await crypto.subtle.decrypt({name:"AES-GCM",iv},key,ct)
+aes_out.textContent=new TextDecoder().decode(dec)
+}
+</script>
+</body>
+</html>

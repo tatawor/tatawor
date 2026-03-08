@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>مولد رموز الحظ</title>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #6366f1;
+      --secondary: #ec4899;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --dark: #0f172a;
+      --glass: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.15);
+    }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+      min-height: 100vh;
+      direction: rtl;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .bg-animation {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .bg-animation span {
+      position: absolute;
+      display: block;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      animation: float 20s infinite linear;
+    }
+    .bg-animation span:nth-child(1) { left: 10%; width: 60px; height: 60px; animation-delay: 0s; }
+    .bg-animation span:nth-child(2) { left: 30%; width: 40px; height: 40px; animation-delay: 2s; animation-duration: 15s; }
+    .bg-animation span:nth-child(3) { left: 50%; width: 80px; height: 80px; animation-delay: 4s; }
+    .bg-animation span:nth-child(4) { left: 70%; width: 50px; height: 50px; animation-delay: 0s; animation-duration: 18s; }
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+    }
+
+    .header { text-align: center; margin-bottom: 25px; }
+    .icon-wrapper {
+      width: 70px; height: 70px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .icon-wrapper i { font-size: 32px; color: #fff; }
+
+    h1 { color: #fff; font-size: 24px; font-weight: 900; margin-bottom: 5px; }
+    .subtitle { color: rgba(255,255,255,0.6); font-size: 13px; }
+
+    .input-group { margin-bottom: 20px; }
+    label { color: rgba(255,255,255,0.8); display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px; }
+    .input-wrapper { position: relative; }
+    .input-wrapper i {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,0.5);
+      font-size: 18px;
+    }
+    input {
+      width: 100%;
+      padding: 14px 45px 14px 15px;
+      border-radius: 14px;
+      border: 1px solid var(--glass-border);
+      background: rgba(0,0,0,0.2);
+      color: #fff;
+      font-size: 15px;
+      font-family: 'Tajawal', sans-serif;
+      transition: all 0.3s;
+    }
+    input::placeholder { color: rgba(255,255,255,0.4); }
+    input:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .code-section {
+      background: rgba(0,0,0,0.2);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px dashed var(--glass-border);
+      margin-bottom: 15px;
+      display: none;
+    }
+    .code-section.active { display: block; animation: fadeIn 0.5s ease; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .code-label { color: rgba(255,255,255,0.6); font-size: 12px; margin-bottom: 10px; text-align: center; }
+
+    .code-display {
+      background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(236,72,153,0.2));
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 2px;
+      font-family: 'Courier New', monospace;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .code-display::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      animation: shine 2s infinite;
+    }
+    @keyframes shine {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    .btn-copy {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border: 1px solid var(--glass-border);
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-copy:hover { background: rgba(255,255,255,0.2); }
+    .btn-copy.copied { background: var(--success); border-color: var(--success); }
+
+    .warning-box {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 12px;
+      padding: 15px;
+      display: flex;
+      align-items: start;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .warning-box i { color: var(--danger); font-size: 20px; margin-top: 2px; }
+    .warning-text { color: rgba(255,255,255,0.8); font-size: 12px; line-height: 1.6; }
+    .warning-text strong { color: var(--danger); display: block; margin-bottom: 4px; }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      transition: opacity 0.3s;
+      padding: 20px;
+    }
+    .modal-overlay.active { display: flex; opacity: 1; }
+
+    .modal-content {
+      background: linear-gradient(145deg, #1e1b4b, #312e81);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 24px;
+      padding: 30px;
+      width: 100%;
+      max-width: 320px;
+      text-align: center;
+      transform: scale(0.9);
+      transition: transform 0.3s;
+    }
+    .modal-overlay.active .modal-content { transform: scale(1); }
+
+    .modal-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      font-size: 28px;
+    }
+    .modal-icon.success { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+    .modal-icon.error { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+
+    .modal-title { color: #fff; font-size: 18px; font-weight: 800; margin-bottom: 10px; }
+    .modal-text { color: rgba(255,255,255,0.7); font-size: 14px; margin-bottom: 20px; line-height: 1.5; }
+
+    .modal-btn {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 12px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 15px 25px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 3000;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .toast i { font-size: 18px; }
+
+    .no-select {
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    @media (max-width: 480px) {
+      .card { padding: 20px; }
+      h1 { font-size: 20px; }
+      .icon-wrapper { width: 60px; height: 60px; }
+      .icon-wrapper i { font-size: 26px; }
+    }
+  </style>
+</head>
+<body class="no-select">
+
+  <div class="bg-animation">
+    <span></span><span></span><span></span><span></span>
+  </div>
+
+  <div class="card">
+    <div class="header">
+      <div class="icon-wrapper">
+        <i class="fas fa-dice"></i>
+      </div>
+      <h1>مولد رموز الحظ</h1>
+      <p class="subtitle">أدخل رقمك الأكاديمي للحصول على رمز الحصري</p>
+    </div>
+
+    <div class="input-group">
+      <label>الرقم الأكاديمي</label>
+      <div class="input-wrapper">
+        <i class="fas fa-id-card"></i>
+        <input type="text" id="studentIdInput" placeholder="مثال: 123456789">
+      </div>
+    </div>
+
+    <button class="btn-primary" id="generateBtn">
+      <i class="fas fa-magic"></i>
+      توليد الرمز
+    </button>
+
+    <div class="code-section" id="codeSection">
+      <div class="code-label">رمز الحظ الخاص بك</div>
+      <div class="code-display" id="generatedCode">----</div>
+      <button class="btn-copy" id="copyBtn">
+        <i class="fas fa-copy"></i>
+        <span>نسخ الرمز</span>
+      </button>
+    </div>
+
+    <div class="warning-box">
+      <i class="fas fa-shield-alt"></i>
+      <div class="warning-text">
+        <strong>تنبيه أمني</strong>
+        لا تشارك هذا الرمز مع أي شخص. يمكن استخدامه مرة واحدة فقط، وسيأخذ النقاط أول من يستخدمه.
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal">
+    <div class="modal-content">
+      <div class="modal-icon" id="modalIcon">
+        <i class="fas fa-check"></i>
+      </div>
+      <div class="modal-title" id="modalTitle">تم بنجاح</div>
+      <div class="modal-text" id="modalText">تم توليد الرمز بنجاح</div>
+      <button class="modal-btn" onclick="closeModal()">حسناً</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <i class="fas fa-info-circle"></i>
+    <span id="toastText">رسالة</span>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+  <script>
+    // ========= Firebase init (safe) =========
+    const firebaseConfig = {
+      databaseURL: "https://store-points-7d2f4-default-rtdb.asia-southeast1.firebasedatabase.app/"
+    };
+    if (!firebase.apps || !firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.database();
+
+    // ========= Safe wrapper =========
+    function safeFirebase(promise, onSuccess, onError){
+      promise.then(res => {
+        if(onSuccess) onSuccess(res);
+      }).catch(err => {
+        console.log("Firebase error:", err);
+        if(onError) onError(err);
+      });
+    }
+
+    const promoCodes = [
+      { code: "LUCK-29D5", key: "LUCK_29D5", points: 10 },
+      { code: "WIN-84XQ", key: "WIN_84XQ", points: 20 },
+      { code: "HAPPY-5M3K", key: "HAPPY_5M3K", points: 30 },
+      { code: "GIFT-7N2P", key: "GIFT_7N2P", points: 40 },
+      { code: "PRIZE-1Q8Z", key: "PRIZE_1Q8Z", points: 50 }
+    ];
+
+    // ========= Audio (safe) =========
+    let audioCtx = null;
+    function playSound(type) {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'success') {
+          osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+          osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
+          osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2);
+          gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+          gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.4);
+          osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+        } else if (type === 'error') {
+          osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.2);
+          gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+          gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
+          osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+        } else if (type === 'click') {
+          osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.08);
+          gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+          osc.start(); osc.stop(audioCtx.currentTime + 0.08);
+        }
+      } catch(e) {
+        console.log("Audio skipped:", e);
+      }
+    }
+
+    // ========= Elements =========
+    const generateBtn = document.getElementById('generateBtn');
+    const studentIdInput = document.getElementById('studentIdInput');
+    const codeSection = document.getElementById('codeSection');
+    const generatedCode = document.getElementById('generatedCode');
+    const copyBtn = document.getElementById('copyBtn');
+
+    function resetGenerateBtn(){
+      generateBtn.disabled = false;
+      generateBtn.innerHTML = '<i class="fas fa-magic"></i> توليد الرمز';
+    }
+
+    // ========= Generate Code =========
+    generateBtn.addEventListener('click', () => {
+      playSound('click');
+
+      const studentId = studentIdInput.value.trim();
+      if (!studentId) {
+        showModal('error', 'خطأ', 'الرجاء إدخال الرقم الأكاديمي');
+        playSound('error');
+        return;
+      }
+
+      generateBtn.disabled = true;
+      generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التوليد...';
+
+      safeFirebase(
+        db.ref("users/" + studentId + "/usedCodes/generateLuck").once("value"),
+        snap => {
+          if (snap.exists() && snap.val() === true) {
+            showModal('error', 'تم الاستخدام مسبقاً', 'لقد استخدمت مولد الحظ مسبقاً، لا يمكن توليد رمز جديد');
+            playSound('error');
+            resetGenerateBtn();
+            return;
+          }
+
+          const randomIndex = Math.floor(Math.random() * promoCodes.length);
+          const selectedCode = promoCodes[randomIndex];
+
+          generatedCode.textContent = selectedCode.code;
+          codeSection.classList.add('active');
+
+          safeFirebase(
+            db.ref("users/" + studentId + "/usedCodes/generateLuck").set(true),
+            () => {
+              showModal('success', 'تم بنجاح', 'تم توليد رمز الحظ الخاص بك، انسخه واستخدمه في صفحة استبدال الرموز');
+              playSound('success');
+              generateBtn.innerHTML = '<i class="fas fa-check"></i> تم التوليد';
+
+              if (window.Android && window.Android.onCodeGenerated) {
+                try { window.Android.onCodeGenerated(selectedCode.code); } catch(e){}
+              }
+            },
+            () => {
+              showModal('error', 'خطأ', 'حدث خطأ في حفظ الحالة، حاول مرة أخرى');
+              playSound('error');
+              resetGenerateBtn();
+            }
+          );
+        },
+        () => {
+          showModal('error', 'خطأ', 'حدث خطأ في الاتصال، حاول مرة أخرى');
+          playSound('error');
+          resetGenerateBtn();
+        }
+      );
+    });
+
+    // ========= Copy Code =========
+    copyBtn.addEventListener('click', () => {
+      playSound('click');
+      const code = generatedCode.textContent;
+
+      navigator.clipboard.writeText(code).then(() => {
+        copyBtn.classList.add('copied');
+        copyBtn.innerHTML = '<i class="fas fa-check"></i> تم النسخ';
+        showToast('تم نسخ الرمز بنجاح!');
+        playSound('success');
+
+        setTimeout(() => {
+          copyBtn.classList.remove('copied');
+          copyBtn.innerHTML = '<i class="fas fa-copy"></i> نسخ الرمز';
+        }, 2000);
+      }).catch(() => {
+        showToast('فشل النسخ، حاول مرة أخرى');
+        playSound('error');
+      });
+    });
+
+    // ========= Modal =========
+    function showModal(type, title, text) {
+      const modal = document.getElementById('modal');
+      const icon = document.getElementById('modalIcon');
+      const titleEl = document.getElementById('modalTitle');
+      const textEl = document.getElementById('modalText');
+
+      icon.className = 'modal-icon ' + type;
+      icon.innerHTML = type === 'success' ? '<i class="fas fa-check"></i>' : '<i class="fas fa-exclamation"></i>';
+      titleEl.textContent = title;
+      textEl.textContent = text;
+
+      modal.classList.add('active');
+    }
+
+    function closeModal() {
+      playSound('click');
+      document.getElementById('modal').classList.remove('active');
+    }
+
+    // ========= Toast =========
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastText').textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    document.getElementById('modal').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('modal')) closeModal();
+    });
+
+    document.addEventListener('contextmenu', e => e.preventDefault());
+  </script>
+
+</body>
+</html>

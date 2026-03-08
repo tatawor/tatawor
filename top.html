@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0f0f1a">
+    <title>إحصائيات وترتيبات أكاديمية تطور</title>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --secondary: #ec4899;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f0f1a;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--dark);
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(6, 182, 212, 0.1) 0%, transparent 40%);
+            animation: bgMove 20s ease-in-out infinite;
+        }
+
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 10s linear infinite;
+        }
+
+        @keyframes bgMove {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(1deg); }
+            66% { transform: translate(-20px, 20px) rotate(-1deg); }
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        .particle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 90%; top: 80%; animation-delay: 2s; }
+        .particle:nth-child(3) { left: 50%; top: 10%; animation-delay: 4s; }
+        .particle:nth-child(4) { left: 30%; top: 60%; animation-delay: 6s; }
+        .particle:nth-child(5) { left: 70%; top: 30%; animation-delay: 8s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 12px;
+            min-height: 100vh;
+        }
+
+        /* Compact Header */
+        .header {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .header-text h1 {
+            font-size: 0.95rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-text p {
+            font-size: 0.7rem;
+            opacity: 0.6;
+            margin-top: 2px;
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .pulse-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        /* Compact Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 10px 6px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:active {
+            transform: scale(0.95);
+        }
+
+        .stat-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 6px;
+            font-size: 0.9rem;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.2));
+        }
+
+        .stat-card:nth-child(2) .stat-icon { background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(251, 191, 36, 0.2)); }
+        .stat-card:nth-child(3) .stat-icon { background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(52, 211, 153, 0.2)); }
+        .stat-card:nth-child(4) .stat-icon { background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(34, 211, 238, 0.2)); }
+
+        .stat-value {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 2px;
+        }
+
+        .stat-label {
+            font-size: 0.6rem;
+            opacity: 0.7;
+            font-weight: 500;
+        }
+
+        /* Timer */
+        .reset-timer {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(245, 158, 11, 0.1));
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 10px;
+            padding: 8px 12px;
+            margin-bottom: 12px;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #fca5a5;
+        }
+
+        .reset-timer i {
+            margin-left: 6px;
+            color: var(--danger);
+        }
+
+        /* Section Styling */
+        .section {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 800;
+        }
+
+        .section-title i {
+            color: var(--accent);
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 4px;
+            background: rgba(0,0,0,0.2);
+            padding: 3px;
+            border-radius: 8px;
+        }
+
+        .view-btn {
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: transparent;
+            color: rgba(255,255,255,0.5);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .view-btn.active {
+            background: var(--glass-bg);
+            color: white;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Podium - Compact */
+        .podium {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 8px;
+            height: 160px;
+            padding-top: 20px;
+        }
+
+        .podium-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            flex: 1;
+            max-width: 100px;
+        }
+
+        .podium-rank {
+            position: absolute;
+            top: -18px;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 0.8rem;
+            border: 2px solid;
+            z-index: 10;
+        }
+
+        .rank-1 .podium-rank {
+            background: linear-gradient(135deg, #ffd700, #ffed4a);
+            color: #92400e;
+            border-color: #fef3c7;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .rank-2 .podium-rank {
+            background: linear-gradient(135deg, #c0c0c0, #e5e7eb);
+            color: #4b5563;
+            border-color: #f3f4f6;
+        }
+
+        .rank-3 .podium-rank {
+            background: linear-gradient(135deg, #cd7f32, #fdba74);
+            color: #7c2d12;
+            border-color: #ffedd5;
+        }
+
+        .podium-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.2);
+            object-fit: cover;
+            margin-bottom: 6px;
+            background: var(--dark);
+        }
+
+        .rank-1 .podium-avatar {
+            width: 60px;
+            height: 60px;
+            border-color: #ffd700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .crown {
+            position: absolute;
+            top: -35px;
+            font-size: 1.2rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        .podium-bar {
+            width: 100%;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 4px;
+            text-align: center;
+        }
+
+        .rank-1 .podium-bar {
+            height: 90px;
+            background: linear-gradient(180deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.05));
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-bottom: none;
+        }
+
+        .rank-2 .podium-bar {
+            height: 70px;
+            background: linear-gradient(180deg, rgba(192, 192, 192, 0.2), rgba(192, 192, 192, 0.05));
+            border: 1px solid rgba(192, 192, 192, 0.3);
+            border-bottom: none;
+        }
+
+        .rank-3 .podium-bar {
+            height: 55px;
+            background: linear-gradient(180deg, rgba(205, 127, 50, 0.2), rgba(205, 127, 50, 0.05));
+            border: 1px solid rgba(205, 127, 50, 0.3);
+            border-bottom: none;
+        }
+
+        .podium-name {
+            font-size: 0.75rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 90%;
+            margin-bottom: 2px;
+        }
+
+        .podium-points {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        /* Grid View - 3 Columns */
+        .grid-view {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .grid-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 10px 6px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .grid-item:active {
+            transform: scale(0.95);
+        }
+
+        .grid-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.1);
+            margin-bottom: 6px;
+            background: var(--dark);
+        }
+
+        .grid-name {
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .grid-value {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .grid-label {
+            font-size: 0.6rem;
+            opacity: 0.6;
+        }
+
+        /* List View */
+        .list-view {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+        }
+
+        .list-rank {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.8rem;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .list-rank.top {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        .list-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.1);
+            background: var(--dark);
+        }
+
+        .list-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .list-name {
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .list-meta {
+            font-size: 0.7rem;
+            opacity: 0.6;
+        }
+
+        .list-value {
+            text-align: left;
+        }
+
+        .list-value-number {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .list-value-label {
+            font-size: 0.65rem;
+            opacity: 0.6;
+        }
+
+        /* Star Section Special Styling */
+        .star-section {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(251, 191, 36, 0.05));
+            border: 1px solid rgba(245, 158, 11, 0.15);
+        }
+
+        .star-section .section-title i {
+            color: var(--warning);
+        }
+
+        .star-section .grid-value,
+        .star-section .list-value-number {
+            color: var(--warning);
+        }
+
+        /* Ideal Section Special Styling */
+        .ideal-section {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(52, 211, 153, 0.05));
+            border: 1px solid rgba(16, 185, 129, 0.15);
+        }
+
+        .ideal-section .section-title i {
+            color: var(--success);
+        }
+
+        .ideal-section .grid-value,
+        .ideal-section .list-value-number {
+            color: var(--success);
+        }
+
+        /* Leaderboard Tabs */
+        .leaderboard-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+            padding: 4px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 8px 4px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: rgba(255,255,255,0.6);
+            font-family: inherit;
+            font-size: 0.7rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            background: var(--glass-bg);
+            color: white;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 30px 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state i {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 0.8rem;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+            z-index: 2000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="grid-overlay"></div>
+    </div>
+    
+    <!-- Floating Particles -->
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-section">
+                <img src="https://i.postimg.cc/g0Bm32zB/20260207-052318.png" alt="تطور" class="logo-img">
+                <div class="header-text">
+                    <h1>لوحة الشرف</h1>
+                    <p>عرض إنجازات النخبة المتميزة</p>
+                </div>
+            </div>
+            <div class="live-indicator">
+                <div class="pulse-dot"></div>
+                <span>مباشر</span>
+            </div>
+        </header>
+
+        <!-- Timer -->
+        <div class="reset-timer" id="resetTimer">
+            <i class="fas fa-clock"></i>
+            <span id="timerText">جاري الحساب...</span>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-value" id="totalUsers">0</div>
+                <div class="stat-label">المستخدمين</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-star"></i></div>
+                <div class="stat-value" id="totalWeeklyStars">0</div>
+                <div class="stat-label">نجوم الأسبوع</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                <div class="stat-value" id="totalWeeklyPoints">0</div>
+                <div class="stat-label">نقاط الأسبوع</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-trophy"></i></div>
+                <div class="stat-value" id="totalStars">0</div>
+                <div class="stat-label">إجمالي النجوم</div>
+            </div>
+        </div>
+
+        <!-- Podium -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-title">
+                    <i class="fas fa-crown" style="color: #ffd700;"></i>
+                    الاوائل
+                </div>
+                <span style="font-size: 0.7rem; opacity: 0.6;"></span>
+            </div>
+            
+            <div class="podium" id="podium">
+                <div class="podium-item rank-2">
+                    <div class="podium-rank">2</div>
+                    <img src="https://i.postimg.cc/g0Bm32zB/20260207-052318.png" class="podium-avatar" id="rank2-avatar" onerror="this.src='https://i.postimg.cc/g0Bm32zB/20260207-052318.png'">
+                    <div class="podium-bar">
+                        <div class="podium-name" id="rank2-name">---</div>
+                        <div class="podium-points" id="rank2-points">--</div>
+                    </div>
+                </div>
+                
+                <div class="podium-item rank-1">
+                    <div class="crown">👑</div>
+                    <div class="podium-rank">1</div>
+                    <img src="https://i.postimg.cc/g0Bm32zB/20260207-052318.png" class="podium-avatar" id="rank1-avatar" onerror="this.src='https://i.postimg.cc/g0Bm32zB/20260207-052318.png'">
+                    <div class="podium-bar">
+                        <div class="podium-name" id="rank1-name">---</div>
+                        <div class="podium-points" id="rank1-points">--</div>
+                    </div>
+                </div>
+                
+                <div class="podium-item rank-3">
+                    <div class="podium-rank">3</div>
+                    <img src="https://i.postimg.cc/g0Bm32zB/20260207-052318.png" class="podium-avatar" id="rank3-avatar" onerror="this.src='https://i.postimg.cc/g0Bm32zB/20260207-052318.png'">
+                    <div class="podium-bar">
+                        <div class="podium-name" id="rank3-name">---</div>
+                        <div class="podium-points" id="rank3-points">--</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stars of the Week - Top 20 -->
+        <div class="section star-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <i class="fas fa-star"></i>
+                    نجم الأسبوع
+                    <span style="font-size: 0.7rem; opacity: 0.6; margin-right: 6px;">(أفضل 20)</span>
+                </div>
+                <div class="view-toggle">
+                    <button class="view-btn active" onclick="toggleView('stars', 'grid')" title="شبكة">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button class="view-btn" onclick="toggleView('stars', 'list')" title="قائمة">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="starsContainer" class="grid-view">
+                <div class="empty-state" style="grid-column: 1/-1;">
+                    <i class="fas fa-star"></i>
+                    <p>لا يوجد نجوم هذا الأسبوع</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ideal Students -->
+        <div class="section ideal-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <i class="fas fa-award"></i>
+                     الطالب المثالي
+                </div>
+                <div class="view-toggle">
+                    <button class="view-btn active" onclick="toggleView('ideal', 'grid')" title="شبكة">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button class="view-btn" onclick="toggleView('ideal', 'list')" title="قائمة">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="idealContainer" class="grid-view">
+                <div class="empty-state" style="grid-column: 1/-1;">
+                    <i class="fas fa-award"></i>
+                    <p>لا يوجد طلاب مثاليون</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full Leaderboard -->
+        <div class="section">
+            <div class="section-header" style="margin-bottom: 8px;">
+                <div class="section-title">
+                    <i class="fas fa-list-ol"></i>
+                    الترتيب الكامل
+                </div>
+            </div>
+            
+            <div class="leaderboard-tabs">
+                <button class="tab-btn active" onclick="switchTab('weeklyPoints')">النقاط الأسبوعية</button>
+                <button class="tab-btn" onclick="switchTab('weeklyStars')">النجوم الأسبوعية</button>
+                <button class="tab-btn" onclick="switchTab('totalStars')">النجوم الكلية</button>
+            </div>
+            
+            <div id="leaderboardContainer" class="list-view">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Default Avatar URL (Tatweer Logo)
+        const DEFAULT_AVATAR = 'https://i.postimg.cc/g0Bm32zB/20260207-052318.png';
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyByR2B-XISUw_PYh5EeIcbNQwwII0c6xZg",
+            authDomain: "store-points-7d2f4.firebaseapp.com",
+            databaseURL: "https://store-points-7d2f4-default-rtdb.asia-southeast1.firebasedatabase.app/",
+            projectId: "store-points-7d2f4",
+            storageBucket: "store-points-7d2f4.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Global State
+        let currentTab = 'weeklyPoints';
+        let allStudents = [];
+        let resetInterval;
+        let viewStates = {
+            stars: 'grid',
+            ideal: 'grid'
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            setupRealtimeListeners();
+            startResetTimer();
+        });
+
+        // Setup Realtime Listeners
+        function setupRealtimeListeners() {
+            db.ref('users').on('value', (snapshot) => {
+                const data = snapshot.val() || {};
+                processStudentData(data);
+            });
+        }
+
+        // Load Data
+        function loadData() {
+            db.ref('users').once('value').then((snapshot) => {
+                const data = snapshot.val() || {};
+                processStudentData(data);
+            }).catch((error) => {
+                console.error('Error loading data:', error);
+                showToast('خطأ في تحميل البيانات');
+            });
+        }
+
+        // Process Student Data
+        function processStudentData(data) {
+            allStudents = Object.entries(data).map(([id, student]) => ({
+                id,
+                name: student.name || 'بدون اسم',
+                avatar: student.avatar || DEFAULT_AVATAR,
+                weeklyPoints: parseInt(student.weeklyPoints) || 0,
+                weeklyStars: parseInt(student.weeklyStars) || 0,
+                stars: parseInt(student.stars) || 0,
+                lastActive: student.lastActive || Date.now()
+            }));
+
+            console.log('Loaded students:', allStudents);
+            updateAllUI();
+        }
+
+        // Update All UI
+        function updateAllUI() {
+            updateStats();
+            updatePodium();
+            updateStarsOfWeek();
+            updateIdealStudents();
+            renderLeaderboard();
+        }
+
+        // Update Statistics
+        function updateStats() {
+            const totalUsers = allStudents.length;
+            const totalWeeklyStars = allStudents.reduce((sum, s) => sum + (s.weeklyStars || 0), 0);
+            const totalWeeklyPoints = allStudents.reduce((sum, s) => sum + (s.weeklyPoints || 0), 0);
+            const totalStars = allStudents.reduce((sum, s) => sum + (s.stars || 0), 0);
+
+            document.getElementById('totalUsers').textContent = totalUsers;
+            document.getElementById('totalWeeklyStars').textContent = formatNumber(totalWeeklyStars);
+            document.getElementById('totalWeeklyPoints').textContent = formatNumber(totalWeeklyPoints);
+            document.getElementById('totalStars').textContent = formatNumber(totalStars);
+        }
+
+        // Update Podium - Top 3 Weekly Points
+        function updatePodium() {
+            const sorted = [...allStudents]
+                .filter(s => s.weeklyPoints > 0)
+                .sort((a, b) => b.weeklyPoints - a.weeklyPoints);
+
+            const top3 = sorted.slice(0, 3);
+
+            // Reset defaults with logo
+            document.getElementById('rank1-name').textContent = '---';
+            document.getElementById('rank1-points').textContent = '--';
+            document.getElementById('rank1-avatar').src = DEFAULT_AVATAR;
+            
+            document.getElementById('rank2-name').textContent = '---';
+            document.getElementById('rank2-points').textContent = '--';
+            document.getElementById('rank2-avatar').src = DEFAULT_AVATAR;
+            
+            document.getElementById('rank3-name').textContent = '---';
+            document.getElementById('rank3-points').textContent = '--';
+            document.getElementById('rank3-avatar').src = DEFAULT_AVATAR;
+
+            if (top3[0]) {
+                document.getElementById('rank1-name').textContent = top3[0].name;
+                document.getElementById('rank1-points').textContent = top3[0].weeklyPoints + ' نقطة';
+                document.getElementById('rank1-avatar').src = top3[0].avatar;
+            }
+
+            if (top3[1]) {
+                document.getElementById('rank2-name').textContent = top3[1].name;
+                document.getElementById('rank2-points').textContent = top3[1].weeklyPoints + ' نقطة';
+                document.getElementById('rank2-avatar').src = top3[1].avatar;
+            }
+
+            if (top3[2]) {
+                document.getElementById('rank3-name').textContent = top3[2].name;
+                document.getElementById('rank3-points').textContent = top3[2].weeklyPoints + ' نقطة';
+                document.getElementById('rank3-avatar').src = top3[2].avatar;
+            }
+        }
+
+        // Update Stars of the Week - Top 20
+        function updateStarsOfWeek() {
+            const withStars = allStudents.filter(s => s.weeklyStars > 0);
+            const sorted = [...withStars].sort((a, b) => b.weeklyStars - a.weeklyStars);
+            const container = document.getElementById('starsContainer');
+            
+            if (sorted.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <i class="fas fa-star"></i>
+                        <p>لا يوجد نجوم هذا الأسبوع</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Get top 20 stars
+            const topStars = sorted.slice(0, 20);
+
+            renderStudentsList(container, topStars, 'weeklyStars', viewStates.stars);
+        }
+
+        // Update Ideal Students - Top with max stars
+        function updateIdealStudents() {
+            const withStars = allStudents.filter(s => s.stars > 0);
+            const sorted = [...withStars].sort((a, b) => b.stars - a.stars);
+            const container = document.getElementById('idealContainer');
+            
+            if (sorted.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <i class="fas fa-award"></i>
+                        <p>لا يوجد طلاب مثاليون</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const maxStars = sorted[0].stars;
+            const idealStudents = sorted.filter(s => s.stars === maxStars);
+
+            renderStudentsList(container, idealStudents, 'totalStars', viewStates.ideal);
+        }
+
+        // Render Students List (Grid or List)
+        function renderStudentsList(container, students, type, viewType) {
+            const valueKey = type === 'weeklyStars' ? 'weeklyStars' : 'stars';
+            const label = type === 'weeklyStars' ? 'نجمة' : 'نجمة';
+            const icon = 'fa-star';
+
+            if (viewType === 'grid') {
+                container.className = 'grid-view';
+                container.innerHTML = students.map((student, index) => `
+                    <div class="grid-item">
+                        <img src="${student.avatar}" class="grid-avatar" onerror="this.src='${DEFAULT_AVATAR}'">
+                        <div class="grid-name">${student.name}</div>
+                        <div class="grid-value">${student[valueKey]} <i class="fas ${icon}" style="font-size: 0.7rem;"></i></div>
+                        <div class="grid-label">${label}</div>
+                    </div>
+                `).join('');
+            } else {
+                container.className = 'list-view';
+                container.innerHTML = students.map((student, index) => `
+                    <div class="list-item">
+                        <div class="list-rank ${index < 3 ? 'top' : ''}">${index + 1}</div>
+                        <img src="${student.avatar}" class="list-avatar" onerror="this.src='${DEFAULT_AVATAR}'">
+                        <div class="list-info">
+                            <div class="list-name">${student.name}</div>
+                            <div class="list-meta">
+                                <i class="fas ${icon}"></i> ${label}
+                            </div>
+                        </div>
+                        <div class="list-value">
+                            <div class="list-value-number">${student[valueKey]}</div>
+                            <div class="list-value-label">${label}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Toggle View
+        function toggleView(section, viewType) {
+            viewStates[section] = viewType;
+            
+            // Update buttons
+            const buttons = document.querySelectorAll(`.${section === 'stars' ? 'star-section' : 'ideal-section'} .view-btn`);
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            // Refresh display
+            if (section === 'stars') {
+                updateStarsOfWeek();
+            } else {
+                updateIdealStudents();
+            }
+        }
+
+        // Render Leaderboard
+        function renderLeaderboard() {
+            let sorted = [...allStudents];
+            let filterFn = () => true;
+            let valueKey, label, icon;
+
+            switch(currentTab) {
+                case 'weeklyPoints':
+                    filterFn = s => s.weeklyPoints > 0;
+                    sorted = sorted.filter(filterFn).sort((a, b) => b.weeklyPoints - a.weeklyPoints);
+                    valueKey = 'weeklyPoints';
+                    label = 'نقطة أسبوعية';
+                    icon = 'fa-coins';
+                    break;
+                case 'weeklyStars':
+                    filterFn = s => s.weeklyStars > 0;
+                    sorted = sorted.filter(filterFn).sort((a, b) => b.weeklyStars - a.weeklyStars);
+                    valueKey = 'weeklyStars';
+                    label = 'نجمة أسبوعية';
+                    icon = 'fa-star';
+                    break;
+                case 'totalStars':
+                    filterFn = s => s.stars > 0;
+                    sorted = sorted.filter(filterFn).sort((a, b) => b.stars - a.stars);
+                    valueKey = 'stars';
+                    label = 'نجمة إجمالية';
+                    icon = 'fa-trophy';
+                    break;
+            }
+
+            const container = document.getElementById('leaderboardContainer');
+            
+            if (sorted.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>لا يوجد بيانات في هذا التصنيف</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = sorted.map((student, index) => {
+                const rank = index + 1;
+                const isTop = rank <= 3;
+
+                return `
+                    <div class="list-item">
+                        <div class="list-rank ${isTop ? 'top' : ''}">${rank}</div>
+                        <img src="${student.avatar}" class="list-avatar" onerror="this.src='${DEFAULT_AVATAR}'">
+                        <div class="list-info">
+                            <div class="list-name">${student.name}</div>
+                            <div class="list-meta">
+                                <i class="fas ${icon}"></i> ${label}
+                            </div>
+                        </div>
+                        <div class="list-value">
+                            <div class="list-value-number">${formatNumber(student[valueKey])}</div>
+                            <div class="list-value-label">${label}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Tab Switching
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderLeaderboard();
+        }
+
+        // Reset Timer
+        function startResetTimer() {
+            updateTimer();
+            resetInterval = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            const now = new Date();
+            const meccaTime = new Date(now.toLocaleString("en-US", {timeZone: "Asia/Riyadh"}));
+            
+            const nextReset = new Date(meccaTime);
+            nextReset.setDate(meccaTime.getDate() + ((6 - meccaTime.getDay() + 7) % 7));
+            nextReset.setHours(0, 0, 0, 0);
+            
+            if (meccaTime.getDay() === 6 && (meccaTime.getHours() > 0 || meccaTime.getMinutes() > 0)) {
+                nextReset.setDate(nextReset.getDate() + 7);
+            }
+            
+            if (meccaTime.getDay() === 6 && meccaTime.getHours() === 0 && meccaTime.getMinutes() === 0 && meccaTime.getSeconds() === 0) {
+                performWeeklyReset();
+            }
+            
+            const diff = nextReset - meccaTime;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('timerText').textContent = 
+                ` تحديث النتائج بعد: ${days}ي ${hours}س ${minutes}د ${seconds}ث`;
+        }
+
+        // Perform Weekly Reset
+        function performWeeklyReset() {
+            console.log('Performing weekly reset...');
+            
+            const updates = {};
+            allStudents.forEach(student => {
+                updates[`users/${student.id}/weeklyPoints`] = 0;
+                updates[`users/${student.id}/weeklyStars`] = 0;
+            });
+
+            const weekKey = new Date().toISOString().split('T')[0];
+            const top3 = [...allStudents]
+                .sort((a, b) => b.weeklyPoints - a.weeklyPoints)
+                .slice(0, 3)
+                .map(s => ({id: s.id, name: s.name, weeklyPoints: s.weeklyPoints}));
+            
+            const starOfWeek = [...allStudents]
+                .sort((a, b) => b.weeklyStars - a.weeklyStars)[0];
+
+            updates[`history/weeks/${weekKey}`] = {
+                timestamp: Date.now(),
+                top3,
+                starOfWeek: starOfWeek ? starOfWeek.name : null
+            };
+            
+            db.ref().update(updates)
+                .then(() => {
+                    showToast('تم تصفير النقاط والنجوم الأسبوعية!');
+                    console.log('Weekly reset completed');
+                })
+                .catch(err => console.error('Reset error:', err));
+        }
+
+        // Utilities
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Cleanup
+        window.addEventListener('beforeunload', () => {
+            if (resetInterval) clearInterval(resetInterval);
+        });
+    </script>
+</body>
+</html>

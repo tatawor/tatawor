@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>الأكاديمية - نظام الدورات</title>
+
+<style>
+/* إخفاء عناصر بلوجر */
+#header-wrapper, header.site-header, header.blog-header, .header-logo, .top-bar, .navbar, .navbar-wrapper,
+#sidebar, .sidebar, .sidebar-wrapper, .sidebar-area,
+#footer-wrapper, footer.site-footer, footer.footer, .footer-container {
+  display: none !important;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap');
+
+:root{
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --secondary: #ec4899;
+  --accent: #8b5cf6;
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  --text-light: #f8fafc;
+  --text-muted: #cbd5e1;
+  --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --danger: #ef4444;
+}
+
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  font-family: 'Cairo', sans-serif;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  direction: rtl;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.glass-container{
+  width: 100%;
+  max-width: 480px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 30px;
+  box-shadow: var(--glass-shadow);
+  padding: 40px 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-container::before{
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.academy-header{
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 1;
+}
+
+.academy-logo{
+  width: 80px;
+  height: 80px;
+  background: var(--gradient-1);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 40px;
+  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.academy-header h1{
+  color: var(--text-light);
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.academy-header p{
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.user-badge{
+  background: rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 25px;
+  border: 1px solid rgba(255,255,255,0.15);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.user-avatar{
+  width: 60px;
+  height: 60px;
+  background: var(--gradient-2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.user-info h3{
+  color: var(--text-light);
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.user-info p{
+  color: var(--text-muted);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.major-tag{
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(139, 92, 246, 0.3);
+  color: #c4b5fd;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.dropdown-container{
+  animation: fadeIn 0.5s ease;
+}
+
+.dropdown-btn{
+  width: 100%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--text-light);
+  padding: 18px 22px;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.dropdown-btn:hover{
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.3);
+  transform: translateX(-5px);
+}
+
+.dropdown-btn i{
+  transition: transform 0.3s ease;
+}
+
+.dropdown-btn.active i{
+  transform: rotate(180deg);
+}
+
+.dropdown-content{
+  display: none;
+  background: rgba(0,0,0,0.2);
+  border-radius: 16px;
+  padding: 8px;
+  margin: -8px 0 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.dropdown-content.show{
+  display: block;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-item{
+  display: block;
+  width: 100%;
+  padding: 14px 18px;
+  background: transparent;
+  border: none;
+  color: var(--text-light);
+  font-family: 'Cairo', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: right;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dropdown-item:hover{
+  background: rgba(255,255,255,0.1);
+  padding-right: 25px;
+}
+
+.dropdown-item i{
+  color: var(--primary);
+  font-size: 16px;
+}
+
+.board-screen{
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(20px);
+  z-index: 5000;
+  overflow: auto;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+.board-inner{
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  background: rgba(30, 41, 59, 0.8);
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 24px;
+  backdrop-filter: blur(20px);
+}
+
+.board-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.board-title{
+  color: var(--text-light);
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.back-btn{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: var(--text-light);
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: 'Cairo', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover{
+  background: rgba(255,255,255,0.2);
+  transform: translateX(-5px);
+}
+
+.video-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.video-card{
+  background: rgba(255,255,255,0.05);
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.video-card:hover{
+  transform: translateY(-5px);
+  border-color: var(--primary);
+  box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+}
+
+.video-thumb{
+  width: 100%;
+  aspect-ratio: 16/9;
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+.video-thumb img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.video-card:hover .video-thumb img{
+  transform: scale(1.05);
+}
+
+.play-overlay{
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.video-card:hover .play-overlay{
+  opacity: 1;
+}
+
+.play-btn{
+  width: 60px;
+  height: 60px;
+  background: var(--gradient-1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.5);
+  transform: scale(0.8);
+  transition: transform 0.3s ease;
+}
+
+.video-card:hover .play-btn{
+  transform: scale(1);
+}
+
+.video-info{
+  padding: 16px;
+}
+
+.video-info h4{
+  color: var(--text-light);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.video-modal{
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  z-index: 9999;
+  place-items: center;
+  padding: 20px;
+}
+
+.video-modal.active{
+  display: grid;
+  animation: fadeIn 0.3s ease;
+}
+
+.video-container{
+  width: 100%;
+  max-width: 1000px;
+  aspect-ratio: 16/9;
+  background: #000;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+}
+
+.close-video{
+  position: absolute;
+  top: -50px;
+  right: 0;
+  width: 45px;
+  height: 45px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.close-video:hover{
+  background: var(--danger);
+  transform: rotate(90deg);
+}
+
+.video-container iframe{
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.alert-modal{
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(10px);
+  z-index: 10000;
+  place-items: center;
+  padding: 20px;
+}
+
+.alert-modal.active{
+  display: grid;
+  animation: fadeIn 0.3s ease;
+}
+
+.alert-box{
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 24px;
+  padding: 30px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+}
+
+.alert-icon{
+  width: 70px;
+  height: 70px;
+  background: rgba(239, 68, 68, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 32px;
+  border: 2px solid rgba(239, 68, 68, 0.3);
+}
+
+.alert-icon.success{
+  background: rgba(34, 197, 94, 0.2);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.alert-title{
+  color: var(--text-light);
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.alert-message{
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.alert-btn{
+  padding: 12px 32px;
+  background: var(--gradient-1);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.alert-btn:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+}
+
+.loading-screen{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(20px);
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.loading-spinner{
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255,255,255,0.1);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin{
+  to { transform: rotate(360deg); }
+}
+
+.loading-text{
+  color: var(--text-light);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+@media (max-width: 640px){
+  .glass-container{
+    padding: 30px 20px;
+    border-radius: 24px;
+  }
+  
+  .academy-header h1{
+    font-size: 24px;
+  }
+  
+  .video-grid{
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+
+<!-- Auth Check -->
+<script>
+    let code = null;
+    if (window.AndroidSession && typeof AndroidSession.getCode === "function") {
+        code = AndroidSession.getCode();
+    }
+    if (!code) {
+        const params = new URLSearchParams(window.location.search);
+        code = params.get("code");
+    }
+    if (!code) {
+        document.body.innerHTML = '<div style="height:100vh;display:flex;align-items:center;justify-content:center;background:#7C3AED;color:white;font-family:Cairo;"><div>غير مصرح</div></div>';
+        throw new Error("NO_CODE");
+    }
+    window.CURRENT_USER_CODE = code;
+</script>
+
+<!-- Loading Screen -->
+<div class="loading-screen" id="loadingScreen">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">جاري التحميل...</div>
+</div>
+
+<div class="glass-container" id="mainContainer" style="display: none;">
+  <!-- Header -->
+  <div class="academy-header">
+    <div class="academy-logo">🎓</div>
+    <h1>أكاديمية تطور التعليمية </h1>
+    <p>قسم الدورات والشروحات </p>
+  </div>
+
+  <!-- User Badge -->
+  <div id="userBadge" class="user-badge">
+    <div class="user-avatar">👤</div>
+    <div class="user-info">
+      <h3 id="userName">جاري التحميل...</h3>
+      <p>
+        <span class="major-tag" id="userMajor"><i class="fas fa-graduation-cap"></i> جاري التحميل...</span>
+        <span id="userPoints">⭐ 0 نقطة</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- Dropdowns Container -->
+  <div id="dropdownsContainer" class="dropdown-container">
+    <!-- الدورات -->
+    <button class="dropdown-btn" onclick="toggleDropdown('coursesDropdown')">
+      <span><i class="fas fa-graduation-cap"></i> الدورات</span>
+      <i class="fas fa-chevron-down"></i>
+    </button>
+    <div id="coursesDropdown" class="dropdown-content">
+      <button class="dropdown-item" onclick="checkAccess('b_course_1', 'الربح من الإنترنت')">
+        <i class="fas fa-laptop-dollar"></i> دورة الربح من الإنترنت
+      </button>
+      <button class="dropdown-item" onclick="checkAccess('b_course_2', 'جرافيكس الجوال')">
+        <i class="fas fa-mobile-alt"></i> دورة جرافيكس الجوال
+      </button>
+      <button class="dropdown-item" onclick="checkAccess('b_course_3', 'جرافيكس الكمبيوتر')">
+        <i class="fas fa-desktop"></i> دورة جرافيكس الكمبيوتر
+      </button>
+      <button class="dropdown-item" onclick="checkAccess('b_course_4', 'ريادة الأعمال')">
+        <i class="fas fa-chart-line"></i> دورة ريادة الأعمال
+      </button>
+      <button class="dropdown-item" onclick="checkAccess('b_course_5', 'تصميم الثيمات')">
+        <i class="fas fa-paint-brush"></i> دورة تصميم الثيمات
+      </button>
+      <button class="dropdown-item" onclick="checkAccess('b_course_6', 'كتابة الروايات')">
+        <i class="fas fa-book"></i> دورة كتابة الروايات
+      </button>
+    </div>
+
+    <!-- الشروحات -->
+    <button class="dropdown-btn" onclick="toggleDropdown('tutorialsDropdown')">
+      <span><i class="fas fa-chalkboard-user"></i> الشروحات</span>
+      <i class="fas fa-chevron-down"></i>
+    </button>
+    <div id="tutorialsDropdown" class="dropdown-content">
+      <button class="dropdown-item" onclick="checkAccess('b_tut_1', 'جرافيكس الجوال')">
+        <i class="fas fa-pen-nib"></i> تصميم شعارات بالجوال
+      </button>
+      <button class="dropdown-item" onclick="checkAccess('b_tut_2', 'ذكاء اصطناعي')">
+        <i class="fas fa-robot"></i> الذكاء الاصطناعي
+      </button>
+      <button class="dropdown-item" onclick="checkAccess('b_tut_3', 'شروحات برمجة')">
+        <i class="fas fa-code"></i> شروحات برمجة
+      </button>
+      <button class="dropdown-item" onclick="checkAccess('b_tut_4', 'جرافيكس الجوال')">
+        <i class="fas fa-lightbulb"></i> شروحات منوعة بالجوال
+      </button>
+    </div>
+
+    <!-- الورشات -->
+    <button class="dropdown-btn" onclick="toggleDropdown('workshopsDropdown')">
+      <span><i class="fas fa-users-cog"></i> ورشات تدريبية</span>
+      <i class="fas fa-chevron-down"></i>
+    </button>
+    <div id="workshopsDropdown" class="dropdown-content">
+      <button class="dropdown-item" onclick="checkAccess('b_work_1', 'ورشة التصوير')">
+        <i class="fas fa-camera"></i> ورشة التصوير
+      </button>
+      <button class="dropdown-item" onclick="checkAccess('b_work_2', 'ورشة المونتاج')">
+        <i class="fas fa-film"></i> ورشة المونتاج
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Board Screen -->
+<div id="boardScreen" class="board-screen">
+  <div class="board-inner">
+    <div class="board-header">
+      <button class="back-btn" onclick="closeBoard()">
+        <i class="fas fa-arrow-right"></i> رجوع
+      </button>
+      <div class="board-title">
+        <i class="fas fa-play-circle"></i>
+        <span id="boardTitle">عنوان القسم</span>
+      </div>
+    </div>
+    <div id="videoGrid" class="video-grid">
+      <!-- Videos will be loaded here -->
+    </div>
+  </div>
+</div>
+
+<!-- Video Modal -->
+<div id="videoModal" class="video-modal">
+  <div style="position: relative; width: 100%; max-width: 1000px;">
+    <button class="close-video" onclick="closeVideo()">
+      <i class="fas fa-times"></i>
+    </button>
+    <div class="video-container">
+      <iframe id="videoFrame" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- Alert Modal -->
+<div id="alertModal" class="alert-modal">
+  <div class="alert-box">
+    <div class="alert-icon" id="alertIcon">⚠️</div>
+    <div class="alert-title" id="alertTitle">تنبيه</div>
+    <div class="alert-message" id="alertMessage">رسالة التنبيه</div>
+    <button class="alert-btn" onclick="closeAlert()">حسناً</button>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+<script>
+// Firebase Configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAEXAMPLEnY", 
+  authDomain: "store-points-7d2f4.firebaseapp.com",
+  databaseURL: "https://store-points-7d2f4-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "store-points-7d2f4",
+  storageBucket: "store-points-7d2f4.appspot.com",
+  messagingSenderId: "105011111111",
+  appId: "1:105011111111:web:abc123example"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+let currentUser = null;
+let currentUserId = window.CURRENT_USER_CODE;
+
+// جميع الدورات والشروحات والورشات مع تخصصاتها
+const allContent = {
+  // الدورات
+  'b_course_1': {
+    title: 'دورة الربح من الإنترنت',
+    major: 'الربح من الإنترنت',
+    videos: [
+      {url: 'https://youtu.be/V1UNRL5IVLg?si=KGp7LXJLcqWZ_6_h', title: 'المحاضرة الأولى'},
+      {url: 'https://youtu.be/7eYxkklSTQU?si=KFAYbJSGpKfq-tu6', title: 'المحاضرة الثانية'},
+      {url: 'https://youtu.be/RPXjiOjLdZ4?si=upIJ5FGUF2xC0hqF', title: 'المحاضرة الثالثة'}
+    ]
+  },
+  'b_course_2': {
+    title: 'دورة جرافيكس الجوال',
+    major: 'جرافيكس الجوال',
+    videos: [
+      {url: 'https://youtu.be/H_M15YH8wTs?si=GL6Chnty1WeX2NAD', title: 'المحاضرة الأولى'},
+      {url: 'https://youtu.be/NF6Z652g3LU?si=yOi2ScwpeI5FT6Iz', title: 'المحاضرة الثانية'},
+      {url: 'https://youtu.be/bKWT8rPM__g?si=okr2t4so_9eWZAYn', title: 'المحاضرة الثالثة'},
+      {url: 'https://youtu.be/CHrFAtsCO1o?si=rti0vTOeHie0_KJu', title: 'المحاضرة الرابعة'},
+      {url: 'https://youtu.be/Y9kv5ECSHUA?si=8qxsTyBqxJh8yoYt', title: 'المحاضرة الخامسة'},
+      {url: 'https://youtu.be/JWMV8YqHVJE?si=nA-m-xe__u1uPZ07', title: 'المحاضرة السادسة'}
+    ]
+  },
+  'b_course_3': {
+    title: 'دورة جرافيكس الكمبيوتر',
+    major: 'جرافيكس الكمبيوتر',
+    videos: [
+      {url: 'https://youtu.be/6ZUv2bMH8UU?si=uegdNfWPhj2LIEkQ', title: 'المحاضرة الأولى'},
+      {url: 'https://youtu.be/Hxq_UFuTRfM?si=ShNoC7dlOKYK6iCR', title: 'المحاضرة الثانية'}
+    ]
+  },
+  'b_course_4': {
+    title: 'دورة ريادة الأعمال',
+    major: 'ريادة الأعمال',
+    videos: [
+      {url: 'https://youtu.be/4VpDV7lmyMo?si=dJYR4e6QJDVSPVGY', title: 'المحاضرة الأولى'},
+      {url: 'https://youtu.be/Y32ZeltX92w?si=QKn7XTu9aXcP88yJ', title: 'المحاضرة الثانية'},
+      {url: 'https://youtu.be/KmLBk1nh_Hk?si=NRVatnRLfM8i15Kn', title: 'المحاضرة الثالثة'}
+    ]
+  },
+  'b_course_5': {
+    title: 'دورة تصميم الثيمات',
+    major: 'تصميم الثيمات',
+    videos: [
+      {url: 'https://youtu.be/tG2XmP81Fo0?si=kUckSCOuI_8NcrWN', title: 'المحاضرة الأولى'},
+      {url: 'https://youtu.be/vR7TquL684o?si=VlUSqK6MoJYnp9Sf', title: 'المحاضرة الثانية'},
+      {url: 'https://youtu.be/_b_jeDyGp7Q?si=7U_yjP7EF2UDbbM9', title: 'المحاضرة الثالثة'}
+    ]
+  },
+  'b_course_6': {
+    title: 'دورة كتابة الروايات',
+    major: 'كتابة الروايات',
+    videos: [
+      {url: 'https://youtu.be/Oyqecp8lkj0?si=o2DwH8Q0VcCIy5MC', title: 'المحاضرة الأولى'}
+    ]
+  },
+  // الشروحات
+  'b_tut_1': {
+    title: 'تصميم شعارات بالجوال',
+    major: 'جرافيكس الجوال',
+    videos: [
+      {url: 'https://youtu.be/UbZadAyYlQM?si=eHh9N-lLEqrRlGSg', title: 'تصميم شعار مختبر'},
+      {url: 'https://youtu.be/0DL4e6MNsv8?si=nmm_dM0guE0OnAAQ', title: 'تصميم شعار صرافة'},
+      {url: 'https://youtu.be/Hj_Hx4oKOR4?si=iLGBc5YWpiAH_K2-', title: 'تصميم شعار وردة'}
+    ]
+  },
+  'b_tut_2': {
+    title: 'الذكاء الاصطناعي',
+    major: 'ذكاء اصطناعي',
+    isPublic: 'true' ,
+    videos: [
+      {url: 'https://youtu.be/i5jYrMmzPy0?si=VRYnjvHbN4vvZRGw', title: 'إنشاء الأغاني بالذكاء الاصطناعي'},
+      {url: 'https://youtu.be/c7WiTwqTueA?si=fDRZa8vf0fhYy-UK', title: 'استخدام الذكاء الاصطناعي المدفوع'},
+      {url: 'https://youtu.be/40CKFkIywCM?si=_oJzdnK_tRBwq_Gt', title: 'إنشاء الفيديوهات بالذكاء الاصطناعي'},
+      {url: 'https://youtu.be/PuwWwJIdjbw?si=VgDVzjZONYBVG62T', title: 'فيديو أكثر من دقيقة بالذكاء الاصطناعي'},
+      {url: 'https://youtu.be/ypT0cZl9sE8?si=ADtN28dnY1pl07Hs', title: 'استخدام النموذج الصوتي ChatGPT'}
+    ]
+  },
+  'b_tut_3': {
+    title: 'شروحات برمجة',
+    major: 'شروحات برمجة',
+    videos: [
+      {url: 'https://youtu.be/gv9kJm_iaSY?si=BoPikoi5ln3JEFWX', title: 'اختراق التطبيق واستخراج كلمة السر'},
+      {url: 'https://youtu.be/brSgJFHqku4?si=-4FDC_znuYay7RUi', title: 'حماية هاتفك من الاختراق'}
+    ]
+  },
+  'b_tut_4': {
+    title: 'شروحات منوعة جوال',
+    major: 'جرافيكس الجوال',
+    videos: [
+      {url: 'https://youtu.be/kvU2Zf8-Zck?si=ir6_YS7dkK19ite0', title: 'إخفاء الملفات بدون برامج'},
+      {url: 'https://youtu.be/vVAMT2uqgMs?si=tFPdwhwijI12nNJy', title: 'رفع دقة الصور'},
+      {url: 'https://youtu.be/NEXPdiKvqEw?si=GWtiVO-IBraTVseP', title: 'تصميم تأثير الزجاج - بيكسلاب'},
+      {url: 'https://youtu.be/UCrrCYdU3nY?si=KzsdgfOLnGe3jMxc', title: 'تصميم غلاف كتاب أو مجلة'},
+      {url: 'https://youtu.be/l1jJNimHFUo?si=8souvZ250M3tdLdM', title: 'تصميم نجمة احترافية'}
+    ]
+  },
+  // الورشات
+  'b_work_1': {
+    title: 'ورشة التصوير الاحترافي',
+    major: 'ورشة التصوير',
+    videos: [
+      {url: 'https://youtu.be/zewIpp2JLwY?si=n9Te4xe96aItWN8H', title: 'التصوير بالجوال الجزء الأول'},
+      {url: 'https://youtu.be/v0x3xshZm0g?si=NmR1Wul8fqNrJITN', title: 'التصوير بالجوال الجزء الثاني'}
+    ]
+  },
+  'b_work_2': {
+    title: 'ورشة المونتاج بالجوال',
+    major: 'دورة مونتاج الجوال ',
+    videos: [
+      {url: 'https://youtu.be/3Zd9EAqXEEY?si=kPOmI7-aYudRtE6j', title: 'أساسيات المونتاج'}
+    ]
+  }
+};
+
+// Load user data on start
+document.addEventListener('DOMContentLoaded', () => {
+    loadUserData();
+});
+
+function loadUserData() {
+    db.ref('users/' + currentUserId).on('value', (snapshot) => {
+        const userData = snapshot.val();
+        if (userData) {
+            currentUser = {
+                id: currentUserId,
+                ...userData
+            };
+            showUserInterface();
+        } else {
+            document.querySelector('.loading-text').textContent = 'المستخدم غير موجود';
+        }
+    }, (error) => {
+        console.error(error);
+        document.querySelector('.loading-text').textContent = 'خطأ في الاتصال';
+    });
+}
+
+function showUserInterface() {
+    // Hide loading, show content
+    document.getElementById('loadingScreen').style.display = 'none';
+    document.getElementById('mainContainer').style.display = 'block';
+    
+    // Update user info
+    document.getElementById('userName').textContent = currentUser.name || 'مستخدم';
+    document.getElementById('userMajor').innerHTML = '<i class="fas fa-graduation-cap"></i> ' + (currentUser.major || 'غير محدد');
+    document.getElementById('userPoints').textContent = '⭐ ' + (currentUser.points || 0) + ' نقطة';
+}
+
+// Check Access - تدعم المحتوى العام والخاص
+function checkAccess(contentId, requiredMajor) {
+  if (!currentUser) {
+    showAlert('⚠️', 'تنبيه', 'جاري تحميل البيانات...');
+    return;
+  }
+  
+  const content = allContent[contentId];
+  const userMajor = (currentUser.major || '').trim();
+  
+  // ✅ المحتوى العام متاح للجميع (مثل الذكاء الاصطناعي)
+  if (content.isPublic) {
+    openBoard(contentId);
+    return;
+  }
+  
+  // المحتوى الخاص: يحتاج مطابقة التخصص فقط
+  if (userMajor === requiredMajor) {
+    openBoard(contentId);
+  } else {
+    showAlert('🚫', 'غير مؤهل', 
+      'عذراً، أنت غير مسجل في هذا القسم.<br>' +
+      'هذا القسم مخصص لطلاب: <strong>' + requiredMajor + '</strong><br>' +
+      'تخصصك الحالي: <strong>' + (userMajor || 'غير محدد') + '</strong>');
+  }
+}
+
+// Toggle Dropdown
+function toggleDropdown(dropdownId) {
+  document.querySelectorAll('.dropdown-content').forEach(d => {
+    if (d.id !== dropdownId) d.classList.remove('show');
+  });
+  document.querySelectorAll('.dropdown-btn').forEach(b => {
+    if (!b.onclick.toString().includes(dropdownId)) b.classList.remove('active');
+  });
+  
+  const dropdown = document.getElementById(dropdownId);
+  const btn = event.currentTarget;
+  
+  dropdown.classList.toggle('show');
+  btn.classList.toggle('active');
+}
+
+// Open Board
+function openBoard(contentId) {
+  const content = allContent[contentId];
+  if (!content) return;
+  
+  document.getElementById('boardTitle').textContent = content.title;
+  
+  const grid = document.getElementById('videoGrid');
+  grid.innerHTML = content.videos.map((video) => `
+    <div class="video-card" onclick="openVideo('${video.url}')">
+      <div class="video-thumb">
+        <img src="https://img.youtube.com/vi/${extractVideoId(video.url)}/mqdefault.jpg" alt="${video.title}">
+        <div class="play-overlay">
+          <div class="play-btn"><i class="fas fa-play"></i></div>
+        </div>
+      </div>
+      <div class="video-info">
+        <h4>${video.title}</h4>
+      </div>
+    </div>
+  `).join('');
+  
+  document.getElementById('boardScreen').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeBoard() {
+  document.getElementById('boardScreen').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// Video Functions
+function extractVideoId(url) {
+  try {
+    const u = new URL(url);
+    if (u.hostname.includes('youtu.be')) return u.pathname.slice(1);
+    if (u.pathname.startsWith('/shorts/')) return u.pathname.split('/shorts/')[1].split('?')[0];
+    return u.searchParams.get('v') || '';
+  } catch {
+    return '';
+  }
+}
+
+function toEmbedUrl(url) {
+  const id = extractVideoId(url);
+  if (!id) return url;
+  
+  const params = new URLSearchParams({
+    autoplay: '1',
+    rel: '0',
+    modestbranding: '1',
+    playsinline: '1'
+  });
+  
+  return `https://www.youtube.com/embed/${id}?${params.toString()}`;
+}
+
+function openVideo(url) {
+  const frame = document.getElementById('videoFrame');
+  frame.src = toEmbedUrl(url);
+  document.getElementById('videoModal').classList.add('active');
+}
+
+function closeVideo() {
+  document.getElementById('videoFrame').src = '';
+  document.getElementById('videoModal').classList.remove('active');
+}
+
+// Alert Modal
+function showAlert(icon, title, message, isSuccess = false) {
+  document.getElementById('alertIcon').textContent = icon;
+  document.getElementById('alertIcon').className = 'alert-icon' + (isSuccess ? ' success' : '');
+  document.getElementById('alertTitle').textContent = title;
+  document.getElementById('alertMessage').innerHTML = message;
+  document.getElementById('alertModal').classList.add('active');
+}
+
+function closeAlert() {
+  document.getElementById('alertModal').classList.remove('active');
+}
+
+// Event Listeners
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if (document.getElementById('videoModal').classList.contains('active')) {
+      closeVideo();
+    } else if (document.getElementById('alertModal').classList.contains('active')) {
+      closeAlert();
+    } else if (document.getElementById('boardScreen').style.display === 'block') {
+      closeBoard();
+    }
+  }
+});
+
+document.getElementById('videoModal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeVideo();
+});
+
+document.getElementById('alertModal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeAlert();
+});
+</script>
+
+</body>
+</html>

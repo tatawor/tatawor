@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>نظام رتب الطلاب</title>
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
+  
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-light: #818cf8;
+      --secondary: #ec4899;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --dark: #1e293b;
+      --gray: #64748b;
+      --light-gray: #f1f5f9;
+      --white: #ffffff;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0f9ff 100%);
+      min-height: 100vh;
+      padding: 20px;
+      direction: rtl;
+      color: var(--dark);
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px;
+    }
+    
+    .header-icon {
+      font-size: 4rem;
+      margin-bottom: 15px;
+      display: block;
+    }
+    
+    .header h1 {
+      color: var(--dark);
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    
+    .header p {
+      color: var(--gray);
+      font-size: 1.1rem;
+      font-weight: 400;
+    }
+    
+    /* Card */
+    .card {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 20px;
+      border: 1px solid #e2e8f0;
+    }
+    
+    /* Stats Badge */
+    .stats-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+      color: var(--primary);
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-weight: 700;
+      margin-bottom: 25px;
+      border: 2px solid #93c5fd;
+    }
+    
+    .stats-badge .icon {
+      font-size: 1.5rem;
+    }
+    
+    .stats-badge .number {
+      font-size: 1.8rem;
+      font-weight: 800;
+    }
+    
+    /* Input Group */
+    .input-group {
+      margin-bottom: 20px;
+    }
+    
+    .input-group label {
+      display: block;
+      color: var(--dark);
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+    
+    .input-field {
+      width: 100%;
+      padding: 16px 20px;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      background: var(--white);
+      color: var(--dark);
+      font-size: 1rem;
+      font-family: 'Tajawal', sans-serif;
+      transition: all 0.3s ease;
+    }
+    
+    .input-field::placeholder {
+      color: #94a3b8;
+    }
+    
+    .input-field:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    }
+    
+    /* Button */
+    .btn {
+      width: 100%;
+      padding: 16px 24px;
+      border: none;
+      border-radius: 16px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Tajawal', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: var(--white);
+      box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(99, 102, 241, 0.4);
+    }
+    
+    /* Result Card */
+    .result-card {
+      display: none;
+      margin-top: 25px;
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border: 2px solid #fbbf24;
+      animation: slideIn 0.5s ease;
+    }
+    
+    .result-card.show {
+      display: block;
+    }
+    
+    .student-name {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 12px;
+    }
+    
+    .student-major {
+      display: inline-block;
+      background: var(--white);
+      color: var(--primary);
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    
+    .grade-display {
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: var(--dark);
+      margin: 20px 0;
+      line-height: 1;
+    }
+    
+    .grade-display span {
+      font-size: 1.5rem;
+      color: var(--gray);
+    }
+    
+    .rank-badge {
+      display: inline-block;
+      padding: 14px 35px;
+      border-radius: 50px;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: var(--shadow-lg);
+    }
+    
+    /* Rank Colors - Soft Gradients */
+    .rank-امتياز { background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%); }
+    .rank-متفوق { background: linear-gradient(135deg, #10b981 0%, #34d399 100%); }
+    .rank-متألق { background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%); }
+    .rank-جيد-جداً { background: linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%); }
+    .rank-جيد { background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%); }
+    .rank-متوسط { background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%); }
+    .rank-تحت-المتوسط { background: linear-gradient(135deg, #f97316 0%, #fb923c 100%); }
+    .rank-مقبول { background: linear-gradient(135deg, #ea580c 0%, #fdba74 100%); }
+    .rank-مبتدئ { background: linear-gradient(135deg, #64748b 0%, #94a3b8 100%); }
+    .rank-ضعيف { background: linear-gradient(135deg, #94a3b8 0%, #cbd5e1 100%); }
+    
+    /* Filter Section */
+    .filter-section {
+      margin-top: 25px;
+    }
+    
+    .filter-select {
+      width: 100%;
+      padding: 14px 20px;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      background: var(--white);
+      color: var(--dark);
+      font-size: 1rem;
+      font-family: 'Tajawal', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .filter-select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    }
+    
+    /* Statistics Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 15px;
+      margin-top: 25px;
+    }
+    
+    .stat-item {
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      padding: 20px 15px;
+      border-radius: 16px;
+      text-align: center;
+      border: 2px solid #e2e8f0;
+      transition: all 0.3s ease;
+    }
+    
+    .stat-item:hover {
+      transform: translateY(-3px);
+      border-color: var(--primary-light);
+      box-shadow: var(--shadow);
+    }
+    
+    .stat-count {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: block;
+      margin-bottom: 5px;
+    }
+    
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--gray);
+      font-weight: 600;
+    }
+    
+    /* Error Message */
+    .error-msg {
+      background: #fee2e2;
+      border: 2px solid #fecaca;
+      color: #dc2626;
+      padding: 16px;
+      border-radius: 16px;
+      margin-top: 20px;
+      text-align: center;
+      display: none;
+      font-weight: 600;
+      animation: shake 0.5s ease;
+    }
+    
+    .error-msg.show {
+      display: block;
+    }
+    
+    /* Loading Spinner */
+    .spinner {
+      display: none;
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: var(--white);
+      animation: spin 1s linear infinite;
+    }
+    
+    .spinner.show {
+      display: inline-block;
+    }
+    
+    /* Animations */
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Responsive */
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.6rem; }
+      .card { padding: 20px; }
+      .grade-display { font-size: 2.8rem; }
+      .student-name { font-size: 1.6rem; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    
+    /* Hide unwanted elements */
+    .header-logo, .sidebar, .search-form, .dark-toggle, 
+    .top-bar, header, footer, #header-wrapper, 
+    .footer-container, #footer-wrapper {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <span class="header-icon">🏆</span>
+      <h1>نظام رتب الطلاب</h1>
+      <p>اكتشف رتبتك الأكاديمية بسهولة</p>
+    </div>
+
+    <!-- Main Card -->
+    <div class="card">
+      <!-- Stats Badge -->
+      <div style="text-align: center;">
+        <div class="stats-badge">
+          <span class="icon">👥</span>
+          <span class="number" id="totalStudents">0</span>
+          <span>طالب مسجل</span>
+        </div>
+      </div>
+
+      <!-- Search Input -->
+      <div class="input-group">
+        <label for="academicNumber">الرقم الأكاديمي</label>
+        <input 
+          type="text" 
+          id="academicNumber" 
+          class="input-field" 
+          placeholder="أدخل رقمك الأكاديمي..."
+          onkeypress="if(event.key==='Enter') checkRank()"
+        />
+      </div>
+
+      <!-- Check Button -->
+      <button class="btn btn-primary" onclick="checkRank()">
+        <span class="spinner" id="btnSpinner"></span>
+        <span id="btnText">🔍 عرض الرتبة</span>
+      </button>
+
+      <!-- Error Message -->
+      <div class="error-msg" id="errorMsg">
+        ❌ الرقم الأكاديمي غير موجود!
+      </div>
+
+      <!-- Result Card -->
+      <div class="result-card" id="resultCard">
+        <div class="student-name" id="studentName"></div>
+        <div class="student-major" id="studentMajor"></div>
+        <div class="grade-display" id="studentGrade"></div>
+        <div class="rank-badge" id="rankBadge"></div>
+      </div>
+    </div>
+
+    <!-- Statistics Card -->
+    <div class="card">
+      <div class="input-group">
+        <label for="majorFilter">تصفية حسب التخصص</label>
+        <select id="majorFilter" class="filter-select" onchange="updateStatistics()">
+          <option value="">📊 جميع التخصصات</option>
+        </select>
+      </div>
+
+      <!-- Statistics Grid -->
+      <div class="stats-grid" id="statsGrid">
+        <!-- Stats will be populated here -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAEXAMPLEnY", 
+      authDomain: "store-points-7d2f4.firebaseapp.com",
+      databaseURL: "https://store-points-7d2f4-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "store-points-7d2f4",
+      storageBucket: "store-points-7d2f4.appspot.com",
+      messagingSenderId: "105011111111",
+      appId: "1:105011111111:web:abc123example"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let studentsData = [];
+    let availableMajors = [];
+
+    const rankOrder = [
+      "امتياز", "متفوق", "متألق", "جيد-جداً", "جيد", 
+      "متوسط", "تحت-المتوسط", "مقبول", "مبتدئ", "ضعيف"
+    ];
+
+    function getRank(grade) {
+      const percent = parseFloat(grade);
+      if (isNaN(percent)) return { rank: "غير-محدد" };
+      if (percent < 10) return { rank: "ضعيف" };
+      if (percent < 20) return { rank: "مبتدئ" };
+      if (percent < 30) return { rank: "مقبول" };
+      if (percent < 50) return { rank: "تحت-المتوسط" };
+      if (percent < 60) return { rank: "متوسط" };
+      if (percent < 70) return { rank: "جيد" };
+      if (percent < 80) return { rank: "جيد-جداً" };
+      if (percent < 90) return { rank: "متألق" };
+      if (percent < 95) return { rank: "متفوق" };
+      return { rank: "امتياز" };
+    }
+
+    // Load data from Firebase
+    function loadData() {
+      db.ref('users').on('value', (snapshot) => {
+        const data = snapshot.val() || {};
+        studentsData = Object.entries(data).map(([id, student]) => ({
+          id,
+          ...student
+        }));
+        
+        updateStats();
+        populateMajorFilter();
+        updateStatistics();
+      });
+    }
+
+    function updateStats() {
+      document.getElementById('totalStudents').textContent = studentsData.length;
+    }
+
+    function populateMajorFilter() {
+      const majorFilter = document.getElementById('majorFilter');
+      const selectedMajor = majorFilter.value;
+      
+      const majorSet = new Set();
+      studentsData.forEach(s => {
+        if (s.major && s.major.trim() !== "") {
+          majorSet.add(s.major.trim());
+        }
+      });
+      
+      availableMajors = [...majorSet].sort();
+      
+      majorFilter.innerHTML = '<option value="">📊 جميع التخصصات</option>';
+      availableMajors.forEach(major => {
+        const opt = document.createElement('option');
+        opt.value = major;
+        opt.textContent = major;
+        majorFilter.appendChild(opt);
+      });
+      
+      majorFilter.value = selectedMajor;
+    }
+
+    function updateStatistics() {
+      const majorFilter = document.getElementById('majorFilter').value;
+      const filteredStudents = studentsData.filter(s =>
+        s.id && s.grade && (majorFilter === "" || s.major === majorFilter)
+      );
+
+      const rankCount = {};
+      filteredStudents.forEach(student => {
+        const rank = getRank(student.grade).rank;
+        rankCount[rank] = (rankCount[rank] || 0) + 1;
+      });
+
+      const statsGrid = document.getElementById('statsGrid');
+      statsGrid.innerHTML = '';
+      
+      rankOrder.forEach(rank => {
+        if (rankCount[rank]) {
+          const statItem = document.createElement('div');
+          statItem.className = 'stat-item';
+          statItem.innerHTML = `
+            <span class="stat-count">${rankCount[rank]}</span>
+            <div class="stat-label">${rank.replace(/-/g, " ")}</div>
+          `;
+          statsGrid.appendChild(statItem);
+        }
+      });
+      
+      if (statsGrid.innerHTML === '') {
+        statsGrid.innerHTML = '<div class="stat-item" style="grid-column: 1/-1;"><span class="stat-label">لا توجد بيانات متاحة</span></div>';
+      }
+    }
+
+    async function checkRank() {
+      const academicNumber = document.getElementById('academicNumber').value.trim();
+      const btnText = document.getElementById('btnText');
+      const btnSpinner = document.getElementById('btnSpinner');
+      const errorMsg = document.getElementById('errorMsg');
+      const resultCard = document.getElementById('resultCard');
+      
+      // Reset
+      errorMsg.classList.remove('show');
+      resultCard.classList.remove('show');
+      
+      if (!academicNumber) {
+        errorMsg.textContent = '⚠️ الرجاء إدخال الرقم الأكاديمي';
+        errorMsg.classList.add('show');
+        return;
+      }
+      
+      // Show loading
+      btnText.textContent = 'جاري البحث...';
+      btnSpinner.classList.add('show');
+      
+      // Simulate delay for UX
+      await new Promise(r => setTimeout(r, 500));
+      
+      const student = studentsData.find(s => s.id === academicNumber);
+      
+      // Hide loading
+      btnText.textContent = '🔍 عرض الرتبة';
+      btnSpinner.classList.remove('show');
+      
+      if (student) {
+        const rankData = getRank(student.grade);
+        
+        document.getElementById('studentName').textContent = student.name || 'طالب';
+        document.getElementById('studentMajor').textContent = student.major || 'غير محدد';
+        
+        // ✅ إصلاح مشكلة تكرار % - إزالة أي % موجودة أولاً ثم إضافتها مرة واحدة
+        const cleanGrade = String(student.grade).replace(/%/g, '').trim();
+        document.getElementById('studentGrade').innerHTML = cleanGrade + '<span>%</span>';
+        
+        const rankBadge = document.getElementById('rankBadge');
+        rankBadge.textContent = rankData.rank.replace(/-/g, " ");
+        rankBadge.className = 'rank-badge rank-' + rankData.rank;
+        
+        resultCard.classList.add('show');
+        resultCard.style.animation = 'none';
+        setTimeout(() => resultCard.style.animation = 'slideIn 0.5s ease', 10);
+      } else {
+        errorMsg.textContent = '❌ الرقم الأكاديمي غير موجود في النظام';
+        errorMsg.classList.add('show');
+      }
+    }
+
+    // Initialize
+    window.onload = loadData;
+  </script>
+</body>
+</html>
+

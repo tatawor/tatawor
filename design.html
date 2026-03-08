@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>أدوات</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo&display=swap');
+
+body{
+  font-family:'Cairo',sans-serif;
+  background:#eef2ff;
+  margin:0;
+  padding:25px;
+  display:flex;
+  justify-content:center;
+  min-height:100vh;
+}
+.app{max-width:460px;width:100%}
+
+/* ================= الرئيسية ================= */
+.tools-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:20px;
+}
+.tool-card{
+  border-radius:18px;
+  padding:25px 15px;
+  text-align:center;
+  cursor:pointer;
+  transition:.25s;
+  user-select:none;
+  color:#fff;
+  box-shadow:0 8px 18px rgba(0,0,0,.12);
+}
+.tool-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 15px 35px rgba(0,0,0,.25)
+}
+.tool-icon{font-size:42px;margin-bottom:15px}
+.tool-label{font-weight:700;font-size:18px}
+
+.gradient-1{background:linear-gradient(135deg,#667eea,#764ba2)}
+.gradient-2{background:linear-gradient(135deg,#f7971e,#ffd200);color:#3a2e00}
+.gradient-3{background:linear-gradient(135deg,#43cea2,#185a9d)}
+.gradient-4{background:linear-gradient(135deg,#ff416c,#ff4b2b)}
+.gradient-5{background:linear-gradient(135deg,#00c6ff,#0072ff)}
+.gradient-6{background:linear-gradient(135deg,#1fbd3f,#12851b)}
+.gradient-7{background:linear-gradient(135deg,#BA0B4E,#C809B1)}
+.gradient-8{background:linear-gradient(135deg,#09005E,#4C2D91)}
+.gradient-9{background:linear-gradient(135deg,#46EFC2,#15D086)}
+.gradient-10{background:linear-gradient(135deg,#DD3212,#573A2F)}
+
+.screen{display:none}
+.screen.active{display:block}
+
+/* ================= أداة القياسات ================= */
+.measure-app{
+  background:linear-gradient(180deg,#0b1d33,#071423);
+  border-radius:20px;
+  padding:18px;
+  padding-top:12px;
+  color:#fff;
+  box-sizing:border-box;
+}
+.measure-row{
+  display:flex;
+  gap:10px;
+  margin-bottom:12px;
+  width:100%;
+}
+.measure-row > div{flex:1}
+.measure-app label{
+  font-size:13px;
+  color:#cfe3ff;
+  display:block;
+  margin-bottom:4px
+}
+.measure-app input,
+.measure-app select{
+  width:100%;
+  background:#0f2542;
+  color:#fff;
+  border:1px solid #1f3b63;
+  border-radius:10px;
+  padding:14px;
+  font-size:17px;
+  box-sizing:border-box;
+}
+.swap-btn{
+  width:100%;
+  height:50px;
+  background:#1e88e5;
+  border:none;
+  border-radius:10px;
+  color:#fff;
+  font-size:20px
+}
+.convert-btn{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:14px;
+  background:linear-gradient(135deg,#00c6ff,#0072ff);
+  color:#fff;
+  font-weight:800;
+  font-size:18px
+}
+.result-box{
+  background:#08192c;
+  border:1px solid #1f3b63;
+  border-radius:12px;
+  padding:12px;
+  margin-top:10px
+}
+.copy-row{display:flex;gap:8px;margin-top:8px}
+.copy-btn{
+  flex:1;
+  background:#1e88e5;
+  border:none;
+  border-radius:10px;
+  padding:8px;
+  color:#fff;
+  font-weight:700
+}
+.close-btn{
+  margin-top:16px;
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:16px;
+  background:#ff4b2b;
+  color:#fff;
+  font-weight:900;
+  font-size:16px;
+}
+
+/* ================= مولد التدرج ================= */
+.grad-wrap{
+  background:#fff;
+  border-radius:18px;
+  padding:16px;
+  box-shadow:0 8px 18px rgba(0,0,0,.15);
+}
+.grad-colors{display:flex;gap:10px;flex-wrap:wrap}
+.grad-colors input{width:52px;height:52px;border:none;border-radius:12px}
+.grad-btn{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:16px;
+  font-weight:800;
+  margin:8px 0
+}
+.add-btn{background:#0b376b;color:#fff}
+.random-btn{background:linear-gradient(135deg,#ff9800,#ff5722);color:#fff}
+.preview{height:150px;border-radius:14px;margin:12px 0}
+.hex-row{
+  display:flex;
+  justify-content:space-between;
+  background:#f1f1f1;
+  padding:6px 10px;
+  border-radius:8px;
+  margin-bottom:6px;
+  font-family:monospace
+}
+.hex-row button{
+  border:none;
+  background:#007bff;
+  color:#fff;
+  padding:4px 8px;
+  border-radius:6px
+}
+.copy-gradient{
+  background:linear-gradient(135deg,#00c6ff,#0072ff);
+  color:#fff
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<!-- ================= الرئيسية ================= -->
+<div id="home" class="screen active">
+  <div class="tools-grid">
+    <div class="tool-card gradient-1" onclick="openTool('tool_qyas')">
+      <div class="tool-icon">📏</div><div class="tool-label">تحديد المقاس</div>
+    </div>
+    <div class="tool-card gradient-5" onclick="openTool('tool_gradient')">
+      <div class="tool-icon">🎨</div><div class="tool-label">مولد التدرج</div>
+    </div>
+    <div class="tool-card gradient-3" onclick="soon()"><div class="tool-icon">⏳</div><div class="tool-label">قريباً</div></div>
+    <div class="tool-card gradient-2" onclick="soon()"><div class="tool-icon">⏳</div><div class="tool-label">قريباً</div></div>
+    <div class="tool-card gradient-6" onclick="soon()"><div class="tool-icon">⏳</div><div class="tool-label">قريباً</div></div>
+    <div class="tool-card gradient-7" onclick="soon()"><div class="tool-icon">⏳</div><div class="tool-label">قريباً</div></div>
+    <div class="tool-card gradient-8" onclick="soon()"><div class="tool-icon">⏳</div><div class="tool-label">قريباً</div></div>
+    <div class="tool-card gradient-9" onclick="soon()"><div class="tool-icon">⏳</div><div class="tool-label">قريباً</div></div>
+    <div class="tool-card gradient-10" onclick="soon()"><div class="tool-icon">⏳</div><div class="tool-label">قريباً</div></div>
+    <div class="tool-card gradient-4" onclick="soon()"><div class="tool-icon">⏳</div><div class="tool-label">قريباً</div></div>
+  </div>
+</div>
+
+<!-- ================= أداة القياس ================= -->
+<div id="tool_qyas" class="screen">
+  <div class="measure-app">
+
+    <div class="measure-row">
+      <div>
+        <label>الدقة (DPI)</label>
+        <!-- التعديل 1: حذف القيمة الافتراضية + placeholder -->
+        <input id="dpi" type="number" placeholder="ادخل الدقة هنا (مثال: 300)">
+      </div>
+    </div>
+
+    <div class="measure-row">
+      <div>
+        <label>من</label>
+        <select id="fromUnit">
+          <option value="cm">سنتيمتر</option>
+          <option value="mm">مليمتر</option>
+          <option value="m">متر</option>
+          <option value="km">كيلومتر</option>
+          <option value="in">بوصة</option>
+          <option value="ft">قدم</option>
+          <option value="yd">ياردة</option>
+          <option value="mi">ميل</option>
+          <option value="px">بكسل</option>
+          <option value="pt">نقطة</option>
+          <option value="pc">بيكا</option>
+          <option value="em">em</option>
+          <option value="rem">rem</option>
+        </select>
+      </div>
+      <div>
+        <label>↔</label>
+        <button class="swap-btn" onclick="swapUnits()">⇄</button>
+      </div>
+      <div>
+        <label>إلى</label>
+        <select id="toUnit">
+          <option value="cm">سنتيمتر</option>
+          <option value="mm">مليمتر</option>
+          <option value="m">متر</option>
+          <option value="km">كيلومتر</option>
+          <option value="in">بوصة</option>
+          <option value="ft">قدم</option>
+          <option value="yd">ياردة</option>
+          <option value="mi">ميل</option>
+          <option value="px">بكسل</option>
+          <option value="pt">نقطة</option>
+          <option value="pc">بيكا</option>
+          <option value="em">em</option>
+          <option value="rem">rem</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="measure-row">
+      <input id="width" placeholder="العرض">
+      <input id="height" placeholder="الطول">
+    </div>
+
+    <button class="convert-btn" onclick="convert()">تحويل</button>
+    <div id="result" class="result-box"></div>
+
+    <div class="copy-row">
+      <button class="copy-btn" onclick="copyVal('w')">نسخ العرض</button>
+      <button class="copy-btn" onclick="copyVal('h')">نسخ الطول</button>
+      <button class="copy-btn" onclick="copyAll()">نسخ الكل</button>
+    </div>
+
+    <div class="measure-row">
+      <div>
+        <label>مقاسات جاهزة</label>
+        <select onchange="applyPreset(this.value)">
+          <option value="">— اختر مقاس —</option>
+
+          <!-- ISO A -->
+          <option value="10.5,14.8">A6</option>
+          <option value="14.8,21">A5</option>
+          <option value="21,29.7">A4 (طباعة)</option>
+          <option value="29.7,42">A3 (طباعة)</option>
+          <option value="42,59.4">A2</option>
+          <option value="59.4,84.1">A1</option>
+          <option value="84.1,118.9">A0</option>
+
+          <!-- ISO B -->
+          <option value="17.6,25">B5</option>
+          <option value="25,35.3">B4</option>
+          <option value="35.3,50">B3</option>
+          <option value="50,70.7">B2</option>
+          <option value="70.7,100">B1</option>
+          <option value="100,141.4">B0</option>
+
+          <!-- ISO C (مغلفات) -->
+          <option value="11.4,16.2">C6 Envelope</option>
+          <option value="16.2,22.9">C5 Envelope</option>
+          <option value="22.9,32.4">C4 Envelope</option>
+
+          <!-- US -->
+          <option value="8.5,11">Letter</option>
+          <option value="8.5,14">Legal</option>
+          <option value="11,17">Tabloid</option>
+
+          <!-- Flyers / Brochures (سم) -->
+          <option value="9.9,21">DL Flyer</option>
+          <option value="10,21">Flyer 10×21</option>
+          <option value="14.8,21">Flyer A5</option>
+          <option value="21,29.7">Flyer A4</option>
+
+          <!-- Cards / IDs -->
+          <option value="5.4,8.6">ID / Credit Card</option>
+          <option value="8.5,5.5">Business Card</option>
+          <option value="9,5">Business Card EU</option>
+          <option value="10.5,14.8">Postcard A6</option>
+
+          <!-- Photos -->
+          <option value="10,15">Photo 10×15</option>
+          <option value="13,18">Photo 13×18</option>
+          <option value="15,20">Photo 15×20</option>
+          <option value="20,30">Photo 20×30</option>
+
+          <!-- Posters (سم) -->
+          <option value="30,40">Poster 30×40</option>
+          <option value="40,60">Poster 40×60</option>
+          <option value="50,70">Poster 50×70</option>
+          <option value="70,100">Poster 70×100</option>
+
+          <!-- Social (px) -->
+          <option value="1080,1080">Instagram Post</option>
+          <option value="1080,1350">Instagram Portrait</option>
+          <option value="1080,1920">Story / Reels</option>
+          <option value="1200,628">Facebook Ad</option>
+          <option value="1200,630">Facebook Post</option>
+          <option value="820,312">Facebook Cover</option>
+          <option value="1080,1920">TikTok Video</option>
+          <option value="735,1102">Pinterest Pin</option>
+          <option value="1280,720">YouTube Thumbnail</option>
+          <option value="2560,1440">YouTube Banner</option>
+
+          <!-- Video / Screens (px) -->
+          <option value="640,480">VGA</option>
+          <option value="1280,720">HD Video</option>
+          <option value="1920,1080">Full HD</option>
+          <option value="2560,1440">QHD</option>
+          <option value="3840,2160">4K</option>
+          <option value="7680,4320">8K</option>
+          <option value="1366,768">Laptop Screen</option>
+          <option value="2732,2048">iPad Pro</option>
+          <option value="1170,2532">iPhone 13</option>
+          <option value="1080,2400">Android Full Screen</option>
+
+          <!-- Banners / Large Print (سم) -->
+          <option value="60,160">Roll Up Banner</option>
+          <option value="80,200">Roll Up XL</option>
+          <option value="100,200">Roll Up XXL</option>
+          <option value="200,300">Banner Vertical</option>
+          <option value="300,100">Banner Horizontal</option>
+          <option value="300,300">Billboard Square</option>
+          <option value="600,300">Billboard Large</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="close-btn" onclick="goHome()">إغلاق الأداة</button>
+  </div>
+</div>
+
+<!-- ================= مولد التدرج ================= -->
+<div id="tool_gradient" class="screen">
+  <div class="grad-wrap">
+    <div id="gradColors" class="grad-colors">
+      <input type="color" value="#ff0055" onchange="updateGradient()">
+      <input type="color" value="#00aaff" onchange="updateGradient()">
+    </div>
+    <button class="grad-btn add-btn" onclick="addColor()">➕ إضافة لون</button>
+    <button class="grad-btn random-btn" onclick="randomColors()">🎲 ألوان عشوائية</button>
+    <div id="preview" class="preview"></div>
+    <div id="hexList"></div>
+    <button class="grad-btn copy-gradient" onclick="copyGradient()">نسخ كود التدرج</button>
+    <button class="close-btn" onclick="goHome()">إغلاق الأداة</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+function hideAll(){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'))}
+function goHome(){hideAll();home.classList.add('active')}
+function openTool(id){hideAll();document.getElementById(id).classList.add('active')}
+function soon(){alert("قريباً 🔥")}
+function swapUnits(){[fromUnit.value,toUnit.value]=[toUnit.value,fromUnit.value]}
+
+const BASE_FONT=16;
+
+const toCM={
+  cm:v=>v, mm:v=>v/10, m:v=>v*100, km:v=>v*100000,
+  in:v=>v*2.54, ft:v=>v*30.48, yd:v=>v*91.44, mi:v=>v*160934,
+  px:(v,d)=>(v/d)*2.54, pt:v=>(v/72)*2.54, pc:v=>(v*12/72)*2.54,
+  em:v=>(v*BASE_FONT/96)*2.54, rem:v=>(v*BASE_FONT/96)*2.54
+};
+const fromCM={
+  cm:v=>v, mm:v=>v*10, m:v=>v/100, km:v=>v/100000,
+  in:v=>v/2.54, ft:v=>v/30.48, yd:v=>v/91.44, mi:v=>v/160934,
+  px:(v,d)=>(v/2.54)*d, pt:v=>(v/2.54)*72, pc:v=>(v/2.54)*6,
+  em:v=>(v/2.54)*96/BASE_FONT, rem:v=>(v/2.54)*96/BASE_FONT
+};
+
+let lastW=null,lastH=null;
+function convert(){
+  /* التعديل 2: لو ما دخلت DPI نستخدم 300 تلقائيًا */
+  const d = (parseFloat(dpi.value) && parseFloat(dpi.value) > 0) ? parseFloat(dpi.value) : 300;
+
+  const w=parseFloat(width.value);
+  const h=parseFloat(height.value);
+  if(isNaN(w)||isNaN(h)){
+    result.innerHTML="❗ أدخل العرض والطول بشكل صحيح";
+    return;
+  }
+  const wcm=toCM[fromUnit.value](w,d);
+  const hcm=toCM[fromUnit.value](h,d);
+  lastW=Math.round(fromCM[toUnit.value](wcm,d)*100)/100;
+  lastH=Math.round(fromCM[toUnit.value](hcm,d)*100)/100;
+  result.innerHTML=`العرض: ${lastW}<br>الطول: ${lastH}`;
+}
+function copyVal(t){navigator.clipboard.writeText(t==='w'?lastW:lastH)}
+function copyAll(){
+  navigator.clipboard.writeText(
+    "العرض: " + lastW + "\n" +
+    "الطول: " + lastH
+  );
+}
+function applyPreset(v){
+  if(!v) return;
+  const [w,h]=v.split(',');
+  width.value=w;
+  height.value=h;
+}
+
+/* ===== مولد التدرج ===== */
+function updateGradient(){
+  const colors=[...gradColors.children].map(i=>i.value);
+  preview.style.background=`linear-gradient(90deg,${colors.join(',')})`;
+  hexList.innerHTML='';
+  colors.forEach(c=>{
+    hexList.innerHTML+=`<div class="hex-row"><span>${c}</span><button onclick="navigator.clipboard.writeText('${c}')">نسخ</button></div>`;
+  });
+}
+function addColor(){
+  const i=document.createElement('input');
+  i.type='color';
+  i.value='#'+Math.floor(Math.random()*16777215).toString(16).padStart(6,'0');
+  i.onchange=updateGradient;
+  gradColors.appendChild(i);
+  updateGradient();
+}
+function randomColors(){
+  [...gradColors.children].forEach(i=>{
+    i.value='#'+Math.floor(Math.random()*16777215).toString(16).padStart(6,'0');
+  });
+  updateGradient();
+}
+function copyGradient(){
+  const colors=[...gradColors.children].map(i=>i.value);
+  navigator.clipboard.writeText(`background: linear-gradient(90deg, ${colors.join(', ')});`);
+  alert('تم النسخ ✔');
+}
+window.onload=updateGradient;
+</script>
+
+</body>
+</html>

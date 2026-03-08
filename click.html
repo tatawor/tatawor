@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>تحدي الحظ اليومي | Lucky Challenge</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --primary: #6a11cb;
+  --secondary: #fcb045;
+  --accent: #ff6b6b;
+  --success: #00d9a5;
+  --dark: #1a1a2e;
+  --light: #f8f9fa;
+  --glass: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Cairo', 'Tajawal', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Animated Background Particles */
+#particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  animation: float 20s infinite linear;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+}
+
+/* Main Container */
+.container {
+  position: relative;
+  z-index: 10;
+  width: 90%;
+  max-width: 450px;
+  perspective: 1000px;
+}
+
+/* Glass Card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 30px;
+  border: 1px solid var(--glass-border);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  padding: 40px 30px;
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  transform: rotate(45deg);
+  transition: all 0.5s;
+  opacity: 0;
+}
+
+.glass-card:hover::before {
+  animation: shine 0.5s ease-in-out;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100%) translateY(100%) rotate(45deg); opacity: 0; }
+}
+
+/* Header Section */
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.logo-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  box-shadow: 0 10px 30px rgba(106, 17, 203, 0.3);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 10px 30px rgba(106, 17, 203, 0.3); }
+  50% { transform: scale(1.05); box-shadow: 0 15px 40px rgba(106, 17, 203, 0.4); }
+}
+
+.logo-icon i {
+  font-size: 40px;
+  color: white;
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 10px;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.input-wrapper {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.input-wrapper:focus-within {
+  transform: translateY(-2px);
+}
+
+.input-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--primary);
+  font-size: 18px;
+  transition: all 0.3s;
+}
+
+.input-wrapper:focus-within .input-icon {
+  color: var(--secondary);
+  transform: translateY(-50%) scale(1.1);
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: var(--dark);
+  font-size: 14px;
+  transform-origin: right;
+  transition: all 0.3s;
+}
+
+input {
+  width: 100%;
+  padding: 15px 45px 15px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 15px;
+  font-size: 16px;
+  font-family: 'Cairo', sans-serif;
+  background: #fafafa;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+input:focus {
+  border-color: var(--primary);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(106, 17, 203, 0.1);
+}
+
+input::placeholder {
+  color: #aaa;
+  font-weight: 300;
+}
+
+/* Button Styles */
+.btn-primary {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border: none;
+  border-radius: 15px;
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  font-family: 'Cairo', sans-serif;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(106, 17, 203, 0.3);
+  margin-top: 10px;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: left 0.5s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(106, 17, 203, 0.4);
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-primary:active {
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Game Section */
+#gameSection {
+  display: none;
+  animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.welcome-banner {
+  background: linear-gradient(135deg, rgba(106, 17, 203, 0.1), rgba(252, 176, 69, 0.1));
+  border: 2px solid rgba(106, 17, 203, 0.2);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 25px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-banner::before {
+  content: '🎉';
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 30px;
+  opacity: 0.3;
+}
+
+.welcome-text {
+  font-weight: 700;
+  color: var(--dark);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.user-name {
+  color: var(--primary);
+  font-weight: 900;
+}
+
+/* Lucky Buttons Grid */
+.buttons-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.lucky-btn {
+  padding: 18px;
+  border: none;
+  border-radius: 16px;
+  color: white;
+  font-weight: 700;
+  font-size: 16px;
+  font-family: 'Cairo', sans-serif;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.lucky-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.lucky-btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.lucky-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.lucky-btn:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+.lucky-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Button Colors */
+.btn-purple { background: linear-gradient(135deg, #667eea, #764ba2); }
+.btn-orange { background: linear-gradient(135deg, #f093fb, #f5576c); }
+.btn-red { background: linear-gradient(135deg, #fa709a, #fee140); color: #333; }
+.btn-blue { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+.btn-green { background: linear-gradient(135deg, #43e97b, #38f9d7); color: #333; }
+
+.btn-purple:hover { box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4); }
+.btn-orange:hover { box-shadow: 0 8px 25px rgba(240, 147, 251, 0.4); }
+.btn-red:hover { box-shadow: 0 8px 25px rgba(250, 112, 154, 0.4); }
+.btn-blue:hover { box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4); }
+.btn-green:hover { box-shadow: 0 8px 25px rgba(67, 233, 123, 0.4); }
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+  display: flex;
+  opacity: 1;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 30px;
+  padding: 40px;
+  text-align: center;
+  max-width: 350px;
+  width: 90%;
+  transform: scale(0.7) translateY(50px);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-overlay.active .modal-content {
+  transform: scale(1) translateY(0);
+}
+
+.modal-icon {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, var(--success), #00b894);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  animation: bounceIn 0.6s ease;
+  box-shadow: 0 10px 30px rgba(0, 217, 165, 0.3);
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.modal-icon i {
+  font-size: 50px;
+  color: white;
+}
+
+.modal-title {
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--dark);
+  margin-bottom: 10px;
+}
+
+.modal-points {
+  font-size: 48px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 15px 0;
+  line-height: 1;
+}
+
+.modal-message {
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+.btn-close {
+  padding: 12px 30px;
+  background: linear-gradient(135deg, var(--dark), #2d3436);
+  border: none;
+  border-radius: 25px;
+  color: white;
+  font-weight: 700;
+  font-family: 'Cairo', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-close:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Confetti */
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: -10px;
+  animation: confetti-fall 3s linear forwards;
+}
+
+@keyframes confetti-fall {
+  to {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Loading Overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 9999;
+  backdrop-filter: blur(10px);
+}
+
+.loading-overlay.active {
+  display: flex;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(255,255,255,0.1);
+  border-top-color: var(--secondary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  animation: pulse-text 1.5s ease infinite;
+}
+
+@keyframes pulse-text {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Error Message */
+.error-message {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 12px;
+  margin-top: 15px;
+  font-weight: 600;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  animation: shake 0.5s ease;
+}
+
+.error-message.show {
+  display: flex;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .glass-card {
+    padding: 30px 20px;
+    border-radius: 25px;
+  }
+  
+  h1 { font-size: 24px; }
+  
+  .modal-content {
+    padding: 30px 20px;
+  }
+  
+  .modal-points { font-size: 36px; }
+}
+
+/* Hide elements utility */
+.hidden {
+  display: none !important;
+}
+
+.fade-out {
+  animation: fadeOut 0.5s ease forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+    display: none;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Particles Background -->
+<div id="particles"></div>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay" class="loading-overlay">
+  <div class="spinner"></div>
+  <div class="loading-text">جارٍ تسجيل الدخول...</div>
+</div>
+
+<!-- Result Modal -->
+<div id="resultModal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-icon">
+      <i class="fas fa-gift"></i>
+    </div>
+    <div class="modal-title">مبروك! 🎉</div>
+    <div class="modal-points" id="modalPoints">+50</div>
+    <div class="modal-message" id="modalMessage">
+      تمت إضافة النقاط إلى رصيدك بنجاح
+    </div>
+    <button class="btn-close" onclick="closeModal()">
+      <i class="fas fa-check"></i> حسناً
+    </button>
+  </div>
+</div>
+
+<!-- Main Container -->
+<div class="container">
+  <div class="glass-card" id="mainCard">
+    
+    <!-- Login Section -->
+    <div id="loginSection">
+      <div class="header">
+        <div class="logo-icon">
+          <i class="fas fa-dice"></i>
+        </div>
+        <h1>تحدي الحظ اليومي</h1>
+        <p class="subtitle">جرب حظك واربح نقاط إضافية</p>
+      </div>
+
+      <div class="form-group">
+        <label>الرقم الأكاديمي</label>
+        <div class="input-wrapper">
+          <i class="fas fa-id-card input-icon"></i>
+          <input type="text" id="studentIdInput" placeholder="أدخل رقمك الأكاديمي" autocomplete="off">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>كلمة السر</label>
+        <div class="input-wrapper">
+          <i class="fas fa-lock input-icon"></i>
+          <input type="password" id="passwordInput" placeholder="أدخل كلمة السر">
+        </div>
+      </div>
+
+      <div id="errorMsg" class="error-message">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="errorText"></span>
+      </div>
+
+      <button id="startBtn" class="btn-primary">
+        <i class="fas fa-play"></i> ابدأ التحدي
+      </button>
+    </div>
+
+    <!-- Game Section -->
+    <div id="gameSection">
+      <div class="welcome-banner">
+        <div class="welcome-text">
+          أهلاً <span class="user-name" id="userNameDisplay"></span>!<br>
+          اختر زر الحظ الخاص بك 🎯
+        </div>
+      </div>
+
+      <div class="buttons-grid" id="buttonsContainer">
+        <!-- Buttons will be generated here -->
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+<script>
+// Firebase Config
+const firebaseConfig = {
+  databaseURL: "https://store-points-7d2f4-default-rtdb.asia-southeast1.firebasedatabase.app/"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// DOM Elements
+const startBtn = document.getElementById("startBtn");
+const studentIdInput = document.getElementById("studentIdInput");
+const passwordInput = document.getElementById("passwordInput");
+const loadingOverlay = document.getElementById("loadingOverlay");
+const loginSection = document.getElementById("loginSection");
+const gameSection = document.getElementById("gameSection");
+const userNameDisplay = document.getElementById("userNameDisplay");
+const btnContainer = document.getElementById("buttonsContainer");
+const errorMsg = document.getElementById("errorMsg");
+const errorText = document.getElementById("errorText");
+const resultModal = document.getElementById("resultModal");
+const modalPoints = document.getElementById("modalPoints");
+const modalMessage = document.getElementById("modalMessage");
+
+let currentStudent = null;
+let hasChosen = false;
+
+// Create Background Particles
+function createParticles() {
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 20; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.animationDelay = Math.random() * 20 + 's';
+    particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+    container.appendChild(particle);
+  }
+}
+createParticles();
+
+// Show/Hide Loading
+function showLoading(show = true) {
+  loadingOverlay.classList.toggle('active', show);
+}
+
+// Show Error
+function showError(msg) {
+  errorText.textContent = msg;
+  errorMsg.classList.add('show');
+  setTimeout(() => errorMsg.classList.remove('show'), 4000);
+}
+
+// Show Success Modal
+function showModal(points) {
+  modalPoints.textContent = `+${points}`;
+  modalMessage.innerHTML = `تمت إضافة <strong>${points} نقطة</strong> إلى رصيدك بنجاح!<br>رصيدك الجديد: ${(Number(currentStudent.points) || 0) + points}`;
+  resultModal.classList.add('active');
+  createConfetti();
+}
+
+// Close Modal
+function closeModal() {
+  resultModal.classList.remove('active');
+  // Reset for next time or redirect
+  setTimeout(() => {
+    location.reload();
+  }, 500);
+}
+
+// Create Confetti Effect
+function createConfetti() {
+  const colors = ['#6a11cb', '#fcb045', '#ff6b6b', '#00d9a5', '#4facfe'];
+  for (let i = 0; i < 50; i++) {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.left = Math.random() * 100 + '%';
+    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.animationDelay = Math.random() * 2 + 's';
+    confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+    document.body.appendChild(confetti);
+    setTimeout(() => confetti.remove(), 4000);
+  }
+}
+
+// Login Handler
+startBtn.addEventListener("click", async () => {
+  const id = studentIdInput.value.trim();
+  const pass = passwordInput.value.trim();
+
+  if (!id || !pass) {
+    showError("الرجاء إدخال جميع البيانات");
+    return;
+  }
+
+  showLoading(true);
+  
+  try {
+    const snap = await db.ref("users/" + id).get();
+    showLoading(false);
+
+    if (!snap.exists()) {
+      showError("الطالب غير موجود");
+      return;
+    }
+
+    const data = snap.val();
+    if (data.password !== pass) {
+      showError("كلمة السر غير صحيحة");
+      return;
+    }
+
+    if (data.usedCodes && data.usedCodes.luckChallenge) {
+      showError("لقد شاركت مسبقًا في تحدي الحظ اليومي");
+      return;
+    }
+
+    currentStudent = { id, ...data };
+    
+    // Transition to game
+    loginSection.classList.add('fade-out');
+    setTimeout(() => {
+      loginSection.classList.add('hidden');
+      gameSection.style.display = 'block';
+      userNameDisplay.textContent = currentStudent.name;
+      startGame();
+    }, 500);
+
+  } catch (error) {
+    showLoading(false);
+    showError("حدث خطأ في الاتصال، حاول مرة أخرى");
+    console.error(error);
+  }
+});
+
+// Start Game
+function startGame() {
+  const colors = ["btn-purple", "btn-orange", "btn-red", "btn-blue", "btn-green"];
+  const points = [10, 20, 30, 40, 50];
+  const icons = ["fa-star", "fa-heart", "fa-bolt", "fa-gem", "fa-crown"];
+  
+  // Shuffle points
+  const shuffled = points.map((p, i) => ({ points: p, color: colors[i], icon: icons[i] }))
+    .sort(() => Math.random() - 0.5);
+
+  btnContainer.innerHTML = "";
+
+  shuffled.forEach((item, index) => {
+    const btn = document.createElement("button");
+    btn.className = `lucky-btn ${item.color}`;
+    btn.innerHTML = `<i class="fas ${item.icon}"></i> اخترني`;
+    btn.style.animationDelay = `${index * 0.1}s`;
+    btn.style.animation = 'fadeInUp 0.5s ease forwards';
+    btn.onclick = () => chooseLuck(btn, item.points, item.icon);
+    btnContainer.appendChild(btn);
+  });
+}
+
+// Choose Luck
+async function chooseLuck(button, points, icon) {
+  if (hasChosen) return;
+  hasChosen = true;
+
+  // Visual feedback
+  button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> جاري المعالجة...`;
+  
+  try {
+    const newPoints = (Number(currentStudent.points) || 0) + points;
+    const updates = {
+      points: newPoints,
+      "usedCodes/luckChallenge": true
+    };
+    
+    await db.ref("users/" + currentStudent.id).update(updates);
+
+    // Disable all buttons
+    document.querySelectorAll(".lucky-btn").forEach(b => {
+      b.disabled = true;
+      if (b !== button) {
+        b.style.opacity = '0.3';
+        b.style.transform = 'scale(0.95)';
+      }
+    });
+
+    // Success animation on selected button
+    button.innerHTML = `<i class="fas ${icon}"></i> ${points} نقطة!`;
+    button.style.transform = 'scale(1.1)';
+    
+    // Show modal after short delay
+    setTimeout(() => showModal(points), 500);
+
+  } catch (error) {
+    button.innerHTML = `<i class="fas fa-exclamation-circle"></i> حدث خطأ`;
+    showError("فشل في تحديث البيانات، حاول مرة أخرى");
+    hasChosen = false;
+  }
+}
+
+// Enter key support
+passwordInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') startBtn.click();
+});
+studentIdInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') passwordInput.focus();
+});
+</script>
+
+</body>
+</html>

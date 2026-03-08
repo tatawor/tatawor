@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تحديث مطلوب</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: #0a0a0a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* خلفية شبكية متحركة */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridMove 20s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        /* دائرة توهج خلفية */
+        .glow-circle {
+            position: fixed;
+            width: 80vh;
+            height: 80vh;
+            max-width: 800px;
+            max-height: 800px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.5) 0%, transparent 70%);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+        }
+
+        /* المحتوى الرئيسي */
+        .content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* أيقونة التحديث المتحركة */
+        .icon-box {
+            width: 22vh;
+            height: 22vh;
+            max-width: 220px;
+            max-height: 220px;
+            margin-bottom: 5vh;
+            position: relative;
+        }
+
+        .orbit {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px dashed rgba(99, 102, 241, 0.5);
+            border-radius: 50%;
+            animation: spin 10s linear infinite;
+        }
+
+        .orbit-inner {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 3px solid rgba(168, 85, 247, 0.6);
+            border-radius: 50%;
+            animation: spinReverse 8s linear infinite;
+        }
+
+        .icon-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 14vh;
+            height: 14vh;
+            max-width: 140px;
+            max-height: 140px;
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6vh;
+            box-shadow: 0 0 50px rgba(99, 102, 241, 0.7);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes spinReverse {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+            50% { transform: translate(-50%, -50%) translateY(-12px); }
+        }
+
+        /* نص التحديث */
+        .update-text {
+            font-size: 5vh;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 2vh;
+            text-shadow: 0 0 30px rgba(99, 102, 241, 0.6);
+        }
+
+        .update-sub {
+            font-size: 2.2vh;
+            color: #94a3b8;
+            margin-bottom: 6vh;
+            line-height: 1.7;
+            max-width: 70%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* زر التحديث */
+        .update-btn {
+            padding: 2.5vh 7vh;
+            background: linear-gradient(90deg, #6366f1 0%, #a855f7 100%);
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 2.5vh;
+            font-weight: 800;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .update-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .update-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .update-btn:hover::before {
+            left: 100%;
+        }
+
+        /* تأثير النجوم */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        /* للشاشات الصغيرة */
+        @media (max-height: 600px) {
+            .icon-box {
+                width: 18vh;
+                height: 18vh;
+                margin-bottom: 3vh;
+            }
+            .icon-center {
+                width: 11vh;
+                height: 11vh;
+                font-size: 5vh;
+            }
+            .update-text {
+                font-size: 4vh;
+            }
+            .update-sub {
+                font-size: 1.8vh;
+                margin-bottom: 4vh;
+            }
+            .update-btn {
+                font-size: 2vh;
+                padding: 2vh 5vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- الخلفيات -->
+    <div class="grid-bg"></div>
+    <div class="glow-circle"></div>
+    <div class="stars" id="stars"></div>
+
+    <!-- المحتوى -->
+    <div class="content">
+        <!-- الأيقونة المتحركة -->
+        <div class="icon-box">
+            <div class="orbit"></div>
+            <div class="orbit-inner"></div>
+            <div class="icon-center">📲</div>
+        </div>
+
+        <!-- النصوص -->
+        <h1 class="update-text">تحديث متوفر</h1>
+        <p class="update-sub">
+            تم إصدار نسخة جديدة من التطبيق. يُرجى التحديث للاستمرار في استخدام التطبيق.
+        </p>
+
+        <!-- زر التحديث -->
+        <a href="https://tatawor.github.io/tatawor/tataworapp.html" class="update-btn">
+            تحديث الآن
+        </a>
+    </div>
+
+    <script>
+        // إنشاء نجوم عشوائية
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 80; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+    </script>
+</body>
+</html>

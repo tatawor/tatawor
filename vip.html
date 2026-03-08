@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عن الأكاديمية</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+/* إخفاء عناصر بلوجر */
+.header-logo,.sidebar,.search-form,.dark-toggle,.top-bar,
+header,#header-wrapper,footer,.footer-container,#footer-wrapper{
+  display:none !important;
+}
+
+/* ===== ضبط الحجم للويب فيو فقط ===== */
+.app-scale{
+  transform: scale(0.92);
+  transform-origin: top center;
+  width:108%;
+  margin:0 auto;
+}
+
+/* ===== التصميم الأصلي بدون أي تعديل ===== */
+body{
+  font-family:'Cairo',sans-serif;
+  background:#f9f9f9;
+  color:#333;
+  margin:0;
+  padding:0;
+  text-align:center;
+}
+
+h1#anniversary{
+  font-size:14px;
+  margin-top:12px;
+  color:#c0392b;
+}
+
+.countdown-container{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin:20px auto 10px;
+}
+
+.time-box{
+  background:#fff;
+  border-radius:12px;
+  padding:10px 16px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+  font-size:28px;
+  font-weight:bold;
+  color:#2c3e50;
+  width:60px;
+}
+
+.time-label{
+  font-size:12px;
+  color:#555;
+  margin-top:4px;
+}
+
+.buttons-container{
+  margin-top:30px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+}
+
+.dropdown{
+  width:80%;
+  max-width:400px;
+}
+
+.dropbtn{
+  background:linear-gradient(to left,#2980b9,#8e44ad);
+  color:#fff;
+  padding:12px 20px;
+  border:none;
+  border-radius:10px;
+  font-size:16px;
+  cursor:pointer;
+  width:100%;
+}
+
+.dropdown-content{
+  display:none;
+  background:#fff;
+  border-radius:8px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.15);
+  padding:12px;
+  margin-top:6px;
+  text-align:right;
+  font-size:15px;
+  line-height:1.6;
+}
+
+.dropdown.active .dropdown-content{
+  display:block;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app-scale">
+
+<h1 id="anniversary">العيد الـ 11 للأكاديمية بعد:</h1>
+
+<div class="countdown-container">
+  <div class="time-box"><span id="seconds">--</span><div class="time-label">ثانية</div></div>
+  <div class="time-box"><span id="minutes">--</span><div class="time-label">دقيقة</div></div>
+  <div class="time-box"><span id="hours">--</span><div class="time-label">ساعة</div></div>
+  <div class="time-box"><span id="days">--</span><div class="time-label">يوم</div></div>
+</div>
+
+<div class="buttons-container">
+
+<div class="dropdown">
+<button class="dropbtn">من نحن؟</button>
+<div class="dropdown-content">
+نحن أكاديمية تطويرية تهدف لدعم الطلاب في مسيرتهم التعليمية من خلال أدوات مبتكرة ومسابقات تحفيزية وتقييمات مستمرة.
+</div>
+</div>
+
+<div class="dropdown">
+<button class="dropbtn">رؤيتنا</button>
+<div class="dropdown-content">
+بناء جيل واعٍ ومثقف يستخدم التقنية في تطوير ذاته ومجتمعه من خلال بيئة تعليمية رقمية ممتعة وآمنة.
+</div>
+</div>
+
+<div class="dropdown">
+<button class="dropbtn">رسالتنا</button>
+<div class="dropdown-content">
+تقديم محتوى تعليمي تفاعلي يراعي الفروقات الفردية ويعزز من مهارات الطالب وقدراته بطرق حديثة وإبداعية.
+</div>
+</div>
+
+<div class="dropdown">
+<button class="dropbtn">تاريخ التأسيس</button>
+<div class="dropdown-content">
+تأسست الأكاديمية في 2015/11/11.
+</div>
+</div>
+
+<div class="dropdown">
+<button class="dropbtn">ما هو الرقم الأكاديمي؟</button>
+<div class="dropdown-content">
+الرقم الأكاديمي هو رقم خاص بكل طالب يُستخدم لمتابعة تطوره ومستواه ويمكن استخدامه في متجر الأكاديمية.
+</div>
+</div>
+
+<div class="dropdown">
+<button class="dropbtn">مناسبتنا القادمة</button>
+<div class="dropdown-content">
+نحن نترقب احتفالنا الكبير بذكرى تأسيس الأكاديمية القادمة وتكريم طلابنا المميزين.
+</div>
+</div>
+
+<div class="dropdown">
+<button class="dropbtn">قيمنا</button>
+<div class="dropdown-content">
+نؤمن بالتميّز، الإبداع، الشفافية، والتمكين.
+</div>
+</div>
+
+<div class="dropdown">
+<button class="dropbtn">فريق العمل</button>
+<div class="dropdown-content">
+يتكوّن فريقنا من معلمين، مبرمجين، ومصممين يعملون بروح الفريق.
+</div>
+</div>
+
+</div>
+</div>
+
+<script>
+function updateCountdown(){
+  const now=new Date();
+  let target=new Date(`November 11, ${now.getFullYear()} 00:00:00`);
+  if(now>target) target.setFullYear(target.getFullYear()+1);
+  const diff=target-now;
+
+  days.innerText=Math.floor(diff/86400000);
+  hours.innerText=Math.floor(diff/3600000)%24;
+  minutes.innerText=Math.floor(diff/60000)%60;
+  seconds.innerText=Math.floor(diff/1000)%60;
+}
+setInterval(updateCountdown,1000);
+updateCountdown();
+
+document.querySelectorAll(".dropbtn").forEach(btn=>{
+  btn.onclick=()=>{
+    const d=btn.parentElement;
+    d.classList.toggle("active");
+    document.querySelectorAll(".dropdown").forEach(o=>{
+      if(o!==d) o.classList.remove("active");
+    });
+  };
+});
+</script>
+
+</body>
+</html>

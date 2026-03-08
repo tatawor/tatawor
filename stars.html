@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0f0f1a">
+    <title>لوحة تحكم - تطور</title>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --secondary: #ec4899;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0a0a0f;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--dark);
+            color: white;
+            overflow-x: hidden;
+            font-size: 13px;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #1e1b4b, #0f0f1a);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 30px 25px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .login-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .login-icon i {
+            font-size: 24px;
+            color: white;
+        }
+
+        .login-box h2 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .login-box p {
+            font-size: 0.8rem;
+            opacity: 0.6;
+            margin-bottom: 20px;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            text-align: center;
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+            font-family: inherit;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .password-input.error {
+            border-color: var(--danger);
+            animation: shake 0.4s ease;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 0.75rem;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .error-message.show {
+            opacity: 1;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+
+        /* Main App */
+        .main-app {
+            display: none;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 12px;
+            min-height: 100vh;
+        }
+
+        /* Compact Header */
+        .header {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+            background: linear-gradient(135deg, #fff, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            font-size: 0.75rem;
+            opacity: 0.6;
+        }
+
+        /* Quick Actions - Compact */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .quick-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quick-btn:hover {
+            border-color: var(--primary);
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .quick-btn i {
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+            color: var(--accent);
+            display: block;
+        }
+
+        .quick-btn span {
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: block;
+            line-height: 1.2;
+        }
+
+        .quick-btn.danger i {
+            color: var(--danger);
+        }
+
+        /* Search Section - Compact */
+        .search-section {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .section-title i {
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 35px 10px 12px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.8rem;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.4);
+            font-size: 0.85rem;
+        }
+
+        /* Suggestions */
+        .suggestions {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            max-height: 180px;
+            overflow-y: auto;
+            display: none;
+            margin-top: 8px;
+        }
+
+        .suggestions.active {
+            display: block;
+        }
+
+        .suggestion-item {
+            padding: 10px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s;
+        }
+
+        .suggestion-item:hover {
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .suggestion-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .suggestion-info {
+            flex: 1;
+        }
+
+        .suggestion-name {
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        .suggestion-id {
+            font-size: 0.65rem;
+            opacity: 0.6;
+        }
+
+        /* Selected Student - Compact */
+        .selected-student {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.05));
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: none;
+        }
+
+        .selected-student.active {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .student-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .student-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+
+        .student-info h2 {
+            font-size: 1rem;
+            font-weight: 800;
+            margin-bottom: 2px;
+        }
+
+        .student-info p {
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+
+        /* Stats Grid - Compact */
+        .student-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .stat-box {
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .stat-box.weekly {
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .stat-box.total {
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .stat-box-value {
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 2px;
+        }
+
+        .stat-box.weekly .stat-box-value {
+            color: var(--warning);
+        }
+
+        .stat-box.total .stat-box-value {
+            color: var(--success);
+        }
+
+        .stat-box-label {
+            font-size: 0.7rem;
+            opacity: 0.7;
+        }
+
+        /* Single Input Section */
+        .add-section {
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .number-input {
+            flex: 1;
+            padding: 10px 12px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            font-family: inherit;
+            text-align: center;
+        }
+
+        .number-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Buttons Row */
+        .buttons-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 10px 12px;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning), #d97706);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Danger Zone - Compact */
+        .danger-zone {
+            background: rgba(239, 68, 68, 0.05);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .danger-title {
+            color: var(--danger);
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .danger-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 16px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 20px;
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+        }
+
+        .modal-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 1.5rem;
+        }
+
+        .modal-icon.warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+            border: 2px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .modal-icon.danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 2px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .modal h3 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .modal p {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .modal-buttons .btn {
+            flex: 1;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            transition: transform 0.3s ease;
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.success {
+            border-color: rgba(16, 185, 129, 0.3);
+            color: var(--success);
+        }
+
+        .toast.error {
+            border-color: rgba(239, 68, 68, 0.3);
+            color: var(--danger);
+        }
+
+        /* Empty State */
+        .empty-search {
+            text-align: center;
+            padding: 30px 20px;
+            opacity: 0.4;
+        }
+
+        .empty-search i {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .empty-search p {
+            font-size: 0.8rem;
+        }
+
+        /* Loading */
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">تمت العملية بنجاح</span>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal">
+            <div class="modal-icon warning" id="modalIcon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 id="modalTitle">تأكيد العملية</h3>
+            <p id="modalMessage">هل أنت متأكد؟</p>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="closeModal()">إلغاء</button>
+                <button class="btn btn-danger" id="modalConfirmBtn" onclick="confirmModal()">تأكيد</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <div class="login-icon">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h2>لوحة التحكم</h2>
+            <p>أدخل كلمة المرور للمتابعة</p>
+            <input type="password" id="passwordInput" class="password-input" placeholder="••••••" onkeyup="if(event.key === 'Enter') checkPassword()">
+            <button class="login-btn" onclick="checkPassword()">دخول</button>
+            <p class="error-message" id="errorMsg"><i class="fas fa-exclamation-circle"></i> كلمة المرور غير صحيحة</p>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div class="main-app" id="mainApp">
+        <!-- Header -->
+        <header class="header">
+            <h1><i class="fas fa-cog"></i> لوحة التحكم</h1>
+            <p>إدارة النقاط والنجوم الأكاديمية</p>
+        </header>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <div class="quick-btn" onclick="location.href='stats.html'">
+                <i class="fas fa-chart-line"></i>
+                <span>الإحصائيات</span>
+            </div>
+            <div class="quick-btn danger" onclick="resetAllWeeklyOneClick()">
+                <i class="fas fa-eraser"></i>
+                <span>تصفير الكل</span>
+            </div>
+            <div class="quick-btn" onclick="document.getElementById('searchInput').focus()">
+                <i class="fas fa-search"></i>
+                <span>بحث</span>
+            </div>
+        </div>
+
+        <!-- Search Section -->
+        <div class="search-section">
+            <div class="section-title">
+                <i class="fas fa-search"></i>
+                البحث عن طالب
+            </div>
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" id="searchInput" placeholder="الاسم أو الرقم الأكاديمي..." autocomplete="off">
+            </div>
+            <div class="suggestions" id="suggestions"></div>
+        </div>
+
+        <!-- Selected Student -->
+        <div class="selected-student" id="selectedStudent">
+            <div class="student-header">
+                <img src="" alt="صورة الطالب" class="student-avatar" id="studentAvatar">
+                <div class="student-info">
+                    <h2 id="studentName">اسم الطالب</h2>
+                    <p id="studentId">الرقم: --</p>
+                </div>
+            </div>
+
+            <div class="student-stats">
+                <div class="stat-box weekly">
+                    <div class="stat-box-value" id="weeklyStarsValue">0</div>
+                    <div class="stat-box-label">الأسبوعية</div>
+                </div>
+                <div class="stat-box total">
+                    <div class="stat-box-value" id="totalStarsValue">0</div>
+                    <div class="stat-box-label">الكلية</div>
+                </div>
+            </div>
+
+            <!-- Single Input for Both -->
+            <div class="add-section">
+                <div class="section-title" style="margin-bottom: 8px;">
+                    <i class="fas fa-plus-circle" style="color: var(--accent);"></i>
+                    إضافة نقاط
+                </div>
+                <div class="input-group">
+                    <input type="number" class="number-input" id="pointsInput" placeholder="0" min="0">
+                </div>
+                <div class="buttons-row">
+                    <button class="btn btn-warning" onclick="addWeeklyStars()">
+                        <i class="fas fa-calendar-week"></i>
+                        أسبوعية
+                    </button>
+                    <button class="btn btn-success" onclick="addTotalStars()">
+                        <i class="fas fa-star"></i>
+                        كلية
+                    </button>
+                </div>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="danger-zone">
+                <div class="danger-title">
+                    <i class="fas fa-trash-alt"></i>
+                    حذف النقاط
+                </div>
+                <div class="danger-buttons">
+                    <button class="btn btn-danger" onclick="confirmDelete('weekly')">
+                        <i class="fas fa-eraser"></i>
+                        الأسبوعية
+                    </button>
+                    <button class="btn btn-danger" onclick="confirmDelete('total')">
+                        <i class="fas fa-trash"></i>
+                        الكلية
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-search" id="emptyState">
+            <i class="fas fa-user-graduate"></i>
+            <p>ابحث عن طالب لإدارة نقاطه</p>
+        </div>
+    </div>
+
+    <script>
+        // Password Protection
+        const CORRECT_PASSWORD = 'a123123';
+        
+        function checkPassword() {
+            const input = document.getElementById('passwordInput');
+            const errorMsg = document.getElementById('errorMsg');
+            const loginScreen = document.getElementById('loginScreen');
+            const mainApp = document.getElementById('mainApp');
+            
+            if (input.value === CORRECT_PASSWORD) {
+                loginScreen.style.opacity = '0';
+                loginScreen.style.transition = 'opacity 0.3s ease';
+                mainApp.style.display = 'block';
+                
+                setTimeout(() => {
+                    loginScreen.style.display = 'none';
+                    initApp();
+                }, 300);
+            } else {
+                errorMsg.classList.add('show');
+                input.classList.add('error');
+                setTimeout(() => input.classList.remove('error'), 400);
+            }
+        }
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyByR2B-XISUw_PYh5EeIcbNQwwII0c6xZg",
+            authDomain: "store-points-7d2f4.firebaseapp.com",
+            databaseURL: "https://store-points-7d2f4-default-rtdb.asia-southeast1.firebasedatabase.app/",
+            projectId: "store-points-7d2f4",
+            storageBucket: "store-points-7d2f4.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let allStudents = [];
+        let selectedStudent = null;
+        let modalCallback = null;
+
+        function initApp() {
+            loadAllStudents();
+            setupSearch();
+        }
+
+        function loadAllStudents() {
+            db.ref('users').on('value', (snapshot) => {
+                const data = snapshot.val() || {};
+                allStudents = Object.entries(data).map(([id, student]) => ({
+                    id,
+                    name: student.name || 'بدون اسم',
+                    academicId: student.academicId || student.id || '',
+                    avatar: student.avatar || 'https://i.postimg.cc/g0Bm32zB/20260207-052318.png',
+                    weeklyStars: parseInt(student.weeklyStars) || 0,
+                    stars: parseInt(student.stars) || 0,
+                    weeklyPoints: parseInt(student.weeklyPoints) || 0
+                }));
+            });
+        }
+
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const suggestions = document.getElementById('suggestions');
+
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.trim().toLowerCase();
+                
+                if (query.length < 1) {
+                    suggestions.classList.remove('active');
+                    return;
+                }
+
+                const matches = allStudents.filter(student => {
+                    const nameMatch = student.name.toLowerCase().startsWith(query) || 
+                                     student.name.toLowerCase().includes(query);
+                    const idMatch = student.academicId.toLowerCase().includes(query) ||
+                                   student.id.toLowerCase().includes(query);
+                    return nameMatch || idMatch;
+                }).slice(0, 8);
+
+                displaySuggestions(matches);
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-section')) {
+                    suggestions.classList.remove('active');
+                }
+            });
+        }
+
+        function displaySuggestions(students) {
+            const suggestions = document.getElementById('suggestions');
+            
+            if (students.length === 0) {
+                suggestions.innerHTML = '<div class="suggestion-item" style="opacity: 0.5; cursor: default;"><i class="fas fa-search" style="margin-left: 8px;"></i> لا توجد نتائج</div>';
+                suggestions.classList.add('active');
+                return;
+            }
+
+            suggestions.innerHTML = students.map(student => `
+                <div class="suggestion-item" onclick="selectStudent('${student.id}')">
+                    <img src="${student.avatar}" class="suggestion-avatar" onerror="this.src='https://i.postimg.cc/g0Bm32zB/20260207-052318.png'">
+                    <div class="suggestion-info">
+                        <div class="suggestion-name">${student.name}</div>
+                        <div class="suggestion-id">الرقم: ${student.academicId || student.id}</div>
+                    </div>
+                    <i class="fas fa-chevron-left" style="opacity: 0.3; font-size: 0.7rem;"></i>
+                </div>
+            `).join('');
+            
+            suggestions.classList.add('active');
+        }
+
+        function selectStudent(studentId) {
+            selectedStudent = allStudents.find(s => s.id === studentId);
+            if (!selectedStudent) return;
+
+            document.getElementById('suggestions').classList.remove('active');
+            document.getElementById('emptyState').style.display = 'none';
+            
+            const selectedDiv = document.getElementById('selectedStudent');
+            selectedDiv.classList.add('active');
+            
+            document.getElementById('studentAvatar').src = selectedStudent.avatar;
+            document.getElementById('studentName').textContent = selectedStudent.name;
+            document.getElementById('studentId').textContent = `الرقم: ${selectedStudent.academicId || selectedStudent.id}`;
+            
+            updateStatsDisplay();
+            document.getElementById('searchInput').value = '';
+        }
+
+        function updateStatsDisplay() {
+            if (!selectedStudent) return;
+            document.getElementById('weeklyStarsValue').textContent = selectedStudent.weeklyStars;
+            document.getElementById('totalStarsValue').textContent = selectedStudent.stars;
+        }
+
+        // Add Weekly Stars - uses shared input
+        function addWeeklyStars() {
+            if (!selectedStudent) return;
+            const input = document.getElementById('pointsInput');
+            const amount = parseInt(input.value);
+            
+            if (!amount || amount <= 0) {
+                showToast('أدخل رقم صحيح', 'error');
+                return;
+            }
+
+            const newValue = selectedStudent.weeklyStars + amount;
+            db.ref(`users/${selectedStudent.id}/weeklyStars`).set(newValue)
+                .then(() => {
+                    selectedStudent.weeklyStars = newValue;
+                    updateStatsDisplay();
+                    input.value = '';
+                    showToast(`تم إضافة ${amount} نقاط أسبوعية`, 'success');
+                })
+                .catch(() => showToast('حدث خطأ', 'error'));
+        }
+
+        // Add Total Stars - uses shared input
+        function addTotalStars() {
+            if (!selectedStudent) return;
+            const input = document.getElementById('pointsInput');
+            const amount = parseInt(input.value);
+            
+            if (!amount || amount <= 0) {
+                showToast('أدخل رقم صحيح', 'error');
+                return;
+            }
+
+            const newValue = selectedStudent.stars + amount;
+            db.ref(`users/${selectedStudent.id}/stars`).set(newValue)
+                .then(() => {
+                    selectedStudent.stars = newValue;
+                    updateStatsDisplay();
+                    input.value = '';
+                    showToast(`تم إضافة ${amount} نقاط كلية`, 'success');
+                })
+                .catch(() => showToast('حدث خطأ', 'error'));
+        }
+
+        // One-click reset all weekly
+        function resetAllWeeklyOneClick() {
+            document.getElementById('modalTitle').textContent = 'تصفير جميع النقاط الأسبوعية';
+            document.getElementById('modalMessage').innerHTML = 'سيتم تصفير النقاط الأسبوعية لجميع الطلاب<br><strong style="color: var(--danger);">لا يمكن التراجع!</strong>';
+            document.getElementById('modalIcon').className = 'modal-icon danger';
+            
+            modalCallback = executeResetAllWeekly;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function executeResetAllWeekly() {
+            const updates = {};
+            const weekKey = new Date().toISOString().split('T')[0];
+            
+            const top3 = [...allStudents]
+                .sort((a, b) => b.weeklyPoints - a.weeklyPoints)
+                .slice(0, 3)
+                .map(s => ({id: s.id, name: s.name, weeklyPoints: s.weeklyPoints}));
+            
+            const starOfWeek = [...allStudents]
+                .sort((a, b) => b.weeklyStars - a.weeklyStars)[0];
+
+            allStudents.forEach(student => {
+                updates[`users/${student.id}/weeklyPoints`] = 0;
+                updates[`users/${student.id}/weeklyStars`] = 0;
+            });
+
+            updates[`history/weeks/${weekKey}`] = {
+                timestamp: Date.now(),
+                top3,
+                starOfWeek: starOfWeek ? starOfWeek.name : null
+            };
+            
+            db.ref().update(updates)
+                .then(() => {
+                    showToast('تم تصفير جميع النقاط الأسبوعية', 'success');
+                    if (selectedStudent) {
+                        selectedStudent.weeklyStars = 0;
+                        selectedStudent.weeklyPoints = 0;
+                        updateStatsDisplay();
+                    }
+                })
+                .catch(() => showToast('حدث خطأ', 'error'));
+            
+            closeModal();
+        }
+
+        function confirmDelete(type) {
+            if (!selectedStudent) return;
+            
+            const titles = { weekly: 'حذف الأسبوعية', total: 'حذف الكلية' };
+            const messages = {
+                weekly: `حذف نقاط "${selectedStudent.name}" الأسبوعية؟`,
+                total: `حذف نقاط "${selectedStudent.name}" الكلية؟<br><strong style="color: var(--danger);">لا يمكن التراجع!</strong>`
+            };
+
+            document.getElementById('modalTitle').textContent = titles[type];
+            document.getElementById('modalMessage').innerHTML = messages[type];
+            document.getElementById('modalIcon').className = 'modal-icon danger';
+            
+            modalCallback = () => executeDelete(type);
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function executeDelete(type) {
+            if (!selectedStudent) return;
+            const ref = type === 'weekly' ? 'weeklyStars' : 'stars';
+            const currentValue = type === 'weekly' ? selectedStudent.weeklyStars : selectedStudent.stars;
+            
+            if (currentValue === 0) {
+                showToast('لا توجد نقاط', 'error');
+                closeModal();
+                return;
+            }
+
+            db.ref(`users/${selectedStudent.id}/${ref}`).set(0)
+                .then(() => {
+                    if (type === 'weekly') selectedStudent.weeklyStars = 0;
+                    else selectedStudent.stars = 0;
+                    updateStatsDisplay();
+                    showToast('تم الحذف بنجاح', 'success');
+                })
+                .catch(() => showToast('حدث خطأ', 'error'));
+            
+            closeModal();
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+            modalCallback = null;
+        }
+
+        function confirmModal() {
+            if (modalCallback) modalCallback();
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const icon = toast.querySelector('i');
+            
+            toast.className = `toast ${type}`;
+            icon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target.id === 'modal') closeModal();
+        });
+    </script>
+</body>
+</html>

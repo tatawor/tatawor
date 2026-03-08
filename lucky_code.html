@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>رمز الحظ | Lucky Code</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #6a11cb;
+  --primary-light: #8a2be2;
+  --secondary: #2575fc;
+  --accent: #00d4aa;
+  --danger: #ff4757;
+  --warning: #ffa502;
+  --bg-dark: #0f0c29;
+  --bg-light: #302b63;
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --text-dark: #2c3e50;
+  --text-light: #7f8c8d;
+  --shadow: 0 20px 60px rgba(0,0,0,0.3);
+  --shadow-hover: 0 25px 70px rgba(0,0,0,0.4);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* إخفاء عناصر القالب */
+header, footer, #header-wrapper, #footer-wrapper,
+.main-wrapper, .content-wrapper, #main-wrapper, #content-wrapper,
+.sidebar, .header-logo, .search-form, .dark-toggle, .top-bar {
+  display: none !important;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  min-height: 100vh;
+  font-family: 'Tajawal', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-light) 50%, var(--primary) 100%);
+  background-attachment: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* تأثير الخلفية المتحركة */
+.bg-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.bg-animation .circle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.03);
+  animation: float 20s infinite ease-in-out;
+}
+
+.bg-animation .circle:nth-child(1) {
+  width: 300px;
+  height: 300px;
+  top: -150px;
+  right: -100px;
+  animation-delay: 0s;
+}
+
+.bg-animation .circle:nth-child(2) {
+  width: 200px;
+  height: 200px;
+  bottom: -100px;
+  left: -50px;
+  animation-delay: 5s;
+}
+
+.bg-animation .circle:nth-child(3) {
+  width: 150px;
+  height: 150px;
+  top: 50%;
+  left: 30%;
+  animation-delay: 10s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-30px) scale(1.1); }
+}
+
+/* الحاوية الرئيسية */
+.container {
+  width: 100%;
+  max-width: 450px;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* البطاقة الرئيسية */
+.main-card {
+  background: var(--card-bg);
+  border-radius: 24px;
+  padding: 40px 30px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  position: relative;
+  overflow: hidden;
+  transform: translateY(0);
+  transition: var(--transition);
+}
+
+.main-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+}
+
+.main-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* الشعار */
+.logo-section {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.logo-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  box-shadow: 0 10px 30px rgba(106,17,203,0.3);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 10px 30px rgba(106,17,203,0.3); }
+  50% { transform: scale(1.05); box-shadow: 0 15px 40px rgba(106,17,203,0.5); }
+}
+
+.logo-icon i {
+  font-size: 36px;
+  color: white;
+}
+
+h1 {
+  color: var(--primary);
+  font-size: 28px;
+  font-weight: 800;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.subtitle {
+  color: var(--text-light);
+  font-size: 14px;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+/* حقول الإدخال */
+.input-group {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.input-group label {
+  display: block;
+  color: var(--text-dark);
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.input-group label i {
+  color: var(--primary);
+  font-size: 16px;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper i {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+  font-size: 18px;
+  transition: var(--transition);
+}
+
+input {
+  width: 100%;
+  padding: 16px 45px 16px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 16px;
+  background: #f8f9fa;
+  color: var(--text-dark);
+  font-size: 16px;
+  font-family: 'Tajawal', sans-serif;
+  font-weight: 500;
+  transition: var(--transition);
+  outline: none;
+}
+
+input:focus {
+  border-color: var(--primary);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(106,17,203,0.1);
+}
+
+input:focus + .input-wrapper i,
+.input-wrapper:focus-within i {
+  color: var(--primary);
+}
+
+input::placeholder {
+  color: #bbb;
+  font-weight: 400;
+}
+
+/* زر الإرسال */
+.btn-primary {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: white;
+  font-size: 18px;
+  font-weight: 800;
+  font-family: 'Tajawal', sans-serif;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition);
+  box-shadow: 0 8px 25px rgba(106,17,203,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(106,17,203,0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(-1px);
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-primary:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+.btn-primary.loading {
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.btn-primary.loading::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* نتيجة العملية */
+.result-box {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  text-align: center;
+  display: none;
+  animation: slideDown 0.3s ease;
+  border: 2px solid transparent;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.result-box.success {
+  display: block;
+  background: rgba(0,212,170,0.1);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.result-box.error {
+  display: block;
+  background: rgba(255,71,87,0.1);
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.result-box.warning {
+  display: block;
+  background: rgba(255,165,2,0.1);
+  color: var(--warning);
+  border-color: var(--warning);
+}
+
+/* معلومات إضافية */
+.info-section {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px dashed #ddd;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-light);
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.info-item i {
+  color: var(--primary);
+  font-size: 14px;
+}
+
+/* المودال */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(5px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+  display: flex;
+  opacity: 1;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 24px;
+  padding: 40px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  transform: scale(0.8) translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.modal-overlay.active .modal-content {
+  transform: scale(1) translateY(0);
+}
+
+.modal-icon {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-size: 50px;
+  animation: bounceIn 0.6s ease;
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.modal-icon.success {
+  background: linear-gradient(135deg, var(--accent), #00b894);
+  color: white;
+  box-shadow: 0 10px 30px rgba(0,212,170,0.4);
+}
+
+.modal-icon.error {
+  background: linear-gradient(135deg, var(--danger), #ff6b81);
+  color: white;
+  box-shadow: 0 10px 30px rgba(255,71,87,0.4);
+}
+
+.modal-icon.info {
+  background: linear-gradient(135deg, var(--secondary), #74b9ff);
+  color: white;
+  box-shadow: 0 10px 30px rgba(37,117,252,0.4);
+}
+
+.modal-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+}
+
+.modal-message {
+  color: var(--text-light);
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.modal-points {
+  font-size: 48px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.modal-points i {
+  font-size: 36px;
+  -webkit-text-fill-color: var(--accent);
+}
+
+.btn-close {
+  padding: 14px 40px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Tajawal', sans-serif;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-close:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(106,17,203,0.3);
+}
+
+/* مودال الأحمال */
+.loading-modal .modal-content {
+  background: transparent;
+  box-shadow: none;
+  padding: 20px;
+}
+
+.spinner-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+}
+
+.spinner {
+  width: 100%;
+  height: 100%;
+  border: 4px solid rgba(255,255,255,0.1);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.spinner-inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  border: 4px solid rgba(255,255,255,0.1);
+  border-top-color: var(--secondary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite reverse;
+}
+
+.loading-text {
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 20px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+/* تأثيرات النجوم */
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 999;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent);
+  animation: shoot 1s ease-out forwards;
+}
+
+@keyframes shoot {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) scale(0);
+    opacity: 0;
+  }
+}
+
+/* تأثير الاحتفال */
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  top: -10px;
+  animation: confetti-fall 3s ease-out forwards;
+  z-index: 998;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* تصميم متجاوب */
+@media screen and (max-width: 480px) {
+  .container {
+    padding: 15px;
+  }
+  
+  .main-card {
+    padding: 30px 20px;
+    border-radius: 20px;
+  }
+  
+  h1 {
+    font-size: 24px;
+  }
+  
+  .logo-icon {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .logo-icon i {
+    font-size: 30px;
+  }
+  
+  input {
+    padding: 14px 40px 14px 14px;
+    font-size: 15px;
+  }
+  
+  .btn-primary {
+    padding: 14px;
+    font-size: 16px;
+  }
+  
+  .modal-content {
+    padding: 30px 20px;
+  }
+  
+  .modal-points {
+    font-size: 36px;
+  }
+}
+
+/* دعم WebView */
+@supports (-webkit-touch-callout: none) {
+  body {
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* تحسينات الأداء */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+<!-- خلفية متحركة -->
+<div class="bg-animation">
+  <div class="circle"></div>
+  <div class="circle"></div>
+  <div class="circle"></div>
+</div>
+
+<!-- تأثير النجوم -->
+<div class="stars" id="starsContainer"></div>
+
+<div class="container">
+  <div class="main-card">
+    <!-- الشعار -->
+    <div class="logo-section">
+      <div class="logo-icon">
+        <i class="fas fa-gift"></i>
+      </div>
+      <h1>رمز الحظ</h1>
+      <p class="subtitle">أدخل رمزك الخاص واحصل على نقاط مكافأة</p>
+    </div>
+
+    <!-- النموذج -->
+    <div class="input-group">
+      <label>
+        <i class="fas fa-ticket-alt"></i>
+        الرمز السري
+      </label>
+      <div class="input-wrapper">
+        <i class="fas fa-key"></i>
+        <input type="text" id="codeInput" placeholder="مثال: TATAWOR 121158" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>
+        <i class="fas fa-id-card"></i>
+        الرقم الأكاديمي
+      </label>
+      <div class="input-wrapper">
+        <i class="fas fa-user-graduate"></i>
+        <input type="text" id="studentIdInput" placeholder="أدخل رقمك الأكاديمي" autocomplete="off">
+      </div>
+    </div>
+
+    <button class="btn-primary" id="redeemBtn" onclick="redeemCode()">
+      <i class="fas fa-plus-circle"></i>
+      إضافة النقاط
+    </button>
+
+    <!-- صندوق النتيجة -->
+    <div class="result-box" id="resultBox"></div>
+
+    <!-- معلومات -->
+    <div class="info-section">
+      <div class="info-item">
+        <i class="fas fa-info-circle"></i>
+        <span>يمكن استخدام كل رمز لمرة واحدة فقط</span>
+      </div>
+      <div class="info-item">
+        <i class="fas fa-shield-alt"></i>
+        <span>يتم التحقق من صحة البيانات فوراً</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- مودال التحميل -->
+<div class="modal-overlay loading-modal" id="loadingModal">
+  <div class="modal-content">
+    <div class="spinner-container">
+      <div class="spinner"></div>
+      <div class="spinner-inner"></div>
+    </div>
+    <div class="loading-text">جاري التحقق...</div>
+  </div>
+</div>
+
+<!-- مودال النجاح -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal-content">
+    <div class="modal-icon success">
+      <i class="fas fa-check"></i>
+    </div>
+    <div class="modal-title">مبروك! 🎉</div>
+    <div class="modal-message">تمت إضافة النقاط بنجاح إلى حسابك</div>
+    <div class="modal-points">
+      <span id="pointsAdded">0</span>
+      <i class="fas fa-coins"></i>
+    </div>
+    <button class="btn-close" onclick="closeModal('successModal')">
+      <i class="fas fa-thumbs-up"></i>
+      رائع!
+    </button>
+  </div>
+</div>
+
+<!-- مودال الخطأ -->
+<div class="modal-overlay" id="errorModal">
+  <div class="modal-content">
+    <div class="modal-icon error">
+      <i class="fas fa-times"></i>
+    </div>
+    <div class="modal-title" id="errorTitle">عذراً!</div>
+    <div class="modal-message" id="errorMessage">حدث خطأ ما</div>
+    <button class="btn-close" onclick="closeModal('errorModal')" style="background: linear-gradient(135deg, #ff4757, #ff6b81);">
+      <i class="fas fa-redo"></i>
+      حاول مرة أخرى
+    </button>
+  </div>
+</div>
+
+<!-- مودال التنبيه -->
+<div class="modal-overlay" id="infoModal">
+  <div class="modal-content">
+    <div class="modal-icon info">
+      <i class="fas fa-exclamation"></i>
+    </div>
+    <div class="modal-title" id="infoTitle">تنبيه</div>
+    <div class="modal-message" id="infoMessage">رسالة تنبيه</div>
+    <button class="btn-close" onclick="closeModal('infoModal')">
+      <i class="fas fa-check"></i>
+      فهمت
+    </button>
+  </div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+<script>
+// تهيئة Firebase
+const firebaseConfig = {
+  databaseURL: "https://store-points-7d2f4-default-rtdb.asia-southeast1.firebasedatabase.app/"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// الرموز المتاحة
+const promoCodes = [
+  { code: "TATAWOR 121158", key: "TATAWOR_121158", points: 50 },
+  { code: "LUCK-29D5", key: "LUCK_29D5", points: 10 },
+  { code: "WIN-84XQ", key: "WIN_84XQ", points: 20 },
+  { code: "HAPPY-5M3K", key: "HAPPY_5M3K", points: 30 },
+  { code: "GIFT-7N2P", key: "GIFT_7N2P", points: 40 },
+  { code: "PRIZE-1Q8Z", key: "PRIZE_1Q8Z", points: 50 }
+];
+
+// عناصر DOM
+const codeInput = document.getElementById('codeInput');
+const studentIdInput = document.getElementById('studentIdInput');
+const redeemBtn = document.getElementById('redeemBtn');
+const resultBox = document.getElementById('resultBox');
+
+// دوال المودال
+function showModal(modalId) {
+  document.getElementById(modalId).classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId).classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function showLoading() {
+  showModal('loadingModal');
+}
+
+function hideLoading() {
+  closeModal('loadingModal');
+}
+
+function showSuccess(points) {
+  document.getElementById('pointsAdded').textContent = '+' + points;
+  hideLoading();
+  showModal('successModal');
+  createConfetti();
+  createStars();
+}
+
+function showError(title, message) {
+  hideLoading();
+  document.getElementById('errorTitle').textContent = title || 'عذراً!';
+  document.getElementById('errorMessage').textContent = message || 'حدث خطأ ما';
+  showModal('errorModal');
+}
+
+function showInfo(title, message) {
+  document.getElementById('infoTitle').textContent = title || 'تنبيه';
+  document.getElementById('infoMessage').textContent = message || 'رسالة تنبيه';
+  showModal('infoModal');
+}
+
+// تأثيرات بصرية
+function createConfetti() {
+  const colors = ['#6a11cb', '#2575fc', '#00d4aa', '#ffa502', '#ff4757'];
+  for (let i = 0; i < 50; i++) {
+    setTimeout(() => {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.left = Math.random() * 100 + '%';
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+      document.body.appendChild(confetti);
+      setTimeout(() => confetti.remove(), 4000);
+    }, i * 30);
+  }
+}
+
+function createStars() {
+  const container = document.getElementById('starsContainer');
+  for (let i = 0; i < 20; i++) {
+    setTimeout(() => {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = '100%';
+      star.style.animationDelay = Math.random() * 0.5 + 's';
+      container.appendChild(star);
+      setTimeout(() => star.remove(), 1000);
+    }, i * 50);
+  }
+}
+
+// دالة إظهار النتيجة في البطاقة
+function showResult(message, type) {
+  resultBox.className = 'result-box ' + type;
+  resultBox.innerHTML = '<i class="fas fa-' + (type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle') + '"></i> ' + message;
+  
+  setTimeout(() => {
+    resultBox.className = 'result-box';
+  }, 5000);
+}
+
+// الدالة الرئيسية
+async function redeemCode() {
+  const enteredCode = codeInput.value.trim();
+  const studentId = studentIdInput.value.trim();
+
+  // التحقق من المدخلات
+  if (!enteredCode) {
+    showInfo('الرمز مفقود', 'الرجاء إدخال الرمز السري أولاً');
+    codeInput.focus();
+    return;
+  }
+
+  if (!studentId) {
+    showInfo('الرقم الأكاديمي مفقود', 'الرجاء إدخال رقمك الأكاديمي');
+    studentIdInput.focus();
+    return;
+  }
+
+  // التحقق من وجود الرمز
+  const promo = promoCodes.find(p => p.code === enteredCode);
+  if (!promo) {
+    showError('رمز غير صحيح', 'الرمز الذي أدخلته غير موجود أو منتهي الصلاحية');
+    return;
+  }
+
+  // إظهار التحميل
+  showLoading();
+  redeemBtn.classList.add('loading');
+
+  try {
+    // التحقق من وجود الطالب
+    const studentRef = db.ref('users/' + studentId);
+    const snap = await studentRef.get();
+
+    if (!snap.exists()) {
+      hideLoading();
+      redeemBtn.classList.remove('loading');
+      showError('طالب غير موجود', 'الرقم الأكاديمي غير مسجل في قاعدة البيانات');
+      return;
+    }
+
+    const studentData = snap.val();
+
+    // التحقق من استخدام الرمز سابقاً
+    if (studentData.usedCodes && studentData.usedCodes[promo.key]) {
+      hideLoading();
+      redeemBtn.classList.remove('loading');
+      showError('رمز مستخدم', 'لقد قمت باستخدام هذا الرمز مسبقاً، يرجى استخدام رمز آخر');
+      return;
+    }
+
+    // إضافة النقاط
+    const currentPoints = Number(studentData.points || 0);
+    const newPoints = currentPoints + promo.points;
+
+    const updates = {
+      points: newPoints,
+      ['usedCodes/' + promo.key]: true,
+      lastUpdate: new Date().toISOString()
+    };
+
+    await studentRef.update(updates);
+
+    // إخفاء التحميل وإظهار النجاح
+    redeemBtn.classList.remove('loading');
+    showSuccess(promo.points);
+
+    // تفريغ الحقول
+    codeInput.value = '';
+    studentIdInput.value = '';
+
+    // عرض النتيجة في البطاقة أيضاً
+    showResult(`تمت إضافة ${promo.points} نقطة! مجموعك: ${newPoints}`, 'success');
+
+  } catch (error) {
+    console.error(error);
+    redeemBtn.classList.remove('loading');
+    hideLoading();
+    showError('خطأ في النظام', 'حدث خطأ أثناء معالجة طلبك، يرجى المحاولة لاحقاً');
+  }
+}
+
+// إغلاق المودال بالنقر خارج المحتوى
+document.querySelectorAll('.modal-overlay').forEach(modal => {
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal && !modal.classList.contains('loading-modal')) {
+      closeModal(modal.id);
+    }
+  });
+});
+
+// دعم مفتاح Enter
+codeInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') studentIdInput.focus();
+});
+
+studentIdInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') redeemCode();
+});
+
+// تأثيرات عند الكتابة
+[codeInput, studentIdInput].forEach(input => {
+  input.addEventListener('input', () => {
+    resultBox.className = 'result-box';
+  });
+});
+
+// منع النسخ واللصق في WebView (اختياري)
+document.addEventListener('contextmenu', (e) => {
+  if (window.ReactNativeWebView || window.webkit) {
+    e.preventDefault();
+  }
+});
+</script>
+</body>
+</html>

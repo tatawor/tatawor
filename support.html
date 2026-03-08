@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<style>
+/* إخفاء العناصر الشائعة */
+header,
+footer,
+nav,
+aside,
+.top-bar,
+#header-wrapper,
+#footer-wrapper,
+.header,
+.footer,
+.sidebar,
+.header-logo,
+.footer-container {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+</style>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اقتراحات وشكاوي</title>
+<style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f2f6fa;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+.app-container {
+    width: 90%;
+    max-width: 400px;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    padding: 5vw;
+    text-align: center;
+}
+h2 { margin-bottom: 5vw; font-size: 5vw; color: #333; }
+.button-app {
+    display: block;
+    width: 100%;
+    padding: 4vw 0;
+    margin: 2vw 0;
+    font-size: 4vw;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+    color: #fff;
+}
+.button-app.suggestion { background-color: #28a745; }
+.button-app.complaint { background-color: #dc3545; }
+.button-app.report { background-color: #ffc107; color: #333; }
+.button-app:hover { opacity: 0.9; }
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    overflow: auto;
+    padding: 5vw;
+    box-sizing: border-box;
+}
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 5vw;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 350px;
+    text-align: right;
+    position: relative;
+    box-sizing: border-box;
+}
+.modal-content h3 { font-size: 5vw; }
+.modal-content input, .modal-content textarea {
+    width: 100%;
+    padding: 3vw;
+    margin-top: 3vw;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 4vw;
+    resize: none;
+    box-sizing: border-box;
+}
+.modal-content button {
+    width: 100%;
+    padding: 3vw;
+    margin-top: 3vw;
+    border: none;
+    border-radius: 12px;
+    font-size: 4vw;
+    cursor: pointer;
+}
+.send-btn { background-color: #007bff; color: #fff; }
+.close-btn { background-color: #6c757d; color: #fff; }
+.success { color: green; margin-top: 3vw; font-weight: bold; font-size: 4vw; }
+
+@media (min-width: 768px) {
+    h2 { font-size: 24px; }
+    .button-app { font-size: 18px; padding: 12px 0; }
+    .modal-content h3 { font-size: 20px; }
+    .modal-content input, .modal-content textarea { font-size: 16px; padding: 10px; }
+    .modal-content button { font-size: 16px; padding: 10px; }
+}
+</style>
+</head>
+<body>
+
+<div class="app-container">
+    <h2>مرحباً ماذا لديك اليوم ؟</h2>
+    <button class="button-app suggestion" data-type="اقتراح">اقتراح</button>
+    <button class="button-app complaint" data-type="شكوى">شكوى</button>
+    <button class="button-app report" data-type="إبلاغ عن مشكلة">إبلاغ عن مشكلة</button>
+</div>
+
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <h3 id="modalType"></h3>
+        <input type="text" id="nameInput" placeholder="اسمك (اختياري)">
+        <textarea id="messageInput" rows="5" placeholder="اكتب رسالتك هنا"></textarea>
+        <button class="send-btn" id="sendBtn">إرسال</button>
+        <button class="close-btn" id="closeBtn">إغلاق</button>
+        <div class="success" id="successMsg"></div>
+    </div>
+</div>
+
+<script>
+const modal = document.getElementById('modal');
+const modalType = document.getElementById('modalType');
+const nameInput = document.getElementById('nameInput');
+const messageInput = document.getElementById('messageInput');
+const successMsg = document.getElementById('successMsg');
+const sendBtn = document.getElementById('sendBtn');
+const closeBtn = document.getElementById('closeBtn');
+
+const TELEGRAM_BOT_TOKEN = "8254476912:AAGruxzpMZXj7QS4pncfvxWb7b5qTPLLh6E";
+const TELEGRAM_CHAT_ID = "-1002622339679";
+
+document.querySelectorAll('.button-app').forEach(btn => {
+    btn.addEventListener('click', () => {
+        modal.style.display = 'block';
+        modalType.textContent = btn.getAttribute('data-type');
+        nameInput.value = '';
+        messageInput.value = '';
+        successMsg.textContent = '';
+    });
+});
+
+closeBtn.addEventListener('click', () => modal.style.display = 'none');
+window.addEventListener('click', e => { if(e.target == modal) modal.style.display = 'none'; });
+
+sendBtn.addEventListener('click', () => {
+    const type = modalType.textContent;
+    const name = nameInput.value || "غير محدد";
+    const message = messageInput.value.trim();
+    if(!message){ alert("يرجى كتابة الرسالة"); return; }
+
+    // محتوى الرسالة داخل مربع ثابت باستخدام ```، الاسم والنوع عادي
+    const telegramMessage = `نوع الرسالة: ${type}
+الاسم: ${name}
+الرسالة:
+\`\`\`
+${message}
+\`\`\``;
+
+    fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            chat_id: TELEGRAM_CHAT_ID, 
+            text: telegramMessage,
+            parse_mode: "Markdown"
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.ok){
+            successMsg.textContent = "تم الإرسال بنجاح";
+            messageInput.value = '';
+            nameInput.value = '';
+        } else {
+            successMsg.textContent = "حدث خطأ";
+            console.error(data);
+        }
+    })
+    .catch(err => {
+        successMsg.textContent = "خطأ في الاتصال";
+        console.error(err);
+    });
+});
+</script>
+
+</body>
+</html>

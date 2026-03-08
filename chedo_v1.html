@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>الجدول الأكاديمي الشامل</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    :root {
+      --primary: #6366f1;
+      --secondary: #ec4899;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --dark: #1e293b;
+      --gray: #64748b;
+      --light: #f8fafc;
+      --glass: rgba(255, 255, 255, 0.08);
+      --safe-area-top: env(safe-area-inset-top);
+      --safe-area-bottom: env(safe-area-inset-bottom);
+    }
+
+    html {
+      font-size: clamp(14px, 2.5vw, 16px);
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+      min-height: 100vh;
+      min-height: 100dvh;
+      color: white;
+      overflow-x: hidden;
+      padding-top: var(--safe-area-top);
+      padding-bottom: var(--safe-area-bottom);
+      line-height: 1.6;
+    }
+
+    /* Particles - Reduced for mobile */
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 50%;
+      animation: float 20s infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(100vh) scale(0); opacity: 0; }
+      10% { opacity: 1; transform: translateY(90vh) scale(1); }
+      90% { opacity: 1; }
+      100% { transform: translateY(-10vh) scale(0.5); opacity: 0; }
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: clamp(0.75rem, 3vw, 1.25rem);
+      position: relative;
+      z-index: 1;
+      width: 100%;
+    }
+
+    /* Header - Compact */
+    .header {
+      text-align: center;
+      padding: clamp(1rem, 4vw, 2rem) 0;
+      margin-bottom: clamp(0.75rem, 3vw, 1.5rem);
+    }
+
+    .logo {
+      font-size: clamp(2rem, 8vw, 3rem);
+      margin-bottom: 0.5rem;
+      animation: bounce 2s infinite;
+      display: inline-block;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .header h1 {
+      font-size: clamp(1.25rem, 5vw, 1.75rem);
+      font-weight: 800;
+      margin-bottom: 0.25rem;
+      background: linear-gradient(90deg, #fff, #a5b4fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.3;
+    }
+
+    .header p {
+      color: rgba(255,255,255,0.7);
+      font-size: clamp(0.75rem, 3vw, 0.875rem);
+    }
+
+    /* Live Clock Bar - Compact & Flexible */
+    .live-bar {
+      background: var(--glass);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: clamp(12px, 4vw, 20px);
+      padding: clamp(0.75rem, 3vw, 1.25rem);
+      margin-bottom: clamp(1rem, 4vw, 1.5rem);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: clamp(0.5rem, 2vw, 1rem);
+      box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+    }
+
+    .clock-section {
+      display: flex;
+      align-items: center;
+      gap: clamp(0.5rem, 2vw, 0.75rem);
+    }
+
+    .clock-icon {
+      width: clamp(36px, 10vw, 48px);
+      height: clamp(36px, 10vw, 48px);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: clamp(10px, 3vw, 14px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(1rem, 4vw, 1.25rem);
+      flex-shrink: 0;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    }
+
+    .clock-info h3 {
+      font-size: clamp(1.25rem, 5vw, 1.5rem);
+      font-weight: 700;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 1px;
+      line-height: 1.2;
+    }
+
+    .clock-info span {
+      color: rgba(255,255,255,0.7);
+      font-size: clamp(0.65rem, 2.5vw, 0.75rem);
+      display: block;
+      white-space: nowrap;
+    }
+
+    .date-section {
+      text-align: left;
+      min-width: fit-content;
+    }
+
+    .date-section h4 {
+      font-size: clamp(0.8rem, 3.5vw, 1rem);
+      margin-bottom: 0.15rem;
+      font-weight: 700;
+    }
+
+    .date-section span {
+      color: rgba(255,255,255,0.7);
+      font-size: clamp(0.65rem, 2.5vw, 0.75rem);
+      display: block;
+    }
+
+    /* Main Tabs - Touch Optimized */
+    .main-tabs {
+      display: flex;
+      gap: clamp(0.5rem, 2vw, 0.75rem);
+      margin-bottom: clamp(1rem, 4vw, 1.5rem);
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .main-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .main-tab {
+      flex: 1;
+      min-width: clamp(120px, 35vw, 160px);
+      padding: clamp(0.75rem, 3vw, 1.25rem) clamp(0.5rem, 2vw, 1rem);
+      background: var(--glass);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: clamp(12px, 4vw, 20px);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    .main-tab:active {
+      transform: scale(0.96);
+    }
+
+    .main-tab:hover, .main-tab.active {
+      background: rgba(255,255,255,0.12);
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);
+    }
+
+    .main-tab.active::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+
+    .tab-icon {
+      font-size: clamp(1.5rem, 6vw, 2rem);
+      margin-bottom: 0.25rem;
+      display: block;
+    }
+
+    .tab-title {
+      font-weight: 700;
+      font-size: clamp(0.8rem, 3.5vw, 0.95rem);
+      margin-bottom: 0.15rem;
+      white-space: nowrap;
+    }
+
+    .tab-count {
+      font-size: clamp(0.65rem, 2.5vw, 0.75rem);
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* Content Sections */
+    .content-section {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Filter Tabs - Scrollable on mobile */
+    .filter-tabs {
+      display: flex;
+      gap: clamp(0.4rem, 2vw, 0.75rem);
+      margin-bottom: clamp(1rem, 4vw, 1.5rem);
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .filter-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .filter-tab {
+      padding: clamp(0.5rem, 2.5vw, 0.75rem) clamp(0.75rem, 4vw, 1.25rem);
+      background: var(--glass);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-size: clamp(0.75rem, 3vw, 0.875rem);
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+      touch-action: manipulation;
+    }
+
+    .filter-tab:active {
+      transform: scale(0.95);
+    }
+
+    .filter-tab:hover, .filter-tab.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Status Legend - Compact */
+    .status-legend {
+      display: flex;
+      gap: clamp(0.75rem, 3vw, 1.25rem);
+      margin-bottom: clamp(1rem, 4vw, 1.5rem);
+      flex-wrap: wrap;
+      justify-content: center;
+      font-size: clamp(0.7rem, 2.8vw, 0.8rem);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: rgba(255,255,255,0.8);
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .dot-active { background: var(--success); box-shadow: 0 0 8px var(--success); }
+    .dot-upcoming { background: var(--warning); }
+    .dot-ended { background: var(--gray); }
+
+    /* Cards Grid - Responsive Columns */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+      gap: clamp(0.75rem, 3vw, 1.25rem);
+    }
+
+    .session-card {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: clamp(16px, 5vw, 24px);
+      padding: clamp(1rem, 4vw, 1.5rem);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      touch-action: manipulation;
+    }
+
+    .session-card:active {
+      transform: scale(0.98);
+    }
+
+    .session-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255,255,255,0.15);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+    }
+
+    .session-card.active-now {
+      border-color: var(--success);
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.15);
+      background: rgba(16, 185, 129, 0.05);
+    }
+
+    .session-card.active-now::before {
+      content: '● جارية الآن';
+      position: absolute;
+      top: clamp(0.5rem, 2vw, 0.75rem);
+      left: clamp(0.5rem, 2vw, 0.75rem);
+      background: var(--success);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: clamp(0.65rem, 2.5vw, 0.75rem);
+      font-weight: 700;
+      animation: pulse 2s infinite;
+      z-index: 2;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+      50% { opacity: 0.8; box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: clamp(0.75rem, 3vw, 1.25rem);
+      gap: 0.5rem;
+    }
+
+    .session-type {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: clamp(0.7rem, 2.8vw, 0.8rem);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .type-course { background: #dbeafe; color: #1e40af; }
+    .type-lecture { background: #dcfce7; color: #166534; }
+    .type-workshop { background: #fef3c7; color: #92400e; }
+
+    .session-status {
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-size: clamp(0.65rem, 2.5vw, 0.75rem);
+      font-weight: 700;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .status-now { background: var(--success); color: white; }
+    .status-soon { background: var(--warning); color: white; }
+    .status-later { background: rgba(255,255,255,0.15); color: white; }
+    .status-ended { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); }
+
+    .session-title {
+      font-size: clamp(1rem, 4vw, 1.25rem);
+      font-weight: 700;
+      margin-bottom: clamp(0.75rem, 3vw, 1rem);
+      line-height: 1.4;
+      padding-left: 0.5rem;
+    }
+
+    .session-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .detail-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: clamp(0.8rem, 3.2vw, 0.9rem);
+      color: rgba(255,255,255,0.85);
+      flex-wrap: wrap;
+    }
+
+    .detail-row i {
+      width: 18px;
+      text-align: center;
+      color: var(--primary);
+      font-size: 0.9em;
+      flex-shrink: 0;
+    }
+
+    .instructor-name {
+      color: #a5b4fc;
+      font-weight: 700;
+    }
+
+    .time-highlight {
+      color: #fde047;
+      font-weight: 700;
+    }
+
+    .countdown {
+      margin-top: clamp(0.75rem, 3vw, 1rem);
+      padding-top: clamp(0.75rem, 3vw, 1rem);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: clamp(0.75rem, 3vw, 0.85rem);
+      color: rgba(255,255,255,0.7);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .countdown span {
+      color: var(--success);
+      font-weight: 700;
+    }
+
+    /* WhatsApp Section */
+    .whatsapp-section {
+      background: rgba(37, 211, 102, 0.08);
+      border: 1px solid rgba(37, 211, 102, 0.25);
+      border-radius: clamp(16px, 5vw, 24px);
+      padding: clamp(1rem, 4vw, 1.5rem);
+    }
+
+    .whatsapp-header {
+      display: flex;
+      align-items: center;
+      gap: clamp(0.75rem, 3vw, 1rem);
+      margin-bottom: clamp(1rem, 4vw, 1.5rem);
+    }
+
+    .whatsapp-icon {
+      width: clamp(48px, 12vw, 60px);
+      height: clamp(48px, 12vw, 60px);
+      background: #25d366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(1.25rem, 5vw, 1.75rem);
+      color: white;
+      animation: whatsappPulse 2s infinite;
+      flex-shrink: 0;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+    }
+
+    @keyframes whatsappPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
+      50% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+    }
+
+    .whatsapp-title h3 {
+      font-size: clamp(1.1rem, 4.5vw, 1.35rem);
+      margin-bottom: 0.2rem;
+      font-weight: 700;
+    }
+
+    .whatsapp-title p {
+      color: rgba(255,255,255,0.7);
+      font-size: clamp(0.75rem, 3vw, 0.875rem);
+    }
+
+    .groups-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+      gap: clamp(0.75rem, 3vw, 1rem);
+    }
+
+    .group-card {
+      background: rgba(255,255,255,0.05);
+      border-radius: clamp(12px, 4vw, 16px);
+      padding: clamp(0.875rem, 3.5vw, 1.25rem);
+      display: flex;
+      align-items: center;
+      gap: clamp(0.75rem, 3vw, 1rem);
+      transition: all 0.3s ease;
+      touch-action: manipulation;
+    }
+
+    .group-card:active {
+      transform: scale(0.98);
+    }
+
+    .group-card:hover {
+      background: rgba(255,255,255,0.1);
+      transform: translateY(-2px);
+    }
+
+    .group-status {
+      width: clamp(40px, 10vw, 50px);
+      height: clamp(40px, 10vw, 50px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(1rem, 4vw, 1.25rem);
+      flex-shrink: 0;
+    }
+
+    .status-open {
+      background: #25d366;
+      color: white;
+      animation: openPulse 2s infinite;
+    }
+
+    @keyframes openPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
+      50% { box-shadow: 0 0 15px 8px rgba(37, 211, 102, 0); }
+    }
+
+    .status-closed {
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.5);
+    }
+
+    .group-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .group-info h4 {
+      font-size: clamp(0.9rem, 3.8vw, 1rem);
+      margin-bottom: 0.25rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .group-time {
+      font-size: clamp(0.75rem, 3vw, 0.85rem);
+      color: rgba(255,255,255,0.7);
+      line-height: 1.4;
+    }
+
+    .group-time span {
+      color: #25d366;
+      font-weight: 700;
+    }
+
+    .join-btn {
+      padding: clamp(0.5rem, 2.5vw, 0.6rem) clamp(0.75rem, 3vw, 1rem);
+      background: #25d366;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: clamp(0.75rem, 3vw, 0.875rem);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      white-space: nowrap;
+      touch-action: manipulation;
+      box-shadow: 0 4px 10px rgba(37, 211, 102, 0.25);
+    }
+
+    .join-btn:active {
+      transform: scale(0.95);
+    }
+
+    .join-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.35);
+    }
+
+    .join-btn.disabled {
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.5);
+      cursor: not-allowed;
+      pointer-events: none;
+      box-shadow: none;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: clamp(2rem, 10vw, 4rem) clamp(1rem, 5vw, 2rem);
+      color: rgba(255,255,255,0.5);
+    }
+
+    .empty-state i {
+      font-size: clamp(3rem, 12vw, 4rem);
+      margin-bottom: 1rem;
+      opacity: 0.3;
+    }
+
+    .empty-state h3 {
+      font-size: clamp(1.1rem, 4.5vw, 1.25rem);
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .empty-state p {
+      font-size: clamp(0.875rem, 3.5vw, 1rem);
+    }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: clamp(2rem, 10vw, 4rem);
+    }
+
+    .loading-spinner {
+      width: clamp(40px, 12vw, 50px);
+      height: clamp(40px, 12vw, 50px);
+      border: 3px solid rgba(255,255,255,0.1);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Touch Device Optimizations */
+    @media (hover: none) and (pointer: coarse) {
+      .main-tab:hover, .filter-tab:hover, .session-card:hover, 
+      .group-card:hover, .join-btn:hover {
+        transform: none;
+      }
+      
+      .main-tab:active, .filter-tab:active, .session-card:active,
+      .group-card:active, .join-btn:active {
+        transform: scale(0.96);
+        opacity: 0.9;
+      }
+    }
+
+    /* Small Mobile Optimizations */
+    @media (max-width: 380px) {
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .groups-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .live-bar {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .date-section {
+        text-align: center;
+        width: 100%;
+      }
+    }
+
+    /* Tablet Optimizations */
+    @media (min-width: 768px) and (max-width: 1024px) {
+      .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Large Screen Optimizations */
+    @media (min-width: 1400px) {
+      .container {
+        max-width: 1400px;
+      }
+      
+      .cards-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* Safe Area for Notch Devices */
+    @supports (padding-top: env(safe-area-inset-top)) {
+      body {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+    }
+
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Particles -->
+  <div class="particles" id="particles"></div>
+
+  <div class="container">
+
+    <!-- Live Clock Bar -->
+    <div class="live-bar">
+      <div class="clock-section">
+        <div class="clock-icon">
+          <i class="far fa-clock"></i>
+        </div>
+        <div class="clock-info">
+          <h3 id="liveClock">00:00:00</h3>
+          <span>الوقت الحالي بتوقيت مكة المكرمة</span>
+        </div>
+      </div>
+      <div class="date-section">
+        <h4 id="hijriDate">جاري التحميل...</h4>
+        <span id="gregorianDate">جاري التحميل...</span>
+      </div>
+    </div>
+
+    <!-- Main Navigation Tabs -->
+    <div class="main-tabs">
+      <div class="main-tab active" onclick="switchMainTab('academic', this)">
+        <div class="tab-icon">🎓</div>
+        <div class="tab-title">الجدول الأكاديمي</div>
+        <div class="tab-count" id="academicCount">جاري التحميل...</div>
+      </div>
+      <div class="main-tab" onclick="switchMainTab('whatsapp', this)">
+        <div class="tab-icon">💬</div>
+        <div class="tab-title">مجموعات التكاليف</div>
+        <div class="tab-count" id="whatsappCount">جاري التحميل...</div>
+      </div>
+    </div>
+
+    <!-- Academic Section -->
+    <section class="content-section active" id="academicSection">
+      <!-- Filter Tabs -->
+      <div class="filter-tabs">
+        <div class="filter-tab active" onclick="filterAcademic('all', this)">الكل</div>
+        <div class="filter-tab" onclick="filterAcademic('دورة', this)">الدورات</div>
+        <div class="filter-tab" onclick="filterAcademic('شرح', this)">الشروحات</div>
+        <div class="filter-tab" onclick="filterAcademic('ورشة', this)">الورش</div>
+      </div>
+
+      <!-- Status Legend -->
+      <div class="status-legend">
+        <div class="legend-item">
+          <div class="legend-dot dot-active"></div>
+          <span>جارية الآن</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot dot-upcoming"></div>
+          <span>قادمة</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot dot-ended"></div>
+          <span>انتهت</span>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div id="academicContent">
+        <div class="loading">
+          <div class="loading-spinner"></div>
+          <div>جاري تحميل الجدول...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WhatsApp Groups Section -->
+    <section class="content-section" id="whatsappSection">
+      <div class="whatsapp-section">
+        <div class="whatsapp-header">
+          <div class="whatsapp-icon">
+            <i class="fab fa-whatsapp"></i>
+          </div>
+          <div class="whatsapp-title">
+            <h3>مجموعات تسليم التكاليف</h3>
+            <p>مواعيد فتح وإغلاق المجموعات حسب الوقت الفعلي</p>
+          </div>
+        </div>
+        <div id="whatsappContent">
+          <div class="loading">
+            <div class="loading-spinner"></div>
+            <div>جاري تحميل المجموعات...</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <script>
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyByR2B-XISUw_PYh5EeIcbNQwwII0c6xZg",
+      authDomain: "store-points-7d2f4.firebaseapp.com",
+      databaseURL: "https://store-points-7d2f4-default-rtdb.asia-southeast1.firebasedatabase.app/",
+      projectId: "store-points-7d2f4",
+      storageBucket: "store-points-7d2f4.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    let currentFilter = 'all';
+    let academicData = [];
+    let whatsappData = [];
+
+    // Create Particles - Reduced count for mobile
+    function createParticles() {
+      const container = document.getElementById('particles');
+      const isMobile = window.matchMedia('(pointer: coarse)').matches;
+      const particleCount = isMobile ? 15 : 25;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 20 + 's';
+        particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+        container.appendChild(particle);
+      }
+    }
+
+    // Update Clock
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const seconds = now.getSeconds().toString().padStart(2, '0');
+      const period = hours >= 12 ? 'م' : 'ص';
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      document.getElementById('liveClock').textContent = `${hours}:${minutes}:${seconds} ${period}`;
+    }
+    
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function formatTo12Hour(time24) {
+      let [hours, minutes] = time24.split(':').map(Number);
+      const period = hours >= 12 ? 'م' : 'ص';
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      return `${hours}:${minutes.toString().padStart(2, '0')} ${period}`;
+    }
+
+    function formatDuration(minutes) {
+      minutes = Number(minutes) || 0;
+      if (minutes < 60) return `${minutes} دقيقة`;
+      const hours = Math.floor(minutes / 60);
+      const remainingMinutes = minutes % 60;
+      if (remainingMinutes === 0) return `${hours} ساعة`;
+      return `${hours} ساعة و ${remainingMinutes} دقيقة`;
+    }
+
+    // Update Dates
+    function updateDates() {
+      const now = new Date();
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('gregorianDate').textContent = now.toLocaleDateString('ar-SA', options);
+      
+      const hijriDate = new Date(now).toLocaleDateString('ar-SA-u-ca-islamic', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      document.getElementById('hijriDate').textContent = hijriDate;
+    }
+    updateDates();
+
+    // Switch Main Tab with touch feedback
+    function switchMainTab(tab, element) {
+      // Haptic feedback if available
+      if (navigator.vibrate) navigator.vibrate(10);
+      
+      document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+      element.classList.add('active');
+      
+      document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+      document.getElementById(tab + 'Section').classList.add('active');
+    }
+
+    // Filter Academic
+    function filterAcademic(type, element) {
+      if (navigator.vibrate) navigator.vibrate(5);
+      currentFilter = type;
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      element.classList.add('active');
+      renderAcademic();
+    }
+
+    // Parse Date Time
+    function parseDateTime(dateStr, timeStr) {
+      const [day, month, year] = dateStr.split('-').map(Number);
+      const [hours, minutes] = timeStr.split(':').map(Number);
+      return new Date(year, month - 1, day, hours, minutes);
+    }
+
+    // Get Session Status
+    function getSessionStatus(session) {
+      const now = new Date();
+      const startTime = parseDateTime(session.date, session.time);
+      const endTime = new Date(startTime.getTime() + (session.duration || 120) * 60000);
+      
+      if (now >= startTime && now <= endTime) {
+        return { 
+          status: 'now', 
+          text: 'جارية الآن', 
+          class: 'status-now',
+          cardClass: 'active-now'
+        };
+      } else if (now < startTime) {
+        const diffMs = startTime - now;
+        const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
+        const diffDays = Math.floor(diffHrs / 24);
+        
+        if (diffHrs < 24) {
+          return { 
+            status: 'soon', 
+            text: `بعد ${diffHrs} ساعة`, 
+            class: 'status-soon',
+            cardClass: ''
+          };
+        } else {
+          return { 
+            status: 'later', 
+            text: `بعد ${diffDays} يوم`, 
+            class: 'status-later',
+            cardClass: ''
+          };
+        }
+      } else {
+        return { 
+          status: 'ended', 
+          text: 'انتهت', 
+          class: 'status-ended',
+          cardClass: ''
+        };
+      }
+    }
+
+    // Format Countdown
+    function getCountdown(session) {
+      const now = new Date();
+      const startTime = parseDateTime(session.date, session.time);
+      
+      if (now > startTime) return null;
+      
+      const diffMs = startTime - now;
+      const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+      
+      if (days > 0) return `يبدأ بعد ${days} يوم و ${hours} ساعة`;
+      if (hours > 0) return `يبدأ بعد ${hours} ساعة و ${minutes} دقيقة`;
+      return `يبدأ بعد ${minutes} دقيقة`;
+    }
+
+    // Load Academic Data
+    function loadAcademic() {
+      const ref = database.ref('academic/sessions');
+      ref.on('value', (snapshot) => {
+        const data = snapshot.val() || {};
+        academicData = Object.entries(data).map(([id, session]) => ({
+          id,
+          ...session
+        })).sort((a, b) => parseDateTime(a.date, a.time) - parseDateTime(b.date, b.time));
+        
+        document.getElementById('academicCount').textContent = academicData.length + ' جلسة';
+        renderAcademic();
+      });
+    }
+
+    // Render Academic
+    function renderAcademic() {
+      const container = document.getElementById('academicContent');
+      
+      let filtered = academicData;
+      if (currentFilter !== 'all') {
+        filtered = academicData.filter(s => s.type === currentFilter);
+      }
+      
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="far fa-calendar-times"></i>
+            <h3>لا توجد جلسات</h3>
+            <p>سيتم إضافة جلسات ${currentFilter === 'all' ? 'جديدة' : currentFilter} قريباً</p>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = '<div class="cards-grid">' + filtered.map(session => {
+        const status = getSessionStatus(session);
+        const countdown = getCountdown(session);
+        const typeClass = session.type === 'دورة' ? 'course' : session.type === 'شرح' ? 'lecture' : 'workshop';
+        
+        return `
+          <div class="session-card ${status.cardClass}">
+            <div class="card-header">
+              <span class="session-type type-${typeClass}">
+                <i class="fas ${getTypeIcon(session.type)}"></i>
+                ${session.type}
+              </span>
+              <span class="session-status ${status.class}">${status.text}</span>
+            </div>
+            
+            <h3 class="session-title">${session.title}</h3>
+            
+            <div class="session-details">
+              <div class="detail-row">
+                <i class="far fa-calendar-alt"></i>
+                <span>${session.day} | ${session.date}</span>
+              </div>
+              <div class="detail-row">
+                <i class="far fa-clock"></i>
+                <span class="time-highlight">${formatTo12Hour(session.time)}</span>
+                <span>(${formatDuration(session.duration || 120)})</span>
+              </div>
+              <div class="detail-row">
+                <i class="fas fa-user-tie"></i>
+                <span>المدرب: </span>
+                <span class="instructor-name">${session.instructor}</span>
+              </div>
+              ${session.location ? `
+              <div class="detail-row">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>${session.location}</span>
+              </div>
+              ` : ''}
+            </div>
+            
+            ${countdown ? `
+            <div class="countdown">
+              <i class="fas fa-hourglass-half"></i>
+              <span>${countdown}</span>
+            </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('') + '</div>';
+    }
+
+    // Get Type Icon
+    function getTypeIcon(type) {
+      const icons = {
+        'دورة': 'fa-graduation-cap',
+        'شرح': 'fa-chalkboard-teacher',
+        'ورشة': 'fa-tools',
+        'محاضرة': 'fa-book-open'
+      };
+      return icons[type] || 'fa-calendar';
+    }
+
+    // Load WhatsApp Groups
+    function loadWhatsApp() {
+      const ref = database.ref('whatsapp/groups');
+      ref.on('value', (snapshot) => {
+        const data = snapshot.val() || {};
+        whatsappData = Object.entries(data).map(([id, group]) => ({
+          id,
+          ...group
+        }));
+        
+        document.getElementById('whatsappCount').textContent = whatsappData.length + ' مجموعة';
+        renderWhatsApp();
+      });
+    }
+
+    // Render WhatsApp
+    function renderWhatsApp() {
+      const container = document.getElementById('whatsappContent');
+      
+      if (whatsappData.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fab fa-whatsapp"></i>
+            <h3>لا توجد مجموعات</h3>
+            <p>سيتم إضافة مجموعات جديدة قريباً</p>
+          </div>
+        `;
+        return;
+      }
+      
+      const now = new Date();
+      const currentDay = now.getDay();
+      const currentTime = now.getHours() * 60 + now.getMinutes();
+      
+      container.innerHTML = '<div class="groups-grid">' + whatsappData.map(group => {
+        const [openHour, openMin] = group.openTime.split(':').map(Number);
+        const [closeHour, closeMin] = group.closeTime.split(':').map(Number);
+        const openMinutes = openHour * 60 + openMin;
+        const closeMinutes = closeHour * 60 + closeMin;
+        
+        const isOpen = group.days.includes(currentDay) && 
+                      currentTime >= openMinutes && 
+                      currentTime <= closeMinutes;
+        
+        return `
+          <div class="group-card">
+            <div class="group-status ${isOpen ? 'status-open' : 'status-closed'}">
+              <i class="fas ${isOpen ? 'fa-lock-open' : 'fa-lock'}"></i>
+            </div>
+            <div class="group-info">
+              <h4>${group.name}</h4>
+              <div class="group-time">
+                <i class="far fa-clock"></i>
+                ${group.days.map(d => ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'][d]).join(' - ')}
+                <br>
+                <span>${formatTo12Hour(group.openTime)} - ${formatTo12Hour(group.closeTime)}</span>
+              </div>
+            </div>
+            <a href="${isOpen ? group.link : '#'}" 
+               class="join-btn ${!isOpen ? 'disabled' : ''}" 
+               ${!isOpen ? 'onclick="event.preventDefault(); showClosedAlert()"' : 'target="_blank"'}>
+              <i class="fab fa-whatsapp"></i>
+              ${isOpen ? 'انضم الآن' : 'مغلقة'}
+            </a>
+          </div>
+        `;
+      }).join('') + '</div>';
+    }
+
+    function showClosedAlert() {
+      if (navigator.vibrate) navigator.vibrate([50, 100, 50]);
+      alert('المجموعة مغلقة حالياً، تفتح في الموعد المحدد');
+    }
+
+    // Initialize
+    createParticles();
+    loadAcademic();
+    loadWhatsApp();
+    
+    // Refresh WhatsApp status every minute
+    setInterval(renderWhatsApp, 60000);
+    
+    // Handle visibility change to save battery
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        // Pause expensive animations when tab is hidden
+        document.body.style.animationPlayState = 'paused';
+      } else {
+        document.body.style.animationPlayState = 'running';
+        renderWhatsApp(); // Refresh data when coming back
+      }
+    });
+    
+    // Handle resize with debounce
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        // Re-render if needed for responsive adjustments
+        renderAcademic();
+        renderWhatsApp();
+      }, 250);
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قريباً | Soon</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;700;800;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            overflow: hidden;
+            background: #0a0a0a;
+            color: #fff;
+        }
+
+        /* خلفية متحركة مع جسيمات */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* طبقة التدرج فوق الجسيمات */
+        .gradient-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, rgba(10,10,10,0.4) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* المحتوى الرئيسي */
+        .content {
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* الشعار أو الأيقونة */
+        .logo-container {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .logo-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(99,102,241,0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .logo {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            letter-spacing: -2px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* العنوان الرئيسي */
+        .main-title {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .main-title span {
+            display: block;
+            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* الوصف */
+        .description {
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            color: #94a3b8;
+            max-width: 600px;
+            line-height: 1.8;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease-out 0.3s forwards;
+        }
+
+        /* تأثيرات الحركة */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0.8;
+            }
+        }
+
+        /* تأثير الضوء المتحرك */
+        .light-beam {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                rgba(99, 102, 241, 0.1) 60deg,
+                transparent 120deg
+            );
+            animation: rotate 20s linear infinite;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* خطوط زخرفية */
+        .decorative-line {
+            position: absolute;
+            width: 1px;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, rgba(99, 102, 241, 0.5), transparent);
+        }
+
+        .line-1 { top: 20%; right: 20%; animation: lineFloat 4s ease-in-out infinite; }
+        .line-2 { bottom: 20%; left: 20%; animation: lineFloat 4s ease-in-out infinite 2s; }
+
+        @keyframes lineFloat {
+            0%, 100% { transform: translateY(0); opacity: 0.3; }
+            50% { transform: translateY(-20px); opacity: 0.8; }
+        }
+    </style>
+</head>
+<body>
+    <!-- خلفية الجسيمات -->
+    <canvas id="canvas-container"></canvas>
+    
+    <!-- طبقة التدرج -->
+    <div class="gradient-overlay"></div>
+    
+    <!-- شعاع الضوء الدوار -->
+    <div class="light-beam"></div>
+
+    <!-- الخطوط الزخرفية -->
+    <div class="decorative-line line-1"></div>
+    <div class="decorative-line line-2"></div>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="content">
+        <!-- الشعار -->
+        <div class="logo-container">
+            <div class="logo-glow"></div>
+            <div class="logo">قريباً</div>
+        </div>
+
+        <!-- العنوان -->
+        <h1 class="main-title">
+            <span>نحضر لك شيئاً</span>
+            <span>مذهلاً</span>
+        </h1>
+
+        <!-- الوصف -->
+        <p class="description">
+            نعمل بجد لنقدم لك تجربة فريدة. ترقبنا قريباً.
+        </p>
+    </div>
+
+    <script>
+        /* تأثير الجسيمات المتحركة */
+        const canvas = document.getElementById('canvas-container');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height;
+        let particles = [];
+        
+        // تهيئة Canvas
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        
+        window.addEventListener('resize', resize);
+        resize();
+        
+        // فئة الجسيم
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+                this.opacity = Math.random() * 0.5 + 0.1;
+            }
+            
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(99, 102, 241, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+        
+        // إنشاء الجسيمات
+        for (let i = 0; i < 100; i++) {
+            particles.push(new Particle());
+        }
+        
+        // رسم الخطوط بين الجسيمات القريبة
+        function drawConnections() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(99, 102, 241, ${0.1 * (1 - distance / 150)})`;
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+        
+        // حلقة الرسم
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            drawConnections();
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+
+        /* تأثير الماوس */
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            document.querySelector('.main-title').style.transform = 
+                `translate(${(x - 0.5) * 20}px, ${(y - 0.5) * 20}px)`;
+        });
+    </script>
+</body>
+</html>

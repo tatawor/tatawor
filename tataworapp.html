@@ -1,316 +1,459 @@
 <!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>TATAWOR APP | تحميل التطبيق</title>
 
-<html lang="ar" dir="rtl">  
-<head>  
-<meta charset="utf-8" />  
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />  
-<title>TATAWOR APP | تحميل التطبيق</title>  
+<!-- Firebase (Realtime Database) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
-<!-- Firebase (Realtime Database) -->  
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>  
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>  
+<style>
+:root{
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+  --soft:#eef2ff;
 
-<style>  
-:root{  
-  --bg:#f5f7fb;  
-  --card:#ffffff;  
-  --text:#111827;  
-  --muted:#6b7280;  
-  --soft:#eef2ff;  
+  /* ✅ زر التحميل أخضر */
+  --accent:#22c55e;
+  --accent2:#16a34a;
 
-  /* زر التحميل أخضر */  
-  --accent:#22c55e;  
-  --accent2:#16a34a;  
+  --shadow:0 14px 34px rgba(17,24,39,.10);
+  --radius:22px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;
+  background:linear-gradient(180deg,#f7f8ff,#eef2ff);
+  color:var(--text);
+  display:flex;
+  justify-content:center;
+}
 
-  --shadow:0 14px 34px rgba(17,24,39,.10);  
-  --radius:22px;  
-}  
-*{box-sizing:border-box}  
-body{  
-  margin:0;  
-  font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;  
-  background:linear-gradient(180deg,#f7f8ff,#eef2ff);  
-  color:var(--text);  
-  display:flex;  
-  justify-content:center;  
-}  
+/* ===== Mobile Only Wrapper ===== */
+.app{
+  width:100%;
+  max-width:420px;   /* جوال فقط */
+  padding:18px 14px 40px;
+}
 
-/* ===== Mobile Only Wrapper ===== */  
-.app{  
-  width:100%;  
-  max-width:420px;  
-  padding:18px 14px 40px;  
-}  
+/* ===== Generic ===== */
+.card{
+  background:var(--card);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:16px;
+}
+.section{
+  margin-top:14px;
+}
+.section-title{
+  font-size:16px;
+  margin:0 0 10px;
+}
+.text{
+  margin:0;
+  color:var(--muted);
+  line-height:1.9;
+  font-size:13.5px;
+}
 
-/* ===== Generic ===== */  
-.card{  
-  background:var(--card);  
-  border-radius:var(--radius);  
-  box-shadow:var(--shadow);  
-  padding:16px;  
-}  
-.section{margin-top:14px;}  
-.section-title{font-size:16px;margin:0 0 10px;}  
-.text{margin:0;color:var(--muted);line-height:1.9;font-size:13.5px;}  
+/* ===== Hero ===== */
+.hero{
+  text-align:center;
+  padding:18px 16px;
+}
+.app-icon{
+  width:88px;
+  height:88px;
+  border-radius:24px;
+  display:block;
+  margin:2px auto 12px;
+  box-shadow:0 16px 34px rgba(34,197,94,.20);
+}
+.brand{
+  margin:0;
+  font-size:24px;
+  letter-spacing:.2px;
+}
+.tagline{
+  margin:6px 0 0;
+  color:var(--muted);
+  font-size:13.5px;
+  line-height:1.85;
+}
 
-/* ===== Hero ===== */  
-.hero{text-align:center;padding:18px 16px;}  
-.app-icon{  
-  width:88px;height:88px;border-radius:24px;  
-  display:block;margin:2px auto 12px;  
-  box-shadow:0 16px 34px rgba(34,197,94,.20);  
-}  
-.brand{margin:0;font-size:24px;letter-spacing:.2px;}  
-.tagline{margin:6px 0 0;color:var(--muted);font-size:13.5px;line-height:1.85;}  
+/* ===== Downloads Counter ===== */
+.counter-box{
+  margin-top:12px;
+  background:var(--soft);
+  border-radius:16px;
+  padding:10px 12px;
+  display:inline-block;
+  font-size:13px;
+  color:#334155;
+}
+.counter-box b{
+  font-size:15px;
+  color:var(--accent2);
+}
 
-/* ===== Downloads Counter ===== */  
-.counter-box{  
-  margin-top:12px;background:var(--soft);  
-  border-radius:16px;padding:10px 12px;  
-  display:inline-block;font-size:13px;color:#334155;  
-}  
-.counter-box b{font-size:15px;color:var(--accent2);}  
+/* ===== Badges ===== */
+.badges{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+.badge{
+  background:var(--soft);
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:12px;
+  color:#334155;
+}
 
-/* ===== Badges ===== */  
-.badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px;}  
-.badge{background:var(--soft);border-radius:999px;padding:8px 12px;font-size:12px;color:#334155;}  
+/* ===== Features Grid ===== */
+.features{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.feature{
+  background:var(--soft);
+  border-radius:16px;
+  padding:12px 10px;
+  text-align:center;
+  font-size:12.5px;
+  color:#2b3340;
+}
+.feature b{
+  display:block;
+  font-size:12.5px;
+  margin-bottom:4px;
+}
 
-/* ===== Features Grid ===== */  
-.features{display:grid;grid-template-columns:1fr 1fr;gap:10px;}  
-.feature{background:var(--soft);border-radius:16px;padding:12px 10px;text-align:center;font-size:12.5px;color:#2b3340;}  
-.feature b{display:block;font-size:12.5px;margin-bottom:4px;}  
+/* ===== Slider (One centered image) ===== */
+.slider-card{
+  padding:16px;
+}
+.slider{
+  width:100%;
+  overflow:hidden;
+  border-radius:20px;
+  direction:ltr; /* FIX RTL */
+  background:linear-gradient(180deg,#fafbff,#f1f5ff);
+}
+.slides{
+  display:flex;
+  will-change:transform;
+  transition:transform .35s ease;
+}
+.slide{
+  width:100%;
+  flex:0 0 100%;
+  display:flex;
+  justify-content:center;
+  padding:10px 0;
+}
+.slide img{
+  width:min(88%, 320px);
+  border-radius:22px;
+  box-shadow:0 18px 40px rgba(0,0,0,.14);
+  user-select:none;
+  -webkit-user-drag:none;
+}
 
-/* ===== Slider ===== */  
-.slider-card{padding:16px;}  
-.slider{width:100%;overflow:hidden;border-radius:20px;direction:ltr;background:linear-gradient(180deg,#fafbff,#f1f5ff);}  
-.slides{display:flex;will-change:transform;transition:transform .35s ease;}  
-.slide{width:100%;flex:0 0 100%;display:flex;justify-content:center;padding:10px 0;}  
-.slide img{width:min(88%,320px);border-radius:22px;box-shadow:0 18px 40px rgba(0,0,0,.14);user-select:none;-webkit-user-drag:none;}  
+/* Dots */
+.dots{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  margin-top:12px;
+}
+.dot{
+  width:9px;height:9px;border-radius:50%;
+  background:#c7c9ff;
+  transform:scale(1);
+  transition:.2s;
+}
+.dot.active{
+  background:var(--accent);
+  transform:scale(1.45);
+}
 
-/* Dots */  
-.dots{display:flex;justify-content:center;gap:8px;margin-top:12px;}  
-.dot{width:9px;height:9px;border-radius:50%;background:#c7c9ff;transition:.2s;}  
-.dot.active{background:var(--accent);transform:scale(1.45);}  
+/* ===== Requirements / FAQ ===== */
+.list{
+  margin:0;
+  padding:0 18px 0 0;
+  color:var(--muted);
+  line-height:2;
+  font-size:13.5px;
+}
+.faq{
+  display:grid;
+  gap:10px;
+}
+.qa{
+  background:var(--soft);
+  border-radius:16px;
+  padding:12px;
+}
+.q{
+  margin:0 0 6px;
+  font-weight:800;
+  font-size:13.5px;
+}
+.a{
+  margin:0;
+  color:var(--muted);
+  line-height:1.8;
+  font-size:13px;
+}
 
-/* ===== Requirements / FAQ ===== */  
-.list{margin:0;padding:0 18px 0 0;color:var(--muted);line-height:2;font-size:13.5px;}  
-.faq{display:grid;gap:10px;}  
-.qa{background:var(--soft);border-radius:16px;padding:12px;}  
-.q{margin:0 0 6px;font-weight:800;font-size:13.5px;}  
-.a{margin:0;color:var(--muted);line-height:1.8;font-size:13px;}  
+/* ===== Download (bottom only) ===== */
+.download-wrap{
+  margin-top:18px;
+  text-align:center;
+}
+.download-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:16px 34px;
+  border-radius:22px;
+  font-weight:900;
+  font-size:16px;
+  text-decoration:none;
+  color:#fff;
+  background:linear-gradient(145deg,var(--accent),var(--accent2));
+  box-shadow:0 18px 36px rgba(34,197,94,.30);
+  border:none;
+}
+.download-btn:active{transform:scale(.97)}
+.small-note{
+  margin-top:10px;
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.7;
+}
 
-/* ===== Download ===== */  
-.download-wrap{margin-top:18px;text-align:center;}  
-.download-btn{  
-  display:inline-flex;align-items:center;justify-content:center;gap:10px;  
-  padding:16px 34px;border-radius:22px;font-weight:900;font-size:16px;  
-  text-decoration:none;color:#fff;  
-  background:linear-gradient(145deg,var(--accent),var(--accent2));  
-  box-shadow:0 18px 36px rgba(34,197,94,.30);border:none;  
-}  
-.download-btn:active{transform:scale(.97);}  
-.small-note{margin-top:10px;font-size:12px;color:var(--muted);line-height:1.7;}  
+/* Footer */
+.footer{
+  margin-top:14px;
+  text-align:center;
+  font-size:12px;
+  color:#6b7280;
+}
+</style>
+</head>
 
-/* Footer */  
-.footer{margin-top:14px;text-align:center;font-size:12px;color:#6b7280;}  
-</style>  
-</head>  
+<body>
+  <main class="app">
 
-<body>  
-<main class="app">  
+    <!-- HERO -->
+    <section class="card hero">
+      <img class="app-icon" src="https://i.postimg.cc/RVD4nNnm/app-icon.png" alt="أيقونة التطبيق" />
+      <h1 class="brand"> تطبيق اكاديمية تطور</h1>
+      <p class="tagline">تطبيق أنيق وسريع بواجهة حديثة وتجربة استخدام مريحة على أجهزة أندرويد.</p>
 
-<!-- HERO -->  
-<section class="card hero">  
-  <img class="app-icon" src="https://i.postimg.cc/RVD4nNnm/app-icon.png" alt="أيقونة التطبيق" />  
-  <h1 class="brand"> تطبيق اكاديمية تطور</h1>  
-  <p class="tagline">تطبيق أنيق وسريع بواجهة حديثة وتجربة استخدام مريحة على أجهزة أندرويد.</p>  
+      <!-- ✅ عدد التحميلات -->
+      <div class="counter-box">عدد التحميلات: <b id="downloads">0</b></div>
 
-  <!-- عدد التحميلات -->  
-  <div class="counter-box">عدد التحميلات: <b id="downloads">0</b></div>  
+      <div class="badges">
+        <div class="badge">📦 تطبيق رسمي</div>
+        <div class="badge">⚡ سريع وخفيف</div>
+        <div class="badge">🔒 آمن للجوالات</div>
+      </div>
+    </section>
 
-  <div class="badges">  
-    <div class="badge">📦 تطبيق رسمي</div>  
-    <div class="badge">⚡ سريع وخفيف</div>  
-    <div class="badge">🔒 آمن للجوالات</div>  
-  </div>  
-</section>  
+    <!-- ABOUT -->
+    <section class="card section">
+      <h2 class="section-title">نبذة سريعة</h2>
+      <p class="text">
+        صُمّم تطبيق اكاديمية تطور ليقدّم تجربة واضحة وسلسة للمستخدم، مع واجهة مرتبة ومميزات تساعدك تنجز أسرع
+        بدون تعقيد.
+      </p>
+    </section>
 
-<!-- ABOUT -->  
-<section class="card section">  
-  <h2 class="section-title">نبذة سريعة</h2>  
-  <p class="text">  
-    صُمّم تطبيق اكاديمية تطور ليقدّم تجربة واضحة وسلسة للمستخدم، مع واجهة مرتبة ومميزات تساعدك تنجز أسرع  
-    بدون تعقيد.  
-  </p>  
-</section>  
+    <!-- FEATURES -->
+    <section class="card section">
+      <h2 class="section-title">مميزات التطبيق</h2>
+      <div class="features">
+        <div class="feature"><b>⚡ أداء</b>سريع ومستقر</div>
+        <div class="feature"><b>🎨 واجهة</b>حديثة وبسيطة</div>
+        <div class="feature"><b>🔔 تنبيهات</b>وتحديثات</div>
+        <div class="feature"><b>🧠 أدوات</b>ذكية ومفيدة</div>
+        <div class="feature"><b>🔒 أمان</b>وحماية</div>
+        <div class="feature"><b>🔄 تطوير</b>مستمر</div>
+      </div>
+    </section>
 
-<!-- FEATURES -->  
-<section class="card section">  
-  <h2 class="section-title">مميزات التطبيق</h2>  
-  <div class="features">  
-    <div class="feature"><b>⚡ أداء</b>سريع ومستقر</div>  
-    <div class="feature"><b>🎨 واجهة</b>حديثة وبسيطة</div>  
-    <div class="feature"><b>🔔 تنبيهات</b>وتحديثات</div>  
-    <div class="feature"><b>🧠 أدوات</b>ذكية ومفيدة</div>  
-    <div class="feature"><b>🔒 أمان</b>وحماية</div>  
-    <div class="feature"><b>🔄 تطوير</b>مستمر</div>  
-  </div>  
-</section>  
+    <!-- SCREENSHOTS -->
+    <section class="card section slider-card">
+      <h2 class="section-title">لقطات شاشة من داخل التطبيق</h2>
 
-<!-- SCREENSHOTS -->  
-<section class="card section slider-card">  
-  <h2 class="section-title">لقطات شاشة من داخل التطبيق</h2>  
-  <div class="slider" id="slider">  
-    <div class="slides" id="slides">  
-      <div class="slide"><img src="https://i.postimg.cc/FRtZBgdZ/Screenshot-2026-01-21-21-10-15-860-com-tataworacatemy-devayman.jpg" /></div>  
-      <div class="slide"><img src="https://i.postimg.cc/fyqS6D2P/Screenshot-2026-01-25-17-31-54-568-com-tataworacatemy-devayman.jpg" /></div>  
-      <div class="slide"><img src="https://i.postimg.cc/nVSsVV26/Screenshot-2026-01-25-17-33-09-640-com-tataworacatemy-devayman.jpg" /></div>  
-      <div class="slide"><img src="https://i.postimg.cc/QCcxqsLN/Screenshot-2026-01-25-17-34-59-378-com-tataworacatemy-devayman.jpg" /></div>  
-      <div class="slide"><img src="https://i.postimg.cc/jSStDyjH/Screenshot-2026-01-25-17-38-25-441-com-tataworacatemy-devayman.jpg" /></div>  
-      <div class="slide"><img src="https://i.postimg.cc/3xdzM1NM/Screenshot-2026-01-25-17-39-44-938-com-tataworacatemy-devayman.jpg" /></div>  
-      <div class="slide"><img src="https://i.postimg.cc/BbnMTZPL/Screenshot-2026-01-25-17-41-41-225-com-tataworacatemy-devayman.jpg" /></div>  
-      <div class="slide"><img src="https://i.postimg.cc/L4QTdpZb/Screenshot-2026-01-25-17-43-28-749-com-tataworacatemy-devayman.jpg" /></div>  
-      <div class="slide"><img src="https://i.postimg.cc/fWdxP9D0/Screenshot-2026-01-25-17-46-52-334-com-tataworacatemy-devayman.jpg" /></div>  
-      <div class="slide"><img src="https://i.postimg.cc/wBttsCBW/Screenshot-2026-01-25-17-47-51-209-com-tataworacatemy-devayman.jpg" /></div>  
-    </div>  
-  </div>  
-  <div class="dots" id="dots"></div>  
-  <p class="text" style="text-align:center;margin-top:10px;">اسحب يمينًا أو يسارًا للتنقّل بين الصور</p>  
-</section>  
+      <div class="slider" id="slider">
+        <div class="slides" id="slides">
+          <div class="slide"><img src="https://i.postimg.cc/FRtZBgdZ/Screenshot-2026-01-21-21-10-15-860-com-tataworacatemy-devayman.jpg" alt="Screenshot 1" /></div>
+          <div class="slide"><img src="https://i.postimg.cc/fyqS6D2P/Screenshot-2026-01-25-17-31-54-568-com-tataworacatemy-devayman.jpg" alt="Screenshot 2" /></div>
+          <div class="slide"><img src="https://i.postimg.cc/nVSsVV26/Screenshot-2026-01-25-17-33-09-640-com-tataworacatemy-devayman.jpg" alt="Screenshot 3" /></div>
+          <div class="slide"><img src="https://i.postimg.cc/QCcxqsLN/Screenshot-2026-01-25-17-34-59-378-com-tataworacatemy-devayman.jpg" alt="Screenshot 4" /></div>
+          <div class="slide"><img src="https://i.postimg.cc/jSStDyjH/Screenshot-2026-01-25-17-38-25-441-com-tataworacatemy-devayman.jpg" alt="Screenshot 5" /></div>
+          <div class="slide"><img src="https://i.postimg.cc/3xdzM1NM/Screenshot-2026-01-25-17-39-44-938-com-tataworacatemy-devayman.jpg" alt="Screenshot 6" /></div>
+          <div class="slide"><img src="https://i.postimg.cc/BbnMTZPL/Screenshot-2026-01-25-17-41-41-225-com-tataworacatemy-devayman.jpg" alt="Screenshot 7" /></div>
+          <div class="slide"><img src="https://i.postimg.cc/L4QTdpZb/Screenshot-2026-01-25-17-43-28-749-com-tataworacatemy-devayman.jpg" alt="Screenshot 8" /></div>
+          <div class="slide"><img src="https://i.postimg.cc/fWdxP9D0/Screenshot-2026-01-25-17-46-52-334-com-tataworacatemy-devayman.jpg" alt="Screenshot 9" /></div>
+          <div class="slide"><img src="https://i.postimg.cc/wBttsCBW/Screenshot-2026-01-25-17-47-51-209-com-tataworacatemy-devayman.jpg" alt="Screenshot 10" /></div>
+        </div>
+      </div>
 
-<!-- REQUIREMENTS -->  
-<section class="card section">  
-  <h2 class="section-title">متطلبات التثبيت</h2>  
-  <ul class="list">  
-    <li>أندرويد ( 4.0+ فأعلى)</li>  
-    <li>تفعيل “التثبيت من مصادر غير معروفة” إذا طُلب</li>  
-    <li>مساحة كافية للتنزيل والتثبيت</li>  
-  </ul>  
-</section>  
+      <div class="dots" id="dots"></div>
+      <p class="text" style="text-align:center;margin-top:10px;">اسحب يمينًا أو يسارًا للتنقّل بين الصور</p>
+    </section>
 
-<!-- FAQ -->  
-<section class="card section">  
-  <h2 class="section-title">أسئلة شائعة</h2>  
-  <div class="faq">  
-    <div class="qa">  
-      <p class="q">لماذا لا يبدأ التحميل؟</p>  
-      <p class="a">تأكد من سرعة الانترنت او قم بتحديث الصفحة واضغط زر تحميل التطبيق مرة اخرى</p>  
-    </div>  
-    <div class="qa">  
-      <p class="q">ظهرت رسالة “التثبيت محظور”</p>  
-      <p class="a">فعّل خيار “مصادر غير معروفة” من إعدادات الجهاز ثم أعد التثبيت.</p>  
-    </div>  
-    <div class="qa">  
-      <p class="q">ظهرت رسالة “غير أمن”</p>  
-      <p class="a">اضغط على المزيد من الخيارات ثم التثبيت على اي حال.</p>  
-    </div>  
-    <div class="qa">  
-      <p class="q">هل هذه نسخة رسمية؟</p>  
-      <p class="a">نعم، زر التحميل في الاسفل سيحمل النسخة الرسمية من تطبيق اكاديمية تطور.</p>  
-    </div>  
-  </div>  
-</section>  
+    <!-- REQUIREMENTS -->
+    <section class="card section">
+      <h2 class="section-title">متطلبات التثبيت</h2>
+      <ul class="list">
+        <li>أندرويد ( 4.0+ فأعلى) </li>
+        <li>تفعيل “التثبيت من مصادر غير معروفة” إذا طُلب</li>
+        <li>مساحة كافية للتنزيل والتثبيت</li>
+      </ul>
+    </section>
 
-<!-- DOWNLOAD -->  
-<section class="download-wrap">  
-  <a id="downloadBtn" class="download-btn" href="#">تحميــل التطبيــق</a>  
-  <div class="small-note">بالضغط على زر تحميل التطببق سيتم تحميل التطبيق مباشرة.</div>  
-</section>  
+    <!-- FAQ -->
+    <section class="card section">
+      <h2 class="section-title">أسئلة شائعة</h2>
+      <div class="faq">
+        <div class="qa">
+          <p class="q">لماذا لا يبدأ التحميل؟</p>
+          <p class="a">جرّب فتح الرابط مرة أخرى أو استخدم متصفح Chrome. أحيانًا يمنع المتصفح النوافذ المنبثقة.</p>
+        </div>
+        <div class="qa">
+          <p class="q">ظهرت رسالة “التثبيت محظور”</p>
+          <p class="a">فعّل خيار “مصادر غير معروفة” من إعدادات الجهاز ثم أعد التثبيت.</p>
+        </div>
+        <div class="qa">
+          <p class="q">ظهرت رسالة “غير أمن”</p>
+          <p class="a">اضغط على المزيد من الخيارات ثم التثبيت على اي حال.</p>
+        </div>
+        <div class="qa">
+          <p class="q">هل هذه نسخة رسمية؟</p>
+          <p class="a">نعم، زر التحميل في أسفل الصفحة يوجّهك لملف APK الرسمي على MediaFire.</p>
+        </div>
+      </div>
+    </section>
 
-<div class="footer">© 2026 جميع الحقوق محغوظة لـ اكاديمية تطور</div>  
+    <!-- DOWNLOAD (BOTTOM ONLY) -->
+    <section class="download-wrap">
+      <a id="downloadBtn" class="download-btn" href="#">⬇️ تحميل التطبيق</a>
+      <div class="small-note">بالضغط على زر التحميل سيتم فتح رابط MediaFire في نافذة جديدة.</div>
+    </section>
 
-</main>  
+    <div class="footer">© 2026 جميع الحقوق محغوظة لـ اكاديمية تطور</div>
 
-<script>  
-function animateCounter(el, target, duration = 1400) {  
-  const startTime = performance.now();  
-  function step(now){  
-    const p = Math.min((now - startTime) / duration, 1);  
-    const v = Math.floor(p * target);  
-    el.textContent = v.toLocaleString("ar");  
-    if (p < 1) requestAnimationFrame(step);  
-  }  
-  requestAnimationFrame(step);  
-}  
+  </main>
 
-const APK_URL = "https://github.com/aymansumee0/dev.tools/releases/download/tatawor_v7/tatwor_v7.apk";  
-  
-firebase.initializeApp({  
-  databaseURL: "https://store-points-7d2f4-default-rtdb.asia-southeast1.firebasedatabase.app",  
-  projectId: "store-points-7d2f4"  
-});  
+<script>
+/* ===== Counter Animation (only once per page visit) ===== */
+function animateCounter(el, target, duration = 1400) {
+  const startTime = performance.now();
+  function step(now){
+    const p = Math.min((now - startTime) / duration, 1);
+    const v = Math.floor(p * target);
+    el.textContent = v.toLocaleString("ar");
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
 
-const ref = firebase.database().ref("app_downloads");  
-const downloadsEl = document.getElementById("downloads");  
-let animated = false;  
+/* ===== Firebase ===== */
+const APK_URL = "https://www.mediafire.com/file/p1o3s9tiaypqv59/TATAWOR_APP_V4.apk/file";
 
-ref.once("value", s => { if (!s.exists()) ref.set(630); });  
+firebase.initializeApp({
+  databaseURL: "https://store-points-7d2f4-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "store-points-7d2f4"
+});
 
-ref.on("value", s => {  
-  if (!s.exists()) return;  
-  const real = s.val();  
-  if (!animated) {  
-    animated = true;  
-    downloadsEl.textContent = "0";  
-    animateCounter(downloadsEl, real, 1400);  
-  } else {  
-    downloadsEl.textContent = real.toLocaleString("ar");  
-  }  
-});  
+const ref = firebase.database().ref("app_downloads");
+const downloadsEl = document.getElementById("downloads");
+let animated = false;
 
-/* زر التحميل — التعديل الوحيد */  
-document.getElementById("downloadBtn").addEventListener("click", (e) => {  
-  e.preventDefault();  
-  ref.transaction(v => (v || 630) + 1);  
+/* init once (start 630 if missing) */
+ref.once("value", s => { if (!s.exists()) ref.set(630); });
 
-  const a = document.createElement("a");  
-  a.href = APK_URL;  
-  a.download = "tatawor_v5.apk";  
-  document.body.appendChild(a);  
-  a.click();  
-  document.body.removeChild(a);  
-});  
+/* show + animate on each visit */
+ref.on("value", s => {
+  if (!s.exists()) return;
+  const real = s.val();
 
-/* Slider */  
-const slides = document.getElementById("slides");  
-const dotsBox = document.getElementById("dots");  
-const total = slides.children.length;  
-let index = 0;  
-let startX = 0;  
+  if (!animated) {
+    animated = true;
+    downloadsEl.textContent = "0";
+    animateCounter(downloadsEl, real, 1400);
+  } else {
+    downloadsEl.textContent = real.toLocaleString("ar");
+  }
+});
 
-for (let i=0;i<total;i++){  
-  const d=document.createElement("div");  
-  d.className="dot"+(i===0?" active":"");  
-  d.addEventListener("click",()=>go(i));  
-  dotsBox.appendChild(d);  
-}  
+/* increase counter on download */
+document.getElementById("downloadBtn").addEventListener("click", (e) => {
+  e.preventDefault();
+  ref.transaction(v => (v || 630) + 1);
+  window.open(APK_URL, "_blank", "noopener");
+});
 
-function setDots(i){  
-  [...dotsBox.children].forEach((d,j)=>d.classList.toggle("active",j===i));  
-}  
-function go(i){  
-  index=Math.max(0,Math.min(total-1,i));  
-  slides.style.transform=`translateX(${-index*100}%)`;  
-  setDots(index);  
-}  
+/* ===== Slider: one centered image + dots ===== */
+const slides = document.getElementById("slides");
+const dotsBox = document.getElementById("dots");
+const total = slides.children.length;
 
-slides.addEventListener("touchstart",(e)=>{startX=e.touches[0].clientX},{passive:true});  
-slides.addEventListener("touchend",(e)=>{  
-  const dx=e.changedTouches[0].clientX-startX;  
-  if(dx<-35&&index<total-1)go(index+1);  
-  if(dx>35&&index>0)go(index-1);  
-},{passive:true});  
+let index = 0;
+let startX = 0;
 
-let isDown=false,mouseStart=0;  
-slides.addEventListener("mousedown",(e)=>{isDown=true;mouseStart=e.clientX});  
-window.addEventListener("mouseup",(e)=>{  
-  if(!isDown)return;  
-  isDown=false;  
-  const dx=e.clientX-mouseStart;  
-  if(dx<-35&&index<total-1)go(index+1);  
-  if(dx>35&&index>0)go(index-1);  
-});  
-</script>  
+for (let i=0; i<total; i++){
+  const d = document.createElement("div");
+  d.className = "dot" + (i===0 ? " active" : "");
+  d.addEventListener("click", () => go(i));
+  dotsBox.appendChild(d);
+}
 
-</body>  
+function setDots(i){
+  [...dotsBox.children].forEach((d, j) => d.classList.toggle("active", j===i));
+}
+
+function go(i){
+  index = Math.max(0, Math.min(total-1, i));
+  slides.style.transform = `translateX(${-index*100}%)`;
+  setDots(index);
+}
+
+/* Touch swipe */
+slides.addEventListener("touchstart", (e) => { startX = e.touches[0].clientX; }, {passive:true});
+slides.addEventListener("touchend", (e) => {
+  const dx = e.changedTouches[0].clientX - startX;
+  if (dx < -35 && index < total-1) go(index+1);
+  if (dx > 35 && index > 0) go(index-1);
+}, {passive:true});
+
+/* Optional mouse drag */
+let isDown=false, mouseStart=0;
+slides.addEventListener("mousedown", (e)=>{ isDown=true; mouseStart=e.clientX; });
+window.addEventListener("mouseup", (e)=>{
+  if(!isDown) return;
+  isDown=false;
+  const dx = e.clientX - mouseStart;
+  if (dx < -35 && index < total-1) go(index+1);
+  if (dx > 35 && index > 0) go(index-1);
+});
+</script>
+
+</body>
 </html>

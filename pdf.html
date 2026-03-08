@@ -1,0 +1,175 @@
+<!doctype html>
+
+<html lang="ar" dir="rtl">  
+<head>  
+<meta charset="utf-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1">  <title>أدوات PDF</title>  <style>  
+body{  
+  font-family: sans-serif;  
+  background:#f2f4ff;  
+  margin:0;  
+  padding:20px;  
+}  
+  
+.home{  
+  display:grid;  
+  grid-template-columns:1fr 1fr;  
+  gap:16px;  
+}  
+  
+.tool-card{  
+  background:linear-gradient(135deg,#4e54c8,#6c6ff0);  
+  color:#fff;  
+  border-radius:18px;  
+  padding:30px 10px;  
+  text-align:center;  
+  font-size:18px;  
+  cursor:pointer;  
+  box-shadow:0 10px 20px rgba(0,0,0,.15);  
+}  
+  
+.tool-card span{  
+  display:block;  
+  font-size:42px;  
+  margin-bottom:10px;  
+}  
+  
+.tool{display:none}  
+  
+.card{  
+  background:#fff;  
+  border-radius:16px;  
+  padding:16px;  
+  margin-bottom:20px;  
+  box-shadow:0 6px 16px rgba(0,0,0,.1);  
+}  
+  
+h3{text-align:center}  
+  
+button{  
+  width:100%;  
+  padding:12px;  
+  border:none;  
+  border-radius:10px;  
+  background:#4e54c8;  
+  color:#fff;  
+  font-size:16px;  
+  margin-top:10px;  
+}  
+  
+.close{  
+  background:#ff4b4b;  
+}  
+  
+.preview{  
+  display:flex;  
+  flex-wrap:wrap;  
+  gap:8px;  
+  margin-top:10px;  
+}  
+  
+.preview img{  
+  width:70px;  
+  height:70px;  
+  object-fit:cover;  
+  border-radius:8px;  
+}  
+  
+input[type=file]{  
+  width:100%;  
+  margin-top:10px;  
+}  
+</style>  </head>  <body>  <!-- الصفحة الرئيسية -->  <div class="home" id="home">  
+  <div class="tool-card" onclick="openTool('imgToPdf')">  
+    <span>🖼️</span>تحويل الصور إلى PDF  
+  </div>  
+  <div class="tool-card" onclick="openTool('pdfToImg')">  
+    <span>📄</span>استخراج الصور من PDF  
+  </div>  
+</div>  <!-- صور → PDF -->  <div class="tool" id="imgToPdf">  
+  <div class="card">  
+    <h3>تحويل الصور إلى PDF</h3>  
+    <input type="file" id="imgInput" accept="image/*" multiple>  
+    <div class="preview" id="imgPreview"></div>  
+    <button onclick="makePDF()">حفظ PDF</button>  
+    <button class="close" onclick="closeTool()">إغلاق الأداة</button>  
+  </div>  
+</div>  <!-- PDF → صور -->  <div class="tool" id="pdfToImg">  
+  <div class="card">  
+    <h3>استخراج الصور من PDF</h3>  
+    <input type="file" id="pdfInput" accept="application/pdf">  
+    <div class="preview" id="pdfPreview"></div>  
+    <button onclick="saveImages()">حفظ الصور</button>  
+    <button class="close" onclick="closeTool()">إغلاق الأداة</button>  
+  </div>  
+</div>  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>  <script>  
+let imageList=[];  
+let extractedImages=[];  
+  
+function openTool(id){  
+  home.style.display="none";  
+  document.getElementById(id).style.display="block";  
+}  
+function closeTool(){  
+  document.querySelectorAll(".tool").forEach(t=>t.style.display="none");  
+  home.style.display="grid";  
+}  
+  
+/* صور → PDF */  
+imgInput.onchange=()=>{  
+  imageList=[];  
+  imgPreview.innerHTML="";  
+  [...imgInput.files].forEach(f=>{  
+    const r=new FileReader();  
+    r.onload=()=>{  
+      imageList.push(r.result);  
+      const i=new Image();  
+      i.src=r.result;  
+      imgPreview.appendChild(i);  
+    };  
+    r.readAsDataURL(f);  
+  });  
+};  
+  
+function makePDF(){  
+  if(!imageList.length){alert("اختر صور");return;}  
+  const {jsPDF}=window.jspdf;  
+  const pdf=new jsPDF();  
+  imageList.forEach((img,i)=>{  
+    if(i)pdf.addPage();  
+    pdf.addImage(img,"JPEG",0,0,210,297);  
+  });  
+  
+  const base64 = pdf.output("datauristring").split(",")[1];  
+  Android.savePDF(base64,"images_"+Date.now()+".pdf");  
+  alert("تم حفظ ملف PDF");  
+}  
+  
+/* PDF → صور */  
+pdfInput.onchange=async()=>{  
+  extractedImages=[];  
+  pdfPreview.innerHTML="";  
+  const buffer=await pdfInput.files[0].arrayBuffer();  
+  const pdf=await pdfjsLib.getDocument({data:buffer}).promise;  
+  
+  for(let i=1;i<=pdf.numPages;i++){  
+    const p=await pdf.getPage(i);  
+    const vp=p.getViewport({scale:2});  
+    const c=document.createElement("canvas");  
+    c.width=vp.width;c.height=vp.height;  
+    await p.render({canvasContext:c.getContext("2d"),viewport:vp}).promise;  
+    const img=c.toDataURL("image/png");  
+    extractedImages.push(img);  
+    const im=new Image();im.src=img;  
+    pdfPreview.appendChild(im);  
+  }  
+};  
+  
+function saveImages(){  
+  extractedImages.forEach((img,i)=>{  
+    Android.saveImage(img,"page_"+(i+1)+"_"+Date.now()+".png");  
+  });  
+  alert("تم حفظ الصور");  
+}  
+</script>  </body>  
+                              </html>

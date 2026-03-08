@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>تحدي التأسيس</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Tajawal',sans-serif}
+body{background:#0f0f1a;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:15px}
+.box{background:#1a1a2e;width:100%;max-width:380px;border-radius:20px;padding:25px;box-shadow:0 10px 40px rgba(0,0,0,0.5)}
+.header{text-align:center;margin-bottom:20px}
+.icon{width:60px;height:60px;background:linear-gradient(135deg,#e94560,#0f3460);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 10px}
+h1{color:#fff;font-size:22px}
+.counter{background:rgba(233,69,96,0.2);border:1px solid rgba(233,69,96,0.3);border-radius:10px;padding:10px;text-align:center;margin-bottom:20px;color:#fff;font-size:14px}
+.counter span{color:#ffd700;font-weight:700;font-size:18px}
+input{width:100%;padding:12px 15px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;margin-bottom:12px;font-size:15px;outline:none}
+input:focus{border-color:#e94560}
+.btn{width:100%;padding:12px;background:linear-gradient(135deg,#e94560,#ff6b6b);border:none;border-radius:10px;color:#fff;font-weight:700;font-size:15px;cursor:pointer;transition:0.3s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 5px 20px rgba(233,69,96,0.4)}
+.btn:disabled{opacity:0.6;cursor:not-allowed}
+.question-section{display:none;margin-top:20px}
+.welcome{color:#ffd700;text-align:center;margin-bottom:15px;font-size:16px}
+.q-box{background:rgba(0,0,0,0.3);border-radius:12px;padding:15px;margin-bottom:15px;color:#fff;font-size:16px;text-align:center;line-height:1.6}
+.option-btn{width:100%;padding:14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;margin-bottom:8px;text-align:right;cursor:pointer;transition:0.2s;font-size:14px}
+.option-btn:hover{background:rgba(233,69,96,0.2);border-color:#e94560}
+.option-btn.selected{background:#e94560;border-color:#e94560}
+.option-btn.correct{background:#00d9ff;border-color:#00d9ff}
+.option-btn.wrong{background:#e94560;border-color:#e94560;opacity:0.7}
+.result{margin-top:15px;padding:12px;border-radius:10px;text-align:center;font-weight:700;display:none}
+.result.ok{background:rgba(0,217,255,0.2);color:#00d9ff;border:1px solid #00d9ff}
+.result.err{background:rgba(233,69,96,0.2);color:#e94560;border:1px solid #e94560}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:none;justify-content:center;align-items:center;z-index:9999;padding:20px}
+.modal.active{display:flex}
+.modal-box{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:35px;border-radius:25px;text-align:center;max-width:350px;width:100%;border:2px solid rgba(0,217,255,0.3);box-shadow:0 20px 60px rgba(0,0,0,0.8),0 0 40px rgba(0,217,255,0.1);position:relative;overflow:hidden}
+.modal-box::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#00d9ff,#e94560,#ffd700)}
+.success-icon{width:80px;height:80px;background:linear-gradient(135deg,#00d9ff,#00b4d8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:40px;margin:0 auto 20px;box-shadow:0 10px 30px rgba(0,217,255,0.4);animation:successPop 0.5s ease}
+@keyframes successPop{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+.congrats-text{color:#fff;font-size:24px;font-weight:800;margin-bottom:10px;text-shadow:0 2px 10px rgba(0,217,255,0.3)}
+.won-text{color:#ffd700;font-size:18px;font-weight:700;margin-bottom:20px}
+.points-display{background:rgba(0,0,0,0.3);border-radius:15px;padding:20px;margin-bottom:20px;border:1px solid rgba(255,255,255,0.1)}
+.points-label{color:rgba(255,255,255,0.6);font-size:14px;margin-bottom:8px}
+.points-number{color:#00d9ff;font-size:42px;font-weight:800;text-shadow:0 0 20px rgba(0,217,255,0.5)}
+.total-points{background:rgba(255,215,0,0.1);border-radius:10px;padding:15px;margin-top:15px;border:1px solid rgba(255,215,0,0.3)}
+.total-label{color:rgba(255,255,255,0.7);font-size:13px;margin-bottom:5px}
+.total-number{color:#ffd700;font-size:28px;font-weight:800}
+.close-btn{width:100%;padding:16px;background:linear-gradient(135deg,#00d9ff,#00b4d8);border:none;border-radius:12px;color:#fff;font-weight:800;font-size:16px;cursor:pointer;transition:0.3s;box-shadow:0 5px 20px rgba(0,217,255,0.4);margin-top:10px}
+.close-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,217,255,0.6)}
+.close-btn:active{transform:translateY(0)}
+.spinner{width:40px;height:40px;border:3px solid rgba(255,255,255,0.1);border-top-color:#e94560;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 15px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{color:#fff;font-size:16px}
+.info{text-align:center;color:rgba(255,255,255,0.4);font-size:12px;margin-top:15px}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<div class="box">
+  <div class="header">
+    <div class="icon">🏆</div>
+    <h1>تحدي يوم التأسيس</h1>
+  </div>
+  <div class="counter">أنهى التحدي: <span id="count">0</span> 👤</div>
+  <div id="loginForm">
+    <input type="text" id="sid" placeholder="الرقم الأكاديمي">
+    <input type="password" id="pwd" placeholder="كلمة المرور">
+    <button class="btn" id="start">ابدأ التحدي</button>
+  </div>
+  <div id="qSec" class="question-section">
+    <div class="welcome" id="welcome"></div>
+    <div class="q-box" id="qText"></div>
+    <div id="opts"></div>
+    <button class="btn" id="sub" style="display:none;margin-top:10px">إرسال الإجابة</button>
+  </div>
+  <div id="res" class="result"></div>
+  <div class="info">مشاركة واحدة فقط لكل طالب</div>
+</div>
+
+<div id="modal" class="modal">
+  <div class="modal-box">
+    <div class="spinner"></div>
+    <div class="loading-text">جاري التحقق...</div>
+  </div>
+</div>
+
+<div id="successModal" class="modal">
+  <div class="modal-box" style="position:relative">
+    <div class="success-icon">🎉</div>
+    <div class="congrats-text">مبروك!</div>
+    <div class="won-text">لقد ربحت</div>
+    <div class="points-display">
+      <div class="points-label">النقاط المكتسبة</div>
+      <div class="points-number">+10</div>
+    </div>
+    <div class="total-points">
+      <div class="total-label">رصيدك الحالي</div>
+      <div class="total-number" id="totalPoints">0</div>
+    </div>
+    <button class="close-btn" id="closeSuccess">رائع! استمر</button>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+<script>
+const db = firebase.initializeApp({databaseURL:"https://store-points-7d2f4-default-rtdb.asia-southeast1.firebasedatabase.app/"}).database();
+
+const questions=[
+{q:"سنة تأسيس الأكاديمية؟",o:["2013","2014","2015","2016"],a:"2015"},
+{q:"شعار الأكاديمية؟",o:["التفوق","الإبداع","التطور","التميز"],a:"التطور"},
+{q:"عدد الطلاب المسجلين؟",o:["120","550","662","1000"],a:"662"},
+{q:"المواد المقدمة؟",o:["برمجة","تصميم","تصوير","الكل"],a:"الكل"},
+{q:"اللون الرسمي؟",o:["أحمر","أزرق","أخضر","بنفسجي"],a:"أزرق"},
+{q:"شعار الاحترافية؟",o:["نجاح","تميز","ابتكار","تطوير"],a:"ابتكار"},
+{q:"نوع الفعاليات؟",o:["دورات","ورش","تحديات","الكل"],a:"الكل"},
+{q:"يوم التأسيس؟",o:["11 يناير","11 يونيو","11 نوفمبر","11 ديسمبر"],a:"11 نوفمبر"},
+{q:"عمر الأكاديمية؟",o:["6 سنوات","7 سنوات","8 سنوات","10 سنوات"],a:"10 سنوات"}
+];
+
+let student=null,currentQ=null,selIdx=null;
+
+function updateCount(){
+  db.ref('users').once('value').then(s=>{
+    let count=0;
+    s.forEach(user=>{if(user.val().usedCodes?.challenge10)count++});
+    document.getElementById('count').innerText=count;
+  });
+}
+updateCount();setInterval(updateCount,5000);
+
+function showModal(id){document.getElementById(id).classList.add('active');}
+function hideModal(id){document.getElementById(id).classList.remove('active');}
+function showRes(msg,ok){
+const r=document.getElementById('res');
+r.style.display='block';
+r.className='result '+(ok?'ok':'err');
+r.innerHTML=msg;
+}
+
+function loadQ(){
+currentQ=questions[Math.floor(Math.random()*questions.length)];
+document.getElementById('qText').innerText=currentQ.q;
+const opts=document.getElementById('opts');
+opts.innerHTML='';
+currentQ.o.forEach((opt,i)=>{
+const b=document.createElement('button');
+b.className='option-btn';
+b.innerText=opt;
+b.onclick=()=>{document.querySelectorAll('.option-btn').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');selIdx=i;document.getElementById('sub').style.display='block';};
+opts.appendChild(b);
+});
+selIdx=null;
+document.getElementById('sub').style.display='none';
+}
+
+document.getElementById('start').onclick=async()=>{
+const id=document.getElementById('sid').value.trim();
+const pw=document.getElementById('pwd').value.trim();
+if(!id||!pw)return showRes('أكمل البيانات',false);
+showModal('modal');
+try{
+const s=await db.ref('users/'+id).get();
+if(!s.exists()){hideModal('modal');return showRes('الطالب غير موجود',false);}
+const d=s.val();
+if(d.password!==pw){hideModal('modal');return showRes('كلمة المرور خطأ',false);}
+if(d.usedCodes?.challenge10){hideModal('modal');return showRes('شاركت مسبقاً',false);}
+student={id:id,...d};
+hideModal('modal');
+document.getElementById('loginForm').classList.add('hidden');
+document.getElementById('qSec').style.display='block';
+document.getElementById('welcome').innerText='أهلًا '+d.name;
+loadQ();
+}catch(e){hideModal('modal');showRes('خطأ في الاتصال',false);}
+};
+
+document.getElementById('sub').onclick=async()=>{
+if(selIdx===null)return;
+const btns=document.querySelectorAll('.option-btn');
+const selText=currentQ.o[selIdx];
+const isCorrect=selText===currentQ.a;
+btns.forEach((b,i)=>{
+b.disabled=true;
+if(currentQ.o[i]===currentQ.a)b.classList.add('correct');
+else if(i===selIdx)b.classList.add('wrong');
+});
+document.getElementById('sub').style.display='none';
+
+const newPoints=(student.points||0)+10;
+const updates={'usedCodes/challenge10':true,points:newPoints};
+
+await db.ref('users/'+student.id).update(updates);
+updateCount();
+
+if(isCorrect){
+const userSnapshot=await db.ref('users/'+student.id).get();
+const currentTotal=userSnapshot.val().points||0;
+document.getElementById('totalPoints').innerText=currentTotal;
+showModal('successModal');
+}else{
+showRes('✗ خطأ! الإجابة: '+currentQ.a,false);
+}
+};
+
+document.getElementById('closeSuccess').onclick=()=>{
+hideModal('successModal');
+showRes('تم حفظ النقاط بنجاح!',true);
+};
+</script>
+</body>
+</html>
