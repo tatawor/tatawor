@@ -6,7 +6,6 @@
   <title>لوحة تحكم الجدول</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <style>
     * {
       margin: 0;
@@ -196,6 +195,7 @@
       font-weight: 600;
       transition: all 0.2s;
       border-radius: 12px;
+      cursor: pointer;
     }
 
     .mobile-nav-item i {
@@ -300,6 +300,58 @@
 
     .btn:active {
       transform: scale(0.95);
+    }
+
+    /* Icon Buttons for Desktop Table - FIXED */
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      font-size: 14px;
+      background: transparent;
+    }
+
+    .icon-btn.edit {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .icon-btn.edit:hover {
+      background: #bfdbfe;
+    }
+
+    .icon-btn.delete {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .icon-btn.delete:hover {
+      background: #fecaca;
+    }
+
+    .icon-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* WhatsApp link button in desktop table */
+    .icon-btn[href] {
+      text-decoration: none;
+      background: #d1fae5;
+      color: #059669;
+    }
+
+    .icon-btn[href]:hover {
+      background: #a7f3d0;
+    }
+
+    td .icon-btn {
+      margin: 0 2px;
     }
 
     /* Compact Stats */
@@ -560,7 +612,7 @@
       font-weight: 700;
     }
 
-    /* Simple Modal for WebView */
+    /* Simple Modal for WebView - OPTIMIZED */
     .simple-modal {
       display: none;
       position: fixed;
@@ -569,10 +621,13 @@
       z-index: 2000;
       align-items: flex-end;
       justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
     .simple-modal.active {
       display: flex;
+      opacity: 1;
     }
 
     .simple-modal-content {
@@ -581,12 +636,31 @@
       max-height: 90vh;
       border-radius: 24px 24px 0 0;
       overflow-y: auto;
-      animation: slideUp 0.3s ease;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+      position: relative;
     }
 
-    @keyframes slideUp {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
+    .simple-modal.active .simple-modal-content {
+      transform: translateY(0);
+    }
+
+    @media (min-width: 768px) {
+      .simple-modal {
+        align-items: center;
+      }
+      
+      .simple-modal-content {
+        max-width: 500px;
+        border-radius: 24px;
+        max-height: 85vh;
+        transform: translateY(20px) scale(0.95);
+        transition: all 0.3s ease;
+      }
+      
+      .simple-modal.active .simple-modal-content {
+        transform: translateY(0) scale(1);
+      }
     }
 
     .simple-modal-header {
@@ -615,6 +689,9 @@
       cursor: pointer;
       font-size: 16px;
       color: var(--gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .simple-modal-body {
@@ -643,6 +720,8 @@
       font-family: inherit;
       font-size: 14px;
       background: white;
+      -webkit-appearance: none;
+      appearance: none;
     }
 
     .form-group input:focus,
@@ -657,7 +736,7 @@
       gap: 12px;
     }
 
-    /* Time Input 12 Hour Format */
+    /* Time Input 12 Hour Format - WebView Compatible */
     .time-input-wrapper {
       display: flex;
       align-items: center;
@@ -681,6 +760,15 @@
       text-align: center;
       background: transparent;
       outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    /* Remove number input arrows for WebView */
+    .time-input::-webkit-outer-spin-button,
+    .time-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
 
     .time-separator {
@@ -706,6 +794,7 @@
       color: var(--gray);
       cursor: pointer;
       transition: all 0.2s;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .ampm-btn.active {
@@ -735,6 +824,7 @@
       color: var(--gray);
       font-size: 12px;
       text-align: center;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .day-checkbox:checked + .day-label {
@@ -766,7 +856,7 @@
       background: white;
     }
 
-    /* Toast Notification */
+    /* Toast Notification - WebView Optimized */
     .toast {
       position: fixed;
       top: 20px;
@@ -783,6 +873,7 @@
       transition: transform 0.3s ease;
       min-width: 280px;
       justify-content: center;
+      pointer-events: none;
     }
 
     .toast.show {
@@ -798,7 +889,7 @@
     .toast.success .toast-icon { color: var(--success); }
     .toast.error .toast-icon { color: var(--danger); }
 
-    /* Loading - Hidden by default */
+    /* Loading - WebView Compatible */
     .loading-overlay {
       position: fixed;
       inset: 0;
@@ -807,10 +898,13 @@
       align-items: center;
       justify-content: center;
       z-index: 2500;
+      opacity: 0;
+      transition: opacity 0.2s;
     }
 
     .loading-overlay.active {
       display: flex;
+      opacity: 1;
     }
 
     .spinner {
@@ -854,6 +948,12 @@
       display: none;
     }
 
+    /* Native Date Input Styling for WebView */
+    input[type="date"] {
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
     /* Tablet and up */
     @media (min-width: 768px) {
       .stats-grid {
@@ -885,11 +985,8 @@
         border-bottom: 1px solid var(--border);
       }
       
-      .simple-modal-content {
-        max-width: 500px;
-        border-radius: 24px;
-        margin: 20px;
-        max-height: 85vh;
+      tr:hover {
+        background: #f8fafc;
       }
     }
 
@@ -918,7 +1015,6 @@
           id="passwordInput" 
           class="password-input"
           placeholder="كلمة المرور" 
-          onkeyup="if(event.key === 'Enter') checkPassword()"
         >
       </div>
       
@@ -1150,7 +1246,7 @@
     </nav>
   </div>
 
-  <!-- Academic Modal -->
+  <!-- Academic Modal - WebView Optimized -->
   <div class="simple-modal" id="academicModal">
     <div class="simple-modal-content">
       <div class="simple-modal-header">
@@ -1161,7 +1257,7 @@
       </div>
       
       <div class="simple-modal-body">
-        <form id="academicForm">
+        <form id="academicForm" onsubmit="event.preventDefault(); saveAcademic();">
           <input type="hidden" id="academicId">
           
           <div class="form-group">
@@ -1181,7 +1277,7 @@
             
             <div class="form-group">
               <label>التاريخ *</label>
-              <input type="text" id="academicDate" placeholder="اختر التاريخ" required>
+              <input type="date" id="academicDate" required onchange="updateDayFromDate()">
             </div>
           </div>
           
@@ -1223,8 +1319,8 @@
       </div>
       
       <div class="simple-modal-footer">
-        <button class="btn btn-secondary" onclick="closeAcademicModal()">إلغاء</button>
-        <button class="btn btn-success" onclick="saveAcademic()">
+        <button type="button" class="btn btn-secondary" onclick="closeAcademicModal()">إلغاء</button>
+        <button type="button" class="btn btn-success" onclick="saveAcademic()">
           <i class="fas fa-save"></i>
           حفظ
         </button>
@@ -1232,7 +1328,7 @@
     </div>
   </div>
 
-  <!-- WhatsApp Modal -->
+  <!-- WhatsApp Modal - WebView Optimized -->
   <div class="simple-modal" id="whatsappModal">
     <div class="simple-modal-content">
       <div class="simple-modal-header">
@@ -1243,7 +1339,7 @@
       </div>
       
       <div class="simple-modal-body">
-        <form id="whatsappForm">
+        <form id="whatsappForm" onsubmit="event.preventDefault(); saveWhatsApp();">
           <input type="hidden" id="whatsappId">
           
           <div class="form-group">
@@ -1319,8 +1415,8 @@
       </div>
       
       <div class="simple-modal-footer">
-        <button class="btn btn-secondary" onclick="closeWhatsAppModal()">إلغاء</button>
-        <button class="btn btn-whatsapp" onclick="saveWhatsApp()">
+        <button type="button" class="btn btn-secondary" onclick="closeWhatsAppModal()">إلغاء</button>
+        <button type="button" class="btn btn-whatsapp" onclick="saveWhatsApp()">
           <i class="fab fa-whatsapp"></i>
           حفظ
         </button>
@@ -1334,7 +1430,7 @@
     <span id="toastMessage">تم بنجاح</span>
   </div>
 
-  <!-- Loading (Hidden by default, only for operations) -->
+  <!-- Loading -->
   <div class="loading-overlay" id="loading">
     <div class="spinner"></div>
   </div>
@@ -1342,8 +1438,6 @@
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script src="https://npmcdn.com/flatpickr/dist/l10n/ar.js"></script>
 
   <script>
     // Password Protection
@@ -1356,18 +1450,15 @@
       const dashboard = document.getElementById('dashboard');
       
       if (input.value === CORRECT_PASSWORD) {
-        // Success
         loginScreen.style.opacity = '0';
         loginScreen.style.transition = 'opacity 0.3s ease';
         dashboard.style.display = 'flex';
         
         setTimeout(() => {
           loginScreen.style.display = 'none';
-          // Initialize dashboard after login
           initDashboard();
         }, 300);
       } else {
-        // Error
         errorMsg.classList.add('show');
         input.classList.add('error');
         
@@ -1376,6 +1467,13 @@
         }, 400);
       }
     }
+
+    // Handle Enter key on password input
+    document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        checkPassword();
+      }
+    });
 
     // Firebase Config
     const firebaseConfig = {
@@ -1388,13 +1486,19 @@
       appId: "YOUR_APP_ID"
     };
 
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
+    // Initialize Firebase with error handling
+    let database;
+    try {
+      firebase.initializeApp(firebaseConfig);
+      database = firebase.database();
+    } catch (e) {
+      console.error('Firebase init error:', e);
+      alert('خطأ في الاتصال بقاعدة البيانات');
+    }
 
     let academicData = [];
     let whatsappData = [];
     let currentAcademicFilter = 'all';
-    let datePickerInstance = null;
     let currentAmPm = 'AM';
     let openAmPm = 'AM';
     let closeAmPm = 'PM';
@@ -1404,12 +1508,11 @@
     // Preview URL
     const PREVIEW_URL = 'https://aymansumee0.github.io/dev.tools/chedo_v1.html';
 
-    // Initialize - No loading screen on startup
-    document.addEventListener('DOMContentLoaded', function() {
-      // Don't auto-init, wait for password
-    });
-
     function initDashboard() {
+      if (!database) {
+        showToast('error', 'خطأ في الاتصال');
+        return;
+      }
       loadAcademic();
       loadWhatsApp();
     }
@@ -1429,23 +1532,14 @@
       }
     }
 
-    // Initialize Date Picker
-    function initDatePicker() {
-      if (datePickerInstance) {
-        datePickerInstance.destroy();
+    // Update day from date input
+    function updateDayFromDate() {
+      const dateInput = document.getElementById('academicDate').value;
+      if (dateInput) {
+        const date = new Date(dateInput);
+        const dayIndex = date.getDay();
+        document.getElementById('academicDay').value = arabicDays[dayIndex];
       }
-      
-      datePickerInstance = flatpickr("#academicDate", {
-        locale: "ar",
-        dateFormat: "d-m-Y",
-        defaultDate: new Date(),
-        onChange: function(selectedDates) {
-          if (selectedDates[0]) {
-            const dayIndex = selectedDates[0].getDay();
-            document.getElementById('academicDay').value = arabicDays[dayIndex];
-          }
-        }
-      });
     }
 
     // Convert 12h to 24h for storage
@@ -1492,7 +1586,7 @@
       document.getElementById('closePM').classList.toggle('active', ampm === 'PM');
     }
 
-    // Load Academic Data - No initial loading
+    // Load Academic Data
     function loadAcademic() {
       const ref = database.ref('academic/sessions');
       ref.on('value', (snapshot) => {
@@ -1505,13 +1599,20 @@
         updateAcademicStats();
         renderAcademicList();
         renderAcademicTable();
+      }, (error) => {
+        console.error('Academic load error:', error);
+        showToast('error', 'خطأ في تحميل البيانات');
       });
     }
 
     function parseDateTime(dateStr, timeStr) {
-      const [day, month, year] = dateStr.split('-').map(Number);
+      const parts = dateStr.split('-');
       const [hours, minutes] = timeStr.split(':').map(Number);
-      return new Date(year, month - 1, day, hours, minutes);
+      // Handle DD-MM-YYYY format
+      const day = parseInt(parts[0]);
+      const month = parseInt(parts[1]) - 1;
+      const year = parseInt(parts[2]);
+      return new Date(year, month, day, hours, minutes);
     }
 
     function getSessionStatus(session) {
@@ -1590,7 +1691,7 @@
                   <i class="fas ${icon}"></i>
                 </div>
                 <div class="mobile-title-text">
-                  <h4>${session.title}</h4>
+                  <h4>${escapeHtml(session.title)}</h4>
                   <span>${session.day} • ${session.date}</span>
                 </div>
               </div>
@@ -1611,11 +1712,11 @@
               </div>
               <div class="mobile-info-item">
                 <span class="mobile-info-label">المدرب</span>
-                <span class="mobile-info-value">${session.instructor}</span>
+                <span class="mobile-info-value">${escapeHtml(session.instructor)}</span>
               </div>
               <div class="mobile-info-item">
                 <span class="mobile-info-label">المكان</span>
-                <span class="mobile-info-value" style="font-size: 11px;">${session.location || '---'}</span>
+                <span class="mobile-info-value" style="font-size: 11px;">${escapeHtml(session.location || '---')}</span>
               </div>
             </div>
             
@@ -1634,7 +1735,7 @@
       }).join('');
     }
 
-    // Render Desktop Table with 12h format
+    // Render Desktop Table with 12h format - FIXED BUTTONS
     function renderAcademicTable() {
       const tbody = document.getElementById('academicTable');
       if (!tbody) return;
@@ -1652,16 +1753,17 @@
       tbody.innerHTML = filtered.map(session => {
         const status = getSessionStatus(session);
         const typeClass = session.type === 'دورة' ? 'course' : session.type === 'شرح' ? 'lecture' : 'workshop';
+        const icon = session.type === 'دورة' ? 'fa-graduation-cap' : session.type === 'شرح' ? 'fa-chalkboard-teacher' : 'fa-tools';
         
         return `
           <tr>
             <td>
               <div style="display: flex; align-items: center; gap: 10px;">
                 <div class="mobile-icon ${typeClass}" style="width: 32px; height: 32px; font-size: 14px;">
-                  <i class="fas ${session.type === 'دورة' ? 'fa-graduation-cap' : session.type === 'شرح' ? 'fa-chalkboard-teacher' : 'fa-tools'}"></i>
+                  <i class="fas ${icon}"></i>
                 </div>
                 <div>
-                  <div style="font-weight: 700; font-size: 13px;">${session.title}</div>
+                  <div style="font-weight: 700; font-size: 13px;">${escapeHtml(session.title)}</div>
                   <div style="font-size: 11px; color: var(--gray);">${session.day}</div>
                 </div>
               </div>
@@ -1671,15 +1773,15 @@
               <div style="font-weight: 600;">${to12Hour(session.time)}</div>
               <div style="font-size: 11px; color: var(--gray);">${session.date}</div>
             </td>
-            <td>${session.instructor}</td>
+            <td>${escapeHtml(session.instructor)}</td>
             <td><span class="mobile-status ${status.class}" style="font-size: 11px;">${status.text}</span></td>
             <td>
               <div style="display: flex; gap: 6px;">
-                <button class="icon-btn edit" onclick="editAcademic('${session.id}')" style="width: 28px; height: 28px;">
-                  <i class="fas fa-edit" style="font-size: 12px;"></i>
+                <button class="icon-btn edit" onclick="editAcademic('${session.id}')" title="تعديل">
+                  <i class="fas fa-edit"></i>
                 </button>
-                <button class="icon-btn delete" onclick="deleteAcademic('${session.id}')" style="width: 28px; height: 28px;">
-                  <i class="fas fa-trash" style="font-size: 12px;"></i>
+                <button class="icon-btn delete" onclick="deleteAcademic('${session.id}')" title="حذف">
+                  <i class="fas fa-trash"></i>
                 </button>
               </div>
             </td>
@@ -1688,31 +1790,42 @@
       }).join('');
     }
 
-    // Academic Modal Functions
+    // Escape HTML to prevent XSS
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Academic Modal Functions - WebView Optimized
     function openAcademicModal() {
-      document.getElementById('academicForm').reset();
+      const form = document.getElementById('academicForm');
+      form.reset();
       document.getElementById('academicId').value = '';
       document.getElementById('academicModalTitle').textContent = 'جلسة جديدة';
+      
+      // Reset time
       setAmPm('AM');
       document.getElementById('timeHour').value = '9';
       document.getElementById('timeMinute').value = '00';
       
-      initDatePicker();
-      
+      // Set default date to today
       const today = new Date();
+      const dateStr = today.toISOString().split('T')[0];
+      document.getElementById('academicDate').value = dateStr;
       document.getElementById('academicDay').value = arabicDays[today.getDay()];
       
-      document.getElementById('academicModal').classList.add('active');
+      // Show modal
+      const modal = document.getElementById('academicModal');
+      modal.classList.add('active');
       document.body.style.overflow = 'hidden';
     }
 
     function closeAcademicModal() {
-      document.getElementById('academicModal').classList.remove('active');
+      const modal = document.getElementById('academicModal');
+      modal.classList.remove('active');
       document.body.style.overflow = '';
-      if (datePickerInstance) {
-        datePickerInstance.destroy();
-        datePickerInstance = null;
-      }
     }
 
     function saveAcademic() {
@@ -1728,14 +1841,14 @@
       const minute = document.getElementById('timeMinute').value.padStart(2, '0');
       
       const data = {
-        title: document.getElementById('academicTitle').value,
+        title: document.getElementById('academicTitle').value.trim(),
         type: document.getElementById('academicType').value,
         day: document.getElementById('academicDay').value,
         date: document.getElementById('academicDate').value,
         time: `${hour24}:${minute}`,
         duration: parseInt(document.getElementById('academicDuration').value),
-        instructor: document.getElementById('academicInstructor').value,
-        location: document.getElementById('academicLocation').value || 'القاعة الرئيسية'
+        instructor: document.getElementById('academicInstructor').value.trim(),
+        location: document.getElementById('academicLocation').value.trim() || 'القاعة الرئيسية'
       };
 
       const id = document.getElementById('academicId').value;
@@ -1746,14 +1859,17 @@
         ref = database.ref('academic/sessions').push();
       }
 
-      ref.set(data).then(() => {
-        showLoading(false);
-        closeAcademicModal();
-        showToast('success', id ? 'تم التحديث' : 'تمت الإضافة');
-      }).catch(err => {
-        showLoading(false);
-        showToast('error', 'حدث خطأ');
-      });
+      ref.set(data)
+        .then(() => {
+          showLoading(false);
+          closeAcademicModal();
+          showToast('success', id ? 'تم التحديث بنجاح' : 'تمت الإضافة بنجاح');
+        })
+        .catch((err) => {
+          showLoading(false);
+          console.error('Save error:', err);
+          showToast('error', 'حدث خطأ أثناء الحفظ');
+        });
     }
 
     function editAcademic(id) {
@@ -1774,30 +1890,37 @@
       document.getElementById('timeMinute').value = time12.minute;
       setAmPm(time12.ampm);
       
-      initDatePicker();
-      datePickerInstance.setDate(session.date, true);
+      // Convert DD-MM-YYYY to YYYY-MM-DD for date input
+      const dateParts = session.date.split('-');
+      if (dateParts.length === 3) {
+        const isoDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+        document.getElementById('academicDate').value = isoDate;
+      }
       
       document.getElementById('academicModalTitle').textContent = 'تعديل الجلسة';
-      document.getElementById('academicModal').classList.add('active');
+      
+      const modal = document.getElementById('academicModal');
+      modal.classList.add('active');
       document.body.style.overflow = 'hidden';
     }
 
     function deleteAcademic(id) {
-      if (!confirm('حذف هذه الجلسة؟')) return;
+      if (!confirm('هل أنت متأكد من حذف هذه الجلسة؟')) return;
       
       showLoading(true);
       database.ref('academic/sessions/' + id).remove()
         .then(() => {
           showLoading(false);
-          showToast('success', 'تم الحذف');
+          showToast('success', 'تم الحذف بنجاح');
         })
-        .catch(() => {
+        .catch((err) => {
           showLoading(false);
-          showToast('error', 'حدث خطأ');
+          console.error('Delete error:', err);
+          showToast('error', 'حدث خطأ أثناء الحذف');
         });
     }
 
-    // Load WhatsApp Data - No initial loading
+    // Load WhatsApp Data
     function loadWhatsApp() {
       const ref = database.ref('whatsapp/groups');
       ref.on('value', (snapshot) => {
@@ -1806,6 +1929,9 @@
         updateWhatsAppStats();
         renderWhatsAppList();
         renderWhatsAppTable();
+      }, (error) => {
+        console.error('WhatsApp load error:', error);
+        showToast('error', 'خطأ في تحميل بيانات الواتساب');
       });
     }
 
@@ -1872,7 +1998,7 @@
                   <i class="fab fa-whatsapp"></i>
                 </div>
                 <div class="mobile-title-text">
-                  <h4>${group.name}</h4>
+                  <h4>${escapeHtml(group.name)}</h4>
                   <div class="days-tags">
                     ${group.days.map(d => `
                       <span class="day-tag ${d === currentDay ? 'active' : ''}">${arabicDays[d]}</span>
@@ -1898,7 +2024,7 @@
             </div>
             
             <div class="mobile-card-footer">
-              <a href="${group.link}" target="_blank" class="mobile-btn" style="background: #d1fae5; color: #059669; text-decoration: none;">
+              <a href="${escapeHtml(group.link)}" target="_blank" class="mobile-btn" style="background: #d1fae5; color: #059669; text-decoration: none;">
                 <i class="fab fa-whatsapp"></i>
                 فتح
               </a>
@@ -1915,7 +2041,7 @@
       }).join('');
     }
 
-    // Render WhatsApp Table with 12h format
+    // Render WhatsApp Table with 12h format - FIXED BUTTONS
     function renderWhatsAppTable() {
       const tbody = document.getElementById('whatsappTable');
       if (!tbody) return;
@@ -1946,7 +2072,7 @@
                 <div class="mobile-icon" style="width: 32px; height: 32px; font-size: 14px; background: #d1fae5; color: #059669;">
                   <i class="fab fa-whatsapp"></i>
                 </div>
-                <span style="font-weight: 700;">${group.name}</span>
+                <span style="font-weight: 700;">${escapeHtml(group.name)}</span>
               </div>
             </td>
             <td>
@@ -1960,14 +2086,14 @@
             <td><span class="mobile-status ${isOpen ? 'status-now' : 'status-ended'}" style="font-size: 11px;">${isOpen ? 'مفتوحة' : 'مغلقة'}</span></td>
             <td>
               <div style="display: flex; gap: 6px;">
-                <a href="${group.link}" target="_blank" class="icon-btn edit" style="width: 28px; height: 28px; text-decoration: none; display: inline-flex;">
-                  <i class="fab fa-whatsapp" style="font-size: 12px;"></i>
+                <a href="${escapeHtml(group.link)}" target="_blank" class="icon-btn" title="فتح">
+                  <i class="fab fa-whatsapp"></i>
                 </a>
-                <button class="icon-btn edit" onclick="editWhatsApp('${group.id}')" style="width: 28px; height: 28px;">
-                  <i class="fas fa-edit" style="font-size: 12px;"></i>
+                <button class="icon-btn edit" onclick="editWhatsApp('${group.id}')" title="تعديل">
+                  <i class="fas fa-edit"></i>
                 </button>
-                <button class="icon-btn delete" onclick="deleteWhatsApp('${group.id}')" style="width: 28px; height: 28px;">
-                  <i class="fas fa-trash" style="font-size: 12px;"></i>
+                <button class="icon-btn delete" onclick="deleteWhatsApp('${group.id}')" title="حذف">
+                  <i class="fas fa-trash"></i>
                 </button>
               </div>
             </td>
@@ -1976,24 +2102,30 @@
       }).join('');
     }
 
-    // WhatsApp Modal Functions
+    // WhatsApp Modal Functions - WebView Optimized
     function openWhatsAppModal() {
-      document.getElementById('whatsappForm').reset();
+      const form = document.getElementById('whatsappForm');
+      form.reset();
       document.getElementById('whatsappId').value = '';
       document.querySelectorAll('.day-checkbox').forEach(cb => cb.checked = false);
       document.getElementById('whatsappModalTitle').textContent = 'مجموعة جديدة';
+      
+      // Reset times
       setOpenAmPm('AM');
       setCloseAmPm('PM');
       document.getElementById('openHour').value = '9';
       document.getElementById('openMinute').value = '00';
       document.getElementById('closeHour').value = '5';
       document.getElementById('closeMinute').value = '00';
-      document.getElementById('whatsappModal').classList.add('active');
+      
+      const modal = document.getElementById('whatsappModal');
+      modal.classList.add('active');
       document.body.style.overflow = 'hidden';
     }
 
     function closeWhatsAppModal() {
-      document.getElementById('whatsappModal').classList.remove('active');
+      const modal = document.getElementById('whatsappModal');
+      modal.classList.remove('active');
       document.body.style.overflow = '';
     }
 
@@ -2013,11 +2145,11 @@
       const closeMinute = document.getElementById('closeMinute').value.padStart(2, '0');
 
       const data = {
-        name: document.getElementById('whatsappName').value,
+        name: document.getElementById('whatsappName').value.trim(),
         days: days,
         openTime: `${openHour24}:${openMinute}`,
         closeTime: `${closeHour24}:${closeMinute}`,
-        link: document.getElementById('whatsappLink').value
+        link: document.getElementById('whatsappLink').value.trim()
       };
 
       const id = document.getElementById('whatsappId').value;
@@ -2028,14 +2160,17 @@
         ref = database.ref('whatsapp/groups').push();
       }
 
-      ref.set(data).then(() => {
-        showLoading(false);
-        closeWhatsAppModal();
-        showToast('success', id ? 'تم التحديث' : 'تمت الإضافة');
-      }).catch(() => {
-        showLoading(false);
-        showToast('error', 'حدث خطأ');
-      });
+      ref.set(data)
+        .then(() => {
+          showLoading(false);
+          closeWhatsAppModal();
+          showToast('success', id ? 'تم التحديث بنجاح' : 'تمت الإضافة بنجاح');
+        })
+        .catch((err) => {
+          showLoading(false);
+          console.error('Save error:', err);
+          showToast('error', 'حدث خطأ أثناء الحفظ');
+        });
     }
 
     function editWhatsApp(id) {
@@ -2062,46 +2197,61 @@
       });
       
       document.getElementById('whatsappModalTitle').textContent = 'تعديل المجموعة';
-      document.getElementById('whatsappModal').classList.add('active');
+      
+      const modal = document.getElementById('whatsappModal');
+      modal.classList.add('active');
       document.body.style.overflow = 'hidden';
     }
 
     function deleteWhatsApp(id) {
-      if (!confirm('حذف هذه المجموعة؟')) return;
+      if (!confirm('هل أنت متأكد من حذف هذه المجموعة؟')) return;
       
       showLoading(true);
       database.ref('whatsapp/groups/' + id).remove()
         .then(() => {
           showLoading(false);
-          showToast('success', 'تم الحذف');
+          showToast('success', 'تم الحذف بنجاح');
         })
-        .catch(() => {
+        .catch((err) => {
           showLoading(false);
-          showToast('error', 'حدث خطأ');
+          console.error('Delete error:', err);
+          showToast('error', 'حدث خطأ أثناء الحذف');
         });
     }
 
-    // Preview - Use the new URL
+    // Preview
     function refreshPreview() {
-      document.getElementById('previewFrame').src = PREVIEW_URL + '?' + Date.now();
+      const frame = document.getElementById('previewFrame');
+      frame.src = PREVIEW_URL + '?t=' + Date.now();
     }
 
-    // Toast
+    // Toast Notification
     function showToast(type, message) {
       const toast = document.getElementById('toast');
+      const icon = toast.querySelector('.toast-icon');
+      
       toast.className = 'toast ' + type;
-      document.querySelector('.toast-icon').className = 'toast-icon fas ' + (type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle');
+      icon.className = 'toast-icon fas ' + (type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle');
       document.getElementById('toastMessage').textContent = message;
+      
       toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2500);
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
     }
 
-    // Loading - Only show for operations, not on startup
+    // Loading
     function showLoading(show) {
-      document.getElementById('loading').classList.toggle('active', show);
+      const loading = document.getElementById('loading');
+      if (show) {
+        loading.classList.add('active');
+      } else {
+        loading.classList.remove('active');
+      }
     }
 
-    // Close modals on outside click
+    // Close modals on outside click - WebView compatible
     document.querySelectorAll('.simple-modal').forEach(modal => {
       modal.addEventListener('click', function(e) {
         if (e.target === this) {
@@ -2110,6 +2260,30 @@
         }
       });
     });
+
+    // Handle back button in WebView
+    document.addEventListener('backbutton', function(e) {
+      const academicModal = document.getElementById('academicModal');
+      const whatsappModal = document.getElementById('whatsappModal');
+      
+      if (academicModal.classList.contains('active')) {
+        e.preventDefault();
+        closeAcademicModal();
+      } else if (whatsappModal.classList.contains('active')) {
+        e.preventDefault();
+        closeWhatsAppModal();
+      }
+    }, false);
+
+    // Prevent zoom on double tap for iOS
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function(event) {
+      const now = Date.now();
+      if (now - lastTouchEnd <= 300) {
+        event.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, false);
   </script>
 
 </body>
