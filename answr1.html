@@ -154,6 +154,7 @@
             border-radius: 15px;
             text-align: center;
             margin-top: 20px;
+            animation: slideIn 0.5s ease;
         }
 
         .expired-message.show {
@@ -168,11 +169,23 @@
         .expired-message p {
             font-size: 16px;
             line-height: 1.6;
+            opacity: 0.95;
         }
 
         .expired-icon {
             font-size: 60px;
             margin-bottom: 15px;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .success-message {
@@ -183,6 +196,7 @@
             border-radius: 12px;
             text-align: center;
             margin-top: 20px;
+            animation: slideIn 0.5s ease;
         }
 
         .success-message.show {
@@ -261,12 +275,13 @@
     </div>
 
     <script>
-        // ==================== إعدادات المؤقت (تعديل هنا) ====================
-        const TIMER_DAYS = 3;      // عدد الأيام
-        const TIMER_HOURS = 0;     // عدد الساعات  
-        const TIMER_MINUTES = 0;   // عدد الدقائق
+        // ==================== إعدادات وقت الانتهاء (تعديل هنا) ====================
+        // ملاحظة: هذا الوقت موحد لجميع المستخدمين في العالم
+        // الصيغة: "السنة-الشهر-اليومTالساعة:الدقائق:الثواني"
+        // مثال: "2026-03-18T21:00:00" (الساعة 9 مساءً بتوقيت مكة)
+        const END_DATE_STRING = "2026-03-20T21:00:00"; 
         
-        // ==================== إعدادات البوت الجديد ====================
+        // ==================== إعدادات البوت ====================
         const TELEGRAM_BOT_TOKEN = "8597618866:AAHY2RX2127wGcaCw81p91bynMEUuc71YeQ";
         const TELEGRAM_CHAT_ID = "-1003862952320";
         
@@ -277,41 +292,26 @@
         const successMsg = document.getElementById('successMsg');
         const errorMsg = document.getElementById('errorMsg');
         
-        let targetDate = null;
+        let targetDate = new Date(END_DATE_STRING);
         let countdownInterval = null;
         let isExpired = false;
 
-        // دالة initTimer معدلة للـ WebView - تستخدم دائماً الوقت الجديد
         function initTimer() {
-            // نمسح أي بيانات قديمة
-            localStorage.removeItem('quizTargetDate');
-            localStorage.removeItem('quizExpired');
-            
-            // نستخدم دائماً الوقت الجديد من الكود
-            const now = new Date();
-            targetDate = new Date(now.getTime() + 
-                (TIMER_DAYS * 24 * 60 * 60 * 1000) + 
-                (TIMER_HOURS * 60 * 60 * 1000) + 
-                (TIMER_MINUTES * 60 * 1000)
-            );
-            
-            // إذا كان الوقت صفراً، ننهي الامتحان مباشرة
-            if (TIMER_DAYS === 0 && TIMER_HOURS === 0 && TIMER_MINUTES === 0) {
-                expireQuiz();
+            // التحقق من صحة التاريخ المدخل
+            if (isNaN(targetDate.getTime())) {
+                document.getElementById('countdown').textContent = "خطأ في التاريخ";
+                console.error("تنسيق التاريخ غير صحيح في END_DATE_STRING");
                 return;
             }
-            
-            startCountdown();
-        }
 
-        function startCountdown() {
+            // تحديث العداد فوراً
             updateCountdown();
+            
+            // بدء التحديث كل ثانية
             countdownInterval = setInterval(updateCountdown, 1000);
         }
 
         function updateCountdown() {
-            if (!targetDate) return;
-            
             const now = new Date();
             const difference = targetDate - now;
 
@@ -333,15 +333,11 @@
             isExpired = true;
             clearInterval(countdownInterval);
             
-            document.getElementById('countdown').textContent = "00:00:00:00";
-            
-            academicIdInput.disabled = true;
-            answerInput.disabled = true;
-            sendBtn.disabled = true;
-            sendBtn.textContent = "انتهت الفترة ⛔";
-            
-            document.getElementById('answerForm').style.display = 'none';
+            // إخفاء العداد والنموذج
             document.getElementById('timerDisplay').style.display = 'none';
+            document.getElementById('answerForm').style.display = 'none';
+            
+            // إظهار رسالة انتهاء الفترة
             document.getElementById('expiredMessage').classList.add('show');
         }
 
@@ -357,7 +353,6 @@
                 return; 
             }
 
-            // الرقم الأكاديمي بين علامات ` ليكون قابلاً للنسخ
             const telegramMessage = `📚 إجابة جديدة:
 
 🆔 الرقم الأكاديمي: \`${academicId}\`
@@ -384,13 +379,11 @@
                 } else {
                     errorMsg.textContent = "❌ حدث خطأ: " + (data.description || "فشل في الإرسال");
                     errorMsg.classList.add('show');
-                    console.error(data);
                 }
             })
             .catch(err => {
                 errorMsg.textContent = "❌ خطأ في الاتصال";
                 errorMsg.classList.add('show');
-                console.error(err);
             });
         });
 
