@@ -1469,6 +1469,8 @@
             background: linear-gradient(135deg, #7C3AED, #EC4899);
             color: white;
         }
+
+        #root { display: none; }
     </style>
 </head>
 <body>
@@ -1662,9 +1664,9 @@
                 <span class="nav-label">لوحة الشرف</span>
             </button>
             
-            <button class="nav-btn" onclick="openActivitiesPage()" title="الانشطة">
-                <i class="fas fa-trophy"></i>
-                <span class="nav-label">انشطة</span>
+            <button class="nav-btn" onclick="openMuslimPage()" title="حصن المسلم">
+                <i class="fas fa-mosque"></i>
+                <span class="nav-label">حصن المسلم</span>
             </button>
         </div>
     </nav>
@@ -1767,7 +1769,6 @@
         </div>
         
         <div class="menu-items">
-            <!-- إصلاح: تغيير الدوال لتطابق Android Interface -->
             <button class="menu-item-btn" onclick="openImportantInfo()">
                 <div class="menu-item-icon pink">
                     <i class="fas fa-heart"></i>
@@ -1850,6 +1851,9 @@
         <i class="fas fa-info-circle text-lg"></i>
         <span id="toast-message">رسالة</span>
     </div>
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
 
     <script>
         // Firebase Config
@@ -2417,6 +2421,11 @@
 
         function openFieldPage() { 
             callAndroid("openField"); 
+        }
+
+        // حصن المسلم - صفحة muslim
+        function openMuslimPage() { 
+            callAndroid("openMuslim"); 
         }
 
         function logout() {
